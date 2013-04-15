@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<characterTemplate>
+	<info>
+		<characterName>New Character Name</characterName>
+		<characterDeity>New Character Deity</characterDeity>
+		<alignment value="3" />
+		<gender value="female" />
+	</info>
+	<pointBuy>
+	</pointBuy>
+	<skills>
+	</skills>
+	<levels>
+	</levels>
+	<equipment>
+	    <equipGroup name="Jewelry">
+	    	<choice groupName="Equipment" subGroup="Ring" />
+	    	<choice groupName="Equipment" subGroup="Ring" />
+	    	<choice groupName="Equipment" subGroup="Neck" />
+	    </equipGroup>
+	    <equipGroup name="Accessories">
+	    	<choice groupName="Equipment" subGroup="Head" />
+	    	<choice groupName="Equipment" subGroup="Feet" />
+	    	<choice groupName="Equipment" subGroup="Hands" />
+	    	<choice groupName="Equipment" subGroup="Wrists" />
+	    	<choice groupName="Equipment" subGroup="Waist" />
+	    </equipGroup>
+	    <equipGroup name="Armor/Clothes">
+	    	<chosen groupName="Equipment" subGroup="Armor" name="Unarmored">
+	        	<bonus type="Maximum Dexterity Bonus" stackType="Base" value="65535" />
+	    	</chosen>
+	    </equipGroup>
+	    <equipGroup name="Weapons/Shields">
+	    	<choice groupName="Equipment" subGroup="Armament" />
+	    </equipGroup>
+	</equipment>
+	<spells>
+	</spells>
+</characterTemplate>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<otherStuff>
+<bonusGroup groupName="Racial Ability Score">
+	<selection name="STR+2">
+		<bonus type="Strength" stackType="Base" value="2" />
+	</selection>
+	<selection name="DEX+2">
+	    <bonus type="Dexterity" stackType="Base" value="2" />
+	</selection>
+	<selection name="CON+2">
+	    <bonus type="Constitution" stackType="Base" value="2" />
+	</selection>
+	<selection name="INT+2">
+	    <bonus type="Intelligence" stackType="Base" value="2" />
+	</selection>
+	<selection name="WIS+2">
+	    <bonus type="Wisdom" stackType="Base" value="2" />
+	</selection>
+	<selection name="CHA+2">
+	    <bonus type="Charisma" stackType="Base" value="2" />
+	</selection>
+</bonusGroup>
+<bonusGroup groupName="Rogue Talent">
+    <selection name="Bleeding Attack">
+        <!-- TODO -->
+    </selection>
+    <selection name="Combat Training">
+        <choice groupName="Feat" subGroup="Combat" />
+    </selection>
+    <selection name="Fast Stealth">
+         <bonus type="Stealth Speed" value="[Speed] / 2" /> 
+    </selection>
+    <selection name="Finesse Rogue">
+        <!-- TODO -->
+    </selection>
+    <selection name="Ledge Walker">
+        <!-- TODO -->
+    </selection>
+    <selection name="Major Magic">
+        <!-- TODO -->
+    </selection>
+    <selection name="Minor Magic">
+        <!-- TODO -->
+    </selection>
+    <selection name="Powerful Sneak">
+        <!-- TODO -->
+    </selection>
+    <selection name="Quick Disable">
+        <!-- TODO -->
+    </selection>
+    <selection name="Resiliency">
+        <!-- TODO -->
+    </selection>
+    <selection name="Rogue Crawl">
+        <bonus type="Crawl Speed" value="[Speed] / 2 - 5" />
+    </selection>
+    <selection name="Slow Reactions">
+        <!--  TODO -->
+    </selection>
+    <selection name="Stand Up">
+        <!-- TODO -->
+    </selection>
+    <selection name="Surprise Attack">
+        <!-- TODO -->
+    </selection>
+    <selection name="Trap Spotter">
+        <!-- TODO -->
+    </selection>
+    <selection name="Weapon Training">
+        <!-- TODO -->
+    </selection>
+    
+</bonusGroup>
+</otherStuff>

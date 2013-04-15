@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" 
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/char_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/info_name"
+            android:ems="20" >
+
+            <requestFocus />
+        </EditText>
+        
+        <Spinner 
+            android:id="@+id/alignments_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        
+        <RadioGroup
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" 
+            android:id="@+id/gender_radio" >
+            <RadioButton 
+                android:id="@+id/radio_male"
+                android:text="@string/info_male" />
+            <RadioButton 
+                android:id="@+id/radio_female" 
+                android:text="@string/info_female"/>
+            <RadioButton 
+                android:id="@+id/radio_andro"
+                android:text="@string/info_andro"/>
+        </RadioGroup>
+        
+        <EditText
+            android:id="@+id/deity_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/info_deity"
+            android:ems="20" >
+            
+        	<requestFocus />
+        </EditText>
+        
+        <LinearLayout 
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            <Button 
+                android:id="@+id/levelDown"
+                android:text="-"
+                android:layout_width="50sp"
+                android:layout_height="wrap_content" 
+                android:onClick="levelChange" />
+            <TextView
+                android:id="@+id/level_indicator"
+                android:layout_width="0dp"
+                android:gravity="center"
+                android:text=""
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textSize="30sp" />
+        	<Button 
+        	    android:id="@+id/levelUp"
+        	    android:text="+"
+        	    android:layout_width="50sp"
+        	    android:layout_height="wrap_content" 
+        	    android:onClick="levelChange" />
+            </LinearLayout>
+        
+        </LinearLayout>
+</ScrollView>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<bonusGroup groupName="Equipment">
+	<subGroup groupName="Ring">
+		<selection name="Ring of Deflection +1">
+		    <bonus type="Armor Class" stackType="Deflection" source="Spell" value="1" />
+		</selection>
+		<selection name="Ring of Resistance +1">
+		    <bonus type="Armor Class" stackType="Resistance" source="Spell" value="1" />
+		</selection>
+	</subGroup>
+	<subGroup groupName="Neck">
+	    <selection name="Amulet of Natural Armor +1">
+	        <bonus type="AC" stackType="natural" source="spell" value="1" />
+	    </selection>
+	    <selection name="Periapt of Wisdom +1">
+	        <bonus type="wisdom" stackType="enhancement" source="spell" value="1" />
+	    </selection>
+	</subGroup>
+	<subGroup groupName="Hands">
+	    <selection name="Gloves of Dexterity +1">
+	        <bonus type="dexterity" stackType="enhancement" source="spell" value="1" />
+	    </selection>
+	</subGroup>
+	<subGroup groupName="Armor">
+	    <selection name="Unarmored">
+	        <bonus type="Maximum Dexterity Bonus" stackType="Base" value="65535" />
+	    </selection>
+	    <selection name="Studded Leather">
+	        <bonus type="AC" stackType="armor" value="1" />
+	        <penalty type="armorCheck" stackType="armor" value="1" />
+	    </selection>
+	    <selection name="Studded Leather, Masterwork">
+	        <bonus type="AC" stackType="armor" value="1" />
+	    </selection>
+	</subGroup>
+	<subGroup groupName="Armament">
+	    <selection name="Two-handed Weapon">
+        	<choice groupName="Equipment" subGroup="Two-handed" />
+	    </selection>
+	    <selection name="One-handed Weapons/Shields">
+			<choice groupName="Equipment" subGroup="One-handed" />
+			<choice groupName="Equipment" subGroup="One-handed" />
+	    </selection>
+	</subGroup>
+	<subGroup groupName="Two-handed">
+	    <selection name="Spear">
+			<weapon name="Spear" type="Simple Weapon" size="Two-handed" source="Piercing" 
+			    criticalRange="[20]" multiplier="3" dice="[1d8]" 
+			    special="Brace" range="20" >
+		       	<bonus type="Encumbrance" value="6" />
+		       	<bonus type="Equipment Cost" value="2" />
+		    </weapon>
+	    </selection>
+	    <selection name="Quarterstaff">
+	        <weapon name="Quarterstaff" type="Simple Weapon" size="Two-handed" source="Bludgeoning" 
+	            criticalRange="[20]" multiplier="2" dice="[1d6]" 
+	            special="Double,Monk" >
+	            <bonus type="Encumbrance" value="2" />
+	        </weapon>
+        </selection>
+        <selection name="Falchion">
+	        <weapon name="Falchion" type="Martial Weapon" size="Two-handed" source="Slashing"
+	            criticalRange="[18,19,20]" multiplier="2" dice="[2d4]">
+	            <bonus type="Encumbrance" value="8" />
+	            <bonus type="Equipment Cost" value="75" />
+	        </weapon>
+        </selection>
+        <selection name="Flail, Heavy">
+	        <weapon name="Flail, Heavy" type="Martial Weapon" size="Two-handed" source="Bludgeoning"
+	            criticalRange="[19,20]" multiplier="2" dice="[1d10]"
+	            special="Disarm,Trip">
+				<bonus type="Encumbrance" value="10" />
+				<bonus type="Equipment Cost" value="15" />
+	        </weapon>
+        </selection>
+        <selection name="Curve Blade, Elven">
+	        <weapon name="Curve Blade, Elven" type="Exotic Weapon" size="Two-handed" source="Slashing"
+	            criticalRange="[18,19,20]" multiplier="2" dice="[1d10]" 
+	            special="Finesse">
+	            <weaponBonus type="Defensive" versus="Sunder" value="2" />
+	        </weapon>
+        </selection>
+	</subGroup>
+	<subGroup groupName="Weapon Enhancement">
+	    <selection name="Masterwork">
+	        <attackBonus type="toHit" stackType="Enhancement" source="Natural" value="1" />
+	    </selection>
+	    <selection name="Enhancement+1">
+	        <attackBonus type="Enchantment Cost" value="1" />
+	        <attackBonus type="toHit" stackType="Enhancement" source="Natural" value="1" />
+			<attackBonus type="toHit" stackType="Enhancement" source="Magic" value="1" />
+			<attackBonus type="toDamage" stackType="Enhancement" source="Magic" value="1" />
+	    </selection>
+	</subGroup>
+	<subGroup groupName="One-handed">
+	    <selection name="Buckler">
+	        <shield name="Buckler" type="Light Shield" >
+	        	<bonus type="Armor Class" stackType="Shield" value="1" />
+	        	<bonus type="Shield Spell Failure" value="5" />
+	        	<bonus type="Encumbrance" value="5" />
+	        	<bonus type="Equipment Cost" value="155" />
+	        </shield>
+        </selection>
+        <selection name="Light Steel Shield">
+	        <shield name="Light Steel Shield" type="Light Shield">
+	        	<bonus type="Armor Class" stackType="Shield" value="1" />
+	        	<bonus type="Shield Spell Failure" value="5" />
+	        	<bonus type="Encumbrance" value="5" />
+	        	<bonus type="Equipment Cost" value="159" />
+	        </shield>
+        </selection>
+        <selection name="Heavy Steel Shield">
+	        <shield name="Heavy Steel Shield" type="Heavy Shield">
+	        	<bonus type="Armor Class" stackType="Shield" value="2" />
+	        	<bonus type="Armor Check" value="1" />
+	        	<bonus type="Shield Spell Failure" value="15" />
+	        	<bonus type="Encumbrance" value="15" />
+	        	<bonus type="Equipment Cost" value="170" />
+	        </shield>
+        </selection>
+        <selection name="Dagger">
+	        <weapon name="Dagger" type="Simple Weapon" size="Light" source="Slashing,Piercing"
+	            criticalRange="[19,20]" multiplier="2" dice="[1d4]"
+	            range="10" >
+	            <bonus type="Encumbrance" value="1" />
+	            <bonus type="Equipment Cost" value="2" />
+	        </weapon>
+        </selection>
+        <selection name="Morningstar">
+	        <weapon name="Morningstar" type="Simple Weapon" size="One-handed" source="Piercing,Bludgeoning"
+	            criticalRange="[20]" multiplier="2" dice="[1d8]">
+	            <bonus type="Encumbrance" value="6" />
+	            <bonus type="Equipment Cost" value="8" />
+	        </weapon>
+        </selection>
+        <selection name="Morningstar">
+	        <weapon name="Kukri" type="Martial Weapon" size="Light" source="Slashing"
+	            criticalRange="[18.19,20]" multiplier="2" dice="[1d4]" >
+	            <bonus type="Encumbrance" value="2" />
+	            <bonus type="Equipment Cost" value="8" />
+	        </weapon>
+        </selection>
+        <selection name="Rapier">
+	        <weapon name="Rapier" type="Martial Weapon" size="One-handed" source="Piercing"
+	            criticalRange="[18,19,20]" multiplier="2" dice="[1d6]"
+	            special="Finesse" >
+	            <bonus type="Encumbrance" value="2" />
+	            <bonus type="Equipment Cost" value="20" />
+	        </weapon>
+        </selection>
+        <selection name="Nunchaku">
+	        <weapon name="Nunchaku" type="Exotic Weapon" size="Light" source="Bludgeoning"
+	            criticalRange="[20]" multiplier="2" dice="[1d6]"
+	            special="Monk,Disarm" >
+	            <bonus type="Encumbrance" value="2" />
+	            <bonus type="Equipment Cost" value="2" />
+	        </weapon>
+        </selection>
+	</subGroup>
+</bonusGroup>

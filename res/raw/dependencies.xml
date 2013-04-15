@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<basicDependencies>
+    <bonus type="Strength Modifier" value="[Strength] / 2 - 5" />
+    <bonus type="Dexterity Modifier" value="[Dexterity] / 2 - 5" />
+    <bonus type="Constitution Modifier" value="[Constitution] / 2 - 5" />
+    <bonus type="Intelligence Modifier" value="[Intelligence] / 2 - 5" />
+    <bonus type="Wisdom Modifier" value="[Wisdom] / 2 - 5" />
+    <bonus type="Charisma Modifier" value="[Charisma] / 2 - 5" />
+    
+    <bonus type="Hit Points" value="[Constitution Modifier] * [Character Level]" />
+    <bonus type="Skill Points" value="[Intelligence Modifier] * [Character Level]" />
+    
+    <bonus type="Climb Speed" value="[Speed] / 4" />
+    <bonus type="Swim Speed" value="[Speed] / 4" />
+    <bonus type="Stealth Speed" value="[Speed] / 2" />
+    <bonus type="Crawl Speed" value="5" />
+    
+    <bonus type="Armor Class" value="min [Dexterity Modifier] [Maximum Dexterity Bonus]" />
+    <bonus type="Touch Armor Class" value="min [Dexterity Modifier] [Maximum Dexterity Bonus]" />
+    
+    <bonus type="Combat Maneuver Bonus" value="[Strength Modifier] + [Base Attack]" />
+    <bonus type="Combat Maneuver Defense" value="[Strength Modifier] + [Dexterity Modifier] + [Base Attack]" />
+    
+    <bonus type="Initiative" value="[Dexterity Modifier]" />
+    
+    <bonus type="Fortitude" value="[Constitution Modifier]" />
+    <bonus type="Reflex" value="[Dexterity Modifier]" />
+    <bonus type="Will" value="[Wisdom Modifier]" />
+    
+    <bonus type="Acrobatics" value="[Dexterity Modifier]" />
+    <bonus type="Appraise" value="[Intelligence Modifier]" />
+    <bonus type="Bluff" value="[Charisma Modifier]" />
+    <bonus type="Climb" value="[Strength Modifier]" />
+    <bonus type="Craft" value="[Intelligence Modifier]" />
+    <bonus type="Diplomacy" value="[Charisma Modifier]" />
+    <bonus type="Disable Device" value="[Dexterity Modifier]" />
+    <bonus type="Disguise" value="[Charisma Modifier]" />
+    <bonus type="Escape Artist" value="[Dexterity Modifier]" />
+    <bonus type="Fly" value="[Dexterity Modifier]" />
+    <bonus type="Handle Animal" value="[Charisma Modifier]" />
+    <bonus type="Heal" value="[Wisdom Modifier]" />
+    <bonus type="Intimidate" value="[Charisma Modifier]" />
+    <bonus type="Arcana" value="[Intelligence Modifier]" />
+    <bonus type="Dungeoneering" value="[Intelligence Modifier]" />
+    <bonus type="Engineering" value="[Intelligence Modifier]" />
+    <bonus type="Geography" value="[Intelligence Modifier]" />
+    <bonus type="History" value="[Intelligence Modifier]" />
+    <bonus type="Local" value="[Intelligence Modifier]" />
+    <bonus type="Nature" value="[Intelligence Modifier]" />
+    <bonus type="Nobility" value="[Intelligence Modifier]" />
+    <bonus type="Planes" value="[Intelligence Modifier]" />
+    <bonus type="Religion" value="[Intelligence Modifier]" />
+    <bonus type="Linguistics" value="[Intelligence Modifier]" />
+    <bonus type="Perception" value="[Wisdom Modifier]" />
+    <bonus type="Perform" value="[Charisma Modifier]" />
+    <bonus type="Profession" value="[Wisdom Modifier]" />
+    <bonus type="Ride" value="[Dexterity Modifier]" />
+    <bonus type="Sense Motive" value="[Wisdom Modifier]" />
+    <bonus type="Sleight Of Hand" value="[Dexterity Modifier]" />
+    <bonus type="Spellcraft" value="[Intelligence Modifier]" />
+    <bonus type="Stealth" value="[Dexterity Modifier]" />
+    <bonus type="Survival" value="[Wisdom Modifier]" />
+    <bonus type="Swim" value="[Strength Modifier]" />
+    <bonus type="Use Magic Device" value="[Charisma Modifier]" />
+
+</basicDependencies>

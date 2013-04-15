@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<bonusGroup groupName="Class Level">
+    <prerequisite type="Fighter Level" comparator="Equals" value="0">
+    <selection name="Fighter Lvl 1">
+	    <bonus type="Fighter Level" value="1" />
+        <bonus type="Skill Points" value="2" />
+        <bonus type="Hit Points" value="10" />
+        <bonus type="Base Attack" value="1" />
+		<bonus type="Fortitude" value="2" />
+        <choice groupName="Feat" subGroup="Combat" />
+		<proficiency type="Simple Weapon,Martial Weapon" value="All" />
+        <proficiency type="Light Armor,Medium Armor,Heavy Armor" value="All" />
+        <proficiency type="Light Shield,Heavy Shield,Tower Shield" value="All" />
+        <bonus type="Climb,Craft,Handle Animal,Intimidate,Dungeoneering" stackType="Class Skill" value="3" />
+        <bonus type="Engineering,Profession,Ride,Survival,Swim" stackType="Class Skill" value="3" />
+    </selection>
+	</prerequisite>
+    <prerequisite type="Fighter Level" comparator="Equals" value="1">
+	<selection name="Fighter Lvl 2">
+	    <bonus type="Fighter Level" value="1" />
+        <bonus type="Skill Points" value="2" />
+	    <bonus type="Fortitude" value="1" />
+	    <bonus type="Base Attack" value="1" />
+	    <bonus type="Hit Points" value="10" />
+        <choice groupName="Feat" subGroup="Combat" />
+		<!-- TODO: Bravery -->
+        </selection>
+    </prerequisite>
+    <prerequisite type="Fighter Level" comparator="Equals" value="2">
+		<selection name="Fighter Lvl 3">
+		    <bonus type="Fighter Level" value="1" />
+	        <bonus type="Skill Points" value="2" />
+	        <bonus type="Base Attack" value="1" />
+	        <bonus type="Reflex" value="1" />
+	        <bonus type="Will" value="1" />
+	        <bonus type="Hit Points" value="10" />
+			<!-- TODO: Armor Training -->
+	    </selection>
+    </prerequisite>
+    
+	<prerequisite type="Rogue Level" comparator="Equals" value="0">
+    <selection name="Rogue Lvl 1">
+        <bonus type="Rogue Level" value="1" />
+        <bonus type="Skill Points" value="8" />
+        <bonus type="Hit Points" value="8" />
+        <bonus type="Base Attack" value="0" />
+		<bonus type="Reflex" value="2" />
+        <proficiency type="Simple Weapon" value="All" />
+        <proficiency type="Martial Weapon" value="Rapier,Sap,Shortbow,Short Sword" />
+        <proficiency type="Exotic Weapon" value="Hand Crossbow" />
+        <proficiency type="Light Armor" value="All" />
+        <bonus type="Sneak Attack Dice" value="1" />
+        <bonus type="Acrobatics,Appraise,Bluff,Climb,Craft,Diplomacy,Disable Device,Disguise" stackType="Class Skill" value="3" />
+        <bonus type="Escape Artist,Intimidate,Dungeoneering,LocalLinguistics,Perception,Perform" stackType="Class Skill" value="3" />
+        <bonus type="Profession,Sense Motive,Slight Of Hand,Stealth,Swim,Use Magic Device" stackType="Class Skill" value="3" />
+        <!-- TODO: Trapfinding <bonus type="" value="" /> -->
+        </selection>
+    </prerequisite>
+    <prerequisite type="Rogue Level" comparator="Equals" values="1">
+    <selection name="Rogue Lvl 2">
+        <bonus type="Rogue Lvl" value="1" />        
+        <bonus type="Skill Points" value="8" />
+        <bonus type="Hit Points" value="8" />
+        <bonus type="Base Attack" value="1" />
+        <bonus type="Reflex" value="1" />
+        <!-- TODO: Evasion -->
+        <choice groupName="Rogue Talent" />
+        <!-- TODO: Talent Descriptions -->
+    </selection>
+    </prerequisite>
+    <prerequisite type="Ranger Level" comparator="Equals" value="0">
+     	<selection name="Ranger Lvl 1">
+     	    <bonus type="Ranger Level" value="1" />
+     	    <bonus type="Skill Points" value="6" />
+     	    <bonus type="Hit Points" value="10" />
+     	    <bonus type="Base Attack" value="1"/>
+     	    <bonus type="Fortitude" value="2" />
+     	    <bonus type="Reflex" value="2" />
+        <proficiency type="Light Armor,Medium Armor" value="All" />
+        <proficiency type="Light Shield,Heavy Shield" value="All" />
+        <proficiency type="Simple Weapon,Martial Weapon" value="All" />
+        <bonus type="Climb,Craft,Handle Animal,Heal,Intimidate,Dungeoneering,Geography,Nature" stackType="Class Skill" value="3" />
+        <bonus type="Perception,Profession,Ride,Spellcraft,Stealth,Survival,Swim" stackType="Class Skill" value="3" />
+        <!-- TODO Favored Enemy -->
+        <!-- TODO Track = half ranger level to survival check when tracking -->
+        <!-- TODO Wild Empathy= 1d20 plus ranger level and charisma modifier -->
+    </selection>
+    </prerequisite>
+    <prerequisite type="Ranger Level" comparator="Equals" value="1">
+        <selection name="Ranger Lvl 2">
+            <bonus type="Ranger Level" value="1" />
+            <bonus type="Skill Points" value="6" />
+            <bonus type="Hit Points" value="10" />
+            <bonus type="Base Attack" value="1" />
+            <bonus type="Fotitude" value="1" />
+            <bonus type="Reflex" value="1" />
+            <!-- TODO combat style feats --> />
+    	</selection>
+    </prerequisite>
+</bonusGroup>

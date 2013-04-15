@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<bonusGroup groupName="Feat">
+    <selection name="Acrobatic">
+        <bonus type="Acrobatics" stackType="Feat" value="2" />
+        <bonus type="Fly" stackType="Feat" value="2" />
+    </selection>
+    <selection name="Alertness">
+        <bonus type="Perception" stackType="Feat" value="2" />
+        <bonus type="Sense Motive" stackType="Feat" value="2" />
+    </selection>
+    <selection name="Animal Affinity">
+        <bonus type="Handle Animal" stackType="Feat" value="2" />
+        <bonus type="Ride" stackType="Feat" value="2" />
+    </selection>
+    <subGroup groupName="Combat">
+	    <selection name="Armor Proficiency, Light">
+	        <proficiency type="lightArmor" value="all" />
+	    </selection>
+	    <prerequisite tag="proficiency" type="lightArmor" value="all">
+	        <selection name="Armor Proficiency, Medium">
+	            <proficiency type="mediumArmor" value="all" />
+	        </selection>
+	    </prerequisite>
+	    <prerequisite tag="proficiency" type="mediumArmor" value="all">
+	        <selection name="Armor Proficiency, Heavy">
+	            <proficiency type="heavyArmor" value="all" />
+	        </selection>
+	    </prerequisite>
+    </subGroup>
+</bonusGroup>
