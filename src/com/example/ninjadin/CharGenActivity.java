@@ -166,6 +166,7 @@ public class CharGenActivity extends FragmentActivity {
 	}
 	
 	public void launchEquipment(View view) {
+		refreshCharData();
 		ChoicesFragment newFragment = new ChoicesFragment();
 		Bundle passedData = new Bundle();
 		passedData.putString("choiceType", "Equipment");
@@ -255,7 +256,18 @@ public class CharGenActivity extends FragmentActivity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		launchLevels(null);
+		startMenu(selectionName + " selected.");
+	}
+	
+	public void startMenu(String message) {
+		CharGenMenuFragment firstFragment = new CharGenMenuFragment();
+		Bundle passedData = new Bundle();
+		passedData.putString("message", message);
+		firstFragment.setArguments(passedData);
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+		transaction.replace(R.id.fragment_container, firstFragment);
+		transaction.addToBackStack(null);
+		transaction.commit();
 	}
 	
 	public void launchCharXML(View view) {
