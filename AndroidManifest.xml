@@ -16,7 +16,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.example.ninjadin.OpenCharActivity"
+            android:name="com.ninjadin.pfmobile.activities.OpenCharActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,9 +25,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.ninjadin.CharGenActivity"
+            android:name="com.ninjadin.pfmobile.activities.CharGenActivity"
             android:label="@string/title_activity_char_fragments_list"
-            android:parentActivityName="com.example.ninjadin.OpenCharActivity" >
+            android:parentActivityName="com.ninjadin.pfmobile.activities.OpenCharActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.ninjadin.OpenChar" />

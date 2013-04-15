@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<inventoryTemplate>
+    <item name="Nekid" slot="Armor">
+    	<itemBonus type="Max Dex" value="65535" />
+    </item>
+    <item name="Gloves of Dexterity +1" slot="Hands" >
+        <bonus type="Dexterity" stackType="Enhancement" source="Magic" value="2" />
+    </item>
+    <item name="Ring of Deflection +1" slot="Ring" >
+	    <bonus type="Armor Class" stackType="Deflection" source="Magic" value="1" />
+    </item>
+    <item name="Ring of Resistance +1" slot="Ring" >
+	    <bonus type="Fortitude" stackType="Resistance" source="Magic" value="1" />
+	    <bonus type="Reflex" stackType="Resistance" source="Magic" value="1" />
+	    <bonus type="Will" stackType="Resistance" source="Magic" value="1" />
+    </item>
+</inventoryTemplate>

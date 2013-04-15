@@ -1,173 +1,180 @@
 <?xml version="1.0" encoding="utf-8"?>
-<bonusGroup groupName="Equipment">
-	<subGroup groupName="Ring">
-		<selection name="Ring of Deflection +1">
-		    <bonus type="Armor Class" stackType="Deflection" source="Magic" value="1" />
-		</selection>
-		<selection name="Ring of Resistance +1">
-		    <bonus type="Fortitude" stackType="Resistance" source="Magic" value="1" />
-		    <bonus type="Reflex" stackType="Resistance" source="Magic" value="1" />
-		    <bonus type="Will" stackType="Resistance" source="Magic" value="1" />
-		</selection>
-	</subGroup>
-	<subGroup groupName="Neck">
-	    <selection name="Amulet of Natural Armor +1">
-	        <bonus type="Armor Class" stackType="Natural" source="Magic" value="1" />
-	    </selection>
-	    <selection name="Periapt of Wisdom +1">
-	        <bonus type="Wisdom" stackType="Enhancement" source="Magic" value="1" />
-	    </selection>
-	</subGroup>
-	<subGroup groupName="Hands">
-	    <selection name="Gloves of Dexterity +1">
-	        <bonus type="Dexterity" stackType="Enhancement" source="Magic" value="1" />
-	    </selection>
-	</subGroup>
-	<subGroup groupName="Armor">
-	    <selection name="Unarmored">
-	        <bonus type="Maximum Dexterity Bonus" value="65535" />
-	    </selection>
-	    <selection name="Studded Leather">
-	        <bonus type="Armor Class" stackType="Armor" value="3" />
-	        <bonus type="Flat Footed Armor Class" stackType="Armor" value="3" />
-	        <bonus type="Maximum Dexterity Bonus" value="5" />
-	        <bonus type="Armor Check" value="1" />
-	        <bonus type="Light Armor Spell Failure" value="15" />
-	        <bonus type="Equipment Cost" value="25" />
-	        <bonus type="Encumbrance" value="20" />"
-	    </selection>
-	    <selection name="Breastplate">
-	        <bonus type="Armor Class" stackType="Armor" value="6" />
-	        <bonus type="Flat Footed Armor Class" stackType="Armor" value="6" />
-	        <bonus type="Maximum Dexterity Bonus" value="3" />
-	        <bonus type="Armor Check" value="4" />
-	        <bonus type="Medium Armor Spell Failure" value="25" />
-	        <bonus type="Equipment Cost" value="200" />
-	        <bonus type="Encumbrance" value="30" />
-	    </selection>
-	</subGroup>
-	<subGroup groupName="Armament">
-	    <selection name="Two-handed Weapon">
-        	<choice groupName="Equipment" subGroup="Two-handed" />
-	    </selection>
-	    <selection name="One-handed Weapons/Shields">
-			<choice groupName="Equipment" subGroup="One-handed" />
-			<choice groupName="Equipment" subGroup="One-handed" />
-	    </selection>
-	</subGroup>
-	<subGroup groupName="Two-handed">
-	    <selection name="Spear">
-			<weapon name="Spear" type="Simple Weapon" size="Two-handed" source="Piercing" 
-			    criticalRange="[20]" multiplier="3" dice="[1d8]" 
-			    special="Brace" range="20" >
-		       	<bonus type="Encumbrance" value="6" />
-		       	<bonus type="Equipment Cost" value="2" />
-		    </weapon>
-	    </selection>
-	    <selection name="Quarterstaff">
-	        <weapon name="Quarterstaff" type="Simple Weapon" size="Two-handed" source="Bludgeoning" 
-	            criticalRange="[20]" multiplier="2" dice="[1d6]" 
-	            special="Double,Monk" >
-	            <bonus type="Encumbrance" value="2" />
-	        </weapon>
-        </selection>
-        <selection name="Falchion">
-	        <weapon name="Falchion" type="Martial Weapon" size="Two-handed" source="Slashing"
-	            criticalRange="[18,19,20]" multiplier="2" dice="[2d4]">
-	            <bonus type="Encumbrance" value="8" />
-	            <bonus type="Equipment Cost" value="75" />
-	        </weapon>
-        </selection>
-        <selection name="Flail, Heavy">
-	        <weapon name="Flail, Heavy" type="Martial Weapon" size="Two-handed" source="Bludgeoning"
-	            criticalRange="[19,20]" multiplier="2" dice="[1d10]"
-	            special="Disarm,Trip">
-				<bonus type="Encumbrance" value="10" />
-				<bonus type="Equipment Cost" value="15" />
-	        </weapon>
-        </selection>
-        <selection name="Curve Blade, Elven">
-	        <weapon name="Curve Blade, Elven" type="Exotic Weapon" size="Two-handed" source="Slashing"
-	            criticalRange="[18,19,20]" multiplier="2" dice="[1d10]" 
-	            special="Finesse">
-	            <weaponBonus type="Defensive" versus="Sunder" value="2" />
-	        </weapon>
-        </selection>
-	</subGroup>
-	<subGroup groupName="Weapon Enhancement">
-	    <selection name="Masterwork">
-	        <attackBonus type="toHit" stackType="Enhancement" source="Natural" value="1" />
-	    </selection>
-	    <selection name="Enhancement+1">
-	        <attackBonus type="Enchantment Cost" value="1" />
-	        <attackBonus type="toHit" stackType="Enhancement" source="Natural" value="1" />
-			<attackBonus type="toHit" stackType="Enhancement" source="Magic" value="1" />
-			<attackBonus type="toDamage" stackType="Enhancement" source="Magic" value="1" />
-	    </selection>
-	</subGroup>
-	<subGroup groupName="One-handed">
-	    <selection name="Buckler">
-	        <shield name="Buckler" type="Light Shield" >
-	        	<bonus type="Armor Class" stackType="Shield" value="1" />
-	        	<bonus type="Shield Spell Failure" value="5" />
-	        	<bonus type="Encumbrance" value="5" />
-	        	<bonus type="Equipment Cost" value="155" />
-	        </shield>
-        </selection>
-        <selection name="Light Steel Shield">
-	        <shield name="Light Steel Shield" type="Light Shield">
-	        	<bonus type="Armor Class" stackType="Shield" value="1" />
-	        	<bonus type="Shield Spell Failure" value="5" />
-	        	<bonus type="Encumbrance" value="5" />
-	        	<bonus type="Equipment Cost" value="159" />
-	        </shield>
-        </selection>
-        <selection name="Heavy Steel Shield">
-	        <shield name="Heavy Steel Shield" type="Heavy Shield">
-	        	<bonus type="Armor Class" stackType="Shield" value="2" />
-	        	<bonus type="Armor Check" value="1" />
-	        	<bonus type="Shield Spell Failure" value="15" />
-	        	<bonus type="Encumbrance" value="15" />
-	        	<bonus type="Equipment Cost" value="170" />
-	        </shield>
-        </selection>
-        <selection name="Dagger">
-	        <weapon name="Dagger" type="Simple Weapon" size="Light" source="Slashing,Piercing"
-	            criticalRange="[19,20]" multiplier="2" dice="[1d4]"
-	            range="10" >
-	            <bonus type="Encumbrance" value="1" />
-	            <bonus type="Equipment Cost" value="2" />
-	        </weapon>
-        </selection>
-        <selection name="Morningstar">
-	        <weapon name="Morningstar" type="Simple Weapon" size="One-handed" source="Piercing,Bludgeoning"
-	            criticalRange="[20]" multiplier="2" dice="[1d8]">
-	            <bonus type="Encumbrance" value="6" />
-	            <bonus type="Equipment Cost" value="8" />
-	        </weapon>
-        </selection>
-        <selection name="Kukri">
-	        <weapon name="Kukri" type="Martial Weapon" size="Light" source="Slashing"
-	            criticalRange="[18.19,20]" multiplier="2" dice="[1d4]" >
-	            <bonus type="Encumbrance" value="2" />
-	            <bonus type="Equipment Cost" value="8" />
-	        </weapon>
-        </selection>
-        <selection name="Rapier">
-	        <weapon name="Rapier" type="Martial Weapon" size="One-handed" source="Piercing"
-	            criticalRange="[18,19,20]" multiplier="2" dice="[1d6]"
-	            special="Finesse" >
-	            <bonus type="Encumbrance" value="2" />
-	            <bonus type="Equipment Cost" value="20" />
-	        </weapon>
-        </selection>
-        <selection name="Nunchaku">
-	        <weapon name="Nunchaku" type="Exotic Weapon" size="Light" source="Bludgeoning"
-	            criticalRange="[20]" multiplier="2" dice="[1d6]"
-	            special="Monk,Disarm" >
-	            <bonus type="Encumbrance" value="2" />
-	            <bonus type="Equipment Cost" value="2" />
-	        </weapon>
-        </selection>
-	</subGroup>
-</bonusGroup>
+<equipmentTemplates>
+    <template name="Headgear">
+        <item name="Hat/Crown/Helmet/Fedora/Ioun" slot="Head" >
+            <itemBonus type="Cost" value="1" />
+            <itemBonus type="Hardness" value="2" />
+            <itemBonus type="Hit Points" value="5" />
+            <itemBonus type="Encumbrance" value="1" />
+        </item>
+    </template>
+    <template name="Headband">
+        <item name="Forehead Protector/Earmuffs/Sweatband" slot="Headband" >
+            <itemBonus type="Cost" value="1" />
+            <itemBonus type="Hardness" value="2" />
+            <itemBonus type="Hit Points" value="5" />
+            <itemBonus type="Encumbrance" value="1" />
+        </item>
+    </template>
+    <template name="Eyes">
+        <item name="Glasses" slot="Eyes" >
+            <itemBonus type="Cost" value="1" />
+            <itemBonus type="Hardness" value="2" />
+            <itemBonus type="Hit Points" value="5" />
+            <itemBonus type="Encumbrance" value="1" />
+        </item>
+    </template>
+    <template name="Light Armor">
+        <item name="Studded Leather" type="Light Armor" slot="Armor" >
+            <itemBonus type="Armor" value="3" />
+	        <itemBonus type="Max Dex" value="5" />
+	        <itemBonus type="Armor Check" value="1" />
+	        <itemBonus type="Spell Failure" value="15" />
+	        <itemBonus type="Cost" value="25" />
+	        <itemBonus type="Encumbrance" value="20" />"
+	        <itemBonus type="Hardness" value="2" />
+	        <itemBonus type="Hit Points" value="15" />
+        </item>
+    </template>
+    <template name="Medium Armor">
+        <item name="Steel Breastplate" type="Medium Armor" slot="Armor" >
+	        <itemBonus type="Armor" value="6" />
+	        <itemBonus type="Max Dex" value="3" />
+	        <itemBonus type="Armor Check" value="4" />
+	        <itemBonus type="Spell Failure" value="25" />
+	        <itemBonus type="Cost" value="200" />
+	        <itemBonus type="Encumbrance" value="30" />
+	        <itemBonus type="Hardness" value="10" />
+	        <itemBonus type="Hit Points" value="30" />
+	    </item>
+    </template>
+    <template name="Heavy Armor">
+        <item name="Steel Half-plate" type="Heavy Armor" slot="Armor">
+	        <itemBonus type="Armor" value="8" />
+	        <itemBonus type="Max Dex" value="0" />
+	        <itemBonus type="Armor Check" value="7" />
+	        <itemBonus type="Spell Failure" value="40" />
+	        <itemBonus type="Cost" value="600" />
+	        <itemBonus type="Encumbrance" value="50" />
+	        <itemBonus type="Hardness" value="10" />
+	        <itemBonus type="Hit Points" value="40" />
+	    </item>
+    </template>
+    <template name="Magical Two-handed Simple Weapon">
+		<item name="+1 Fire Spear" type="Simple Weapon" size="Two-handed" slot="Held" >
+		    <itemBonus type="Range" value="20" />
+		    <itemBonus type="Critical Range" value="1" />
+		    <itemBonus type="Critical Multiplier" value="3" />
+		    <itemBonus type="Special" value="Brace" />
+	       	<itemBonus type="Encumbrance" value="6" />
+	       	<itemBonus type="Cost" value="2" />
+	       	<itemBonus type="Hardness" value="5" />
+	       	<itemBonus type="Hit Points" value="10" />
+	        <damageBonus type="Hit Points" source="Piercing" value="[1d8]" />
+	       	<enchantment name="Masterwork">
+	       		<itemBonus type="To Hit" source="Natural" value="1" />
+	       	</enchantment>
+	       	<enchantment name="+1">
+		       	<itemBonus type="To Hit" source="Magic" value="1" />
+		       	<itemBonus type="Hardness" value="2" />
+		       	<itemBonus type="Hit Points" value="10" />
+		       	<damageBonus type="Hit Points" source="Magic" value="1" />
+		    </enchantment>
+		    <enchantment name="Fire">
+       	    	<damageBonus type="Hit Points" source="Fire,Spell" value="[1d6]" />
+       	    </enchantment>
+	    </item>
+    </template>
+    <template name="Quarterstaff">
+        <weapon name="Quarterstaff" type="Simple Weapon" size="Two-handed" source="Bludgeoning" 
+            criticalRange="[20]" multiplier="2" dice="[1d6]" 
+            special="Double,Monk" >
+            <bonus type="Encumbrance" value="2" />
+        </weapon>
+    </template>
+   <template name="Falchion">
+        <weapon name="Falchion" type="Martial Weapon" size="Two-handed" source="Slashing"
+            criticalRange="[18,19,20]" multiplier="2" dice="[2d4]">
+            <bonus type="Encumbrance" value="8" />
+            <bonus type="Equipment Cost" value="75" />
+        </weapon>
+    </template>
+    <template name="Heavy Flail">
+        <weapon name="Heavy Flail" type="Martial Weapon" size="Two-handed" source="Bludgeoning"
+            criticalRange="[19,20]" multiplier="2" dice="[1d10]"
+            special="Disarm,Trip">
+			<bonus type="Encumbrance" value="10" />
+			<bonus type="Equipment Cost" value="15" />
+        </weapon>
+    </template>
+    <template name="Elven Curve Blade">
+        <weapon name="Elven Curve Blade" type="Exotic Weapon" size="Two-handed" source="Slashing"
+            criticalRange="[18,19,20]" multiplier="2" dice="[1d10]" 
+            special="Finesse">
+            <weaponBonus type="Defensive" versus="Sunder" value="2" />
+        </weapon>
+    </template>
+    <template name="Buckler">
+        <shield name="Buckler" type="Light Shield" >
+        	<bonus type="Armor Class" stackType="Shield" value="1" />
+        	<bonus type="Shield Spell Failure" value="5" />
+        	<bonus type="Encumbrance" value="5" />
+        	<bonus type="Equipment Cost" value="155" />
+        </shield>
+    </template>
+    <template name="Light Steel Shield">
+        <shield name="Light Steel Shield" type="Light Shield">
+        	<bonus type="Armor Class" stackType="Shield" value="1" />
+        	<bonus type="Shield Spell Failure" value="5" />
+        	<bonus type="Encumbrance" value="5" />
+        	<bonus type="Equipment Cost" value="159" />
+        </shield>
+    </template>
+    <template name="Heavy Steel Shield">
+        <shield name="Heavy Steel Shield" type="Heavy Shield">
+        	<bonus type="Armor Class" stackType="Shield" value="2" />
+        	<bonus type="Armor Check" value="1" />
+        	<bonus type="Shield Spell Failure" value="15" />
+        	<bonus type="Encumbrance" value="15" />
+        	<bonus type="Equipment Cost" value="170" />
+        </shield>
+    </template>
+    <template name="Dagger">
+        <weapon name="Dagger" type="Simple Weapon" size="Light" source="Slashing,Piercing"
+            criticalRange="[19,20]" multiplier="2" dice="[1d4]"
+            range="10" >
+            <bonus type="Encumbrance" value="1" />
+            <bonus type="Equipment Cost" value="2" />
+        </weapon>
+    </template>
+    <template name="Morningstar">
+        <weapon name="Morningstar" type="Simple Weapon" size="One-handed" source="Piercing,Bludgeoning"
+            criticalRange="[20]" multiplier="2" dice="[1d8]">
+            <bonus type="Encumbrance" value="6" />
+            <bonus type="Equipment Cost" value="8" />
+        </weapon>
+    </template>
+    <template name="Kukri">
+        <weapon name="Kukri" type="Martial Weapon" size="Light" source="Slashing"
+            criticalRange="[18.19,20]" multiplier="2" dice="[1d4]" >
+            <bonus type="Encumbrance" value="2" />
+            <bonus type="Equipment Cost" value="8" />
+        </weapon>
+    </template>
+    <template name="Rapier">
+        <weapon name="Rapier" type="Martial Weapon" size="One-handed" source="Piercing"
+            criticalRange="[18,19,20]" multiplier="2" dice="[1d6]"
+            special="Finesse" >
+            <bonus type="Encumbrance" value="2" />
+            <bonus type="Equipment Cost" value="20" />
+        </weapon>
+    </template>
+    <template name="Nunchaku">
+        <weapon name="Nunchaku" type="Exotic Weapon" size="Light" source="Bludgeoning"
+            criticalRange="[20]" multiplier="2" dice="[1d6]"
+            special="Monk,Disarm" >
+            <bonus type="Encumbrance" value="2" />
+            <bonus type="Equipment Cost" value="2" />
+        </weapon>
+    </template>
+</equipmentTemplates>

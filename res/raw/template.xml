@@ -20,6 +20,7 @@
 	    </equipGroup>
 	    <equipGroup name="Accessories">
 	    	<choice groupName="Equipment" subGroup="Head" />
+	    	<choice groupName="Equipment" subGroup="Headband" />
 	    	<choice groupName="Equipment" subGroup="Feet" />
 	    	<choice groupName="Equipment" subGroup="Hands" />
 	    	<choice groupName="Equipment" subGroup="Wrists" />
