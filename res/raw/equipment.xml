@@ -2,35 +2,36 @@
 <bonusGroup groupName="Equipment">
 	<subGroup groupName="Ring">
 		<selection name="Ring of Deflection +1">
-		    <bonus type="Armor Class" stackType="Deflection" source="Spell" value="1" />
+		    <bonus type="Armor Class" stackType="Deflection" source="Magic" value="1" />
 		</selection>
 		<selection name="Ring of Resistance +1">
-		    <bonus type="Armor Class" stackType="Resistance" source="Spell" value="1" />
+		    <bonus type="Fortitude" stackType="Resistance" source="Magic" value="1" />
+		    <bonus type="Reflex" stackType="Resistance" source="Magic" value="1" />
+		    <bonus type="Will" stackType="Resistance" source="Magic" value="1" />
 		</selection>
 	</subGroup>
 	<subGroup groupName="Neck">
 	    <selection name="Amulet of Natural Armor +1">
-	        <bonus type="AC" stackType="natural" source="spell" value="1" />
+	        <bonus type="Armor Class" stackType="Natural" source="Magic" value="1" />
 	    </selection>
 	    <selection name="Periapt of Wisdom +1">
-	        <bonus type="wisdom" stackType="enhancement" source="spell" value="1" />
+	        <bonus type="Wisdom" stackType="Enhancement" source="Magic" value="1" />
 	    </selection>
 	</subGroup>
 	<subGroup groupName="Hands">
 	    <selection name="Gloves of Dexterity +1">
-	        <bonus type="dexterity" stackType="enhancement" source="spell" value="1" />
+	        <bonus type="Dexterity" stackType="Enhancement" source="Magic" value="1" />
 	    </selection>
 	</subGroup>
 	<subGroup groupName="Armor">
 	    <selection name="Unarmored">
-	        <bonus type="Maximum Dexterity Bonus" stackType="Base" value="65535" />
+	        <bonus type="Maximum Dexterity Bonus" value="65535" />
 	    </selection>
 	    <selection name="Studded Leather">
-	        <bonus type="AC" stackType="armor" value="1" />
-	        <penalty type="armorCheck" stackType="armor" value="1" />
-	    </selection>
-	    <selection name="Studded Leather, Masterwork">
-	        <bonus type="AC" stackType="armor" value="1" />
+	        <bonus type="Armor Class" stackType="Armor" value="3" />
+	        <bonus type="Flat Footed Armor Class" stackType="Armor" value="3" />
+	        <bonus type="Maximum Dexterity Bonus" value="5" />
+	        <bonus type="Armor Check" value="1" />
 	    </selection>
 	</subGroup>
 	<subGroup groupName="Armament">
@@ -133,7 +134,7 @@
 	            <bonus type="Equipment Cost" value="8" />
 	        </weapon>
         </selection>
-        <selection name="Morningstar">
+        <selection name="Kukri">
 	        <weapon name="Kukri" type="Martial Weapon" size="Light" source="Slashing"
 	            criticalRange="[18.19,20]" multiplier="2" dice="[1d4]" >
 	            <bonus type="Encumbrance" value="2" />

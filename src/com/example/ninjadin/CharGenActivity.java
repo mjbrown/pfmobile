@@ -155,7 +155,10 @@ public class CharGenActivity extends FragmentActivity {
 	
 	public void launchLevels(View view) {
 		refreshCharData();
-		LevelsFragment newFragment = new LevelsFragment();
+		ChoicesFragment newFragment = new ChoicesFragment();
+		Bundle passedData = new Bundle();
+		passedData.putString("choiceType", "Levels");
+		newFragment.setArguments(passedData);
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.fragment_container, newFragment);
 		transaction.addToBackStack(null);
@@ -163,7 +166,10 @@ public class CharGenActivity extends FragmentActivity {
 	}
 	
 	public void launchEquipment(View view) {
-		EquipmentFragment newFragment = new EquipmentFragment();
+		ChoicesFragment newFragment = new ChoicesFragment();
+		Bundle passedData = new Bundle();
+		passedData.putString("choiceType", "Equipment");
+		newFragment.setArguments(passedData);
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.fragment_container, newFragment);
 		transaction.addToBackStack(null);
@@ -205,7 +211,7 @@ public class CharGenActivity extends FragmentActivity {
 	}
 	
 	public void launchFilterSelect(View view, String groupName, String subGroup, String choiceId) {
-		LevelSelectFragment newFragment = new LevelSelectFragment();
+		ChoiceSelectFragment newFragment = new ChoiceSelectFragment();
 		Bundle passedData = new Bundle();
 		passedData.putString("groupName", groupName);
 		passedData.putString("subGroup", subGroup);
