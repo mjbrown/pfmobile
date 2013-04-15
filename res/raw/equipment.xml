@@ -32,6 +32,18 @@
 	        <bonus type="Flat Footed Armor Class" stackType="Armor" value="3" />
 	        <bonus type="Maximum Dexterity Bonus" value="5" />
 	        <bonus type="Armor Check" value="1" />
+	        <bonus type="Light Armor Spell Failure" value="15" />
+	        <bonus type="Equipment Cost" value="25" />
+	        <bonus type="Encumbrance" value="20" />"
+	    </selection>
+	    <selection name="Breastplate">
+	        <bonus type="Armor Class" stackType="Armor" value="6" />
+	        <bonus type="Flat Footed Armor Class" stackType="Armor" value="6" />
+	        <bonus type="Maximum Dexterity Bonus" value="3" />
+	        <bonus type="Armor Check" value="4" />
+	        <bonus type="Medium Armor Spell Failure" value="25" />
+	        <bonus type="Equipment Cost" value="200" />
+	        <bonus type="Encumbrance" value="30" />
 	    </selection>
 	</subGroup>
 	<subGroup groupName="Armament">
