@@ -19,7 +19,6 @@ public class FilterSelect {
 	public DependencyManager dependencyManager;
 	public List<Map<String, String>> selectionNames = new ArrayList<Map<String, String>>();
 	public List<List<Map<String, String>>> selectionDesc = new ArrayList<List<Map<String, String>>>();
-	public List<List<Map<String, String>>> selectionPrereqs = new ArrayList<List<Map<String, String>>>();
 	
 	public FilterSelect(InputStream charFile, InputStream dataFile, String groupName, String subGroup, DependencyManager manager) throws XmlPullParserException, IOException {
 		selectGroupName = groupName;
@@ -34,12 +33,12 @@ public class FilterSelect {
 			}
 			String tag = parser.getName();
 			if (tag != null) {
-				if (tag.equals("bonusGroup")) {
-					String group = parser.getAttributeValue(null, "groupName");
+				if (tag.equals(GlobalConstants.BONUSGRP_TAG)) {
+					String group = parser.getAttributeValue(null, GlobalConstants.GRPNAME_ATTR);
 					if (group != null) {
 						if (group.equals(selectGroupName)) {
 							if (subGroupName.equals("Any"))
-								getSelections(parser, "bonusGroup");
+								getSelections(parser, GlobalConstants.BONUSGRP_TAG);
 							else
 								findSubGroup(parser);
 							break;
@@ -56,11 +55,11 @@ public class FilterSelect {
 			}
 			String tag = parser.getName();
 			if (tag != null) {
-				if (tag.equals("subGroup")) {
-					String group = parser.getAttributeValue(null, "groupName");
+				if (tag.equals(GlobalConstants.SUBGRP_ATTR)) {
+					String group = parser.getAttributeValue(null, GlobalConstants.SUBGRP_ATTR);
 					if (group != null) {
 						if (group.equals(subGroupName)) {
-							getSelections(parser, "subGroup");
+							getSelections(parser, GlobalConstants.SUBGRP_ATTR);
 							break;
 						}
 					}

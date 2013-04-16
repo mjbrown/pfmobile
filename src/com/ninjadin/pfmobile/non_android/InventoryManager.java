@@ -1,10 +1,16 @@
 package com.ninjadin.pfmobile.non_android;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class InventoryManager {
 	
 	private File inventoryFile;
+	
+	List<Map<String,String>> itemNames = new ArrayList<Map<String, String>>();
+	List<List<Map<String, String>>> itemDetails = new ArrayList<List<Map<String,String>>>();
 	
 	final static public String[] slotNames = new String[] { "Head", "Headband",
 		"Eyes", "Neck", "Shoulders", "Chest", "Body", "Armor", "Hands", "Ring", "Belt", "Held", };

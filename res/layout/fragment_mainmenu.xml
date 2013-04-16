@@ -69,11 +69,20 @@
         android:onClick="launchEquipment" />
 
     <Button
-        android:id="@+id/char_spells_button"
+        android:id="@+id/char_inventory_button"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/char_equip_button"
+        android:text="Inventory" 
+        android:onClick="launchInventory" />
+    
+    <Button
+        android:id="@+id/char_spells_button"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/char_inventory_button"
         android:text="@string/char_spells" />
 
     <Button

@@ -25,9 +25,13 @@ public class CharacterData {
 	public List<Map<String, String>> levelsNames = new ArrayList<Map<String,String>>();
 	public List<List<Map<String, String>>> levelsLists = new ArrayList<List<Map<String, String>>>();
 
+	public TwoDimXmlExtractor levels;
+	
 	public List<Map<String, String>> equipmentNames = new ArrayList<Map<String, String>>();
 	public List<List<Map<String, String>>> equipmentLists = new ArrayList<List<Map<String, String>>>();
 
+	public TwoDimXmlExtractor equipment;
+	
 	public CharacterInfo info;
 	
 	private File charFile;
@@ -84,7 +88,7 @@ public class CharacterData {
 	final private static String LEVEL_TAG = "characterLevel";
 	final private static String SELECTION_TAG = "selection";
 	final public static String CHOICE_TAG = "choice";
-	final private static String CHOSEN_TAG = "chosen";
+	final public static String CHOSEN_TAG = "chosen";
 	final private static String POINTBUY_TAG = "pointBuy";
 	final public static String INFO_TAG = "info";
 	final private static String LEVELS_TAG = "levels";
@@ -98,7 +102,7 @@ public class CharacterData {
 	final public static String GRPNAME_ATTR = "groupName";
 	final public static String SUBGRP_ATTR = "subGroup";
 	final private static String NUM_ATTR = "number";
-	final private static String NAME_ATTR = "name";
+	final public static String NAME_ATTR = "name";
 	final public static String TYPE_ATTR = "type";
 	final public static String VALUE_ATTR = "value";
 	final public static String STACKTYPE_ATTR = "stackType";
@@ -155,95 +159,21 @@ public class CharacterData {
 	
 	// TODO: this can be merged with readLevels because very little is different...
 	private int readEquipment(XmlPullParser parser, int choice_id) throws XmlPullParserException, IOException {
-		ArrayList<Map<String, String>> singleList = new ArrayList<Map<String, String>>();
-		while (parser.next() != XmlPullParser.END_DOCUMENT) {
-			if (parser.getEventType() == XmlPullParser.END_TAG) {
-				if (parser.getName() != null) {
-					if (parser.getName().equals(CharacterData.EQUIP_TAG)) {
-						break;
-					}
-				}
-			}
-			if (parser.getEventType() != XmlPullParser.START_TAG) {
-				continue;
-			}
-			String tag = parser.getName();
-			if (tag != null) {
-				if (tag.equals(CharacterData.EQUIPGRP_TAG)) {
-					String name = parser.getAttributeValue(null, NAME_ATTR);
-					Map<String, String> curGroupMap = new HashMap<String, String>();
-					equipmentNames.add(curGroupMap);
-					curGroupMap.put("NAME", "Equipment: " + name);
-					singleList = new ArrayList<Map<String, String>>();
-					equipmentLists.add(singleList);
-				} else if ((tag.equals(CharacterData.CHOICE_TAG)) || (tag.equals(CharacterData.CHOSEN_TAG))) {
-					String groupName = parser.getAttributeValue(null, CharacterData.GRPNAME_ATTR);
-					String subGroup = parser.getAttributeValue(null, CharacterData.SUBGRP_ATTR);
-					String chosenName = parser.getAttributeValue(null, CharacterData.NAME_ATTR);
-					if (chosenName == null)
-						chosenName = "Tap to add...";
-					Map<String, String> curChildMap = new HashMap<String, String>();
-					singleList.add(curChildMap);
-					if (subGroup == null) {
-						subGroup = "Any";
-						curChildMap.put("DESCRIPTION", groupName);
-					} else {
-						curChildMap.put("DESCRIPTION", subGroup + " " + groupName);
-					}
-					curChildMap.put("GROUP", groupName);
-					curChildMap.put("SEL", chosenName);
-					curChildMap.put("SUBGROUP", subGroup);
-					curChildMap.put("ID", Integer.toString(choice_id++));
-				}
-			}
-		}
-		return choice_id;
+		String[] tag_names = new String[] { EQUIPGRP_TAG, };
+		String[] tag_attrs = new String[] { NAME_ATTR, };
+		String[] subtag_names = new String[] { CHOICE_TAG, CHOSEN_TAG, };
+		String[] subtag_attrs = new String[] { NAME_ATTR, GRPNAME_ATTR, SUBGRP_ATTR, };
+		equipment = new TwoDimXmlExtractor(parser, EQUIP_TAG, 0, choice_id, tag_names, tag_attrs, subtag_names, subtag_attrs);
+		return equipment.subTagCount;
 	}
 	// Populate level names and the choices associated with each character level
 	public int readLevels(XmlPullParser parser, int choice_id) throws XmlPullParserException, IOException{
-		ArrayList<Map<String, String>> singleList = new ArrayList<Map<String, String>>();
-		while (parser.next() != XmlPullParser.END_DOCUMENT) {
-			if (parser.getEventType() == XmlPullParser.END_TAG) {
-				if (parser.getName() != null) {
-					if (parser.getName().equals(CharacterData.LEVELS_TAG)) {
-						break;
-					}
-				}
-			}
-			if (parser.getEventType() != XmlPullParser.START_TAG) {
-				continue;
-			}
-			String name = parser.getName();
-			if (name != null) {
-				if (name.equals(CharacterData.LEVEL_TAG)) {
-					charLevel = Integer.parseInt(parser.getAttributeValue(null, CharacterData.NUM_ATTR));
-					Map<String, String> curGroupMap = new HashMap<String, String>();
-					levelsNames.add(curGroupMap);
-					curGroupMap.put("NAME", "Character Level " +Integer.toString(charLevel));
-					singleList = new ArrayList<Map<String, String>>();
-					levelsLists.add(singleList);
-				} else if ((name.equals(CharacterData.CHOICE_TAG)) || (name.equals(CharacterData.CHOSEN_TAG))) {
-					String groupName = parser.getAttributeValue(null, CharacterData.GRPNAME_ATTR);
-					String subGroup = parser.getAttributeValue(null, CharacterData.SUBGRP_ATTR);
-					String chosenName = parser.getAttributeValue(null, CharacterData.NAME_ATTR);
-					if (chosenName == null)
-						chosenName = "Tap to add...";
-					Map<String, String> curChildMap = new HashMap<String, String>();
-					singleList.add(curChildMap);
-					if (subGroup == null) {
-						subGroup = "Any";
-						curChildMap.put("DESCRIPTION", groupName);
-					} else {
-						curChildMap.put("DESCRIPTION", subGroup + " " + groupName);
-					}
-					curChildMap.put("GROUP", groupName);
-					curChildMap.put("SEL", chosenName);
-					curChildMap.put("SUBGROUP", subGroup);
-					curChildMap.put("ID", Integer.toString(choice_id++));
-				}
-			}
-		}
-		return choice_id;
+		String[] tag_names = new String[] { LEVEL_TAG, };
+		String[] tag_attrs = new String[] { NUM_ATTR, };
+		String[] subtag_names = new String[] { CHOICE_TAG, CHOSEN_TAG, };
+		String[] subtag_attrs = new String[] { NAME_ATTR, GRPNAME_ATTR, SUBGRP_ATTR, };
+		levels = new TwoDimXmlExtractor(parser, LEVELS_TAG, 0, choice_id, tag_names, tag_attrs, subtag_names, subtag_attrs);
+		return levels.subTagCount;
 	}
 	
 	public void writeCharacterData(File temp) throws IOException {
@@ -318,14 +248,14 @@ public class CharacterData {
 		String startData = "<" + LEVEL_TAG + " " + NUM_ATTR +"=\"" + Integer.toString(charLevel+1) + "\">";
 		String endData = "</" + LEVEL_TAG + ">";
 		String insertBefore = "</" + LEVELS_TAG + ">";
-		XmlEditor.copyReplace(charFile, tempFile, charLevelData, startData, endData, insertBefore, insertBefore);
+		XmlEditor.copyReplace(charFile, tempFile, charLevelData, startData, endData, insertBefore, insertBefore, null, null);
 		tempFile.renameTo(charFile);
 	}
 	
 	public void removeLevel() throws IOException {
 		String insertBefore = "<" + LEVEL_TAG + " " + NUM_ATTR + "=\"" + Integer.toString(charLevel) + "\">";
 		String continueOn = "</" + LEVELS_TAG + ">";
-		XmlEditor.copyReplace(charFile, tempFile, null, null, null, insertBefore, continueOn);
+		XmlEditor.copyReplace(charFile, tempFile, null, null, null, insertBefore, continueOn, null, null);
 		tempFile.renameTo(charFile);
 	}
 
@@ -335,7 +265,7 @@ public class CharacterData {
 		String insertBefore = startData;
 		String continueOn = "<" + SPELLS_TAG + ">";
 		InputStream fromStream = new FileInputStream(levelData);
-		XmlEditor.copyReplace(sourceChar, destChar, fromStream, startData, endData, insertBefore, continueOn);
+		XmlEditor.copyReplace(sourceChar, destChar, fromStream, startData, endData, insertBefore, continueOn, null, null);
 		fromStream.close();
 	}
 

@@ -15,8 +15,11 @@ public class XmlEditor {
 	// copies lines "startData -> endData" from dataFile, inclusive
 	// replaces lines "insertBefore -> continueOn" from sourceChar
 	// if insertBefore == continueOn, this function inserts instead of replacing
+	// customBefore is custom data added before the insertion/replacement
+	// customAfter is custom data added after the insertion/replacement
 	final static public void copyReplace(File copyFrom, File copyTo, InputStream dataFile,  
-			String startData, String endData, String insertBefore, String continueOn) throws IOException {
+			String startData, String endData, String insertBefore, String continueOn, 
+			String customBefore, String customAfter) throws IOException {
 		FileInputStream copyFromStream = new FileInputStream(copyFrom);
 		InputStreamReader copyFromSR = new InputStreamReader(copyFromStream);
 		BufferedReader sourceReader = new BufferedReader(copyFromSR);
@@ -53,6 +56,10 @@ public class XmlEditor {
 			sourceLine = sourceReader.readLine();
 		}
 		// Insert the new data
+		if (customBefore != null) {
+			destWriter.write(customBefore);
+			destWriter.newLine();
+		}
 		if (dataFile != null) {
 			while (dataLine != null) {
 				destWriter.write(dataLine);
@@ -62,6 +69,10 @@ public class XmlEditor {
 				}
 				dataLine = insertData.readLine();
 			}
+		}
+		if (customAfter != null) {
+			destWriter.write(customAfter);
+			destWriter.newLine();
 		}
 		// Find the spot to continue copying from
 		// note that if continueOn == insertBefore, no lines are lost

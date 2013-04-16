@@ -7,18 +7,6 @@ import java.io.InputStream;
 
 import org.xmlpull.v1.XmlPullParserException;
 
-import com.example.ninjadin.R;
-import com.ninjadin.pfmobile.fragments.CharGenMenuFragment;
-import com.ninjadin.pfmobile.fragments.ChoiceSelectFragment;
-import com.ninjadin.pfmobile.fragments.ChoicesFragment;
-import com.ninjadin.pfmobile.fragments.InfoFragment;
-import com.ninjadin.pfmobile.fragments.PointBuyFragment;
-import com.ninjadin.pfmobile.fragments.ShowCharacterXMLFragment;
-import com.ninjadin.pfmobile.fragments.SkillsFragment;
-import com.ninjadin.pfmobile.fragments.StatisticsFragment;
-import com.ninjadin.pfmobile.non_android.CharacterData;
-import com.ninjadin.pfmobile.non_android.DependencyManager;
-
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Build;
@@ -31,6 +19,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.ninjadin.R;
+import com.ninjadin.pfmobile.fragments.CharGenMenuFragment;
+import com.ninjadin.pfmobile.fragments.ChoiceSelectFragment;
+import com.ninjadin.pfmobile.fragments.ChoicesFragment;
+import com.ninjadin.pfmobile.fragments.InfoFragment;
+import com.ninjadin.pfmobile.fragments.InventoryFragment;
+import com.ninjadin.pfmobile.fragments.PointBuyFragment;
+import com.ninjadin.pfmobile.fragments.ShowCharacterXMLFragment;
+import com.ninjadin.pfmobile.fragments.SkillsFragment;
+import com.ninjadin.pfmobile.fragments.StatisticsFragment;
+import com.ninjadin.pfmobile.non_android.CharacterData;
+import com.ninjadin.pfmobile.non_android.DependencyManager;
+
 public class CharGenActivity extends FragmentActivity {
 	public CharacterData charData;
 	public DependencyManager dependencyManager;
@@ -42,7 +43,7 @@ public class CharGenActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_char_fragments_list);
+		setContentView(R.layout.activity_mainmenu);
 		if (findViewById(R.id.fragment_container) != null) {
 			if (savedInstanceState != null) {
 				return;
@@ -184,6 +185,14 @@ public class CharGenActivity extends FragmentActivity {
 		Bundle passedData = new Bundle();
 		passedData.putString("choiceType", "Equipment");
 		newFragment.setArguments(passedData);
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+		transaction.replace(R.id.fragment_container, newFragment);
+		transaction.addToBackStack(null);
+		transaction.commit();
+	}
+	
+	public void launchInventory(View view) {
+		InventoryFragment newFragment = new InventoryFragment();
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.fragment_container, newFragment);
 		transaction.addToBackStack(null);
