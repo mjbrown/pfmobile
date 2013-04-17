@@ -1,6 +1,13 @@
 package com.ninjadin.pfmobile.activities;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import org.xmlpull.v1.XmlPullParserException;
+
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -10,8 +17,12 @@ import android.view.MenuItem;
 
 import com.ninjadin.pfmobile.R;
 import com.ninjadin.pfmobile.fragments.InventoryMenuFragment;
+import com.ninjadin.pfmobile.non_android.InventoryManager;
 
 public class InventoryActivity extends FragmentActivity {
+	File inventoryFile;
+	public InventoryManager inventoryManager;
+	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,5 +74,24 @@ public class InventoryActivity extends FragmentActivity {
 	@Override
 	public void onResume() {
 		super .onResume();
+		try {
+			refreshInventoryData();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (XmlPullParserException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void refreshInventoryData() throws FileNotFoundException, XmlPullParserException, IOException {
+		Intent intent = getIntent();
+		String inventoryFilename = intent.getStringExtra(LoginLoadActivity.EXTRA_MESSAGE);
+		inventoryFile = new File(this.getFilesDir(), inventoryFilename);
+		inventoryManager = new InventoryManager(inventoryFile);
 	}
 }

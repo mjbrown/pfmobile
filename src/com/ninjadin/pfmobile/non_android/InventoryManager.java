@@ -13,7 +13,7 @@ import android.util.Xml;
 public class InventoryManager {
 	
 	private File inventoryFile;
-	public TwoDimXmlExtractor itemInfo;
+	public TwoDimXmlExtractor xmlData;
 	
 	final static public String[] slotNames = new String[] { "Head", "Headband",
 		"Eyes", "Neck", "Shoulders", "Chest", "Body", "Armor", "Hands", "Ring", "Belt", "Held", };
@@ -58,7 +58,7 @@ public class InventoryManager {
 			String[] tag_attrs = new String[] { GlobalConstants.NAME_ATTR, GlobalConstants.TYPE_ATTR , GlobalConstants.SLOT_ATTR, GlobalConstants.SIZE_ATTR, };
 			String[] subtags = new String[] { GlobalConstants.ITEMBONUS_TAG, GlobalConstants.DAMAGE_TAG };
 			String[] subtag_attrs = new String[] { GlobalConstants.NAME_ATTR, GlobalConstants.TYPE_ATTR, GlobalConstants.VALUE_ATTR , GlobalConstants.STATISTIC_ATTR, GlobalConstants.SOURCE_ATTR, };
-			itemInfo = new TwoDimXmlExtractor(parser, "inventory", tags, tag_attrs, subtags, subtag_attrs);
+			xmlData = new TwoDimXmlExtractor(parser, "inventory", tags, tag_attrs, subtags, subtag_attrs);
 		} finally {
 			inStream.close();
 		}

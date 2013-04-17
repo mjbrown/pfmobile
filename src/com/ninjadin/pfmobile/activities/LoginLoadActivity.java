@@ -91,8 +91,24 @@ public class LoginLoadActivity extends Activity {
     }
     
     public void openInventory(View view) {
+    	String invFilename = "master_inventory.xml";
+    	File inventoryFile = new File(this.getFilesDir(), invFilename);
+    	if (!inventoryFile.exists()) {
+    		try {
+				FileOutputStream oStream = new FileOutputStream(inventoryFile);
+				oStream.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n".getBytes());
+				oStream.write("<inventory>\n</inventory>\n".getBytes());
+	    		oStream.close();
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
     	Intent intent = new Intent(this, InventoryActivity.class);
-    	intent.putExtra(EXTRA_MESSAGE, "master_inventory.xml");
+    	intent.putExtra(EXTRA_MESSAGE, invFilename);
     	startActivity(intent);
     }
 }
