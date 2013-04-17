@@ -19,12 +19,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.ninjadin.R;
-import com.ninjadin.pfmobile.fragments.CharGenMenuFragment;
+import com.ninjadin.pfmobile.R;
 import com.ninjadin.pfmobile.fragments.ChoiceSelectFragment;
 import com.ninjadin.pfmobile.fragments.ChoicesFragment;
+import com.ninjadin.pfmobile.fragments.GeneratorMenuFragment;
 import com.ninjadin.pfmobile.fragments.InfoFragment;
-import com.ninjadin.pfmobile.fragments.InventoryFragment;
+import com.ninjadin.pfmobile.fragments.InventoryMenuFragment;
 import com.ninjadin.pfmobile.fragments.PointBuyFragment;
 import com.ninjadin.pfmobile.fragments.ShowCharacterXMLFragment;
 import com.ninjadin.pfmobile.fragments.SkillsFragment;
@@ -32,7 +32,7 @@ import com.ninjadin.pfmobile.fragments.StatisticsFragment;
 import com.ninjadin.pfmobile.non_android.CharacterData;
 import com.ninjadin.pfmobile.non_android.DependencyManager;
 
-public class CharGenActivity extends FragmentActivity {
+public class GeneratorActivity extends FragmentActivity {
 	public CharacterData charData;
 	public DependencyManager dependencyManager;
 	public String masterCharFilename;
@@ -43,12 +43,12 @@ public class CharGenActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_mainmenu);
+		setContentView(R.layout.activity_fragment_container);
 		if (findViewById(R.id.fragment_container) != null) {
 			if (savedInstanceState != null) {
 				return;
 			}
-			CharGenMenuFragment firstFragment = new CharGenMenuFragment();
+			GeneratorMenuFragment firstFragment = new GeneratorMenuFragment();
 			firstFragment.setArguments(getIntent().getExtras());
 			getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, firstFragment).commit();
 			
@@ -99,7 +99,7 @@ public class CharGenActivity extends FragmentActivity {
 	
 	public void refreshCharData() {
 		Intent intent = getIntent();
-		masterCharFilename = intent.getStringExtra(OpenCharActivity.EXTRA_MESSAGE);
+		masterCharFilename = intent.getStringExtra(LoginLoadActivity.EXTRA_MESSAGE);
 		tempFilename = masterCharFilename.concat(".temp");
 		charFile = new File(this.getFilesDir(), masterCharFilename);
 		tempFile = new File(this.getFilesDir(), tempFilename);
@@ -192,7 +192,7 @@ public class CharGenActivity extends FragmentActivity {
 	}
 	
 	public void launchInventory(View view) {
-		InventoryFragment newFragment = new InventoryFragment();
+		InventoryMenuFragment newFragment = new InventoryMenuFragment();
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.fragment_container, newFragment);
 		transaction.addToBackStack(null);
@@ -282,7 +282,7 @@ public class CharGenActivity extends FragmentActivity {
 	}
 	
 	public void startMenu(String message) {
-		CharGenMenuFragment firstFragment = new CharGenMenuFragment();
+		GeneratorMenuFragment firstFragment = new GeneratorMenuFragment();
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.fragment_container, firstFragment);
 		transaction.addToBackStack(null);

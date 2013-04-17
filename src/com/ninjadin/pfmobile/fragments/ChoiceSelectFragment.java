@@ -7,10 +7,6 @@ import java.util.Map;
 
 import org.xmlpull.v1.XmlPullParserException;
 
-import com.example.ninjadin.R;
-import com.ninjadin.pfmobile.activities.CharGenActivity;
-import com.ninjadin.pfmobile.non_android.FilterSelect;
-
 import android.content.Context;
 import android.content.res.Resources.NotFoundException;
 import android.os.Bundle;
@@ -26,6 +22,10 @@ import android.widget.ExpandableListView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 
+import com.ninjadin.pfmobile.R;
+import com.ninjadin.pfmobile.activities.GeneratorActivity;
+import com.ninjadin.pfmobile.non_android.FilterSelect;
+
 public class ChoiceSelectFragment extends Fragment {
 	FilterSelect currentFilter;
 	ExpandableListView expList;
@@ -40,7 +40,7 @@ public class ChoiceSelectFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super .onResume();
-		CharGenActivity activity = (CharGenActivity) getActivity();
+		GeneratorActivity activity = (GeneratorActivity) getActivity();
 		try {
 			Bundle args = this.getArguments();
 			String groupName = args.getString("groupName");
@@ -104,7 +104,7 @@ public class ChoiceSelectFragment extends Fragment {
 						String groupName = currentFilter.selectGroupName;
 						String subGroup = currentFilter.subGroupName;
 						String selectionName = currentFilter.selectionNames.get(groupPos).get("name");
-						((CharGenActivity) getActivity()).addSelection(choiceId, groupName, subGroup, selectionName);
+						((GeneratorActivity) getActivity()).addSelection(choiceId, groupName, subGroup, selectionName);
 					}
 				});
 			}

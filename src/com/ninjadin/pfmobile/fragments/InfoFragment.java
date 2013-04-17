@@ -1,9 +1,5 @@
 package com.ninjadin.pfmobile.fragments;
 
-import com.example.ninjadin.R;
-import com.ninjadin.pfmobile.activities.CharGenActivity;
-import com.ninjadin.pfmobile.non_android.CharacterInfo;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,6 +10,10 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.ninjadin.pfmobile.R;
+import com.ninjadin.pfmobile.activities.GeneratorActivity;
+import com.ninjadin.pfmobile.non_android.CharacterInfo;
 
 public class InfoFragment extends Fragment {
 	@Override
@@ -32,7 +32,7 @@ public class InfoFragment extends Fragment {
 	}
 	
 	public void updateInfo() {
-		CharGenActivity act = (CharGenActivity) getActivity();
+		GeneratorActivity act = (GeneratorActivity) getActivity();
 		EditText txt = (EditText) act.findViewById(R.id.char_name);
 		if (txt != null) {
 			txt.setText(act.charData.info.characterName);
@@ -56,7 +56,7 @@ public class InfoFragment extends Fragment {
 	}
 	
 	public void saveInfo() {
-		CharGenActivity act = (CharGenActivity) getActivity();
+		GeneratorActivity act = (GeneratorActivity) getActivity();
 		EditText txt = (EditText) act.findViewById(R.id.char_name);
 		if (txt != null) {
 			act.charData.info.characterName = txt.getText().toString();
@@ -71,6 +71,6 @@ public class InfoFragment extends Fragment {
 			}
 			act.charData.info.align = ((Spinner) act.findViewById(R.id.alignments_spinner)).getSelectedItemPosition();
 		}
-		((CharGenActivity) getActivity()).saveCharacterState();
+		((GeneratorActivity) getActivity()).saveCharacterState();
 	}
 }

@@ -37,7 +37,9 @@ public class FilterSelect {
 					String group = parser.getAttributeValue(null, GlobalConstants.GRPNAME_ATTR);
 					if (group != null) {
 						if (group.equals(selectGroupName)) {
-							if (subGroupName.equals("Any"))
+							if (subGroupName == null)
+								getSelections(parser, GlobalConstants.BONUSGRP_TAG);
+							else if (subGroupName.equals("Any"))
 								getSelections(parser, GlobalConstants.BONUSGRP_TAG);
 							else
 								findSubGroup(parser);

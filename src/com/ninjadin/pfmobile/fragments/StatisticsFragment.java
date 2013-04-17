@@ -1,9 +1,5 @@
 package com.ninjadin.pfmobile.fragments;
 
-import com.example.ninjadin.R;
-import com.ninjadin.pfmobile.activities.CharGenActivity;
-import com.ninjadin.pfmobile.non_android.DependencyManager;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,6 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.ninjadin.pfmobile.R;
+import com.ninjadin.pfmobile.activities.GeneratorActivity;
+import com.ninjadin.pfmobile.non_android.DependencyManager;
 
 public class StatisticsFragment extends Fragment {
 	private ListView statisticsListView;
@@ -30,7 +30,7 @@ public class StatisticsFragment extends Fragment {
 	}
 
 	public void refreshStatistics() {
-		CharGenActivity activity = (CharGenActivity) getActivity();
+		GeneratorActivity activity = (GeneratorActivity) getActivity();
 		statisticsListView = (ListView) activity.findViewById(R.id.statistics_list);
 		DependencyManager depends = activity.dependencyManager;
 		listAdapter = new StatisticsListAdapter(activity, R.layout.row_statistics, R.id.statisticsrow_value, depends);

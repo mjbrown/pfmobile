@@ -6,7 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".OpenCharActivity"
+    tools:context=".LoginLoadActivity"
 	android:orientation="vertical">
 
     <LinearLayout 
@@ -54,6 +54,7 @@
         android:id="@+id/button3"
         android:layout_width="300sp"
         android:layout_height="wrap_content"
-        android:text="@string/save_chars"/>
+        android:text="@string/inventory"
+        android:onClick="openInventory" />
     
 </LinearLayout>

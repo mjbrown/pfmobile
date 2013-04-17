@@ -3,10 +3,6 @@ package com.ninjadin.pfmobile.fragments;
 import java.util.List;
 import java.util.Map;
 
-import com.example.ninjadin.R;
-import com.ninjadin.pfmobile.activities.CharGenActivity;
-import com.ninjadin.pfmobile.non_android.GlobalConstants;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -15,6 +11,10 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.SimpleExpandableListAdapter;
+
+import com.ninjadin.pfmobile.R;
+import com.ninjadin.pfmobile.activities.GeneratorActivity;
+import com.ninjadin.pfmobile.non_android.GlobalConstants;
 
 public class ChoicesFragment extends Fragment {
 	List<Map<String, String>> groupData;
@@ -29,7 +29,7 @@ public class ChoicesFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super .onResume();
-		CharGenActivity activity = (CharGenActivity) getActivity();
+		GeneratorActivity activity = (GeneratorActivity) getActivity();
 		Bundle args = this.getArguments();
 		String choiceType = args.getString("choiceType");
 		if (choiceType.equals("Levels")) {
@@ -54,7 +54,7 @@ public class ChoicesFragment extends Fragment {
 		expList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
 			@Override
 			public boolean onChildClick(ExpandableListView parent, View view, int groupPosition, int childPosition, long id) {
-				CharGenActivity activity = ((CharGenActivity) getActivity());
+				GeneratorActivity activity = ((GeneratorActivity) getActivity());
 				String groupName = listData.get(groupPosition).get(childPosition).get(GlobalConstants.GRPNAME_ATTR);
 				String choiceId = listData.get(groupPosition).get(childPosition).get(GlobalConstants.NUM_ATTR);
 				String subGroup = listData.get(groupPosition).get(childPosition).get(GlobalConstants.SUBGRP_ATTR);

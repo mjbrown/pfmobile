@@ -1,9 +1,5 @@
 package com.ninjadin.pfmobile.fragments;
 
-import com.example.ninjadin.R;
-import com.ninjadin.pfmobile.activities.CharGenActivity;
-import com.ninjadin.pfmobile.non_android.CharacterData;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,6 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.ninjadin.pfmobile.R;
+import com.ninjadin.pfmobile.activities.GeneratorActivity;
+import com.ninjadin.pfmobile.non_android.CharacterData;
 
 public class PointBuyFragment extends Fragment{
 	@Override
@@ -24,11 +24,11 @@ public class PointBuyFragment extends Fragment{
 	}
 	public void onPause() {
 		super .onPause();
-		((CharGenActivity) getActivity()).saveCharacterState();
+		((GeneratorActivity) getActivity()).saveCharacterState();
 	}
 	public void statChange(View view) {
 		int viewId = view.getId();
-		CharacterData charData = ((CharGenActivity) getActivity()).charData;
+		CharacterData charData = ((GeneratorActivity) getActivity()).charData;
 		if (viewId == R.id.str_plus) {
 			charData.incrementAbilityScore(0);
 		} else if (viewId == R.id.dex_plus) {
@@ -58,7 +58,7 @@ public class PointBuyFragment extends Fragment{
 	}
 	
 	public void updateStatsFragment() {
-		CharGenActivity act = (CharGenActivity) getActivity();
+		GeneratorActivity act = (GeneratorActivity) getActivity();
 		TextView txt = (TextView) act.findViewById(R.id.num_str);
 		if (txt != null) {
 			txt.setText(Integer.toString(act.charData.getAbilityScore(0)));

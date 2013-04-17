@@ -7,15 +7,15 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 
-import com.example.ninjadin.R;
-import com.ninjadin.pfmobile.activities.CharGenActivity;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.ninjadin.pfmobile.R;
+import com.ninjadin.pfmobile.activities.GeneratorActivity;
 
 public class ShowCharacterXMLFragment extends Fragment {
 	@Override
@@ -27,9 +27,9 @@ public class ShowCharacterXMLFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super .onResume();
-		String filename = ((CharGenActivity) getActivity()).masterCharFilename;
+		String filename = ((GeneratorActivity) getActivity()).masterCharFilename;
 		if (filename != null) {
-			TextView view = ((TextView) ((CharGenActivity) getActivity()).findViewById(R.id.char_xml));
+			TextView view = ((TextView) ((GeneratorActivity) getActivity()).findViewById(R.id.char_xml));
 			if (view != null)
 				view.setText(XMLtoString(filename));
 		}
@@ -37,7 +37,7 @@ public class ShowCharacterXMLFragment extends Fragment {
 
 	public String XMLtoString(String filename) {
 		try {
-			FileInputStream inputStream = ((CharGenActivity) getActivity()).openFileInput(filename);
+			FileInputStream inputStream = ((GeneratorActivity) getActivity()).openFileInput(filename);
 			FileChannel fc = inputStream.getChannel();
 			MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
 			return Charset.defaultCharset().decode(bb).toString();

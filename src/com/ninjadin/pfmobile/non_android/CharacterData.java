@@ -22,14 +22,8 @@ import android.util.Xml;
 
 public class CharacterData {
 	public int charLevel = 0;
-	public List<Map<String, String>> levelsNames = new ArrayList<Map<String,String>>();
-	public List<List<Map<String, String>>> levelsLists = new ArrayList<List<Map<String, String>>>();
 
 	public TwoDimXmlExtractor levels;
-	
-	public List<Map<String, String>> equipmentNames = new ArrayList<Map<String, String>>();
-	public List<List<Map<String, String>>> equipmentLists = new ArrayList<List<Map<String, String>>>();
-
 	public TwoDimXmlExtractor equipment;
 	
 	public CharacterInfo info;

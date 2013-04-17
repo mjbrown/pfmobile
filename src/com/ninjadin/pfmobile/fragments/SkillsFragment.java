@@ -6,10 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.example.ninjadin.R;
-import com.ninjadin.pfmobile.activities.CharGenActivity;
-import com.ninjadin.pfmobile.non_android.CharacterData;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -21,6 +17,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.ninjadin.pfmobile.R;
+import com.ninjadin.pfmobile.activities.GeneratorActivity;
+import com.ninjadin.pfmobile.non_android.CharacterData;
 
 public class SkillsFragment extends Fragment {
 	private ListView skillListView;
@@ -53,7 +53,7 @@ public class SkillsFragment extends Fragment {
 		skillMap.put("NAME", skillList);
 		skillMap.put("VALUE", valueList);
 		skillList.addAll(Arrays.asList(CharacterData.skillNames));
-		CharGenActivity activity = (CharGenActivity) this.getActivity();
+		GeneratorActivity activity = (GeneratorActivity) this.getActivity();
 		for (int skill: activity.charData.skillRanks) {
 			valueList.add(Integer.toString(skill));
 		}
@@ -96,7 +96,7 @@ public class SkillsFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				int position = skillListView.getPositionForView((View) v.getParent());
-				CharGenActivity activity = (CharGenActivity) getActivity();
+				GeneratorActivity activity = (GeneratorActivity) getActivity();
 				activity.charData.skillRanks[position] += 1;
 				refreshSkills();
 			}
@@ -106,7 +106,7 @@ public class SkillsFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				int position = skillListView.getPositionForView((View) v.getParent());
-				CharGenActivity activity = (CharGenActivity) getActivity();
+				GeneratorActivity activity = (GeneratorActivity) getActivity();
 				activity.charData.skillRanks[position] -= 1;
 				refreshSkills();
 			}

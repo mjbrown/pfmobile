@@ -8,8 +8,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.ninjadin.R;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,8 +17,10 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-public class OpenCharActivity extends Activity {
-	public final static String EXTRA_MESSAGE = "com.example.ninjadin.MESSAGE";
+import com.ninjadin.pfmobile.R;
+
+public class LoginLoadActivity extends Activity {
+	public final static String EXTRA_MESSAGE = "com.ninjadin.pfmobile.MESSAGE";
 
 	private ArrayAdapter<String> adapter;
 	
@@ -53,7 +53,7 @@ public class OpenCharActivity extends Activity {
     // Called when the user clicks the new_char button
     public void newChar(View view) {
     	
-    	Intent intent = new Intent(this, CharGenActivity.class);
+    	Intent intent = new Intent(this, GeneratorActivity.class);
     	EditText editText = (EditText) findViewById(R.id.char_filename);
     	// Get the new file name from the text box
     	String newFilename = editText.getText().toString();
@@ -83,10 +83,16 @@ public class OpenCharActivity extends Activity {
     
     // Called when the user clicks the open_char button
     public void openChar(View view) {
-    	Intent intent = new Intent(this, CharGenActivity.class);
+    	Intent intent = new Intent(this, GeneratorActivity.class);
     	Spinner spinner = (Spinner) findViewById(R.id.chars_spinner);
     	String openFilename = spinner.getSelectedItem().toString();
        	intent.putExtra(EXTRA_MESSAGE, openFilename);
         startActivity(intent);
+    }
+    
+    public void openInventory(View view) {
+    	Intent intent = new Intent(this, InventoryActivity.class);
+    	intent.putExtra(EXTRA_MESSAGE, "master_inventory.xml");
+    	startActivity(intent);
     }
 }

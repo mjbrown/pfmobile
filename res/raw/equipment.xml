@@ -70,7 +70,7 @@
 	       	<itemBonus type="Cost" value="2" />
 	       	<itemBonus type="Hardness" value="5" />
 	       	<itemBonus type="Hit Points" value="10" />
-	        <damageBonus type="Hit Points" source="Piercing" value="[1d8]" />
+	        <damage type="Normal,Critical" statistic="Hit Points" source="Piercing" value="[1d8]" />
 	       	<enchantment name="Masterwork">
 	       		<itemBonus type="To Hit" source="Natural" value="1" />
 	       	</enchantment>
@@ -78,10 +78,10 @@
 		       	<itemBonus type="To Hit" source="Magic" value="1" />
 		       	<itemBonus type="Hardness" value="2" />
 		       	<itemBonus type="Hit Points" value="10" />
-		       	<damageBonus type="Hit Points" source="Magic" value="1" />
+		       	<damage type="Normal,Critical" statistic="Hit Points" source="Magic" value="1" />
 		    </enchantment>
 		    <enchantment name="Fire">
-       	    	<damageBonus type="Hit Points" source="Fire,Spell" value="[1d6]" />
+       	    	<damage type="Normal" statistic="Hit Points" source="Fire,Magic" value="[1d6]" />
        	    </enchantment>
 	    </item>
     </template>

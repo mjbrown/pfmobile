@@ -7,8 +7,9 @@
     <string name="new_filename">tmp_char</string>
     <string name="new_char">New</string>
     <string name="open_char">Open</string>
-    <string name="save_chars">Synch Characters</string>
-    <string name="title_activity_char_fragments_list">Character Generation Tool</string>
+    <string name="inventory">Inventory</string>
+    <string name="title_activity_char_fragments_list">Character Generation</string>
+    <string name="title_activity_inventory"></string>
     <string name="char_info">Character Information</string>
     <string name="char_stats">Stats</string>
     <string name="char_levels">Character Levels</string>
