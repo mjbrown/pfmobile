@@ -1,7 +1,8 @@
 package com.ninjadin.pfmobile.non_android;
 
 public class GlobalConstants {
-	final public static String TEMPLATE_TAG = "characterTemplate";
+	final public static String CHARTEMPLATE_TAG = "characterTemplate";
+	final public static String TEMPLATE_TAG = "template";
 	final public static String LEVEL_TAG = "characterLevel";
 	final public static String SELECTION_TAG = "selection";
 	final public static String CHOICE_TAG = "choice";

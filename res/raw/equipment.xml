@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <equipmentTemplates>
     <template name="Headgear">
-        <item name="Hat/Crown/Helmet/Fedora/Ioun" slot="Head" >
+        <item name="Crown" slot="Head" >
             <itemBonus type="Cost" value="1" />
             <itemBonus type="Hardness" value="2" />
             <itemBonus type="Hit Points" value="5" />
@@ -9,7 +9,7 @@
         </item>
     </template>
     <template name="Headband">
-        <item name="Forehead Protector/Earmuffs/Sweatband" slot="Headband" >
+        <item name="Kohona Symbol" slot="Headband" >
             <itemBonus type="Cost" value="1" />
             <itemBonus type="Hardness" value="2" />
             <itemBonus type="Hit Points" value="5" />
@@ -85,14 +85,14 @@
        	    </enchantment>
 	    </item>
     </template>
-    <template name="Quarterstaff">
+    <template name="Simple Double Weapon">
         <weapon name="Quarterstaff" type="Simple Weapon" size="Two-handed" source="Bludgeoning" 
             criticalRange="[20]" multiplier="2" dice="[1d6]" 
             special="Double,Monk" >
             <bonus type="Encumbrance" value="2" />
         </weapon>
     </template>
-   <template name="Falchion">
+   <template name="Martial Two-handed Weapon">
         <weapon name="Falchion" type="Martial Weapon" size="Two-handed" source="Slashing"
             criticalRange="[18,19,20]" multiplier="2" dice="[2d4]">
             <bonus type="Encumbrance" value="8" />

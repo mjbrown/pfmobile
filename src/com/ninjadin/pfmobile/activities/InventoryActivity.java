@@ -3,6 +3,7 @@ package com.ninjadin.pfmobile.activities;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -11,12 +12,15 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.ninjadin.pfmobile.R;
 import com.ninjadin.pfmobile.fragments.InventoryMenuFragment;
+import com.ninjadin.pfmobile.fragments.TemplateSelectFragment;
 import com.ninjadin.pfmobile.non_android.InventoryManager;
 
 public class InventoryActivity extends FragmentActivity {
@@ -91,7 +95,21 @@ public class InventoryActivity extends FragmentActivity {
 	public void refreshInventoryData() throws FileNotFoundException, XmlPullParserException, IOException {
 		Intent intent = getIntent();
 		String inventoryFilename = intent.getStringExtra(LoginLoadActivity.EXTRA_MESSAGE);
+		InputStream templateStream = this.getResources().openRawResource(R.raw.equipment);
 		inventoryFile = new File(this.getFilesDir(), inventoryFilename);
-		inventoryManager = new InventoryManager(inventoryFile);
+		inventoryManager = new InventoryManager(inventoryFile, templateStream);
+		templateStream.close();
+	}
+	
+	public void createFromTemplate(View view) {
+		TemplateSelectFragment newFragment = new TemplateSelectFragment();
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+		transaction.replace(R.id.fragment_container, newFragment);
+		transaction.addToBackStack(null);
+		transaction.commit();
+	}
+	
+	public void createEmpty(View view) {
+		
 	}
 }

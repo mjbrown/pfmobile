@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -14,6 +15,7 @@ public class InventoryManager {
 	
 	private File inventoryFile;
 	public TwoDimXmlExtractor xmlData;
+	public TwoDimXmlExtractor templateData;
 	
 	final static public String[] slotNames = new String[] { "Head", "Headband",
 		"Eyes", "Neck", "Shoulders", "Chest", "Body", "Armor", "Hands", "Ring", "Belt", "Held", };
@@ -45,22 +47,33 @@ public class InventoryManager {
 	final static public String[] weaponSpecials = new String[] { "Light", "One-handed", "Two-handed",
 		"Brace", "Double", "Monk", "Disarm", "Trip", "Finesse" };
 	
-	public InventoryManager(File deviceInventory) throws FileNotFoundException, XmlPullParserException, IOException {
-		inventoryFile = deviceInventory;
-		FileInputStream inStream;
-		XmlPullParser parser = Xml.newPullParser();
-		inStream = new FileInputStream(inventoryFile);
+	public InventoryManager(File fullInventory, InputStream templateStream) throws FileNotFoundException, XmlPullParserException, IOException {
+		inventoryFile = fullInventory;
+		FileInputStream inStream = new FileInputStream(inventoryFile);
+		XmlPullParser inventoryParser = Xml.newPullParser();
 		try {
-			parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
-			parser.setInput(inStream, null);
-			parser.nextTag();
+			inventoryParser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
+			inventoryParser.setInput(inStream, null);
+			inventoryParser.nextTag();
 			String[] tags = new String[] { GlobalConstants.ITEM_TAG };
-			String[] tag_attrs = new String[] { GlobalConstants.NAME_ATTR, GlobalConstants.TYPE_ATTR , GlobalConstants.SLOT_ATTR, GlobalConstants.SIZE_ATTR, };
+			String[] tag_attrs = new String[] { GlobalConstants.NAME_ATTR, 
+					GlobalConstants.TYPE_ATTR , GlobalConstants.SLOT_ATTR, GlobalConstants.SIZE_ATTR, };
 			String[] subtags = new String[] { GlobalConstants.ITEMBONUS_TAG, GlobalConstants.DAMAGE_TAG };
-			String[] subtag_attrs = new String[] { GlobalConstants.NAME_ATTR, GlobalConstants.TYPE_ATTR, GlobalConstants.VALUE_ATTR , GlobalConstants.STATISTIC_ATTR, GlobalConstants.SOURCE_ATTR, };
-			xmlData = new TwoDimXmlExtractor(parser, "inventory", tags, tag_attrs, subtags, subtag_attrs);
+			String[] subtag_attrs = new String[] { GlobalConstants.NAME_ATTR, GlobalConstants.TYPE_ATTR, 
+					GlobalConstants.VALUE_ATTR , GlobalConstants.STATISTIC_ATTR, GlobalConstants.SOURCE_ATTR, };
+			xmlData = new TwoDimXmlExtractor(inventoryParser, "inventory", tags, tag_attrs, subtags, subtag_attrs);
 		} finally {
 			inStream.close();
 		}
+		XmlPullParser templateParser = Xml.newPullParser();
+		templateParser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
+		templateParser.setInput(templateStream, null);
+		templateParser.nextTag();
+		String[] tags = new String[] { GlobalConstants.TEMPLATE_TAG };
+		String[] tag_attrs = new String[] { GlobalConstants.NAME_ATTR };
+		String[] subtags = new String[] { GlobalConstants.ITEM_TAG };
+		String[] subtag_attrs = new String[] { GlobalConstants.NAME_ATTR, 
+				GlobalConstants.TYPE_ATTR, GlobalConstants.SLOT_ATTR, GlobalConstants.SIZE_ATTR };
+		templateData = new TwoDimXmlExtractor(templateParser, "equipmentTemplates", tags, tag_attrs, subtags, subtag_attrs);
 	}
 }
