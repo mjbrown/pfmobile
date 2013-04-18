@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <!-- Pretty hint text, and maxLines -->
+    <EditText android:id="@+building_list/search_box" 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="type to filter"
+        android:inputType="text"
+        android:maxLines="1"/>
+
+    <!-- Set height to 0, and let the weight param expand it -->
+    <ExpandableListView
+        android:id="@+id/filter_exp_listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </ExpandableListView> 
+
+</LinearLayout>

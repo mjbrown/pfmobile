@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="40sp"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
+        <Button 
+            android:id="@+id/button_template"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+	        android:includeFontPadding="false"
+	        android:textSize="14sp"
+            android:text="Create From Template"
+            android:onClick="createFromTemplate" />
+        <Button 
+            android:id="@+id/button_empty"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+	        android:textSize="14sp"
+	        android:includeFontPadding="false"
+            android:text="Create Empty"
+            android:onClick="createEmpty" />
+    </LinearLayout>
+
+    <!-- Pretty hint text, and maxLines -->
+    <EditText android:id="@+building_list/search_box" 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="type to filter"
+        android:inputType="text"
+        android:maxLines="1"/>
+    
+    <!-- Set height to 0, and let the weight param expand it -->
+    <ExpandableListView
+        android:id="@+id/inventory_exp_listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </ExpandableListView> 
+
+</LinearLayout>
