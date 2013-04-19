@@ -101,8 +101,36 @@ public class InventoryActivity extends FragmentActivity {
 		templateStream.close();
 	}
 	
-	public void createFromTemplate(View view) {
+	public void addFromTemplate(View view) {
 		TemplateSelectFragment newFragment = new TemplateSelectFragment();
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+		transaction.replace(R.id.fragment_container, newFragment);
+		transaction.addToBackStack(null);
+		transaction.commit();
+	}
+	
+	public void addTemplate(String templateName) {
+		File tempFile = new File(this.getFilesDir(), "temp_file.xml");
+		InputStream templateFileStream = this.getResources().openRawResource(R.raw.equipment);
+		try {
+			inventoryManager.addFromTemplate(templateFileStream, templateName, tempFile);
+			templateFileStream.close();
+			refreshInventoryData();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (XmlPullParserException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		returnToMenu(null);
+	}
+	
+	public void returnToMenu(View view) {
+		InventoryMenuFragment newFragment = new InventoryMenuFragment();
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.fragment_container, newFragment);
 		transaction.addToBackStack(null);

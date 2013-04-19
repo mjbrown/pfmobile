@@ -17,8 +17,8 @@
             android:layout_height="wrap_content"
 	        android:includeFontPadding="false"
 	        android:textSize="14sp"
-            android:text="Create From Template"
-            android:onClick="createFromTemplate" />
+            android:text="Add From Template"
+            android:onClick="addFromTemplate" />
         <Button 
             android:id="@+id/button_empty"
             android:layout_width="0dp"

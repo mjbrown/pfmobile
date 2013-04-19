@@ -1,19 +1,27 @@
 package com.ninjadin.pfmobile.fragments;
 
-import com.ninjadin.pfmobile.R;
-import com.ninjadin.pfmobile.activities.InventoryActivity;
-import com.ninjadin.pfmobile.non_android.GlobalConstants;
+import java.util.List;
+import java.util.Map;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.SimpleExpandableListAdapter;
+import android.widget.TextView;
+
+import com.ninjadin.pfmobile.R;
+import com.ninjadin.pfmobile.activities.InventoryActivity;
+import com.ninjadin.pfmobile.non_android.GlobalConstants;
 
 public class TemplateSelectFragment extends Fragment {
+	ExpandableListView expList;
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_filterselect, container, false);
@@ -23,17 +31,49 @@ public class TemplateSelectFragment extends Fragment {
 		super .onResume();
 		InventoryActivity inventoryActivity = (InventoryActivity) getActivity();
 		//Bundle args = this.getArguments();
-		ExpandableListView expList = (ExpandableListView) inventoryActivity.findViewById(R.id.filter_exp_listview);
-		ExpandableListAdapter simpleExpAdapter = new SimpleExpandableListAdapter(
+		expList = (ExpandableListView) inventoryActivity.findViewById(R.id.filter_exp_listview);
+		ExpandableListAdapter simpleExpAdapter = new TemplateSelectSimpleExpandableListAdapter(
 				inventoryActivity,
 				inventoryActivity.inventoryManager.templateData.groupData,
-				android.R.layout.simple_expandable_list_item_1,
+				R.layout.titlerow_filterselect,
 				new String[] { GlobalConstants.NAME_ATTR },
 				new int[] { android.R.id.text1 },
 				inventoryActivity.inventoryManager.templateData.itemData,
-				android.R.layout.simple_expandable_list_item_2,
+				R.layout.subrow_filterselect,
 				new String[] { GlobalConstants.NAME_ATTR, GlobalConstants.SLOT_ATTR },
-				new int[] {android.R.id.text1, android.R.id.text2 } );
+				new int[] {R.id.filterselect_text, R.id.filterselect_text2 } );
 		expList.setAdapter(simpleExpAdapter);
+	}
+	class TemplateSelectSimpleExpandableListAdapter extends SimpleExpandableListAdapter {
+		Context mContext;
+		List<Map<String,String>> grpData;
+		
+		public TemplateSelectSimpleExpandableListAdapter(Context context, List<Map<String, String>> groupData,
+				int groupLayout, String[] groupFrom, int[] groupTo, List<List<Map<String,String>>> childData, int childLayout,
+				String[] childFrom, int[] childTo) {
+			super (context, groupData, groupLayout, groupFrom, groupTo, childData, childLayout, childFrom, childTo);
+			mContext = context;
+			grpData = groupData;
+		}
+		
+		public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+			if (convertView == null) {
+				convertView = View.inflate(mContext, R.layout.titlerow_filterselect, null);
+				Button addButton = (Button)convertView.findViewById(R.id.filtertitle_add);
+				if (addButton != null)
+				addButton.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						int groupPos = expList.getPositionForView((View) view.getParent());
+						String templateName = grpData.get(groupPos).get(GlobalConstants.NAME_ATTR);
+						((InventoryActivity) getActivity()).addTemplate(templateName);
+					}
+				});
+			}
+			TextView textView = (TextView)convertView.findViewById(R.id.filtertitle_text);
+			if (textView != null)
+				textView.setText(grpData.get(groupPosition).get(GlobalConstants.NAME_ATTR));
+			return convertView;
+		}
 	}
 }

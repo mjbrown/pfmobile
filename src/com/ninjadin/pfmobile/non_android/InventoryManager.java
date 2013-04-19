@@ -76,4 +76,14 @@ public class InventoryManager {
 				GlobalConstants.TYPE_ATTR, GlobalConstants.SLOT_ATTR, GlobalConstants.SIZE_ATTR };
 		templateData = new TwoDimXmlExtractor(templateParser, "equipmentTemplates", tags, tag_attrs, subtags, subtag_attrs);
 	}
+	
+	public void addFromTemplate(InputStream templateFileStream, String templateName, File tempFile) throws FileNotFoundException, XmlPullParserException, IOException {
+		File copyTo = tempFile;
+		File copyFrom = inventoryFile;
+		String startData = "<" + GlobalConstants.TEMPLATE_TAG + " name=\"" + templateName + "\">";
+		String endData = "</" + GlobalConstants.TEMPLATE_TAG + ">";
+		String insertBefore = "</inventory>";
+		XmlEditor.copyReplace(copyFrom, copyTo, templateFileStream, startData, endData, insertBefore, insertBefore, null, null);
+		tempFile.renameTo(inventoryFile);
+	}
 }
