@@ -24,12 +24,15 @@ import android.widget.TextView;
 
 import com.ninjadin.pfmobile.R;
 import com.ninjadin.pfmobile.activities.GeneratorActivity;
-import com.ninjadin.pfmobile.non_android.FilterSelect;
+import com.ninjadin.pfmobile.non_android.GlobalConstants;
+import com.ninjadin.pfmobile.non_android.TwoDimXmlExtractor;
 
 public class ChoiceSelectFragment extends Fragment {
-	FilterSelect currentFilter;
 	ExpandableListView expList;
 	int choiceId;
+	String groupName;
+	String subGroupName;
+	TwoDimXmlExtractor choices;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,25 +46,38 @@ public class ChoiceSelectFragment extends Fragment {
 		GeneratorActivity activity = (GeneratorActivity) getActivity();
 		try {
 			Bundle args = this.getArguments();
-			String groupName = args.getString("groupName");
-			String subGroupName = args.getString("subGroup");
-			String charFileName = args.getString("charFileName");
+			groupName = args.getString(GlobalConstants.GRPNAME_ATTR);
+			subGroupName = args.getString(GlobalConstants.SUBGRP_ATTR);
 			choiceId = Integer.parseInt(args.getString("choiceId"));
 			InputStream dataFile = activity.getResources().openRawResource(args.getInt("rawDataInt"));
-			InputStream charFile = activity.openFileInput(charFileName);
-			currentFilter = new FilterSelect(charFile, dataFile, groupName, subGroupName, activity.dependencyManager);
-			dataFile.close();
-			charFile.close();
+			String[] tags = new String[] { GlobalConstants.SELECTION_TAG };
+			String[] tag_attrs = new String[] {GlobalConstants.NAME_ATTR };
+			String[] subtags = new String[] {GlobalConstants.BONUS_TAG, GlobalConstants.PROFICIENCY_TAG, 
+					GlobalConstants.CHOICE_TAG};
+			String[] subtag_attrs = new String[] { GlobalConstants.BONUSGRP_TAG, GlobalConstants.NAME_ATTR,
+					GlobalConstants.TYPE_ATTR, GlobalConstants.VALUE_ATTR };
+			choices = new TwoDimXmlExtractor(dataFile);
+			choices.findTagAttr(GlobalConstants.BONUSGRP_TAG, GlobalConstants.GRPNAME_ATTR, groupName);
+			if (subGroupName != null) {
+				if (!subGroupName.equals("Any")) {
+					choices.findTagAttr(GlobalConstants.SUBGRP_ATTR, GlobalConstants.GRPNAME_ATTR, subGroupName);
+					choices.getData(GlobalConstants.SUBGRP_ATTR, tags, tag_attrs, subtags, subtag_attrs);
+				} else {
+					choices.getData(GlobalConstants.BONUSGRP_TAG, tags, tag_attrs, subtags, subtag_attrs);
+				}
+			} else {
+				choices.getData(GlobalConstants.BONUSGRP_TAG, tags, tag_attrs, subtags, subtag_attrs);
+			}
 			expList = (ExpandableListView) activity.findViewById(R.id.filter_exp_listview);
 			ExpandableListAdapter baseAdapt = new FilterSelectSimpleExpandableListAdapter(
 					activity, 
-					currentFilter.selectionNames, 
+					choices.groupData, 
 					R.layout.titlerow_filterselect,
-					new String[] { "name" }, 
+					new String[] { GlobalConstants.NAME_ATTR }, 
 					new int[] { R.id.filtertitle_text },
-					currentFilter.selectionDesc, 
+					choices.itemData, 
 					R.layout.subrow_filterselect, 
-					new String[] { "description", "additional"  }, 
+					new String[] { GlobalConstants.TYPE_ATTR, GlobalConstants.VALUE_ATTR  }, 
 					new int[] { R.id.filterselect_text, R.id.filterselect_text2 }	);
 			expList.setAdapter(baseAdapt);
 			expList.setOnItemClickListener(new ExpandableListView.OnItemClickListener() {
@@ -101,16 +117,14 @@ public class ChoiceSelectFragment extends Fragment {
 					@Override
 					public void onClick(View view) {
 						int groupPos = expList.getPositionForView((View) view.getParent());
-						String groupName = currentFilter.selectGroupName;
-						String subGroup = currentFilter.subGroupName;
-						String selectionName = currentFilter.selectionNames.get(groupPos).get("name");
-						((GeneratorActivity) getActivity()).addSelection(choiceId, groupName, subGroup, selectionName);
+						String selectionName = choices.groupData.get(groupPos).get(GlobalConstants.NAME_ATTR);
+						((GeneratorActivity) getActivity()).addSelection(choiceId, groupName, subGroupName, selectionName);
 					}
 				});
 			}
 			TextView textView = (TextView)convertView.findViewById(R.id.filtertitle_text);
 			if (textView != null)
-				textView.setText(grpData.get(groupPosition).get("name"));
+				textView.setText(grpData.get(groupPosition).get(GlobalConstants.NAME_ATTR));
 			return convertView;
 		}
 	}

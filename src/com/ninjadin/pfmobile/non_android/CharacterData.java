@@ -303,7 +303,11 @@ public class CharacterData {
 			dataLine = choiceInput.readLine();
 		}
 		// Insert chosen in place of choice/chosen
-		destChar.write("<chosen groupName=\"" + groupName + "\" subGroup=\"" + subGroup + "\" name=\"" + selectionName + "\">");
+		destChar.write("<chosen groupName=\"" + groupName + "\"");
+		if (subGroup != null) {
+			destChar.write(" subGroup=\"" + subGroup + "\"");
+		}
+		destChar.write(" name=\"" + selectionName + "\">");
 		destChar.newLine();
 		dataLine = choiceInput.readLine();
 		while (dataLine != null) {
