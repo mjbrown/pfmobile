@@ -38,7 +38,7 @@ public class CharacterInfo {
 		while (parser.next() != XmlPullParser.END_DOCUMENT) {
 			if (parser.getEventType() == XmlPullParser.END_TAG) {
 				if (parser.getName() != null) {
-					if (parser.getName().equals(CharacterData.INFO_TAG)) {
+					if (parser.getName().equals(XmlConst.INFO_TAG)) {
 						break;
 					}
 				}

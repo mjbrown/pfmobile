@@ -5,7 +5,7 @@ import java.util.List;
 
 public class StatisticBonus {
 	private String value;
-	private List<CharacterStatistic> dependentUpon;
+	private List<StatisticInstance> dependentUpon;
 	public String stackType;
 	public String source;
 	
@@ -14,7 +14,7 @@ public class StatisticBonus {
 		this.source = src;
 		setValue(val);
 	}
-	public StatisticBonus(String stack, String src, String val, List<CharacterStatistic> depends) {
+	public StatisticBonus(String stack, String src, String val, List<StatisticInstance> depends) {
 		this.stackType = stack;
 		this.source = src;
 		setValue(val);
@@ -26,7 +26,7 @@ public class StatisticBonus {
 	public int getValue() {
 		String expression = new String(this.value);
 		if (dependentUpon != null) {
-			for (CharacterStatistic dep: dependentUpon) {
+			for (StatisticInstance dep: dependentUpon) {
 				int dependencyValue = dep.getFinalValue();
 				String dependencyName = dep.getName();
 				expression = expression.replace(dependencyName, Integer.toString(dependencyValue));

@@ -21,11 +21,11 @@ import android.view.View;
 import com.ninjadin.pfmobile.R;
 import com.ninjadin.pfmobile.fragments.InventoryMenuFragment;
 import com.ninjadin.pfmobile.fragments.TemplateSelectFragment;
-import com.ninjadin.pfmobile.non_android.InventoryManager;
+import com.ninjadin.pfmobile.non_android.InventoryEditor;
 
 public class InventoryActivity extends FragmentActivity {
 	File inventoryFile;
-	public InventoryManager inventoryManager;
+	public InventoryEditor inventoryManager;
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +97,7 @@ public class InventoryActivity extends FragmentActivity {
 		String inventoryFilename = intent.getStringExtra(LoginLoadActivity.EXTRA_MESSAGE);
 		InputStream templateStream = this.getResources().openRawResource(R.raw.equipment);
 		inventoryFile = new File(this.getFilesDir(), inventoryFilename);
-		inventoryManager = new InventoryManager(inventoryFile, templateStream);
+		inventoryManager = new InventoryEditor(inventoryFile, templateStream);
 		templateStream.close();
 	}
 	

@@ -11,7 +11,7 @@ import android.widget.SimpleExpandableListAdapter;
 
 import com.ninjadin.pfmobile.R;
 import com.ninjadin.pfmobile.activities.InventoryActivity;
-import com.ninjadin.pfmobile.non_android.GlobalConstants;
+import com.ninjadin.pfmobile.non_android.XmlConst;
 
 public class InventoryMenuFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -27,11 +27,11 @@ public class InventoryMenuFragment extends Fragment {
 				inventoryActivity,
 				inventoryActivity.inventoryManager.xmlData.groupData,
 				android.R.layout.simple_expandable_list_item_1,
-				new String[] { GlobalConstants.NAME_ATTR },
+				new String[] { XmlConst.NAME_ATTR },
 				new int[] { android.R.id.text1 },
 				inventoryActivity.inventoryManager.xmlData.itemData,
 				android.R.layout.simple_expandable_list_item_2,
-				new String[] { GlobalConstants.TYPE_ATTR, GlobalConstants.VALUE_ATTR },
+				new String[] { XmlConst.TYPE_ATTR, XmlConst.VALUE_ATTR },
 				new int[] {android.R.id.text1, android.R.id.text2 } );
 		expList.setAdapter(simpleExpAdapter);
 	}

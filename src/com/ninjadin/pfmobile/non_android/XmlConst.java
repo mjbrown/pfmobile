@@ -1,6 +1,6 @@
 package com.ninjadin.pfmobile.non_android;
 
-public class GlobalConstants {
+public class XmlConst {
 	final public static String CHARTEMPLATE_TAG = "characterTemplate";
 	final public static String TEMPLATE_TAG = "template";
 	final public static String LEVEL_TAG = "characterLevel";

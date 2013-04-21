@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.ninjadin.pfmobile.R;
 import com.ninjadin.pfmobile.activities.GeneratorActivity;
-import com.ninjadin.pfmobile.non_android.DependencyManager;
+import com.ninjadin.pfmobile.non_android.StatisticManager;
 
 public class StatisticsFragment extends Fragment {
 	private ListView statisticsListView;
@@ -32,16 +32,16 @@ public class StatisticsFragment extends Fragment {
 	public void refreshStatistics() {
 		GeneratorActivity activity = (GeneratorActivity) getActivity();
 		statisticsListView = (ListView) activity.findViewById(R.id.statistics_list);
-		DependencyManager depends = activity.dependencyManager;
+		StatisticManager depends = activity.dependencyManager;
 		listAdapter = new StatisticsListAdapter(activity, R.layout.row_statistics, R.id.statisticsrow_value, depends);
 		if ((statisticsListView != null) && (listAdapter != null))
 			statisticsListView.setAdapter(listAdapter);
 	}
 	
 	private class StatisticsListAdapter extends ArrayAdapter<String> {
-		DependencyManager depends;
+		StatisticManager depends;
 		Context mContext;
-		public StatisticsListAdapter(Context context, int rowLayoutResId, int textViewResourceId, DependencyManager dep) {
+		public StatisticsListAdapter(Context context, int rowLayoutResId, int textViewResourceId, StatisticManager dep) {
 			super(context, rowLayoutResId, textViewResourceId, dep.masterList);
 			depends = dep;
 			mContext = context;

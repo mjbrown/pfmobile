@@ -7,38 +7,31 @@ import java.util.List;
 import java.util.Map;
 
 
-public class CharacterStatistic {
+public class StatisticInstance {
 	private int finalValue;
 	private int baseValue;
 	private String statisticName;
 	private List<StatisticBonus> bonuses;
 	
-	private static final String stackableTypes[] = new String[] { "Base", "Racial", "Trait", "Feat",
-		"Dodge", "Class", "Inherent", "Ranks"};
-	private static final String notStackableTypes[] = new String[] { "Unnamed", "Aid Another", 
-		"Flank", "Circumstance", "Divine", "Profane", "Alchemical", "Enhancement", "Class Skill",
-		"Competence", "Ability", "Morale", "Armor", "Armor Enhancement", "Deflection", "Luck",
-		"Morale", "Natural Armor", "Size", "Range", "High Ground", "Shield", "Shield Enhancement", };
-
 	private static final Map<String, Boolean> isStackable;
 	static {
 		Map<String, Boolean> stacks = new HashMap<String, Boolean>();
-		for (String stackable: stackableTypes) {
+		for (String stackable: PropertyLists.stackableTypes) {
 			stacks.put(stackable, true);
 		}
-		for (String notStackable: notStackableTypes) {
+		for (String notStackable: PropertyLists.notStackableTypes) {
 			stacks.put(notStackable, false);
 		}
 		isStackable = Collections.unmodifiableMap(stacks);
 	}
 	
-	public CharacterStatistic(String nm) {
+	public StatisticInstance(String nm) {
 		statisticName = nm;
 		baseValue = 0;
 		bonuses = new ArrayList<StatisticBonus>();
 	}
 	
-	public CharacterStatistic(String nm, int base) {
+	public StatisticInstance(String nm, int base) {
 		statisticName = nm;
 		baseValue = base;
 		finalValue = baseValue;

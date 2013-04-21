@@ -30,11 +30,11 @@ import com.ninjadin.pfmobile.fragments.ShowCharacterXMLFragment;
 import com.ninjadin.pfmobile.fragments.SkillsFragment;
 import com.ninjadin.pfmobile.fragments.StatisticsFragment;
 import com.ninjadin.pfmobile.non_android.CharacterData;
-import com.ninjadin.pfmobile.non_android.DependencyManager;
+import com.ninjadin.pfmobile.non_android.StatisticManager;
 
 public class GeneratorActivity extends FragmentActivity {
 	public CharacterData charData;
-	public DependencyManager dependencyManager;
+	public StatisticManager dependencyManager;
 	public String masterCharFilename;
 	public String tempFilename;
 	public File charFile;
@@ -103,7 +103,7 @@ public class GeneratorActivity extends FragmentActivity {
 		tempFilename = masterCharFilename.concat(".temp");
 		charFile = new File(this.getFilesDir(), masterCharFilename);
 		tempFile = new File(this.getFilesDir(), tempFilename);
-		dependencyManager = new DependencyManager();
+		dependencyManager = new StatisticManager();
 		try {
 			charData = new CharacterData(charFile, tempFile);
 			InputStream inStream = new FileInputStream(charFile);

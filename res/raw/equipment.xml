@@ -2,82 +2,87 @@
 <equipmentTemplates>
     <template name="Headgear">
         <item name="Crown" slot="Head" >
-            <itemBonus type="Cost" value="1" />
-            <itemBonus type="Hardness" value="2" />
-            <itemBonus type="Hit Points" value="5" />
-            <itemBonus type="Encumbrance" value="1" />
+            <itemProperty type="Cost" value="1" />
+            <itemProperty type="Hardness" value="2" />
+            <itemProperty type="Hit Points" value="5" />
+            <itemProperty type="Encumbrance" value="1" />
         </item>
     </template>
     <template name="Headband">
         <item name="Kohona Symbol" slot="Headband" >
-            <itemBonus type="Cost" value="1" />
-            <itemBonus type="Hardness" value="2" />
-            <itemBonus type="Hit Points" value="5" />
-            <itemBonus type="Encumbrance" value="1" />
+            <itemProperty type="Cost" value="1" />
+            <itemProperty type="Hardness" value="2" />
+            <itemProperty type="Hit Points" value="5" />
+            <itemProperty type="Encumbrance" value="1" />
         </item>
     </template>
     <template name="Eyes">
         <item name="Glasses" slot="Eyes" >
-            <itemBonus type="Cost" value="1" />
-            <itemBonus type="Hardness" value="2" />
-            <itemBonus type="Hit Points" value="5" />
-            <itemBonus type="Encumbrance" value="1" />
+            <itemProperty type="Cost" value="1" />
+            <itemProperty type="Hardness" value="2" />
+            <itemProperty type="Hit Points" value="5" />
+            <itemProperty type="Encumbrance" value="1" />
         </item>
     </template>
     <template name="Light Armor">
-        <item name="Studded Leather" type="Light Armor" slot="Armor" >
-            <itemBonus type="Armor" value="3" />
-	        <itemBonus type="Max Dex" value="5" />
-	        <itemBonus type="Armor Check" value="1" />
-	        <itemBonus type="Spell Failure" value="15" />
-	        <itemBonus type="Cost" value="25" />
-	        <itemBonus type="Encumbrance" value="20" />"
-	        <itemBonus type="Hardness" value="2" />
-	        <itemBonus type="Hit Points" value="15" />
+        <item name="Studded Leather" slot="Armor" >
+            <itemProperty type="Proficiency" value="Light Armor" />
+            <itemProperty type="Armor" value="3" />
+	        <itemProperty type="Max Dex" value="5" />
+	        <itemProperty type="Armor Check" value="1" />
+	        <itemProperty type="Spell Failure" value="15" />
+	        <itemProperty type="Cost" value="25" />
+	        <itemProperty type="Encumbrance" value="20" />"
+	        <itemProperty type="Hardness" value="2" />
+	        <itemProperty type="Hit Points" value="15" />
         </item>
     </template>
     <template name="Medium Armor">
-        <item name="Steel Breastplate" type="Medium Armor" slot="Armor" >
-	        <itemBonus type="Armor" value="6" />
-	        <itemBonus type="Max Dex" value="3" />
-	        <itemBonus type="Armor Check" value="4" />
-	        <itemBonus type="Spell Failure" value="25" />
-	        <itemBonus type="Cost" value="200" />
-	        <itemBonus type="Encumbrance" value="30" />
-	        <itemBonus type="Hardness" value="10" />
-	        <itemBonus type="Hit Points" value="30" />
+        <item name="Steel Breastplate" slot="Armor" >
+            <itemProperty type="Proficiency" value="Medium Armor" />
+	        <itemProperty type="Armor" value="6" />
+	        <itemProperty type="Max Dex" value="3" />
+	        <itemProperty type="Armor Check" value="4" />
+	        <itemProperty type="Spell Failure" value="25" />
+	        <itemProperty type="Cost" value="200" />
+	        <itemProperty type="Encumbrance" value="30" />
+	        <itemProperty type="Hardness" value="10" />
+	        <itemProperty type="Hit Points" value="30" />
 	    </item>
     </template>
     <template name="Heavy Armor">
-        <item name="Steel Half-plate" type="Heavy Armor" slot="Armor">
-	        <itemBonus type="Armor" value="8" />
-	        <itemBonus type="Max Dex" value="0" />
-	        <itemBonus type="Armor Check" value="7" />
-	        <itemBonus type="Spell Failure" value="40" />
-	        <itemBonus type="Cost" value="600" />
-	        <itemBonus type="Encumbrance" value="50" />
-	        <itemBonus type="Hardness" value="10" />
-	        <itemBonus type="Hit Points" value="40" />
+        <item name="Steel Half-plate" slot="Armor">
+            <itemProperty type="Proficiency" value="Heavy Armor" />
+	        <itemProperty type="Armor" value="8" />
+	        <itemProperty type="Max Dex" value="0" />
+	        <itemProperty type="Armor Check" value="7" />
+	        <itemProperty type="Spell Failure" value="40" />
+	        <itemProperty type="Cost" value="600" />
+	        <itemProperty type="Encumbrance" value="50" />
+	        <itemProperty type="Hardness" value="10" />
+	        <itemProperty type="Hit Points" value="40" />
 	    </item>
     </template>
     <template name="Magical Two-handed Simple Weapon">
-		<item name="+1 Fire Spear" type="Simple Weapon" size="Two-handed" slot="Held" >
-		    <itemBonus type="Range" value="20" />
-		    <itemBonus type="Critical Range" value="1" />
-		    <itemBonus type="Critical Multiplier" value="3" />
-		    <itemBonus type="Special" value="Brace" />
-	       	<itemBonus type="Encumbrance" value="6" />
-	       	<itemBonus type="Cost" value="2" />
-	       	<itemBonus type="Hardness" value="5" />
-	       	<itemBonus type="Hit Points" value="10" />
+		<item name="+1 Fire Spear" slot="Held" >
+		    <itemProperty type="Proficiency" value="Simple Weapon,Spear" />
+		    <itemProperty type="Size" value="Two-handed" />
+		    <itemProperty type="Range" value="20" />
+		    <itemProperty type="Critical Range" value="1" />
+		    <itemProperty type="Critical Multiplier" value="3" />
+		    <itemProperty type="Special" value="Brace" />
+	       	<itemProperty type="Encumbrance" value="6" />
+	       	<itemProperty type="Cost" value="2" />
+	       	<itemProperty type="Hardness" value="5" />
+	       	<itemProperty type="Hit Points" value="10" />
 	        <damage type="Normal,Critical" statistic="Hit Points" source="Piercing" value="[1d8]" />
 	       	<enchantment name="Masterwork">
-	       		<itemBonus type="To Hit" source="Natural" value="1" />
+	       		<itemProperty type="To Hit" source="Natural" value="1" />
 	       	</enchantment>
 	       	<enchantment name="+1">
-		       	<itemBonus type="To Hit" source="Magic" value="1" />
-		       	<itemBonus type="Hardness" value="2" />
-		       	<itemBonus type="Hit Points" value="10" />
+		       	<itemProperty type="To Hit" source="Magic" value="1" />
+		       	<itemProperty type="Hardness" value="2" />
+		       	<itemProperty type="Hit Points" value="10" />
 		       	<damage type="Normal,Critical" statistic="Hit Points" source="Magic" value="1" />
 		    </enchantment>
 		    <enchantment name="Fire">

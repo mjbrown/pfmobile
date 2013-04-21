@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 import com.ninjadin.pfmobile.R;
 import com.ninjadin.pfmobile.activities.GeneratorActivity;
-import com.ninjadin.pfmobile.non_android.CharacterData;
+import com.ninjadin.pfmobile.non_android.PropertyLists;
 
 public class SkillsFragment extends Fragment {
 	private ListView skillListView;
@@ -52,7 +52,7 @@ public class SkillsFragment extends Fragment {
 		List<String> skillList = new ArrayList<String>();
 		skillMap.put("NAME", skillList);
 		skillMap.put("VALUE", valueList);
-		skillList.addAll(Arrays.asList(CharacterData.skillNames));
+		skillList.addAll(Arrays.asList(PropertyLists.skillNames));
 		GeneratorActivity activity = (GeneratorActivity) this.getActivity();
 		for (int skill: activity.charData.skillRanks) {
 			valueList.add(Integer.toString(skill));

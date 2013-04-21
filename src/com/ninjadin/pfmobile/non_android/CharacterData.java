@@ -35,72 +35,29 @@ public class CharacterData {
 	public int pointBuyRemaining = 20;
 	private int base_stats[] = { 10, 10, 10, 10, 10, 10 };
 	
-	final public static String[] skillNames = new String[] { "Acrobatics", "Appraise", "Bluff",
-	"Climb", "Craft", "Diplomacy", "Disable Device", "Disguise", "Escape Artist", "Fly",
-	"Handle Animal", "Heal", "Intimidate", "Arcana", "Dungeoneering", "Engineering",
-	"Geography", "History", "Local", "Nature", "Nobility", "Planes", "Religion",
-	"Linguistics", "Perception", "Perform", "Profession", "Ride", "Sense Motive",
-	"Sleight Of Hand", "Spellcraft", "Stealth", "Survival", "Swim", "Use Magic Device" };
-	
-	final public static String[] classLevelNames = new String[] { "Fighter Level", "Rogue Level",
-		"Wizard Level", "Sorcerer Level", "Paladin Level", "Ranger Level", "Monk Level", "Barbarian Level",
-		"Bard Level" };
-	
-	final public static String abilityScoreNames[] = new String[] { "Strength", "Dexterity", 
-	"Constitution", "Intelligence", "Wisdom", "Charisma", };
-	
-	final public static String abilityModifierNames[] = new String[] {"Strength Modifier", "Dexterity Modifier",
-	"Constitution Modifier", "Intelligence Modifier", "Wisdom Modifier", "Charisma Modifier" };
-	
-	final public static String saveNames[] = new String[] { "Fortitude", "Reflex", "Will" };
-	
-	final public static String armorClassNames[] = new String[] { "Armor Class", 
-		"Touch Armor Class", "Flat Footed Armor Class",  "Combat Maneuver Defense"};
-	
-	final public static String reductionNames[] = new String[] { "Acid Resistance",
-		"Electricity Resistance", "Fire Resistance", "Cold Resistance", "Sonic Resistance",
-		"Force Resistance" };
-	
-	final public static String speedNames[] = new String[] { "Speed", "Fly Speed", 
-		"Climb Speed", "Swim Speed", "Burrow Speed", "Stealth Speed", "Crawl Speed"};
-	
-	// Allows the tracking of all caster level types independently
-	// Prestige classes can be implemented as a choice of caster level advancement
-	final public static String casterStatisticNames[] = new String[] { "Wizard Caster Level",
-		"Sorcerer Caster Level", "Ranger Caster Level", "Paladin Caster Level", "Bard Caster Level",
-		"Druid Caster Level", "Cleric Caster Level", "Arcane Caster Level", "Divine Caster Level" };
-
-	// Tracking Spell Failure sources allows easier implementation of armored spellcasting classes like Bard
-	final public static String spellFailureNames[] = new String[] { "Arcane Spell Failure", "Light Armor Spell Failure",
-		"Medium Armor Spell Failure", "Heavy Armor Spell Failure", "Shield Spell Failure", };
-
-	final public static String otherStatisticNames[] = new String[] { "Character Level", "Base Attack", 
-		"Armor Check", "Hit Points", "Maximum Dexterity Bonus", "Combat Maneuver Bonus", "Skill Points",
-		"Spell Resistance", "Initiative", "Spell Penetration", "Encumbrance", "Equipment Cost", "Sneak Attack Dice" };
-	
 	final private static String TEMPLATE_TAG = "characterTemplate";
 	final private static String LEVEL_TAG = "characterLevel";
 	final private static String SELECTION_TAG = "selection";
-	final public static String CHOICE_TAG = "choice";
-	final public static String CHOSEN_TAG = "chosen";
+	final private static String CHOICE_TAG = "choice";
+	final private static String CHOSEN_TAG = "chosen";
 	final private static String POINTBUY_TAG = "pointBuy";
-	final public static String INFO_TAG = "info";
+	final private static String INFO_TAG = "info";
 	final private static String LEVELS_TAG = "levels";
 	final private static String SKILLS_TAG = "skills";
-	final public static String EQUIP_TAG = "equipment";
-	final public static String EQUIPGRP_TAG = "equipGroup";
+	final private static String EQUIP_TAG = "equipment";
+	final private static String EQUIPGRP_TAG = "equipGroup";
 	final private static String SPELLS_TAG = "spells";
-	final public static String BONUS_TAG = "bonus";
-	final public static String PROFICIENCY_TAG = "proficiency";
+	final private static String BONUS_TAG = "bonus";
+	final private static String PROFICIENCY_TAG = "proficiency";
 
-	final public static String GRPNAME_ATTR = "groupName";
-	final public static String SUBGRP_ATTR = "subGroup";
+	final private static String GRPNAME_ATTR = "groupName";
+	final private static String SUBGRP_ATTR = "subGroup";
 	final private static String NUM_ATTR = "number";
-	final public static String NAME_ATTR = "name";
-	final public static String TYPE_ATTR = "type";
-	final public static String VALUE_ATTR = "value";
-	final public static String STACKTYPE_ATTR = "stackType";
-	final public static String SOURCE_ATTR = "source";
+	final private static String NAME_ATTR = "name";
+	final private static String TYPE_ATTR = "type";
+	final private static String VALUE_ATTR = "value";
+	final private static String STACKTYPE_ATTR = "stackType";
+	final private static String SOURCE_ATTR = "source";
 
 	public CharacterData(File originalFile, File temporaryFile) throws XmlPullParserException, IOException {
 		charFile = originalFile;
@@ -121,12 +78,12 @@ public class CharacterData {
 	}
 	
 	private void readCharacterData(XmlPullParser parser) throws XmlPullParserException, IOException {
-		parser.require(XmlPullParser.START_TAG, null, TEMPLATE_TAG);
+		parser.require(XmlPullParser.START_TAG, null, XmlConst.TEMPLATE_TAG);
 		while (parser.next() != XmlPullParser.END_DOCUMENT) {
 			// Run until the end of characterTemplate or END_DOCUMENT
 			if (parser.getEventType() == XmlPullParser.END_TAG) {
 				if (parser.getName() != null)
-					if (parser.getName().equals(TEMPLATE_TAG))
+					if (parser.getName().equals(XmlConst.TEMPLATE_TAG))
 						break;
 			} 
 			if (parser.getEventType() != XmlPullParser.START_TAG)
@@ -134,15 +91,15 @@ public class CharacterData {
 			String name = parser.getName();
 			int choice_id = 1;		// Used to assign a unique choice ID
 			if (name != null) {
-				if (name.equals(POINTBUY_TAG)) {
+				if (name.equals(XmlConst.POINTBUY_TAG)) {
 					readAbilityScores(parser);
-				} else if (name.equals(INFO_TAG)) {
+				} else if (name.equals(XmlConst.INFO_TAG)) {
 					info.readInfo(parser);
-				} else if (name.equals(LEVELS_TAG)) {
+				} else if (name.equals(XmlConst.LEVELS_TAG)) {
 					choice_id += readLevels(parser, choice_id);
-				} else if (name.equals(SKILLS_TAG)) {
+				} else if (name.equals(XmlConst.SKILLS_TAG)) {
 					readSkills(parser);
-				} else if (name.equals(EQUIP_TAG)) {
+				} else if (name.equals(XmlConst.EQUIP_TAG)) {
 					choice_id += readEquipment(parser, choice_id);
 				}
 			}
@@ -153,20 +110,20 @@ public class CharacterData {
 	
 	// TODO: this can be merged with readLevels because very little is different...
 	private int readEquipment(XmlPullParser parser, int choice_id) throws XmlPullParserException, IOException {
-		String[] tag_names = new String[] { EQUIPGRP_TAG, };
-		String[] tag_attrs = new String[] { NAME_ATTR, };
-		String[] subtag_names = new String[] { CHOICE_TAG, CHOSEN_TAG, };
-		String[] subtag_attrs = new String[] { NAME_ATTR, GRPNAME_ATTR, SUBGRP_ATTR, };
-		equipment = new TwoDimXmlExtractor(parser, EQUIP_TAG, 0, choice_id, tag_names, tag_attrs, subtag_names, subtag_attrs);
+		String[] tag_names = new String[] { XmlConst.EQUIPGRP_TAG, };
+		String[] tag_attrs = new String[] { XmlConst.NAME_ATTR, };
+		String[] subtag_names = new String[] { XmlConst.CHOICE_TAG, CHOSEN_TAG, };
+		String[] subtag_attrs = new String[] { XmlConst.NAME_ATTR, GRPNAME_ATTR, SUBGRP_ATTR, };
+		equipment = new TwoDimXmlExtractor(parser, XmlConst.EQUIP_TAG, 0, choice_id, tag_names, tag_attrs, subtag_names, subtag_attrs);
 		return equipment.subTagCount;
 	}
 	// Populate level names and the choices associated with each character level
 	public int readLevels(XmlPullParser parser, int choice_id) throws XmlPullParserException, IOException{
-		String[] tag_names = new String[] { LEVEL_TAG, };
-		String[] tag_attrs = new String[] { NUM_ATTR, };
-		String[] subtag_names = new String[] { CHOICE_TAG, CHOSEN_TAG, };
-		String[] subtag_attrs = new String[] { NAME_ATTR, GRPNAME_ATTR, SUBGRP_ATTR, };
-		levels = new TwoDimXmlExtractor(parser, LEVELS_TAG, 0, choice_id, tag_names, tag_attrs, subtag_names, subtag_attrs);
+		String[] tag_names = new String[] { XmlConst.LEVEL_TAG, };
+		String[] tag_attrs = new String[] { XmlConst.NUM_ATTR, };
+		String[] subtag_names = new String[] { XmlConst.CHOICE_TAG, XmlConst.CHOSEN_TAG, };
+		String[] subtag_attrs = new String[] { XmlConst.NAME_ATTR, XmlConst.GRPNAME_ATTR, XmlConst.SUBGRP_ATTR, };
+		levels = new TwoDimXmlExtractor(parser, XmlConst.LEVELS_TAG, 0, choice_id, tag_names, tag_attrs, subtag_names, subtag_attrs);
 		return levels.subTagCount;
 	}
 	
@@ -177,16 +134,16 @@ public class CharacterData {
 		outStream = new FileOutputStream(temp);
 		outStream.write(header.getBytes());
 		info.insertInfo(outStream);
-		outStream.write((endTag(INFO_TAG) + startTag(POINTBUY_TAG)).getBytes());
+		outStream.write((endTag(XmlConst.INFO_TAG) + startTag(XmlConst.POINTBUY_TAG)).getBytes());
 		writeAbilityScores(outStream);
-		outStream.write((endTag(POINTBUY_TAG) + startTag(SKILLS_TAG)).getBytes());
+		outStream.write((endTag(XmlConst.POINTBUY_TAG) + startTag(XmlConst.SKILLS_TAG)).getBytes());
 		writeSkills(outStream);
-		outStream.write((endTag(SKILLS_TAG) + startTag(LEVELS_TAG)).getBytes());
+		outStream.write((endTag(XmlConst.SKILLS_TAG) + startTag(LEVELS_TAG)).getBytes());
 		// Equip must follow levels, see copyLevelData
-		outStream.write((endTag(LEVELS_TAG) + startTag(EQUIP_TAG)).getBytes());
-		outStream.write((endTag(EQUIP_TAG) + startTag(SPELLS_TAG)).getBytes());
-		outStream.write((endTag(SPELLS_TAG)).getBytes());
-		outStream.write(("</" + TEMPLATE_TAG + ">\n").getBytes());
+		outStream.write((endTag(XmlConst.LEVELS_TAG) + startTag(XmlConst.EQUIP_TAG)).getBytes());
+		outStream.write((endTag(XmlConst.EQUIP_TAG) + startTag(XmlConst.SPELLS_TAG)).getBytes());
+		outStream.write((endTag(XmlConst.SPELLS_TAG)).getBytes());
+		outStream.write(("</" + XmlConst.TEMPLATE_TAG + ">\n").getBytes());
 		outStream.close();
 // Copy level data from charFile to tempFile
 		copyChoiceData(temp, tempFile, charFile);
@@ -200,13 +157,13 @@ public class CharacterData {
 	}
 
 	public void writeSkills(FileOutputStream outStream) throws IOException {
-		String tagHeader = "\t\t<" + BONUS_TAG + " " + TYPE_ATTR + "=\"";
-		String stackType = "\" " + STACKTYPE_ATTR + "=\"Ranks\" ";
-		String value = " " + VALUE_ATTR + "=\"";
+		String tagHeader = "\t\t<" + XmlConst.BONUS_TAG + " " + XmlConst.TYPE_ATTR + "=\"";
+		String stackType = "\" " + XmlConst.STACKTYPE_ATTR + "=\"Ranks\" ";
+		String value = " " + XmlConst.VALUE_ATTR + "=\"";
 		String tagFooter = "\" />\n";
-		for (int i = 0; i < CharacterData.skillNames.length; i++) {
+		for (int i = 0; i < PropertyLists.skillNames.length; i++) {
 			if (skillRanks[i] > 0)
-				outStream.write((tagHeader + CharacterData.skillNames[i] + stackType + value + Integer.toString(skillRanks[i]) + tagFooter).getBytes());
+				outStream.write((tagHeader + PropertyLists.skillNames[i] + stackType + value + Integer.toString(skillRanks[i]) + tagFooter).getBytes());
 		}
 	}
 	
@@ -214,7 +171,7 @@ public class CharacterData {
 		while (parser.next() != XmlPullParser.END_DOCUMENT) {
 			if (parser.getEventType() == XmlPullParser.END_TAG) {
 				if (parser.getName() != null) {
-					if (parser.getName().equals(CharacterData.SKILLS_TAG)) {
+					if (parser.getName().equals(XmlConst.SKILLS_TAG)) {
 						break;
 					}
 				}
@@ -224,11 +181,11 @@ public class CharacterData {
 			}
 			String name = parser.getName();
 			if (name != null) {
-				if (name.equals(BONUS_TAG)) {
-					String skill_name = parser.getAttributeValue(null, TYPE_ATTR);
-					String value_str = parser.getAttributeValue(null, VALUE_ATTR);
-					for (int i = 0; i < CharacterData.skillNames.length; i++) {
-						if (skill_name.equals(CharacterData.skillNames[i])) {
+				if (name.equals(XmlConst.BONUS_TAG)) {
+					String skill_name = parser.getAttributeValue(null, XmlConst.TYPE_ATTR);
+					String value_str = parser.getAttributeValue(null, XmlConst.VALUE_ATTR);
+					for (int i = 0; i < PropertyLists.skillNames.length; i++) {
+						if (skill_name.equals(PropertyLists.skillNames[i])) {
 							skillRanks[i] = Integer.parseInt(value_str);
 							break;
 						}
@@ -239,25 +196,25 @@ public class CharacterData {
 	}
 
 	public void addLevel(InputStream charLevelData) throws IOException {
-		String startData = "<" + LEVEL_TAG + " " + NUM_ATTR +"=\"" + Integer.toString(charLevel+1) + "\">";
-		String endData = "</" + LEVEL_TAG + ">";
-		String insertBefore = "</" + LEVELS_TAG + ">";
+		String startData = "<" + XmlConst.LEVEL_TAG + " " + XmlConst.NUM_ATTR +"=\"" + Integer.toString(charLevel+1) + "\">";
+		String endData = "</" + XmlConst.LEVEL_TAG + ">";
+		String insertBefore = "</" + XmlConst.LEVELS_TAG + ">";
 		XmlEditor.copyReplace(charFile, tempFile, charLevelData, startData, endData, insertBefore, insertBefore, null, null);
 		tempFile.renameTo(charFile);
 	}
 	
 	public void removeLevel() throws IOException {
-		String insertBefore = "<" + LEVEL_TAG + " " + NUM_ATTR + "=\"" + Integer.toString(charLevel) + "\">";
-		String continueOn = "</" + LEVELS_TAG + ">";
+		String insertBefore = "<" + XmlConst.LEVEL_TAG + " " + XmlConst.NUM_ATTR + "=\"" + Integer.toString(charLevel) + "\">";
+		String continueOn = "</" + XmlConst.LEVELS_TAG + ">";
 		XmlEditor.copyReplace(charFile, tempFile, null, null, null, insertBefore, continueOn, null, null);
 		tempFile.renameTo(charFile);
 	}
 
 	private void copyChoiceData(File sourceChar, File destChar, File levelData) throws IOException {
-		String startData = "<" + LEVELS_TAG + ">";
-		String endData = "</" + EQUIP_TAG + ">";
+		String startData = "<" + XmlConst.LEVELS_TAG + ">";
+		String endData = "</" + XmlConst.EQUIP_TAG + ">";
 		String insertBefore = startData;
-		String continueOn = "<" + SPELLS_TAG + ">";
+		String continueOn = "<" + XmlConst.SPELLS_TAG + ">";
 		InputStream fromStream = new FileInputStream(levelData);
 		XmlEditor.copyReplace(sourceChar, destChar, fromStream, startData, endData, insertBefore, continueOn, null, null);
 		fromStream.close();
@@ -280,7 +237,7 @@ public class CharacterData {
 		int currentChoice = 0;
 		String sourceLine = sourceChar.readLine();
 		while (sourceLine != null) {
-			if (sourceLine.trim().startsWith("<" + CHOICE_TAG) || (sourceLine.trim().startsWith("<chosen"))) {
+			if (sourceLine.trim().startsWith("<" + XmlConst.CHOICE_TAG) || (sourceLine.trim().startsWith("<" + XmlConst.CHOSEN_TAG))) {
 				currentChoice += 1;
 				if (currentChoice == choiceId) 
 					break;
@@ -343,8 +300,8 @@ public class CharacterData {
 		String stackType = "\" " + STACKTYPE_ATTR + "=\"Ranks\" ";
 		String value = " " + VALUE_ATTR + "=\"";
 		String tagFooter = "\" />\n";
-		for (int i = 0; i < abilityScoreNames.length; i++) {
-			fpOut.write((tagHeader + abilityScoreNames[i] + stackType + value + Integer.toString(base_stats[i]) + tagFooter).getBytes());
+		for (int i = 0; i < PropertyLists.abilityScoreNames.length; i++) {
+			fpOut.write((tagHeader + PropertyLists.abilityScoreNames[i] + stackType + value + Integer.toString(base_stats[i]) + tagFooter).getBytes());
 		}
 		fpOut.write((tagHeader + "points" + "\"" + value + Integer.toString(pointBuyRemaining) + tagFooter).getBytes());
 	}
@@ -367,8 +324,8 @@ public class CharacterData {
 					String stat_name = parser.getAttributeValue(null, TYPE_ATTR);
 					String value_str = parser.getAttributeValue(null, VALUE_ATTR);
 					if ((stat_name != null) && (value_str != null)) {
-						for (int i = 0; i < abilityScoreNames.length; i++) {
-							if (stat_name.equals(abilityScoreNames[i])) {
+						for (int i = 0; i < PropertyLists.abilityScoreNames.length; i++) {
+							if (stat_name.equals(PropertyLists.abilityScoreNames[i])) {
 								base_stats[i] = Integer.parseInt(value_str);
 							}
 						}

@@ -24,7 +24,7 @@ import android.widget.TextView;
 
 import com.ninjadin.pfmobile.R;
 import com.ninjadin.pfmobile.activities.GeneratorActivity;
-import com.ninjadin.pfmobile.non_android.GlobalConstants;
+import com.ninjadin.pfmobile.non_android.XmlConst;
 import com.ninjadin.pfmobile.non_android.TwoDimXmlExtractor;
 
 public class ChoiceSelectFragment extends Fragment {
@@ -46,38 +46,38 @@ public class ChoiceSelectFragment extends Fragment {
 		GeneratorActivity activity = (GeneratorActivity) getActivity();
 		try {
 			Bundle args = this.getArguments();
-			groupName = args.getString(GlobalConstants.GRPNAME_ATTR);
-			subGroupName = args.getString(GlobalConstants.SUBGRP_ATTR);
+			groupName = args.getString(XmlConst.GRPNAME_ATTR);
+			subGroupName = args.getString(XmlConst.SUBGRP_ATTR);
 			choiceId = Integer.parseInt(args.getString("choiceId"));
 			InputStream dataFile = activity.getResources().openRawResource(args.getInt("rawDataInt"));
-			String[] tags = new String[] { GlobalConstants.SELECTION_TAG };
-			String[] tag_attrs = new String[] {GlobalConstants.NAME_ATTR };
-			String[] subtags = new String[] {GlobalConstants.BONUS_TAG, GlobalConstants.PROFICIENCY_TAG, 
-					GlobalConstants.CHOICE_TAG};
-			String[] subtag_attrs = new String[] { GlobalConstants.BONUSGRP_TAG, GlobalConstants.NAME_ATTR,
-					GlobalConstants.TYPE_ATTR, GlobalConstants.VALUE_ATTR };
+			String[] tags = new String[] { XmlConst.SELECTION_TAG };
+			String[] tag_attrs = new String[] {XmlConst.NAME_ATTR };
+			String[] subtags = new String[] {XmlConst.BONUS_TAG, XmlConst.PROFICIENCY_TAG, 
+					XmlConst.CHOICE_TAG};
+			String[] subtag_attrs = new String[] { XmlConst.BONUSGRP_TAG, XmlConst.NAME_ATTR,
+					XmlConst.TYPE_ATTR, XmlConst.VALUE_ATTR };
 			choices = new TwoDimXmlExtractor(dataFile);
-			choices.findTagAttr(GlobalConstants.BONUSGRP_TAG, GlobalConstants.GRPNAME_ATTR, groupName);
+			choices.findTagAttr(XmlConst.BONUSGRP_TAG, XmlConst.GRPNAME_ATTR, groupName);
 			if (subGroupName != null) {
 				if (!subGroupName.equals("Any")) {
-					choices.findTagAttr(GlobalConstants.SUBGRP_ATTR, GlobalConstants.GRPNAME_ATTR, subGroupName);
-					choices.getData(GlobalConstants.SUBGRP_ATTR, tags, tag_attrs, subtags, subtag_attrs);
+					choices.findTagAttr(XmlConst.SUBGRP_ATTR, XmlConst.GRPNAME_ATTR, subGroupName);
+					choices.getData(XmlConst.SUBGRP_ATTR, tags, tag_attrs, subtags, subtag_attrs);
 				} else {
-					choices.getData(GlobalConstants.BONUSGRP_TAG, tags, tag_attrs, subtags, subtag_attrs);
+					choices.getData(XmlConst.BONUSGRP_TAG, tags, tag_attrs, subtags, subtag_attrs);
 				}
 			} else {
-				choices.getData(GlobalConstants.BONUSGRP_TAG, tags, tag_attrs, subtags, subtag_attrs);
+				choices.getData(XmlConst.BONUSGRP_TAG, tags, tag_attrs, subtags, subtag_attrs);
 			}
 			expList = (ExpandableListView) activity.findViewById(R.id.filter_exp_listview);
 			ExpandableListAdapter baseAdapt = new FilterSelectSimpleExpandableListAdapter(
 					activity, 
 					choices.groupData, 
 					R.layout.titlerow_filterselect,
-					new String[] { GlobalConstants.NAME_ATTR }, 
+					new String[] { XmlConst.NAME_ATTR }, 
 					new int[] { R.id.filtertitle_text },
 					choices.itemData, 
 					R.layout.subrow_filterselect, 
-					new String[] { GlobalConstants.TYPE_ATTR, GlobalConstants.VALUE_ATTR  }, 
+					new String[] { XmlConst.TYPE_ATTR, XmlConst.VALUE_ATTR  }, 
 					new int[] { R.id.filterselect_text, R.id.filterselect_text2 }	);
 			expList.setAdapter(baseAdapt);
 			expList.setOnItemClickListener(new ExpandableListView.OnItemClickListener() {
@@ -117,14 +117,14 @@ public class ChoiceSelectFragment extends Fragment {
 					@Override
 					public void onClick(View view) {
 						int groupPos = expList.getPositionForView((View) view.getParent());
-						String selectionName = choices.groupData.get(groupPos).get(GlobalConstants.NAME_ATTR);
+						String selectionName = choices.groupData.get(groupPos).get(XmlConst.NAME_ATTR);
 						((GeneratorActivity) getActivity()).addSelection(choiceId, groupName, subGroupName, selectionName);
 					}
 				});
 			}
 			TextView textView = (TextView)convertView.findViewById(R.id.filtertitle_text);
 			if (textView != null)
-				textView.setText(grpData.get(groupPosition).get(GlobalConstants.NAME_ATTR));
+				textView.setText(grpData.get(groupPosition).get(XmlConst.NAME_ATTR));
 			return convertView;
 		}
 	}

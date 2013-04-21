@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import com.ninjadin.pfmobile.R;
 import com.ninjadin.pfmobile.activities.InventoryActivity;
-import com.ninjadin.pfmobile.non_android.GlobalConstants;
+import com.ninjadin.pfmobile.non_android.XmlConst;
 
 public class TemplateSelectFragment extends Fragment {
 	ExpandableListView expList;
@@ -36,11 +36,11 @@ public class TemplateSelectFragment extends Fragment {
 				inventoryActivity,
 				inventoryActivity.inventoryManager.templateData.groupData,
 				R.layout.titlerow_filterselect,
-				new String[] { GlobalConstants.NAME_ATTR },
+				new String[] { XmlConst.NAME_ATTR },
 				new int[] { android.R.id.text1 },
 				inventoryActivity.inventoryManager.templateData.itemData,
 				R.layout.subrow_filterselect,
-				new String[] { GlobalConstants.NAME_ATTR, GlobalConstants.SLOT_ATTR },
+				new String[] { XmlConst.NAME_ATTR, XmlConst.SLOT_ATTR },
 				new int[] {R.id.filterselect_text, R.id.filterselect_text2 } );
 		expList.setAdapter(simpleExpAdapter);
 	}
@@ -65,14 +65,14 @@ public class TemplateSelectFragment extends Fragment {
 					@Override
 					public void onClick(View view) {
 						int groupPos = expList.getPositionForView((View) view.getParent());
-						String templateName = grpData.get(groupPos).get(GlobalConstants.NAME_ATTR);
+						String templateName = grpData.get(groupPos).get(XmlConst.NAME_ATTR);
 						((InventoryActivity) getActivity()).addTemplate(templateName);
 					}
 				});
 			}
 			TextView textView = (TextView)convertView.findViewById(R.id.filtertitle_text);
 			if (textView != null)
-				textView.setText(grpData.get(groupPosition).get(GlobalConstants.NAME_ATTR));
+				textView.setText(grpData.get(groupPosition).get(XmlConst.NAME_ATTR));
 			return convertView;
 		}
 	}
