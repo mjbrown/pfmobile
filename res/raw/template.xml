@@ -13,27 +13,22 @@
 	<levels>
 	</levels>
 	<equipment>
-	    <equipGroup name="Jewelry">
-	    	<choice groupName="Equipment" subGroup="Ring" />
-	    	<choice groupName="Equipment" subGroup="Ring" />
-	    	<choice groupName="Equipment" subGroup="Neck" />
-	    </equipGroup>
-	    <equipGroup name="Accessories">
-	    	<choice groupName="Equipment" subGroup="Head" />
-	    	<choice groupName="Equipment" subGroup="Headband" />
-	    	<choice groupName="Equipment" subGroup="Feet" />
-	    	<choice groupName="Equipment" subGroup="Hands" />
-	    	<choice groupName="Equipment" subGroup="Wrists" />
-	    	<choice groupName="Equipment" subGroup="Waist" />
-	    </equipGroup>
-	    <equipGroup name="Armor/Clothes">
-	    	<chosen groupName="Equipment" subGroup="Armor" name="Unarmored">
-	        	<bonus type="Maximum Dexterity Bonus" stackType="Base" value="65535" />
-	    	</chosen>
-	    </equipGroup>
-	    <equipGroup name="Weapons/Shields">
-	    	<choice groupName="Equipment" subGroup="Armament" />
-	    </equipGroup>
+	    <equipItem slot="Head" />
+	    <equipItem slot="Headband" />
+	    <equipItem slot="Eyes" />
+	    <equipItem slot="Neck" />
+	    <equipItem slot="Shoulders" />
+	    <equipItem slot="Chest" />
+	    <equipItem slot="Body" />
+	    <equipItem slot="Armor" />
+	    <equipItem slot="Hands" />
+	    <equipItem slot="Wrists" />
+	    <equipItem slot="Ring 1" />
+	    <equipItem slot="Ring 2" />
+	    <equipItem slot="Belt" />
+	    <equipItem slot="Held 1" />
+	    <equipItem slot="Held 2" />
+	    <equipItem slot="Feet" />
 	</equipment>
 	<spells>
 	</spells>

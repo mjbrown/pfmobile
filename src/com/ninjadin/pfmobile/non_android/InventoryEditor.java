@@ -5,6 +5,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -17,6 +21,9 @@ public class InventoryEditor {
 	public TwoDimXmlExtractor xmlData;
 	public TwoDimXmlExtractor templateData;
 	
+	public List<Map<String, String>> equipmentSlots;
+	public List<List<Map<String, String>>> equipmentItems;
+	
 	public InventoryEditor(File fullInventory, InputStream templateStream) throws FileNotFoundException, XmlPullParserException, IOException {
 		inventoryFile = fullInventory;
 		FileInputStream inStream = new FileInputStream(inventoryFile);
@@ -26,8 +33,7 @@ public class InventoryEditor {
 			inventoryParser.setInput(inStream, null);
 			inventoryParser.nextTag();
 			String[] tags = new String[] { XmlConst.ITEM_TAG };
-			String[] tag_attrs = new String[] { XmlConst.NAME_ATTR, 
-					XmlConst.TYPE_ATTR , XmlConst.SLOT_ATTR, XmlConst.SIZE_ATTR, };
+			String[] tag_attrs = new String[] { XmlConst.NAME_ATTR, XmlConst.SLOT_ATTR, };
 			String[] subtags = new String[] { XmlConst.ITEMBONUS_TAG, XmlConst.DAMAGE_TAG };
 			String[] subtag_attrs = new String[] { XmlConst.NAME_ATTR, XmlConst.TYPE_ATTR, 
 					XmlConst.VALUE_ATTR , XmlConst.STATISTIC_ATTR, XmlConst.SOURCE_ATTR, };
@@ -45,6 +51,23 @@ public class InventoryEditor {
 		String[] subtag_attrs = new String[] { XmlConst.NAME_ATTR, 
 				XmlConst.TYPE_ATTR, XmlConst.SLOT_ATTR, XmlConst.SIZE_ATTR };
 		templateData = new TwoDimXmlExtractor(templateParser, "equipmentTemplates", tags, tag_attrs, subtags, subtag_attrs);
+	}
+	
+	public void getSlotItems() {
+		equipmentSlots = new ArrayList<Map<String, String>>();
+		for (String slot: PropertyLists.slotNames) {
+			Map<String, String> slotMap = new HashMap<String, String>();
+			slotMap.put(XmlConst.NAME_ATTR, slot);
+			equipmentSlots.add(slotMap);
+			List<Map<String, String>> itemList = new ArrayList<Map<String,String>>();
+			for (Map<String, String> itemInfo: xmlData.groupData) {
+				String itemSlot = itemInfo.get(XmlConst.SLOT_ATTR);
+				if (itemSlot.equals(slot)) {
+					itemList.add(itemInfo);
+				}
+			}
+			equipmentItems.add(itemList);
+		}
 	}
 	
 	public void addFromTemplate(InputStream templateFileStream, String templateName, File tempFile) throws FileNotFoundException, XmlPullParserException, IOException {

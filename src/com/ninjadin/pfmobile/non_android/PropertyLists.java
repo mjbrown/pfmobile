@@ -53,7 +53,7 @@ public class PropertyLists {
 	"Armor Check", "Hit Points", "Maximum Dexterity Bonus", "Combat Maneuver Bonus", "Skill Points",
 	"Spell Resistance", "Initiative", "Spell Penetration", "Encumbrance", "Equipment Cost", "Sneak Attack Dice" };
 
-	final static public String[] slotNames = new String[] { "Head", "Headband",
+	final static public String[] slotNames = new String[] { "Head", "Headband", "Wrists", "Feet",
 	"Eyes", "Neck", "Shoulders", "Chest", "Body", "Armor", "Hands", "Ring", "Belt", "Held", };
 
 	final static public String[] itemTypes = new String[] { "Item", "Simple Weapon", "Martial Weapon",
