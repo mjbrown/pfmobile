@@ -40,7 +40,7 @@ public class EquipmentFragment extends Fragment {
 			public boolean onChildClick(ExpandableListView parent, View v,
 					int groupPosition, int childPosition, long id) {
 				GeneratorActivity activity = ((GeneratorActivity) getActivity());
-				String slotName = activity.inventoryManager.equipmentSlots.get(groupPosition).get(XmlConst.NAME_ATTR);
+				String slotName = activity.inventoryManager.equipmentItems.get(groupPosition).get(childPosition).get(XmlConst.SLOT_ATTR);
 				String itemName = activity.inventoryManager.equipmentItems.get(groupPosition).get(childPosition).get(XmlConst.NAME_ATTR);
 				activity.equipItem(slotName, itemName);
 				// TODO Auto-generated method stub

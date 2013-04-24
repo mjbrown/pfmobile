@@ -13,22 +13,38 @@
 	<levels>
 	</levels>
 	<equipment>
-	    <equipItem slot="Head" />
-	    <equipItem slot="Headband" />
-	    <equipItem slot="Eyes" />
-	    <equipItem slot="Neck" />
-	    <equipItem slot="Shoulders" />
-	    <equipItem slot="Chest" />
-	    <equipItem slot="Body" />
-	    <equipItem slot="Armor" />
-	    <equipItem slot="Hands" />
-	    <equipItem slot="Wrists" />
-	    <equipItem slot="Ring 1" />
-	    <equipItem slot="Ring 2" />
-	    <equipItem slot="Belt" />
-	    <equipItem slot="Held 1" />
-	    <equipItem slot="Held 2" />
-	    <equipItem slot="Feet" />
+	    <equipItem slot="Head">
+	    </equipItem>
+	    <equipItem slot="Headband">
+	    </equipItem>
+	    <equipItem slot="Eyes">
+	    </equipItem>
+	    <equipItem slot="Neck">
+	    </equipItem>
+	    <equipItem slot="Shoulders">
+	    </equipItem>
+	    <equipItem slot="Chest">
+	    </equipItem>
+	    <equipItem slot="Body">
+	    </equipItem>
+	    <equipItem slot="Armor">
+	    </equipItem>
+	    <equipItem slot="Hands">
+	    </equipItem>
+	    <equipItem slot="Wrists">
+	    </equipItem>
+	    <equipItem slot="Ring 1">
+		</equipItem>
+	    <equipItem slot="Ring 2">
+		</equipItem>
+	    <equipItem slot="Belt">
+		</equipItem>
+	    <equipItem slot="Held 1">
+		</equipItem>
+	    <equipItem slot="Held 2">
+		</equipItem>
+	    <equipItem slot="Feet">
+	    </equipItem>
 	</equipment>
 	<spells>
 	</spells>

@@ -57,12 +57,12 @@ public class CharacterData {
 	}
 	
 	private void readCharacterData(XmlPullParser parser) throws XmlPullParserException, IOException {
-		parser.require(XmlPullParser.START_TAG, null, XmlConst.TEMPLATE_TAG);
+		parser.require(XmlPullParser.START_TAG, null, XmlConst.CHARTEMPLATE_TAG);
 		while (parser.next() != XmlPullParser.END_DOCUMENT) {
 			// Run until the end of characterTemplate or END_DOCUMENT
 			if (parser.getEventType() == XmlPullParser.END_TAG) {
 				if (parser.getName() != null)
-					if (parser.getName().equals(XmlConst.TEMPLATE_TAG))
+					if (parser.getName().equals(XmlConst.CHARTEMPLATE_TAG))
 						break;
 			} 
 			if (parser.getEventType() != XmlPullParser.START_TAG)
@@ -79,7 +79,7 @@ public class CharacterData {
 				} else if (name.equals(XmlConst.SKILLS_TAG)) {
 					readSkills(parser);
 				} else if (name.equals(XmlConst.EQUIP_TAG)) {
-					
+					readEquipment(parser);
 				}
 			}
 			if (parser.getEventType() == XmlPullParser.END_DOCUMENT)
@@ -111,7 +111,7 @@ public class CharacterData {
 	}
 	
 	public void writeCharacterData(File temp) throws IOException {
-		String header = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<" + XmlConst.TEMPLATE_TAG + ">\n" + startTag(XmlConst.INFO_TAG);
+		String header = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<" + XmlConst.CHARTEMPLATE_TAG + ">\n" + startTag(XmlConst.INFO_TAG);
 // Create a temporary file with fresh Info/Stats
 		FileOutputStream outStream;
 		outStream = new FileOutputStream(temp);
@@ -126,7 +126,7 @@ public class CharacterData {
 		outStream.write((endTag(XmlConst.LEVELS_TAG) + startTag(XmlConst.EQUIP_TAG)).getBytes());
 		outStream.write((endTag(XmlConst.EQUIP_TAG) + startTag(XmlConst.SPELLS_TAG)).getBytes());
 		outStream.write((endTag(XmlConst.SPELLS_TAG)).getBytes());
-		outStream.write(("</" + XmlConst.TEMPLATE_TAG + ">\n").getBytes());
+		outStream.write(("</" + XmlConst.CHARTEMPLATE_TAG + ">\n").getBytes());
 		outStream.close();
 // Copy level data from charFile to tempFile
 		copyChoiceData(temp, tempFile, charFile);
@@ -190,6 +190,15 @@ public class CharacterData {
 		String insertBefore = "<" + XmlConst.LEVEL_TAG + " " + XmlConst.NUM_ATTR + "=\"" + Integer.toString(charLevel) + "\">";
 		String continueOn = "</" + XmlConst.LEVELS_TAG + ">";
 		XmlEditor.copyReplace(charFile, tempFile, null, null, null, insertBefore, continueOn, null, null);
+		tempFile.renameTo(charFile);
+	}
+	
+	public void equipItem(String slot, String name) throws IOException {
+		String insertBefore = "<" + XmlConst.EQUIPITEM_TAG + " " + XmlConst.SLOT_ATTR + "=\"" + slot;
+		String continueOn = "</" + XmlConst.EQUIPITEM_TAG + ">";
+		String customBefore = "<" + XmlConst.EQUIPITEM_TAG + " " + XmlConst.SLOT_ATTR + "=\"" + slot + 
+				"\" " + XmlConst.NAME_ATTR + "=\"" + name + "\">";
+		XmlEditor.copyReplace(charFile, tempFile, null, null, null, insertBefore, continueOn, customBefore, null);
 		tempFile.renameTo(charFile);
 	}
 

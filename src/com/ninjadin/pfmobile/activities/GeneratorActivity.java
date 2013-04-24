@@ -128,6 +128,26 @@ public class GeneratorActivity extends FragmentActivity {
 		}
 	}
 	
+	public void refreshInventoryData() {
+		Intent intent = getIntent();
+		String inventoryFilename = intent.getStringExtra(LoginLoadActivity.INVFILE_MESSAGE);
+		InputStream templateStream = this.getResources().openRawResource(R.raw.equipment);
+		inventoryFile = new File(this.getFilesDir(), inventoryFilename);
+		try {
+			inventoryManager = new InventoryManager(inventoryFile, templateStream);
+			templateStream.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (XmlPullParserException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	@Override
 	public void onPause() {
 		super .onPause();
@@ -335,27 +355,14 @@ public class GeneratorActivity extends FragmentActivity {
 		startMenu(templateName + " added.");
 	}
 	
-	public void refreshInventoryData() {
-		Intent intent = getIntent();
-		String inventoryFilename = intent.getStringExtra(LoginLoadActivity.INVFILE_MESSAGE);
-		InputStream templateStream = this.getResources().openRawResource(R.raw.equipment);
-		inventoryFile = new File(this.getFilesDir(), inventoryFilename);
+	public void equipItem(String slotName, String itemName) {
 		try {
-			inventoryManager = new InventoryManager(inventoryFile, templateStream);
-			templateStream.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (XmlPullParserException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			if (charData != null)
+				charData.equipItem(slotName, itemName);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	
-	public void equipItem(String slotName, String itemName) {
-		
+		startMenu(itemName + " equipped to " + slotName + ".");
 	}
 }
