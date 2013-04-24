@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 import com.ninjadin.pfmobile.R;
 import com.ninjadin.pfmobile.activities.GeneratorActivity;
-import com.ninjadin.pfmobile.non_android.PropertyLists;
+import com.ninjadin.pfmobile.data.PropertyLists;
 
 public class SkillsFragment extends Fragment {
 	private ListView skillListView;

@@ -11,6 +11,9 @@ import java.util.Map;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+import com.ninjadin.pfmobile.data.PropertyLists;
+import com.ninjadin.pfmobile.data.XmlConst;
+
 
 import android.util.Xml;
 

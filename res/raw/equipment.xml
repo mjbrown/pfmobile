@@ -27,6 +27,7 @@
     <template name="Light Armor">
         <item name="Studded Leather" slot="Armor" >
             <itemProperty type="Proficiency" value="Light Armor" />
+            <itemProperty type="Size" value="Light" />
             <itemProperty type="Armor" value="3" />
 	        <itemProperty type="Max Dex" value="5" />
 	        <itemProperty type="Armor Check" value="1" />
@@ -40,7 +41,8 @@
     <template name="Medium Armor">
         <item name="Steel Breastplate" slot="Armor" >
             <itemProperty type="Proficiency" value="Medium Armor" />
-	        <itemProperty type="Armor" value="6" />
+            <itemProperty type="Size" value="Medium" />
+            <itemProperty type="Armor" value="6" />
 	        <itemProperty type="Max Dex" value="3" />
 	        <itemProperty type="Armor Check" value="4" />
 	        <itemProperty type="Spell Failure" value="25" />
@@ -53,7 +55,8 @@
     <template name="Heavy Armor">
         <item name="Steel Half-plate" slot="Armor">
             <itemProperty type="Proficiency" value="Heavy Armor" />
-	        <itemProperty type="Armor" value="8" />
+            <itemProperty type="Size" value="Heavy" />
+            <itemProperty type="Armor" value="8" />
 	        <itemProperty type="Max Dex" value="0" />
 	        <itemProperty type="Armor Check" value="7" />
 	        <itemProperty type="Spell Failure" value="40" />

@@ -20,8 +20,8 @@ import android.widget.Spinner;
 import com.ninjadin.pfmobile.R;
 
 public class LoginLoadActivity extends Activity {
-	public final static String EXTRA_MESSAGE = "com.ninjadin.pfmobile.MESSAGE";
-
+	public final static String CHARFILE_MESSAGE = "com.ninjadin.pfmobile.CHARFILE";
+	public final static String INVFILE_MESSAGE = "com.ninjadin.pfmobile.INVFILE";
 	private ArrayAdapter<String> adapter;
 	
 	@Override
@@ -52,13 +52,15 @@ public class LoginLoadActivity extends Activity {
     }
     // Called when the user clicks the new_char button
     public void newChar(View view) {
-    	
+    	// Get the new file name from the text box
     	Intent intent = new Intent(this, GeneratorActivity.class);
     	EditText editText = (EditText) findViewById(R.id.char_filename);
-    	// Get the new file name from the text box
     	String newFilename = editText.getText().toString();
-    	intent.putExtra(EXTRA_MESSAGE, newFilename);
+    	String invFilename = newFilename + "_inv.xml";
+    	intent.putExtra(CHARFILE_MESSAGE, newFilename);
+    	intent.putExtra(INVFILE_MESSAGE, invFilename);
     	// Create the new file from the blank template
+    	File inventoryFile = new File(this.getFilesDir(), invFilename);
     	File newFile = new File(this.getFilesDir(), newFilename);
     	try {
 			FileOutputStream out = new FileOutputStream(newFile);
@@ -70,6 +72,10 @@ public class LoginLoadActivity extends Activity {
 			}
 			in.close();
 			out.close();
+			FileOutputStream oStream = new FileOutputStream(inventoryFile);
+			oStream.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n".getBytes());
+			oStream.write("<inventory>\n</inventory>\n".getBytes());
+    		oStream.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -83,32 +89,13 @@ public class LoginLoadActivity extends Activity {
     
     // Called when the user clicks the open_char button
     public void openChar(View view) {
-    	Intent intent = new Intent(this, GeneratorActivity.class);
     	Spinner spinner = (Spinner) findViewById(R.id.chars_spinner);
-    	String openFilename = spinner.getSelectedItem().toString();
-       	intent.putExtra(EXTRA_MESSAGE, openFilename);
+    	String charFilename = spinner.getSelectedItem().toString();
+    	String invFilename = charFilename + "_inv.xml";
+    	Intent intent = new Intent(this, GeneratorActivity.class);
+    	intent.putExtra(INVFILE_MESSAGE, invFilename);
+       	intent.putExtra(CHARFILE_MESSAGE, charFilename);
         startActivity(intent);
     }
     
-    public void openInventory(View view) {
-    	String invFilename = "master_inventory.xml";
-    	File inventoryFile = new File(this.getFilesDir(), invFilename);
-    	if (!inventoryFile.exists()) {
-    		try {
-				FileOutputStream oStream = new FileOutputStream(inventoryFile);
-				oStream.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n".getBytes());
-				oStream.write("<inventory>\n</inventory>\n".getBytes());
-	    		oStream.close();
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-    	}
-    	Intent intent = new Intent(this, InventoryActivity.class);
-    	intent.putExtra(EXTRA_MESSAGE, invFilename);
-    	startActivity(intent);
-    }
 }

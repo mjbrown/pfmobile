@@ -2,6 +2,7 @@ package com.ninjadin.pfmobile.activities;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -22,19 +23,24 @@ import android.widget.Toast;
 import com.ninjadin.pfmobile.R;
 import com.ninjadin.pfmobile.fragments.ChoiceSelectFragment;
 import com.ninjadin.pfmobile.fragments.ChoicesFragment;
+import com.ninjadin.pfmobile.fragments.EquipmentFragment;
 import com.ninjadin.pfmobile.fragments.GeneratorMenuFragment;
 import com.ninjadin.pfmobile.fragments.InfoFragment;
-import com.ninjadin.pfmobile.fragments.InventoryMenuFragment;
+import com.ninjadin.pfmobile.fragments.InventoryFragment;
 import com.ninjadin.pfmobile.fragments.PointBuyFragment;
 import com.ninjadin.pfmobile.fragments.ShowCharacterXMLFragment;
 import com.ninjadin.pfmobile.fragments.SkillsFragment;
 import com.ninjadin.pfmobile.fragments.StatisticsFragment;
+import com.ninjadin.pfmobile.fragments.TemplateSelectFragment;
 import com.ninjadin.pfmobile.non_android.CharacterData;
+import com.ninjadin.pfmobile.non_android.InventoryManager;
 import com.ninjadin.pfmobile.non_android.StatisticManager;
 
 public class GeneratorActivity extends FragmentActivity {
 	public CharacterData charData;
 	public StatisticManager dependencyManager;
+	public File inventoryFile;
+	public InventoryManager inventoryManager;
 	public String masterCharFilename;
 	public String tempFilename;
 	public File charFile;
@@ -95,11 +101,12 @@ public class GeneratorActivity extends FragmentActivity {
 	public void onResume() {
 		super .onResume();
 		refreshCharData();
+		refreshInventoryData();
 	}
 	
 	public void refreshCharData() {
 		Intent intent = getIntent();
-		masterCharFilename = intent.getStringExtra(LoginLoadActivity.EXTRA_MESSAGE);
+		masterCharFilename = intent.getStringExtra(LoginLoadActivity.CHARFILE_MESSAGE);
 		tempFilename = masterCharFilename.concat(".temp");
 		charFile = new File(this.getFilesDir(), masterCharFilename);
 		tempFile = new File(this.getFilesDir(), tempFilename);
@@ -180,11 +187,7 @@ public class GeneratorActivity extends FragmentActivity {
 	}
 	
 	public void launchEquipment(View view) {
-		refreshCharData();
-		ChoicesFragment newFragment = new ChoicesFragment();
-		Bundle passedData = new Bundle();
-		passedData.putString("choiceType", "Equipment");
-		newFragment.setArguments(passedData);
+		EquipmentFragment newFragment = new EquipmentFragment();
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.fragment_container, newFragment);
 		transaction.addToBackStack(null);
@@ -192,7 +195,7 @@ public class GeneratorActivity extends FragmentActivity {
 	}
 	
 	public void launchInventory(View view) {
-		InventoryMenuFragment newFragment = new InventoryMenuFragment();
+		InventoryFragment newFragment = new InventoryFragment();
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.fragment_container, newFragment);
 		transaction.addToBackStack(null);
@@ -302,5 +305,57 @@ public class GeneratorActivity extends FragmentActivity {
 	public void statChange(View view) {
 		((PointBuyFragment) getSupportFragmentManager().findFragmentById(
 				R.id.fragment_container)).statChange(view);
+	}
+	
+	public void addFromTemplate(View view) {
+		TemplateSelectFragment newFragment = new TemplateSelectFragment();
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+		transaction.replace(R.id.fragment_container, newFragment);
+		transaction.addToBackStack(null);
+		transaction.commit();
+	}
+	
+	public void addTemplate(String templateName) {
+		File tempFile = new File(this.getFilesDir(), "temp_file.xml");
+		InputStream templateFileStream = this.getResources().openRawResource(R.raw.equipment);
+		try {
+			inventoryManager.addFromTemplate(templateFileStream, templateName, tempFile);
+			templateFileStream.close();
+			refreshInventoryData();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (XmlPullParserException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		startMenu(templateName + " added.");
+	}
+	
+	public void refreshInventoryData() {
+		Intent intent = getIntent();
+		String inventoryFilename = intent.getStringExtra(LoginLoadActivity.INVFILE_MESSAGE);
+		InputStream templateStream = this.getResources().openRawResource(R.raw.equipment);
+		inventoryFile = new File(this.getFilesDir(), inventoryFilename);
+		try {
+			inventoryManager = new InventoryManager(inventoryFile, templateStream);
+			templateStream.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (XmlPullParserException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void equipItem(String slotName, String itemName) {
+		
 	}
 }

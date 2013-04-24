@@ -6,6 +6,8 @@ import java.io.IOException;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+import com.ninjadin.pfmobile.data.XmlConst;
+
 
 public class CharacterInfo {
 	public String characterName;

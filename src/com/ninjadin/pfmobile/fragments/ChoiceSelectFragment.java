@@ -24,15 +24,15 @@ import android.widget.TextView;
 
 import com.ninjadin.pfmobile.R;
 import com.ninjadin.pfmobile.activities.GeneratorActivity;
-import com.ninjadin.pfmobile.non_android.XmlConst;
-import com.ninjadin.pfmobile.non_android.TwoDimXmlExtractor;
+import com.ninjadin.pfmobile.data.XmlConst;
+import com.ninjadin.pfmobile.non_android.XmlExtractor;
 
 public class ChoiceSelectFragment extends Fragment {
 	ExpandableListView expList;
 	int choiceId;
 	String groupName;
 	String subGroupName;
-	TwoDimXmlExtractor choices;
+	XmlExtractor choices;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,26 +47,26 @@ public class ChoiceSelectFragment extends Fragment {
 		try {
 			Bundle args = this.getArguments();
 			groupName = args.getString(XmlConst.GRPNAME_ATTR);
-			subGroupName = args.getString(XmlConst.SUBGRP_ATTR);
+			subGroupName = args.getString(XmlConst.SUBGRP);
 			choiceId = Integer.parseInt(args.getString("choiceId"));
 			InputStream dataFile = activity.getResources().openRawResource(args.getInt("rawDataInt"));
 			String[] tags = new String[] { XmlConst.SELECTION_TAG };
 			String[] tag_attrs = new String[] {XmlConst.NAME_ATTR };
 			String[] subtags = new String[] {XmlConst.BONUS_TAG, XmlConst.PROFICIENCY_TAG, 
 					XmlConst.CHOICE_TAG};
-			String[] subtag_attrs = new String[] { XmlConst.BONUSGRP_TAG, XmlConst.NAME_ATTR,
+			String[] subtag_attrs = new String[] { XmlConst.BONUSGRP, XmlConst.NAME_ATTR,
 					XmlConst.TYPE_ATTR, XmlConst.VALUE_ATTR };
-			choices = new TwoDimXmlExtractor(dataFile);
-			choices.findTagAttr(XmlConst.BONUSGRP_TAG, XmlConst.GRPNAME_ATTR, groupName);
+			choices = new XmlExtractor(dataFile);
+			choices.findTagAttr(XmlConst.BONUSGRP, XmlConst.GRPNAME_ATTR, groupName);
 			if (subGroupName != null) {
 				if (!subGroupName.equals("Any")) {
-					choices.findTagAttr(XmlConst.SUBGRP_ATTR, XmlConst.GRPNAME_ATTR, subGroupName);
-					choices.getData(XmlConst.SUBGRP_ATTR, tags, tag_attrs, subtags, subtag_attrs);
+					choices.findTagAttr(XmlConst.SUBGRP, XmlConst.GRPNAME_ATTR, subGroupName);
+					choices.getData(XmlConst.SUBGRP, tags, tag_attrs, subtags, subtag_attrs);
 				} else {
-					choices.getData(XmlConst.BONUSGRP_TAG, tags, tag_attrs, subtags, subtag_attrs);
+					choices.getData(XmlConst.BONUSGRP, tags, tag_attrs, subtags, subtag_attrs);
 				}
 			} else {
-				choices.getData(XmlConst.BONUSGRP_TAG, tags, tag_attrs, subtags, subtag_attrs);
+				choices.getData(XmlConst.BONUSGRP, tags, tag_attrs, subtags, subtag_attrs);
 			}
 			expList = (ExpandableListView) activity.findViewById(R.id.filter_exp_listview);
 			ExpandableListAdapter baseAdapt = new FilterSelectSimpleExpandableListAdapter(

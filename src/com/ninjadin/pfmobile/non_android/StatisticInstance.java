@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ninjadin.pfmobile.data.PropertyLists;
+
 
 public class StatisticInstance {
 	private int finalValue;

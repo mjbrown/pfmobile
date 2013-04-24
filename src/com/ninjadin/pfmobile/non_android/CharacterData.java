@@ -17,14 +17,17 @@ import java.util.Map;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+import com.ninjadin.pfmobile.data.PropertyLists;
+import com.ninjadin.pfmobile.data.XmlConst;
+
 
 import android.util.Xml;
 
 public class CharacterData {
 	public int charLevel = 0;
 
-	public TwoDimXmlExtractor levels;
-	public TwoDimXmlExtractor equipment;
+	public XmlExtractor levels;
+	public Map<String, String> equipment;  // <SLOT, NAME>
 	
 	public CharacterInfo info;
 	
@@ -35,30 +38,6 @@ public class CharacterData {
 	public int pointBuyRemaining = 20;
 	private int base_stats[] = { 10, 10, 10, 10, 10, 10 };
 	
-	final private static String TEMPLATE_TAG = "characterTemplate";
-	final private static String LEVEL_TAG = "characterLevel";
-	final private static String SELECTION_TAG = "selection";
-	final private static String CHOICE_TAG = "choice";
-	final private static String CHOSEN_TAG = "chosen";
-	final private static String POINTBUY_TAG = "pointBuy";
-	final private static String INFO_TAG = "info";
-	final private static String LEVELS_TAG = "levels";
-	final private static String SKILLS_TAG = "skills";
-	final private static String EQUIP_TAG = "equipment";
-	final private static String EQUIPGRP_TAG = "equipGroup";
-	final private static String SPELLS_TAG = "spells";
-	final private static String BONUS_TAG = "bonus";
-	final private static String PROFICIENCY_TAG = "proficiency";
-
-	final private static String GRPNAME_ATTR = "groupName";
-	final private static String SUBGRP_ATTR = "subGroup";
-	final private static String NUM_ATTR = "number";
-	final private static String NAME_ATTR = "name";
-	final private static String TYPE_ATTR = "type";
-	final private static String VALUE_ATTR = "value";
-	final private static String STACKTYPE_ATTR = "stackType";
-	final private static String SOURCE_ATTR = "source";
-
 	public CharacterData(File originalFile, File temporaryFile) throws XmlPullParserException, IOException {
 		charFile = originalFile;
 		tempFile = temporaryFile;
@@ -100,35 +79,39 @@ public class CharacterData {
 				} else if (name.equals(XmlConst.SKILLS_TAG)) {
 					readSkills(parser);
 				} else if (name.equals(XmlConst.EQUIP_TAG)) {
-					choice_id += readEquipment(parser, choice_id);
+					
 				}
 			}
 			if (parser.getEventType() == XmlPullParser.END_DOCUMENT)
 				break;
 		}
 	}
-	
-	// TODO: this can be merged with readLevels because very little is different...
-	private int readEquipment(XmlPullParser parser, int choice_id) throws XmlPullParserException, IOException {
-		String[] tag_names = new String[] { XmlConst.EQUIPGRP_TAG, };
-		String[] tag_attrs = new String[] { XmlConst.NAME_ATTR, };
-		String[] subtag_names = new String[] { XmlConst.CHOICE_TAG, CHOSEN_TAG, };
-		String[] subtag_attrs = new String[] { XmlConst.NAME_ATTR, GRPNAME_ATTR, SUBGRP_ATTR, };
-		equipment = new TwoDimXmlExtractor(parser, XmlConst.EQUIP_TAG, 0, choice_id, tag_names, tag_attrs, subtag_names, subtag_attrs);
-		return equipment.subTagCount;
+	public void readEquipment(XmlPullParser parser) throws XmlPullParserException, IOException {
+		equipment = new HashMap<String, String> ();
+		String[] tag_names = new String[] { XmlConst.EQUIPITEM_TAG };
+		String[] tag_attrs = new String[] { XmlConst.SLOT_ATTR, XmlConst.NAME_ATTR };
+		XmlExtractor equipItems = new XmlExtractor(parser);
+		equipItems.getData(XmlConst.EQUIP_TAG, tag_names, tag_attrs, null, null);
+		for (Map<String,String> item: equipItems.groupData) {
+			String slot = item.get(XmlConst.SLOT_ATTR);
+			String name = item.get(XmlConst.NAME_ATTR);
+			if ((slot != null) && (name != null))
+				equipment.put(slot, name);
+		}
 	}
 	// Populate level names and the choices associated with each character level
 	public int readLevels(XmlPullParser parser, int choice_id) throws XmlPullParserException, IOException{
 		String[] tag_names = new String[] { XmlConst.LEVEL_TAG, };
 		String[] tag_attrs = new String[] { XmlConst.NUM_ATTR, };
 		String[] subtag_names = new String[] { XmlConst.CHOICE_TAG, XmlConst.CHOSEN_TAG, };
-		String[] subtag_attrs = new String[] { XmlConst.NAME_ATTR, XmlConst.GRPNAME_ATTR, XmlConst.SUBGRP_ATTR, };
-		levels = new TwoDimXmlExtractor(parser, XmlConst.LEVELS_TAG, 0, choice_id, tag_names, tag_attrs, subtag_names, subtag_attrs);
+		String[] subtag_attrs = new String[] { XmlConst.NAME_ATTR, XmlConst.GRPNAME_ATTR, XmlConst.SUBGRP, };
+		levels = new XmlExtractor(parser, 0, choice_id);
+		levels.getData(XmlConst.LEVELS_TAG, tag_names, tag_attrs, subtag_names, subtag_attrs);
 		return levels.subTagCount;
 	}
 	
 	public void writeCharacterData(File temp) throws IOException {
-		String header = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<" + TEMPLATE_TAG + ">\n" + startTag(INFO_TAG);
+		String header = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<" + XmlConst.TEMPLATE_TAG + ">\n" + startTag(XmlConst.INFO_TAG);
 // Create a temporary file with fresh Info/Stats
 		FileOutputStream outStream;
 		outStream = new FileOutputStream(temp);
@@ -138,7 +121,7 @@ public class CharacterData {
 		writeAbilityScores(outStream);
 		outStream.write((endTag(XmlConst.POINTBUY_TAG) + startTag(XmlConst.SKILLS_TAG)).getBytes());
 		writeSkills(outStream);
-		outStream.write((endTag(XmlConst.SKILLS_TAG) + startTag(LEVELS_TAG)).getBytes());
+		outStream.write((endTag(XmlConst.SKILLS_TAG) + startTag(XmlConst.LEVELS_TAG)).getBytes());
 		// Equip must follow levels, see copyLevelData
 		outStream.write((endTag(XmlConst.LEVELS_TAG) + startTag(XmlConst.EQUIP_TAG)).getBytes());
 		outStream.write((endTag(XmlConst.EQUIP_TAG) + startTag(XmlConst.SPELLS_TAG)).getBytes());
@@ -249,37 +232,37 @@ public class CharacterData {
 		// Find groupName in dataFile
 		String dataLine = choiceInput.readLine();
 		while (dataLine != null) {
-			if (dataLine.trim().startsWith("<bonusGroup groupName=\"" + groupName + "\""))
+			if (dataLine.trim().startsWith("<" + XmlConst.BONUSGRP + " " + XmlConst.GRPNAME_ATTR + "=\"" + groupName + "\""))
 				break;
 			dataLine = choiceInput.readLine();
 		}
 		// Find selectionName in groupName in dataFile
 		while (dataLine != null) {
-			if (dataLine.trim().startsWith("<" + SELECTION_TAG + " name=\"" + selectionName))
+			if (dataLine.trim().startsWith("<" + XmlConst.SELECTION_TAG + " " + XmlConst.NAME_ATTR + "=\"" + selectionName))
 				break;
 			dataLine = choiceInput.readLine();
 		}
 		// Insert chosen in place of choice/chosen
-		destChar.write("<chosen groupName=\"" + groupName + "\"");
+		destChar.write("<" + XmlConst.CHOSEN_TAG + " " + XmlConst.GRPNAME_ATTR + "=\"" + groupName + "\"");
 		if (subGroup != null) {
-			destChar.write(" subGroup=\"" + subGroup + "\"");
+			destChar.write(" " + XmlConst.SUBGRP + "=\"" + subGroup + "\"");
 		}
-		destChar.write(" name=\"" + selectionName + "\">");
+		destChar.write(" " + XmlConst.NAME_ATTR + "=\"" + selectionName + "\">");
 		destChar.newLine();
 		dataLine = choiceInput.readLine();
 		while (dataLine != null) {
-			if (dataLine.trim().startsWith("</selection>"))
+			if (dataLine.trim().startsWith("</" + XmlConst.SELECTION_TAG + ">"))
 				break;
 			destChar.write(dataLine);
 			destChar.newLine();
 			dataLine = choiceInput.readLine();
 		}
-		destChar.write("</chosen>");
+		destChar.write(endTag(XmlConst.CHOSEN_TAG));
 		destChar.newLine();
 		// Skip to the end of source choice/chosen
-		if (sourceLine.trim().startsWith("<" + CHOICE_TAG) == false) {
+		if (sourceLine.trim().startsWith("<" + XmlConst.CHOICE_TAG) == false) {
 			while (sourceLine != null) {	// FIXME have to differentiate between CHOICE and CHOSEN due to nested choices
-				if (sourceLine.trim().startsWith("</chosen>"))
+				if (sourceLine.trim().startsWith(endTag(XmlConst.CHOSEN_TAG)))
 					break;
 				sourceLine = sourceChar.readLine();
 			}
@@ -296,9 +279,9 @@ public class CharacterData {
 		tempFile.renameTo(charFile);
 	}
 	public void writeAbilityScores(FileOutputStream fpOut) throws IOException {
-		String tagHeader = "\t\t<" + BONUS_TAG + " " + TYPE_ATTR + "=\"";
-		String stackType = "\" " + STACKTYPE_ATTR + "=\"Ranks\" ";
-		String value = " " + VALUE_ATTR + "=\"";
+		String tagHeader = "\t\t<" + XmlConst.BONUS_TAG + " " + XmlConst.TYPE_ATTR + "=\"";
+		String stackType = "\" " + XmlConst.STACKTYPE_ATTR + "=\"Ranks\" ";
+		String value = " " + XmlConst.VALUE_ATTR + "=\"";
 		String tagFooter = "\" />\n";
 		for (int i = 0; i < PropertyLists.abilityScoreNames.length; i++) {
 			fpOut.write((tagHeader + PropertyLists.abilityScoreNames[i] + stackType + value + Integer.toString(base_stats[i]) + tagFooter).getBytes());
@@ -310,7 +293,7 @@ public class CharacterData {
 		while (parser.next() != XmlPullParser.END_DOCUMENT) {
 			if (parser.getEventType() == XmlPullParser.END_TAG) {
 				if (parser.getName() != null) {
-					if (parser.getName().equals(CharacterData.POINTBUY_TAG)) {
+					if (parser.getName().equals(XmlConst.POINTBUY_TAG)) {
 						break;
 					}
 				}
@@ -320,9 +303,9 @@ public class CharacterData {
 			}
 			String name = parser.getName();
 			if (name != null) {
-				if (name.equals(BONUS_TAG)) {
-					String stat_name = parser.getAttributeValue(null, TYPE_ATTR);
-					String value_str = parser.getAttributeValue(null, VALUE_ATTR);
+				if (name.equals(XmlConst.BONUS_TAG)) {
+					String stat_name = parser.getAttributeValue(null, XmlConst.TYPE_ATTR);
+					String value_str = parser.getAttributeValue(null, XmlConst.VALUE_ATTR);
 					if ((stat_name != null) && (value_str != null)) {
 						for (int i = 0; i < PropertyLists.abilityScoreNames.length; i++) {
 							if (stat_name.equals(PropertyLists.abilityScoreNames[i])) {

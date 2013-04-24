@@ -14,7 +14,7 @@ import android.widget.SimpleExpandableListAdapter;
 
 import com.ninjadin.pfmobile.R;
 import com.ninjadin.pfmobile.activities.GeneratorActivity;
-import com.ninjadin.pfmobile.non_android.XmlConst;
+import com.ninjadin.pfmobile.data.XmlConst;
 
 public class ChoicesFragment extends Fragment {
 	List<Map<String, String>> groupData;
@@ -35,9 +35,6 @@ public class ChoicesFragment extends Fragment {
 		if (choiceType.equals("Levels")) {
 			groupData = activity.charData.levels.groupData;
 			listData = activity.charData.levels.itemData;
-		} else if (choiceType.equals("Equipment")) {
-			groupData = activity.charData.equipment.groupData;
-			listData = activity.charData.equipment.itemData;
 		}
 		ExpandableListView expList = (ExpandableListView) activity.findViewById(R.id.expandableListView1);
 		ExpandableListAdapter baseAdapt = new SimpleExpandableListAdapter(
@@ -48,7 +45,7 @@ public class ChoicesFragment extends Fragment {
 				new int[] { android.R.id.text1 }, 
 				listData, 
 				android.R.layout.simple_expandable_list_item_2, 
-				new String[] { XmlConst.GRPNAME_ATTR, XmlConst.SUBGRP_ATTR  }, 
+				new String[] { XmlConst.GRPNAME_ATTR, XmlConst.SUBGRP  }, 
 				new int[] { android.R.id.text1, android.R.id.text2 }	);
 		expList.setAdapter(baseAdapt);
 		expList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
@@ -57,7 +54,7 @@ public class ChoicesFragment extends Fragment {
 				GeneratorActivity activity = ((GeneratorActivity) getActivity());
 				String groupName = listData.get(groupPosition).get(childPosition).get(XmlConst.GRPNAME_ATTR);
 				String choiceId = listData.get(groupPosition).get(childPosition).get(XmlConst.NUM_ATTR);
-				String subGroup = listData.get(groupPosition).get(childPosition).get(XmlConst.SUBGRP_ATTR);
+				String subGroup = listData.get(groupPosition).get(childPosition).get(XmlConst.SUBGRP);
 				activity.launchFilterSelect(view, groupName, subGroup, choiceId);
 				return false;
 			}

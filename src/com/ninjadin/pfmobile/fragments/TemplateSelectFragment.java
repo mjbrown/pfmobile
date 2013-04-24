@@ -17,8 +17,8 @@ import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 
 import com.ninjadin.pfmobile.R;
-import com.ninjadin.pfmobile.activities.InventoryActivity;
-import com.ninjadin.pfmobile.non_android.XmlConst;
+import com.ninjadin.pfmobile.activities.GeneratorActivity;
+import com.ninjadin.pfmobile.data.XmlConst;
 
 public class TemplateSelectFragment extends Fragment {
 	ExpandableListView expList;
@@ -29,16 +29,16 @@ public class TemplateSelectFragment extends Fragment {
 	}
 	public void onResume() {
 		super .onResume();
-		InventoryActivity inventoryActivity = (InventoryActivity) getActivity();
+		GeneratorActivity activity = (GeneratorActivity) getActivity();
 		//Bundle args = this.getArguments();
-		expList = (ExpandableListView) inventoryActivity.findViewById(R.id.filter_exp_listview);
+		expList = (ExpandableListView) activity.findViewById(R.id.filter_exp_listview);
 		ExpandableListAdapter simpleExpAdapter = new TemplateSelectSimpleExpandableListAdapter(
-				inventoryActivity,
-				inventoryActivity.inventoryManager.templateData.groupData,
+				activity,
+				activity.inventoryManager.templateData.groupData,
 				R.layout.titlerow_filterselect,
 				new String[] { XmlConst.NAME_ATTR },
 				new int[] { android.R.id.text1 },
-				inventoryActivity.inventoryManager.templateData.itemData,
+				activity.inventoryManager.templateData.itemData,
 				R.layout.subrow_filterselect,
 				new String[] { XmlConst.NAME_ATTR, XmlConst.SLOT_ATTR },
 				new int[] {R.id.filterselect_text, R.id.filterselect_text2 } );
@@ -66,7 +66,7 @@ public class TemplateSelectFragment extends Fragment {
 					public void onClick(View view) {
 						int groupPos = expList.getPositionForView((View) view.getParent());
 						String templateName = grpData.get(groupPos).get(XmlConst.NAME_ATTR);
-						((InventoryActivity) getActivity()).addTemplate(templateName);
+						((GeneratorActivity) getActivity()).addTemplate(templateName);
 					}
 				});
 			}
