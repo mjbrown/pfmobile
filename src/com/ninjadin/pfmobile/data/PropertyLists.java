@@ -60,8 +60,8 @@ public class PropertyLists {
 	"Exotic Weapon", "Light Shield", "Heavy Shield", "Tower Shield", "Light Armor", "Medium Armor",
 	"Heavy Armor", };
 
-	final static public String[] itemQualities = new String[] { "Cost", "Encumbrance", "Hit Points",
-	"Hardness" };
+	final static public String[] itemBonuses = new String[] { "Equipment Cost", 
+		"Encumbrance", "Flat Footed Armor Class", "Armor Class", "Armor Check", "Maximum Dexterity Bonus", };
 
 	final static public String[] armorQualities = new String[] { "Armor", "Max Dex", "Armor Check",
 	"Spell Failure", "Proficiency", "Size"};

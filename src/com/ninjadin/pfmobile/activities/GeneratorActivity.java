@@ -32,15 +32,15 @@ import com.ninjadin.pfmobile.fragments.ShowCharacterXMLFragment;
 import com.ninjadin.pfmobile.fragments.SkillsFragment;
 import com.ninjadin.pfmobile.fragments.StatisticsFragment;
 import com.ninjadin.pfmobile.fragments.TemplateSelectFragment;
-import com.ninjadin.pfmobile.non_android.CharacterData;
-import com.ninjadin.pfmobile.non_android.InventoryManager;
+import com.ninjadin.pfmobile.non_android.CharacterEditor;
+import com.ninjadin.pfmobile.non_android.InventoryEditor;
 import com.ninjadin.pfmobile.non_android.StatisticManager;
 
 public class GeneratorActivity extends FragmentActivity {
-	public CharacterData charData;
+	public CharacterEditor charData;
 	public StatisticManager dependencyManager;
 	public File inventoryFile;
-	public InventoryManager inventoryManager;
+	public InventoryEditor inventoryManager;
 	public String masterCharFilename;
 	public String tempFilename;
 	public File charFile;
@@ -107,17 +107,19 @@ public class GeneratorActivity extends FragmentActivity {
 	public void refreshCharData() {
 		Intent intent = getIntent();
 		masterCharFilename = intent.getStringExtra(LoginLoadActivity.CHARFILE_MESSAGE);
+		String inventoryFilename = intent.getStringExtra(LoginLoadActivity.INVFILE_MESSAGE);
 		tempFilename = masterCharFilename.concat(".temp");
 		charFile = new File(this.getFilesDir(), masterCharFilename);
 		tempFile = new File(this.getFilesDir(), tempFilename);
+		inventoryFile = new File(this.getFilesDir(), inventoryFilename);
 		dependencyManager = new StatisticManager();
 		try {
-			charData = new CharacterData(charFile, tempFile);
+			charData = new CharacterEditor(charFile, tempFile);
 			InputStream inStream = new FileInputStream(charFile);
-			dependencyManager.readXMLBonuses(inStream);
+			dependencyManager.readXMLBonuses(inStream, inventoryFile);
 			inStream.close();
 			inStream = (InputStream) getResources().openRawResource(R.raw.dependencies);
-			dependencyManager.readXMLBonuses(inStream);
+			dependencyManager.readXMLBonuses(inStream, inventoryFile);
 			inStream.close();
 		} catch (XmlPullParserException e) {
 			// TODO Auto-generated catch block
@@ -130,11 +132,9 @@ public class GeneratorActivity extends FragmentActivity {
 	
 	public void refreshInventoryData() {
 		Intent intent = getIntent();
-		String inventoryFilename = intent.getStringExtra(LoginLoadActivity.INVFILE_MESSAGE);
 		InputStream templateStream = this.getResources().openRawResource(R.raw.equipment);
-		inventoryFile = new File(this.getFilesDir(), inventoryFilename);
 		try {
-			inventoryManager = new InventoryManager(inventoryFile, templateStream);
+			inventoryManager = new InventoryEditor(inventoryFile, templateStream);
 			templateStream.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

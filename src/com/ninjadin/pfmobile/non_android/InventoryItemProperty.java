@@ -11,20 +11,13 @@ public class InventoryItemProperty {
 		strValue = Integer.toString(val);
 	}
 	
-	public void add(Integer val) {
-		try {
-			Integer intVal = Integer.parseInt(strValue);
-			intVal += val;
-			strValue = Integer.toString(intVal);
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-		}
-	}
-	
 	public void add(String val) {
 		try {
 			// Don't overwrite an integer value
-			Integer.parseInt(val);
+			Integer bonusVal = Integer.parseInt(val);
+			Integer currentVal = Integer.parseInt(strValue);
+			currentVal += bonusVal;
+			strValue = Integer.toString(currentVal);
 		} catch (NumberFormatException e) {
 			String newValue = strValue + "," + val;
 			strValue = newValue;

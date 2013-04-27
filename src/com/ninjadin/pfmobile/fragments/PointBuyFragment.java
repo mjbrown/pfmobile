@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.ninjadin.pfmobile.R;
 import com.ninjadin.pfmobile.activities.GeneratorActivity;
-import com.ninjadin.pfmobile.non_android.CharacterData;
+import com.ninjadin.pfmobile.non_android.CharacterEditor;
 
 public class PointBuyFragment extends Fragment{
 	@Override
@@ -28,7 +28,7 @@ public class PointBuyFragment extends Fragment{
 	}
 	public void statChange(View view) {
 		int viewId = view.getId();
-		CharacterData charData = ((GeneratorActivity) getActivity()).charData;
+		CharacterEditor charData = ((GeneratorActivity) getActivity()).charData;
 		if (viewId == R.id.str_plus) {
 			charData.incrementAbilityScore(0);
 		} else if (viewId == R.id.dex_plus) {

@@ -18,7 +18,7 @@ import com.ninjadin.pfmobile.data.XmlConst;
 
 import android.util.Xml;
 
-public class InventoryManager {
+public class InventoryEditor {
 	
 	private File inventoryFile;
 	public XmlExtractor xmlData;
@@ -27,7 +27,7 @@ public class InventoryManager {
 	public List<Map<String, String>> equipmentSlots;
 	public List<List<Map<String, String>>> equipmentItems;
 	
-	public InventoryManager(File fullInventory, InputStream templateStream) throws FileNotFoundException, XmlPullParserException, IOException {
+	public InventoryEditor(File fullInventory, InputStream templateStream) throws FileNotFoundException, XmlPullParserException, IOException {
 		inventoryFile = fullInventory;
 		FileInputStream inStream = new FileInputStream(inventoryFile);
 		XmlPullParser inventoryParser = Xml.newPullParser();

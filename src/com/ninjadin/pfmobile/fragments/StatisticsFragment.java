@@ -42,7 +42,7 @@ public class StatisticsFragment extends Fragment {
 		StatisticManager depends;
 		Context mContext;
 		public StatisticsListAdapter(Context context, int rowLayoutResId, int textViewResourceId, StatisticManager dep) {
-			super(context, rowLayoutResId, textViewResourceId, dep.masterList);
+			super(context, rowLayoutResId, textViewResourceId, dep.statList);
 			depends = dep;
 			mContext = context;
 		}
@@ -55,8 +55,8 @@ public class StatisticsFragment extends Fragment {
 			TextView statisticName = (TextView) v.findViewById(R.id.statisticsrow_text);
 			TextView statisticValue = (TextView) v.findViewById(R.id.statisticsrow_value);
 			if ((statisticName != null) && (statisticValue != null)) {
-				int val = depends.getValue(depends.masterList.get(position));
-				statisticName.setText(depends.masterList.get(position).toString());
+				int val = depends.getValue(depends.statList.get(position));
+				statisticName.setText(depends.statList.get(position).toString());
 				statisticValue.setText(Integer.toString(val));
 			}
 			return v;

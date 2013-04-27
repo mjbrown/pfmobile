@@ -1,5 +1,6 @@
 package com.ninjadin.pfmobile.non_android;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -11,85 +12,86 @@ import java.util.Map;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+import android.util.Xml;
+
 import com.ninjadin.pfmobile.data.PropertyLists;
 import com.ninjadin.pfmobile.data.XmlConst;
 
-
-import android.util.Xml;
-
 public class StatisticManager {
 	// A map of all CharacterStatistics
-	private Map<String, StatisticInstance> masterMap;
+	private Map<String, StatisticInstance> statMap;
 	// A list of all CharacterStatistics names
-	public List<String> masterList;
+	public List<String> statList;
 	// Lists of dependent CharacterStatistics
-	private Map<String, List<StatisticInstance>> dependencyMap;
+	private Map<String, List<StatisticInstance>> statDependencies;
+	// A map of items worn by the character
+	private Map<String, EquippedItem> itemMap;
 	
 	public StatisticManager() {
-		masterMap = new LinkedHashMap<String, StatisticInstance>();
-		masterList = new ArrayList<String>();
-		dependencyMap = new HashMap<String, List<StatisticInstance>>();
+		statMap = new LinkedHashMap<String, StatisticInstance>();
+		statList = new ArrayList<String>();
+		statDependencies = new HashMap<String, List<StatisticInstance>>();
 		for (String abilityScoreName: PropertyLists.abilityScoreNames) {
 			StatisticInstance newStat = new StatisticInstance(abilityScoreName);
-			masterMap.put(abilityScoreName, newStat);
+			statMap.put(abilityScoreName, newStat);
 		}
 		for (String abilityModifierName: PropertyLists.abilityModifierNames) {
 			StatisticInstance newStat = new StatisticInstance(abilityModifierName);
-			masterMap.put(abilityModifierName, newStat);
+			statMap.put(abilityModifierName, newStat);
 		}
 		for (String saveName: PropertyLists.saveNames) {
 			StatisticInstance newStat = new StatisticInstance(saveName);
-			masterMap.put(saveName, newStat);
+			statMap.put(saveName, newStat);
 		}
 		for (String armorClassName: PropertyLists.armorClassNames) {
 			StatisticInstance newStat = new StatisticInstance(armorClassName, 10);
-			masterMap.put(armorClassName, newStat);
+			statMap.put(armorClassName, newStat);
 		}
 		for (String otherStatisticName: PropertyLists.otherStatisticNames) {
 			StatisticInstance newStat = new StatisticInstance(otherStatisticName);
-			masterMap.put(otherStatisticName, newStat);
+			statMap.put(otherStatisticName, newStat);
 		}
 		for (String reductionName: PropertyLists.reductionNames) {
 			StatisticInstance newStat = new StatisticInstance(reductionName);
-			masterMap.put(reductionName, newStat);
+			statMap.put(reductionName, newStat);
 		}
 		for (String speedName: PropertyLists.speedNames) {
 			StatisticInstance newStat = new StatisticInstance(speedName);
-			masterMap.put(speedName, newStat);
+			statMap.put(speedName, newStat);
 		}
 		for (String casterStatisticName: PropertyLists.casterStatisticNames) {
 			StatisticInstance newStat = new StatisticInstance(casterStatisticName);
-			masterMap.put(casterStatisticName, newStat);
+			statMap.put(casterStatisticName, newStat);
 		}
 		for (String skillName: PropertyLists.skillNames) {
 			StatisticInstance newStat = new StatisticInstance(skillName);
-			masterMap.put(skillName, newStat);
+			statMap.put(skillName, newStat);
 		}
 		for (String classLevelName: PropertyLists.classLevelNames) {
 			StatisticInstance newStat = new StatisticInstance(classLevelName);
-			masterMap.put(classLevelName, newStat);
+			statMap.put(classLevelName, newStat);
 		}
 		for (String spellFailureName: PropertyLists.spellFailureNames) {
 			StatisticInstance newStat = new StatisticInstance(spellFailureName);
-			masterMap.put(spellFailureName, newStat);
+			statMap.put(spellFailureName, newStat);
 		}
-		for (Map.Entry<String, StatisticInstance> entry: masterMap.entrySet()) {
+		for (Map.Entry<String, StatisticInstance> entry: statMap.entrySet()) {
 			List<StatisticInstance> dependentsList = new ArrayList<StatisticInstance>();
-			dependencyMap.put(entry.getKey(), dependentsList);
-			masterList.add(entry.getKey());
+			statDependencies.put(entry.getKey(), dependentsList);
+			statList.add(entry.getKey());
 		}
 	}
 	
 	public void newBonus(String statisticType, String stackType, String source, String value) {
-		StatisticInstance bonusRecipient = masterMap.get(statisticType);
+		StatisticInstance bonusRecipient = statMap.get(statisticType);
 		if (bonusRecipient == null) // Not a valid target
 			return;
 		List<StatisticInstance> dependentUpon = new ArrayList<StatisticInstance>();
 		String strippedValue = new String(value);
-		for (String potential: masterList) {
+		for (String potential: statList) {
 			if (value.contains("[" + potential + "]")) {
 				strippedValue = strippedValue.replace("[" + potential + "]", potential);
-				StatisticInstance targetOfDependency = masterMap.get(potential);
+				StatisticInstance targetOfDependency = statMap.get(potential);
 				if (targetOfDependency != null) {
 					dependentUpon.add(targetOfDependency);
 				}
@@ -103,29 +105,44 @@ public class StatisticManager {
 		}
 		// Add the bonus and update the Final Value
 		bonusRecipient.addBonus(newBonus);
-		List<StatisticInstance> dependents = dependencyMap.get(bonusRecipient);
+		List<StatisticInstance> dependents = statDependencies.get(bonusRecipient);
 		// Trigger update on all Statistics dependent upon bonusRecipient
 		if (bonusRecipient.update() && (dependents != null))
 			recursiveUpdate(dependents);
 	}
+	
+	public void newBonus(Map<String, String> bonusMap) {
+		String type = bonusMap.get(XmlConst.TYPE_ATTR);
+		String value = bonusMap.get(XmlConst.VALUE_ATTR);
+		if ((type != null) && (value != null)) {
+			String stackType = bonusMap.get(XmlConst.STACKTYPE_ATTR);
+			if (stackType == null)
+				stackType = "Armor";
+			String source = bonusMap.get(XmlConst.SOURCE_ATTR);
+			if (source == null)
+				source = "Natural";
+			newBonus(type, stackType, source, value);
+		}
+	}
+	
 	private void recursiveUpdate(List<StatisticInstance> dependents) {
 		for (StatisticInstance dependent: dependents) {
 			if (dependent.update()) {
-				List<StatisticInstance> moreDependents = dependencyMap.get(dependent.getName());
+				List<StatisticInstance> moreDependents = statDependencies.get(dependent.getName());
 				if (moreDependents != null)
 					recursiveUpdate(moreDependents);
 			}
 		}
 	}
 	public int getValue(String statisticName) {
-		StatisticInstance stat = masterMap.get(statisticName);
+		StatisticInstance stat = statMap.get(statisticName);
 		return stat.getFinalValue();
 	}
 	public int evaluateValue(String value) {
 		String strippedValue = new String(value);
-		for (String operand: masterList) {
+		for (String operand: statList) {
 			if (value.contains("[" + operand + "]")) {
-				Integer op = masterMap.get(operand).getFinalValue();
+				Integer op = statMap.get(operand).getFinalValue();
 				if (op != null) {
 					strippedValue = strippedValue.replace("[" + operand + "]", Integer.toString(op));
 				}
@@ -133,7 +150,7 @@ public class StatisticManager {
 		}
 		return StatisticBonus.evaluate(strippedValue);
 	}
-	public void readXMLBonuses(InputStream inStream) throws IOException, XmlPullParserException {
+	public void readXMLBonuses(InputStream inStream, File inventory) throws IOException, XmlPullParserException {
 		XmlPullParser parser = Xml.newPullParser();
 		parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
 		parser.setInput(inStream, null);
@@ -154,6 +171,14 @@ public class StatisticManager {
 							source = "Natural";
 						for (String type: types.split(",")) {
 							newBonus(type, stackType, source, value);
+						}
+					}
+				} else if (tag.equals(XmlConst.EQUIPITEM_TAG)) {
+					String name = parser.getAttributeValue(null, XmlConst.NAME_ATTR);
+					if (name != null) {
+						EquippedItem newItem = new EquippedItem(name, inventory);
+						for (Map<String,String> bonus: newItem.bonusList) {
+							newBonus(bonus);
 						}
 					}
 				}

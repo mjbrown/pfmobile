@@ -2,7 +2,7 @@
 <equipmentTemplates>
     <template name="Headgear">
         <item name="Crown" slot="Head" >
-            <itemProperty type="Cost" value="1" />
+            <itemProperty type="Equipment Cost" value="1" />
             <itemProperty type="Hardness" value="2" />
             <itemProperty type="Hit Points" value="5" />
             <itemProperty type="Encumbrance" value="1" />
@@ -10,7 +10,7 @@
     </template>
     <template name="Headband">
         <item name="Kohona Symbol" slot="Headband" >
-            <itemProperty type="Cost" value="1" />
+            <itemProperty type="Equipment Cost" value="1" />
             <itemProperty type="Hardness" value="2" />
             <itemProperty type="Hit Points" value="5" />
             <itemProperty type="Encumbrance" value="1" />
@@ -28,11 +28,12 @@
         <item name="Studded Leather" slot="Armor" >
             <itemProperty type="Proficiency" value="Light Armor" />
             <itemProperty type="Size" value="Light" />
-            <itemProperty type="Armor" value="3" />
-	        <itemProperty type="Max Dex" value="5" />
+            <itemProperty type="Flat Footed Armor Class" value="3" />
+            <itemProperty type="Armor Class" value="3" />
+            <itemProperty type="Maximum Dexterity Bonus" value="5" />
 	        <itemProperty type="Armor Check" value="1" />
-	        <itemProperty type="Spell Failure" value="15" />
-	        <itemProperty type="Cost" value="25" />
+	        <itemProperty type="Light Armor Spell Failure" value="15" />
+	        <itemProperty type="Equipment Cost" value="25" />
 	        <itemProperty type="Encumbrance" value="20" />"
 	        <itemProperty type="Hardness" value="2" />
 	        <itemProperty type="Hit Points" value="15" />
@@ -42,11 +43,12 @@
         <item name="Steel Breastplate" slot="Armor" >
             <itemProperty type="Proficiency" value="Medium Armor" />
             <itemProperty type="Size" value="Medium" />
-            <itemProperty type="Armor" value="6" />
-	        <itemProperty type="Max Dex" value="3" />
+            <itemProperty type="Flat Footed Armor Class" value="6" />
+            <itemProperty type="Armor Class" value="6" />
+	        <itemProperty type="Maximum Dexterity Bonus" value="3" />
 	        <itemProperty type="Armor Check" value="4" />
-	        <itemProperty type="Spell Failure" value="25" />
-	        <itemProperty type="Cost" value="200" />
+	        <itemProperty type="Medium Armor Spell Failure" value="25" />
+	        <itemProperty type="Equipment Cost" value="200" />
 	        <itemProperty type="Encumbrance" value="30" />
 	        <itemProperty type="Hardness" value="10" />
 	        <itemProperty type="Hit Points" value="30" />
@@ -56,11 +58,12 @@
         <item name="Steel Half-plate" slot="Armor">
             <itemProperty type="Proficiency" value="Heavy Armor" />
             <itemProperty type="Size" value="Heavy" />
-            <itemProperty type="Armor" value="8" />
-	        <itemProperty type="Max Dex" value="0" />
+            <itemProperty type="Flat Footed Armor Class" value="8" />
+            <itemProperty type="Armor Class" value="8" />
+            <itemProperty type="Maximum Dexterity Bonus" value="0" />
 	        <itemProperty type="Armor Check" value="7" />
-	        <itemProperty type="Spell Failure" value="40" />
-	        <itemProperty type="Cost" value="600" />
+	        <itemProperty type="Heavy Armor Spell Failure" value="40" />
+	        <itemProperty type="Equipment Cost" value="600" />
 	        <itemProperty type="Encumbrance" value="50" />
 	        <itemProperty type="Hardness" value="10" />
 	        <itemProperty type="Hit Points" value="40" />

@@ -23,7 +23,7 @@ import com.ninjadin.pfmobile.data.XmlConst;
 
 import android.util.Xml;
 
-public class CharacterData {
+public class CharacterEditor {
 	public int charLevel = 0;
 
 	public XmlExtractor levels;
@@ -38,7 +38,7 @@ public class CharacterData {
 	public int pointBuyRemaining = 20;
 	private int base_stats[] = { 10, 10, 10, 10, 10, 10 };
 	
-	public CharacterData(File originalFile, File temporaryFile) throws XmlPullParserException, IOException {
+	public CharacterEditor(File originalFile, File temporaryFile) throws XmlPullParserException, IOException {
 		charFile = originalFile;
 		tempFile = temporaryFile;
 		info = new CharacterInfo();
@@ -53,7 +53,6 @@ public class CharacterData {
 		} finally {
 			inStream.close();
 		}
-		
 	}
 	
 	private void readCharacterData(XmlPullParser parser) throws XmlPullParserException, IOException {
