@@ -22,23 +22,37 @@ import com.ninjadin.pfmobile.data.XmlConst;
 
 public class TemplateSelectFragment extends Fragment {
 	ExpandableListView expList;
+	String templateType;
+	String itemName;
+	List<Map<String, String>> groupData;
+	List<List<Map<String,String>>> itemData;
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_filterselect, container, false);
 		return view;
 	}
+	
 	public void onResume() {
 		super .onResume();
 		GeneratorActivity activity = (GeneratorActivity) getActivity();
-		//Bundle args = this.getArguments();
+		Bundle args = this.getArguments();
+		templateType = args.getString("selection type");
+		if (templateType.equals(XmlConst.ENCHANT_TAG)) {
+			itemName = args.getString(XmlConst.NAME_ATTR);
+			groupData = activity.expListData.enchantTemplates.groupData;
+			itemData = activity.expListData.enchantTemplates.itemData;
+		} else {
+			groupData = activity.inventoryManager.templateData.groupData;
+			itemData = activity.inventoryManager.templateData.itemData;
+		}
 		expList = (ExpandableListView) activity.findViewById(R.id.filter_exp_listview);
 		ExpandableListAdapter simpleExpAdapter = new TemplateSelectSimpleExpandableListAdapter(
 				activity,
-				activity.inventoryManager.templateData.groupData,
+				groupData,
 				R.layout.titlerow_filterselect,
 				new String[] { XmlConst.NAME_ATTR },
 				new int[] { android.R.id.text1 },
-				activity.inventoryManager.templateData.itemData,
+				itemData,
 				R.layout.subrow_filterselect,
 				new String[] { XmlConst.NAME_ATTR, XmlConst.SLOT_ATTR },
 				new int[] {R.id.filterselect_text, R.id.filterselect_text2 } );
@@ -66,7 +80,11 @@ public class TemplateSelectFragment extends Fragment {
 					public void onClick(View view) {
 						int groupPos = expList.getPositionForView((View) view.getParent());
 						String templateName = grpData.get(groupPos).get(XmlConst.NAME_ATTR);
-						((GeneratorActivity) getActivity()).addTemplate(templateName);
+						if (templateType.equals(XmlConst.ENCHANT_TAG)) {
+							((GeneratorActivity) getActivity()).addTemplate(templateName, templateType, itemName);
+						} else {
+							((GeneratorActivity) getActivity()).addTemplate(templateName, templateType, itemName);
+						}
 					}
 				});
 			}

@@ -21,6 +21,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.ninjadin.pfmobile.R;
+import com.ninjadin.pfmobile.data.ExpListData;
+import com.ninjadin.pfmobile.data.XmlConst;
 import com.ninjadin.pfmobile.fragments.ChoiceSelectFragment;
 import com.ninjadin.pfmobile.fragments.ChoicesFragment;
 import com.ninjadin.pfmobile.fragments.EquipmentFragment;
@@ -39,11 +41,12 @@ import com.ninjadin.pfmobile.non_android.StatisticManager;
 public class GeneratorActivity extends FragmentActivity {
 	public CharacterEditor charData;
 	public StatisticManager dependencyManager;
-	public File inventoryFile;
 	public InventoryEditor inventoryManager;
+	public ExpListData expListData;
 	public String masterCharFilename;
 	public String tempFilename;
 	public File charFile;
+	public File inventoryFile;
 	public File tempFile;
 	
 	@Override
@@ -113,6 +116,7 @@ public class GeneratorActivity extends FragmentActivity {
 		tempFile = new File(this.getFilesDir(), tempFilename);
 		inventoryFile = new File(this.getFilesDir(), inventoryFilename);
 		dependencyManager = new StatisticManager();
+		expListData = new ExpListData();
 		try {
 			charData = new CharacterEditor(charFile, tempFile);
 			InputStream inStream = new FileInputStream(charFile);
@@ -120,6 +124,9 @@ public class GeneratorActivity extends FragmentActivity {
 			inStream.close();
 			inStream = (InputStream) getResources().openRawResource(R.raw.dependencies);
 			dependencyManager.readXMLBonuses(inStream, inventoryFile);
+			inStream.close();
+			inStream = (InputStream) getResources().openRawResource(R.raw.enchantments);
+			expListData.initEnchantTemplates(inStream);
 			inStream.close();
 		} catch (XmlPullParserException e) {
 			// TODO Auto-generated catch block
@@ -328,18 +335,39 @@ public class GeneratorActivity extends FragmentActivity {
 	}
 	
 	public void addFromTemplate(View view) {
+		Bundle passedData = new Bundle();
+		passedData.putString("selection type", XmlConst.ITEM_TAG);
 		TemplateSelectFragment newFragment = new TemplateSelectFragment();
+		newFragment.setArguments(passedData);
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.fragment_container, newFragment);
 		transaction.addToBackStack(null);
 		transaction.commit();
 	}
 	
-	public void addTemplate(String templateName) {
+	public void enchantFromTemplate(String itemName) {
+		Bundle passedData = new Bundle();
+		passedData.putString("selection type", XmlConst.ENCHANT_TAG);
+		passedData.putString(XmlConst.NAME_ATTR, itemName);
+		TemplateSelectFragment newFragment = new TemplateSelectFragment();
+		newFragment.setArguments(passedData);
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+		transaction.replace(R.id.fragment_container, newFragment);
+		transaction.addToBackStack(null);
+		transaction.commit();
+	}
+	
+	public void addTemplate(String templateName, String templateType, String itemName) {
 		File tempFile = new File(this.getFilesDir(), "temp_file.xml");
-		InputStream templateFileStream = this.getResources().openRawResource(R.raw.equipment);
+		InputStream templateFileStream;
 		try {
-			inventoryManager.addFromTemplate(templateFileStream, templateName, tempFile);
+			if (templateType.equals(XmlConst.ENCHANT_TAG)) {
+				templateFileStream = this.getResources().openRawResource(R.raw.enchantments);
+				inventoryManager.enchantFromTemplate(templateFileStream, templateName, itemName, tempFile);
+			} else {
+				templateFileStream = this.getResources().openRawResource(R.raw.equipment);
+				inventoryManager.addFromTemplate(templateFileStream, templateName, tempFile);
+			}
 			templateFileStream.close();
 			refreshInventoryData();
 		} catch (FileNotFoundException e) {

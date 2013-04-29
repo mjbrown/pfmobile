@@ -76,13 +76,26 @@ public class InventoryEditor {
 		}
 	}
 	
-	public void addFromTemplate(InputStream templateFileStream, String templateName, File tempFile) throws FileNotFoundException, XmlPullParserException, IOException {
+	public void addFromTemplate(InputStream templateFileStream, String templateName, 
+			File tempFile) throws FileNotFoundException, XmlPullParserException, IOException {
 		File copyTo = tempFile;
 		File copyFrom = inventoryFile;
 		String startData = "<" + XmlConst.TEMPLATE_TAG + " name=\"" + templateName + "\">";
 		String endData = "</" + XmlConst.TEMPLATE_TAG + ">";
 		String insertBefore = "</inventory>";
 		XmlEditor.copyReplace(copyFrom, copyTo, templateFileStream, startData, endData, insertBefore, insertBefore, null, null);
+		tempFile.renameTo(inventoryFile);
+	}
+	
+	public void enchantFromTemplate(InputStream enchantFileStream, String enchantName, 
+			String itemName, File tempFile) throws FileNotFoundException, XmlPullParserException, IOException {
+		File copyTo = tempFile;
+		File copyFrom = inventoryFile;
+		String startData = "<" + XmlConst.ENCHANT_TAG + " name=\"" + enchantName;
+		String endData = "</" + XmlConst.ENCHANT_TAG + ">";
+		String parentTag = XmlConst.ITEM_TAG;
+		String parentAttr = XmlConst.NAME_ATTR + "=\"" + itemName;
+		XmlEditor.addToParent(copyFrom, copyTo, enchantFileStream, startData, endData, parentTag, parentAttr);
 		tempFile.renameTo(inventoryFile);
 	}
 }

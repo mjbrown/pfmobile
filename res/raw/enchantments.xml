@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<enchantmentTemplates>
+    <enchantment name="Armor +1" slot="Armor">
+        <itemProperty type="Equipment Cost" value="1000" />
+        <itemProperty type="Armor Class" value="1" />
+        <itemProperty type="Flat Footed Armor Class" value="1" />
+        <itemProperty type="Hardness" value="2" />
+        <itemProperty type="Hit Points" value="10" />
+    </enchantment>
+    <enchantment name="Armor +2" slot="Armor">
+        <itemProperty type="Equipment Cost" value="4000" />
+        <itemProperty type="Armor Class" value="2" />
+        <itemProperty type="Flat Footed Armor Class" value="2" />
+        <itemProperty type="Hardness" value="4" />
+        <itemProperty type="Hit Points" value="20" />
+    </enchantment>
+    <enchantment name="Armor +3" slot="Armor">
+        <itemProperty type="Equipment Cost" value="9000" />
+        <itemProperty type="Armor Class" value="3" />
+        <itemProperty type="Flat Footed Armor Class" value="3" />
+        <itemProperty type="Hardness" value="6" />
+        <itemProperty type="Hit Points" value="30" />
+    </enchantment>
+</enchantmentTemplates>

@@ -11,6 +11,75 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
 public class XmlEditor {
+	// Add new data to parent tag, data is added just before the end tag
+	final static public void addToParent(File copyFrom, File copyTo, InputStream dataFile,
+			String startData, String endData, String parentTag, String parentAttr) throws IOException {
+		FileInputStream copyFromStream = new FileInputStream(copyFrom);
+		InputStreamReader copyFromSR = new InputStreamReader(copyFromStream);
+		BufferedReader sourceReader = new BufferedReader(copyFromSR);
+		
+		BufferedReader insertData = null;
+		if (dataFile != null) {
+			InputStreamReader dataFileSR = new InputStreamReader(dataFile);
+			insertData = new BufferedReader(dataFileSR);
+		}
+		
+		FileOutputStream copyToStream = new FileOutputStream(copyTo);
+		OutputStreamWriter copyToSR = new OutputStreamWriter(copyToStream);
+		BufferedWriter destWriter = new BufferedWriter(copyToSR);
+		
+		// Find the first line of the data to be inserted
+		String dataLine = null;
+		if (dataFile != null) {
+			dataLine = insertData.readLine();
+			while (dataLine != null) {
+				if (dataLine.trim().startsWith(startData)) {
+					break;
+				}
+				dataLine = insertData.readLine();
+			}
+		}
+		//Find the parent in the source file
+		String sourceLine = sourceReader.readLine();
+		while (sourceLine != null) {
+			if (sourceLine.trim().startsWith("<" + parentTag + " " + parentAttr)) {
+				break;
+			}
+			destWriter.write(sourceLine);
+			destWriter.newLine();
+			sourceLine = sourceReader.readLine();
+		}
+		//Find the end of the parent in the source file
+		while (sourceLine != null) {
+			if (sourceLine.trim().startsWith("</" + parentTag + ">")) {
+				break;
+			}
+			destWriter.write(sourceLine);
+			destWriter.newLine();
+			sourceLine = sourceReader.readLine();
+		}
+		// Insert the new child
+		if (dataFile != null) {
+			while (dataLine != null) {
+				destWriter.write(dataLine);
+				destWriter.newLine();
+				if (dataLine.trim().startsWith(endData)) {
+					break;
+				}
+				dataLine = insertData.readLine();
+			}
+		}
+		// Copy the remainder of the source file
+		while (sourceLine != null) {
+			destWriter.write(sourceLine);
+			destWriter.newLine();
+			sourceLine = sourceReader.readLine();
+		}
+		destWriter.close();
+		sourceReader.close();
+		
+	}
+	
 	// The only way to insert/replace is to copy the entire source file
 	// copies lines "startData -> endData" from dataFile, inclusive
 	// replaces lines "insertBefore -> continueOn" from sourceChar

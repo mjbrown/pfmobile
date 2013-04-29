@@ -22,10 +22,11 @@ public class XmlConst {
 	final public static String BONUS_TAG = "bonus";
 	final public static String PROFICIENCY_TAG = "proficiency";
 	
-	// Used as TAG in inventory file
+	// Used as TAG in inventory files
 	final public static String ITEM_TAG = "item";
 	final public static String ITEMPROPERTY_TAG = "itemProperty";
 	final public static String DAMAGE_TAG = "damage";
+	final public static String ENCHANT_TAG = "enchantment";
 
 	// Used as ATTRIBUTE in character file
 	final public static String GRPNAME_ATTR = "groupName";

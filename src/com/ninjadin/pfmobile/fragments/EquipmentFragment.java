@@ -15,14 +15,14 @@ import com.ninjadin.pfmobile.data.XmlConst;
 
 public class EquipmentFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_inventory, container, false);
+		View view = inflater.inflate(R.layout.fragment_basicexpandable, container, false);
 		return view;
 	}
 	public void onResume() {
 		super .onResume();
 		GeneratorActivity activity = (GeneratorActivity) getActivity();
 		//Bundle args = this.getArguments();
-		ExpandableListView expList = (ExpandableListView) activity.findViewById(R.id.inventory_exp_listview);
+		ExpandableListView expList = (ExpandableListView) activity.findViewById(R.id.expandableListView1);
 		ExpandableListAdapter simpleExpAdapter = new SimpleExpandableListAdapter(
 				activity,
 				activity.inventoryManager.equipmentSlots,

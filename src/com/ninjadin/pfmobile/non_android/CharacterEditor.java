@@ -106,6 +106,7 @@ public class CharacterEditor {
 		String[] subtag_attrs = new String[] { XmlConst.NAME_ATTR, XmlConst.GRPNAME_ATTR, XmlConst.SUBGRP, };
 		levels = new XmlExtractor(parser, 0, choice_id);
 		levels.getData(XmlConst.LEVELS_TAG, tag_names, tag_attrs, subtag_names, subtag_attrs);
+		charLevel = levels.groupData.size();
 		return levels.subTagCount;
 	}
 	

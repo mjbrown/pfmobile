@@ -7,7 +7,7 @@ public class PropertyLists {
 
 	final public static String notStackableTypes[] = new String[] { "Unnamed", "Aid Another", 
 	"Flank", "Circumstance", "Divine", "Profane", "Alchemical", "Enhancement", "Class Skill",
-	"Competence", "Ability", "Morale", "Armor", "Armor Enhancement", "Deflection", "Luck",
+	"Competence", "Ability", "Morale", "Armor", "Deflection", "Luck",
 	"Morale", "Natural Armor", "Size", "Range", "High Ground", "Shield", "Shield Enhancement", };
 
 	final public static String[] skillNames = new String[] { "Acrobatics", "Appraise", "Bluff",

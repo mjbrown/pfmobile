@@ -69,6 +69,11 @@ public class EquippedItem {
 		if (itemProperty != null) {
 			Map<String, String> newBonus = new HashMap<String,String>();
 			newBonus.put(XmlConst.TYPE_ATTR, type);
+			if ((type.equals("Armor Class")) || (type.equals("Flat Footed Armor Class"))) {
+				newBonus.put(XmlConst.STACKTYPE_ATTR, "Armor");
+			} else {
+				newBonus.put(XmlConst.STACKTYPE_ATTR, "Base");
+			}
 			newBonus.put(XmlConst.VALUE_ATTR, itemProperty.getValue());
 			bonusList.add(newBonus);
 		}
