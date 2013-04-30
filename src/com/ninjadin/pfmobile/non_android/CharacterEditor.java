@@ -266,12 +266,17 @@ public class CharacterEditor {
 			destChar.newLine();
 			dataLine = choiceInput.readLine();
 		}
-		destChar.write(endTag(XmlConst.CHOSEN_TAG));
+		destChar.write(endTag(XmlConst.CHOSEN_TAG).trim());
 		destChar.newLine();
 		// Skip to the end of source choice/chosen
+		int depth = 0;
 		if (sourceLine.trim().startsWith("<" + XmlConst.CHOICE_TAG) == false) {
 			while (sourceLine != null) {	// FIXME have to differentiate between CHOICE and CHOSEN due to nested choices
-				if (sourceLine.trim().startsWith(endTag(XmlConst.CHOSEN_TAG)))
+				if (sourceLine.trim().startsWith("<" + XmlConst.CHOSEN_TAG))
+					depth += 1;
+				if (sourceLine.trim().startsWith(endTag(XmlConst.CHOSEN_TAG).trim()))
+					depth -= 1;
+				if (depth == 0)
 					break;
 				sourceLine = sourceChar.readLine();
 			}

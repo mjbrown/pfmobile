@@ -3,7 +3,7 @@ package com.ninjadin.pfmobile.non_android;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -74,7 +74,7 @@ public class XmlExtractor {
 			if (tag != null) {
 				for (String tag_name: tags) {
 					if (tag.equals(tag_name)) {
-						Map<String, String> curGroupMap = new HashMap<String, String>();
+						Map<String, String> curGroupMap = new LinkedHashMap<String, String>();
 						groupData.add(curGroupMap);
 						singleList = new ArrayList<Map<String, String>>();
 						itemData.add(singleList);
@@ -91,7 +91,7 @@ public class XmlExtractor {
 					continue;
 				for (String tag_name: subtags) {
 					if (tag.equals(tag_name)) {
-						Map<String, String> curChildMap = new HashMap<String, String>();
+						Map<String, String> curChildMap = new LinkedHashMap<String, String>();
 						singleList.add(curChildMap);
 						curChildMap.put("tag", tag_name);
 						curChildMap.put("number", Integer.toString(subTagCount++));

@@ -37,7 +37,7 @@ public class TemplateSelectFragment extends Fragment {
 		GeneratorActivity activity = (GeneratorActivity) getActivity();
 		Bundle args = this.getArguments();
 		templateType = args.getString("selection type");
-		if (templateType.equals(XmlConst.ENCHANT_TAG)) {
+		if (templateType.equals(XmlConst.ENHANCE_TAG)) {
 			itemName = args.getString(XmlConst.NAME_ATTR);
 			groupData = activity.expListData.enchantTemplates.groupData;
 			itemData = activity.expListData.enchantTemplates.itemData;
@@ -80,7 +80,7 @@ public class TemplateSelectFragment extends Fragment {
 					public void onClick(View view) {
 						int groupPos = expList.getPositionForView((View) view.getParent());
 						String templateName = grpData.get(groupPos).get(XmlConst.NAME_ATTR);
-						if (templateType.equals(XmlConst.ENCHANT_TAG)) {
+						if (templateType.equals(XmlConst.ENHANCE_TAG)) {
 							((GeneratorActivity) getActivity()).addTemplate(templateName, templateType, itemName);
 						} else {
 							((GeneratorActivity) getActivity()).addTemplate(templateName, templateType, itemName);

@@ -101,6 +101,14 @@
         android:layout_below="@+id/char_pet_button"
         android:text="Show XML"
         android:onClick="launchCharXML" />
+    <Button 
+        android:id="@+id/inv_show_xml" 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/char_show_xml"
+        android:text="Show Inventory XML"
+        android:onClick="launchInventoryXML" />
     
 
 </RelativeLayout>

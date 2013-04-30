@@ -26,74 +26,82 @@
     </template>
     <template name="Light Armor">
         <item name="Studded Leather" slot="Armor" >
-            <itemProperty type="Proficiency" value="Light Armor" />
-            <itemProperty type="Size" value="Light" />
-            <itemProperty type="Flat Footed Armor Class" value="3" />
-            <itemProperty type="Armor Class" value="3" />
-            <itemProperty type="Maximum Dexterity Bonus" value="5" />
-	        <itemProperty type="Armor Check" value="1" />
-	        <itemProperty type="Light Armor Spell Failure" value="15" />
-	        <itemProperty type="Equipment Cost" value="25" />
-	        <itemProperty type="Encumbrance" value="20" />"
-	        <itemProperty type="Hardness" value="2" />
-	        <itemProperty type="Hit Points" value="15" />
+            <enhancement name="Base Item">
+	            <itemProperty type="Proficiency" value="Light Armor" />
+	            <itemProperty type="Size" value="Light" />
+	            <itemProperty type="Flat Footed Armor Class" value="3" />
+	            <itemProperty type="Armor Class" value="3" />
+	            <itemProperty type="Maximum Dexterity Bonus" value="5" />
+		        <itemProperty type="Armor Check" value="1" />
+		        <itemProperty type="Light Armor Spell Failure" value="15" />
+		        <itemProperty type="Equipment Cost" value="25" />
+		        <itemProperty type="Encumbrance" value="20" />"
+		        <itemProperty type="Hardness" value="2" />
+		        <itemProperty type="Hit Points" value="15" />
+	    	</enhancement>
         </item>
     </template>
     <template name="Medium Armor">
         <item name="Steel Breastplate" slot="Armor" >
-            <itemProperty type="Proficiency" value="Medium Armor" />
-            <itemProperty type="Size" value="Medium" />
-            <itemProperty type="Flat Footed Armor Class" value="6" />
-            <itemProperty type="Armor Class" value="6" />
-	        <itemProperty type="Maximum Dexterity Bonus" value="3" />
-	        <itemProperty type="Armor Check" value="4" />
-	        <itemProperty type="Medium Armor Spell Failure" value="25" />
-	        <itemProperty type="Equipment Cost" value="200" />
-	        <itemProperty type="Encumbrance" value="30" />
-	        <itemProperty type="Hardness" value="10" />
-	        <itemProperty type="Hit Points" value="30" />
+            <enhancement name="Base Item">
+	            <itemProperty type="Proficiency" value="Medium Armor" />
+	            <itemProperty type="Size" value="Medium" />
+	            <itemProperty type="Flat Footed Armor Class" value="6" />
+	            <itemProperty type="Armor Class" value="6" />
+		        <itemProperty type="Maximum Dexterity Bonus" value="3" />
+		        <itemProperty type="Armor Check" value="4" />
+		        <itemProperty type="Medium Armor Spell Failure" value="25" />
+		        <itemProperty type="Equipment Cost" value="200" />
+		        <itemProperty type="Encumbrance" value="30" />
+		        <itemProperty type="Hardness" value="10" />
+		        <itemProperty type="Hit Points" value="30" />
+		    </enhancement>
 	    </item>
     </template>
     <template name="Heavy Armor">
         <item name="Steel Half-plate" slot="Armor">
-            <itemProperty type="Proficiency" value="Heavy Armor" />
-            <itemProperty type="Size" value="Heavy" />
-            <itemProperty type="Flat Footed Armor Class" value="8" />
-            <itemProperty type="Armor Class" value="8" />
-            <itemProperty type="Maximum Dexterity Bonus" value="0" />
-	        <itemProperty type="Armor Check" value="7" />
-	        <itemProperty type="Heavy Armor Spell Failure" value="40" />
-	        <itemProperty type="Equipment Cost" value="600" />
-	        <itemProperty type="Encumbrance" value="50" />
-	        <itemProperty type="Hardness" value="10" />
-	        <itemProperty type="Hit Points" value="40" />
+            <enhancement name="Base Item">
+	            <itemProperty type="Proficiency" value="Heavy Armor" />
+	            <itemProperty type="Size" value="Heavy" />
+	            <itemProperty type="Flat Footed Armor Class" value="8" />
+	            <itemProperty type="Armor Class" value="8" />
+	            <itemProperty type="Maximum Dexterity Bonus" value="0" />
+		        <itemProperty type="Armor Check" value="7" />
+		        <itemProperty type="Heavy Armor Spell Failure" value="40" />
+		        <itemProperty type="Equipment Cost" value="600" />
+		        <itemProperty type="Encumbrance" value="50" />
+		        <itemProperty type="Hardness" value="10" />
+		        <itemProperty type="Hit Points" value="40" />
+		    </enhancement>
 	    </item>
     </template>
     <template name="Magical Two-handed Simple Weapon">
 		<item name="+1 Fire Spear" slot="Held" >
-		    <itemProperty type="Proficiency" value="Simple Weapon,Spear" />
-		    <itemProperty type="Size" value="Two-handed" />
-		    <itemProperty type="Range" value="20" />
-		    <itemProperty type="Critical Range" value="1" />
-		    <itemProperty type="Critical Multiplier" value="3" />
-		    <itemProperty type="Special" value="Brace" />
-	       	<itemProperty type="Encumbrance" value="6" />
-	       	<itemProperty type="Cost" value="2" />
-	       	<itemProperty type="Hardness" value="5" />
-	       	<itemProperty type="Hit Points" value="10" />
-	        <damage type="Normal,Critical" statistic="Hit Points" source="Piercing" value="[1d8]" />
-	       	<enchantment name="Masterwork">
+            <enhancement name="Base Item">
+		    	<itemProperty type="Proficiency" value="Simple Weapon,Spear" />
+			    <itemProperty type="Size" value="Two-handed" />
+			    <itemProperty type="Range" value="20" />
+			    <itemProperty type="Critical Range" value="1" />
+			    <itemProperty type="Critical Multiplier" value="3" />
+			    <itemProperty type="Special" value="Brace" />
+		       	<itemProperty type="Encumbrance" value="6" />
+		       	<itemProperty type="Cost" value="2" />
+		       	<itemProperty type="Hardness" value="5" />
+		       	<itemProperty type="Hit Points" value="10" />
+		        <damage type="Normal,Critical" statistic="Hit Points" source="Piercing" value="[1d8]" />
+	        </enhancement>
+	       	<enhancement name="Masterwork">
 	       		<itemProperty type="To Hit" source="Natural" value="1" />
-	       	</enchantment>
-	       	<enchantment name="+1">
+	       	</enhancement>
+	       	<enhancement name="+1">
 		       	<itemProperty type="To Hit" source="Magic" value="1" />
 		       	<itemProperty type="Hardness" value="2" />
 		       	<itemProperty type="Hit Points" value="10" />
 		       	<damage type="Normal,Critical" statistic="Hit Points" source="Magic" value="1" />
-		    </enchantment>
-		    <enchantment name="Fire">
+		    </enhancement>
+		    <enhancement name="Fire">
        	    	<damage type="Normal" statistic="Hit Points" source="Fire,Magic" value="[1d6]" />
-       	    </enchantment>
+       	    </enhancement>
 	    </item>
     </template>
     <template name="Simple Double Weapon">

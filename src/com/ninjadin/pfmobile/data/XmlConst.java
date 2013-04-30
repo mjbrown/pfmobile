@@ -18,6 +18,7 @@ public class XmlConst {
 	final public static String SKILLS_TAG = "skills";
 	final public static String EQUIP_TAG = "equipment";
 	final public static String EQUIPITEM_TAG = "equipItem";
+	final public static String ENHANCE_TAG = "enhancement";
 	final public static String SPELLS_TAG = "spells";
 	final public static String BONUS_TAG = "bonus";
 	final public static String PROFICIENCY_TAG = "proficiency";
@@ -26,7 +27,6 @@ public class XmlConst {
 	final public static String ITEM_TAG = "item";
 	final public static String ITEMPROPERTY_TAG = "itemProperty";
 	final public static String DAMAGE_TAG = "damage";
-	final public static String ENCHANT_TAG = "enchantment";
 
 	// Used as ATTRIBUTE in character file
 	final public static String GRPNAME_ATTR = "groupName";

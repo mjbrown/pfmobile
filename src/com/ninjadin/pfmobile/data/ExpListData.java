@@ -51,7 +51,7 @@ public class ExpListData {
 	}
 	
 	public void initEnchantTemplates(InputStream enchantsStream) throws XmlPullParserException, IOException {
-		String[] tags = new String[] { XmlConst.ENCHANT_TAG };
+		String[] tags = new String[] { XmlConst.ENHANCE_TAG };
 		String[] tag_attrs = new String[] { XmlConst.NAME_ATTR, XmlConst.SLOT_ATTR };
 		String[] subtags = new String[] { XmlConst.ITEMPROPERTY_TAG, XmlConst.DAMAGE_TAG };
 		String[] subtag_attrs = new String[] { XmlConst.NAME_ATTR, XmlConst.TYPE_ATTR, 

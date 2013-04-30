@@ -30,7 +30,7 @@ import com.ninjadin.pfmobile.fragments.GeneratorMenuFragment;
 import com.ninjadin.pfmobile.fragments.InfoFragment;
 import com.ninjadin.pfmobile.fragments.InventoryFragment;
 import com.ninjadin.pfmobile.fragments.PointBuyFragment;
-import com.ninjadin.pfmobile.fragments.ShowCharacterXMLFragment;
+import com.ninjadin.pfmobile.fragments.ShowXMLFragment;
 import com.ninjadin.pfmobile.fragments.SkillsFragment;
 import com.ninjadin.pfmobile.fragments.StatisticsFragment;
 import com.ninjadin.pfmobile.fragments.TemplateSelectFragment;
@@ -44,6 +44,7 @@ public class GeneratorActivity extends FragmentActivity {
 	public InventoryEditor inventoryManager;
 	public ExpListData expListData;
 	public String masterCharFilename;
+	public String inventoryFilename;
 	public String tempFilename;
 	public File charFile;
 	public File inventoryFile;
@@ -110,7 +111,7 @@ public class GeneratorActivity extends FragmentActivity {
 	public void refreshCharData() {
 		Intent intent = getIntent();
 		masterCharFilename = intent.getStringExtra(LoginLoadActivity.CHARFILE_MESSAGE);
-		String inventoryFilename = intent.getStringExtra(LoginLoadActivity.INVFILE_MESSAGE);
+		inventoryFilename = intent.getStringExtra(LoginLoadActivity.INVFILE_MESSAGE);
 		tempFilename = masterCharFilename.concat(".temp");
 		charFile = new File(this.getFilesDir(), masterCharFilename);
 		tempFile = new File(this.getFilesDir(), tempFilename);
@@ -321,12 +322,25 @@ public class GeneratorActivity extends FragmentActivity {
 	}
 	
 	public void launchCharXML(View view) {
-		ShowCharacterXMLFragment newFragment = new ShowCharacterXMLFragment();
+		Bundle passedData = new Bundle();
+		passedData.putString("filename", masterCharFilename);
+		ShowXMLFragment newFragment = new ShowXMLFragment();
+		newFragment.setArguments(passedData);
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.fragment_container, newFragment);
 		transaction.addToBackStack(null);
 		transaction.commit();
-		
+	}
+
+	public void launchInventoryXML(View view) {
+		Bundle passedData = new Bundle();
+		passedData.putString("filename", inventoryFilename);
+		ShowXMLFragment newFragment = new ShowXMLFragment();
+		newFragment.setArguments(passedData);
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+		transaction.replace(R.id.fragment_container, newFragment);
+		transaction.addToBackStack(null);
+		transaction.commit();
 	}
 
 	public void statChange(View view) {
@@ -347,7 +361,7 @@ public class GeneratorActivity extends FragmentActivity {
 	
 	public void enchantFromTemplate(String itemName) {
 		Bundle passedData = new Bundle();
-		passedData.putString("selection type", XmlConst.ENCHANT_TAG);
+		passedData.putString("selection type", XmlConst.ENHANCE_TAG);
 		passedData.putString(XmlConst.NAME_ATTR, itemName);
 		TemplateSelectFragment newFragment = new TemplateSelectFragment();
 		newFragment.setArguments(passedData);
@@ -361,7 +375,7 @@ public class GeneratorActivity extends FragmentActivity {
 		File tempFile = new File(this.getFilesDir(), "temp_file.xml");
 		InputStream templateFileStream;
 		try {
-			if (templateType.equals(XmlConst.ENCHANT_TAG)) {
+			if (templateType.equals(XmlConst.ENHANCE_TAG)) {
 				templateFileStream = this.getResources().openRawResource(R.raw.enchantments);
 				inventoryManager.enchantFromTemplate(templateFileStream, templateName, itemName, tempFile);
 			} else {

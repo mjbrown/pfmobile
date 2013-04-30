@@ -29,7 +29,7 @@
         android:layout_gravity="center_vertical"
         android:includeFontPadding="false"
 	    android:layout_marginTop="3sp"
-        android:layout_marginRight="10sp" />
+        android:layout_marginRight="0sp" />
 
     <Button 
 		android:text="Delete"
@@ -42,6 +42,6 @@
         android:layout_gravity="center_vertical"
         android:includeFontPadding="false"
 	    android:layout_marginTop="3sp"
-        android:layout_marginRight="10sp" />
+        android:layout_marginRight="6sp" />
     
 </LinearLayout>

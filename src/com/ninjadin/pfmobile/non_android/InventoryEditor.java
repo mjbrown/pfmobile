@@ -91,8 +91,8 @@ public class InventoryEditor {
 			String itemName, File tempFile) throws FileNotFoundException, XmlPullParserException, IOException {
 		File copyTo = tempFile;
 		File copyFrom = inventoryFile;
-		String startData = "<" + XmlConst.ENCHANT_TAG + " name=\"" + enchantName;
-		String endData = "</" + XmlConst.ENCHANT_TAG + ">";
+		String startData = "<" + XmlConst.ENHANCE_TAG + " name=\"" + enchantName;
+		String endData = "</" + XmlConst.ENHANCE_TAG + ">";
 		String parentTag = XmlConst.ITEM_TAG;
 		String parentAttr = XmlConst.NAME_ATTR + "=\"" + itemName;
 		XmlEditor.addToParent(copyFrom, copyTo, enchantFileStream, startData, endData, parentTag, parentAttr);
