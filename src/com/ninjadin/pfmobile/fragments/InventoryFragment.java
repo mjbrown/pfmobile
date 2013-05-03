@@ -59,9 +59,9 @@ public class InventoryFragment extends Fragment {
 		public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 			if (convertView == null) {
 				convertView = View.inflate(mContext, R.layout.titlerow_inventory, null);
-				Button addButton = (Button)convertView.findViewById(R.id.inventory_enchant);
-				if (addButton != null)
-				addButton.setOnClickListener(new OnClickListener() {
+				Button enhanceButton = (Button)convertView.findViewById(R.id.inventory_enhance);
+				if (enhanceButton != null)
+				enhanceButton.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View view) {
 						int groupPos = expList.getPositionForView((View) view.getParent());
@@ -69,6 +69,16 @@ public class InventoryFragment extends Fragment {
 						((GeneratorActivity) getActivity()).enchantFromTemplate(itemName);
 					}
 				});
+				Button editButton = (Button)convertView.findViewById(R.id.inventory_edititem);
+				if (editButton != null)
+					editButton.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View view) {
+							int groupPos = expList.getPositionForView((View) view.getParent());
+							String itemName = grpData.get(groupPos).get(XmlConst.NAME_ATTR);
+							((GeneratorActivity) getActivity()).editItem(itemName);
+						}
+					});
 			}
 			TextView textView = (TextView)convertView.findViewById(R.id.title_text);
 			if (textView != null)

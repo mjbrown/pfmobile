@@ -29,6 +29,7 @@ import com.ninjadin.pfmobile.fragments.EquipmentFragment;
 import com.ninjadin.pfmobile.fragments.GeneratorMenuFragment;
 import com.ninjadin.pfmobile.fragments.InfoFragment;
 import com.ninjadin.pfmobile.fragments.InventoryFragment;
+import com.ninjadin.pfmobile.fragments.ItemEditFragment;
 import com.ninjadin.pfmobile.fragments.PointBuyFragment;
 import com.ninjadin.pfmobile.fragments.ShowXMLFragment;
 import com.ninjadin.pfmobile.fragments.SkillsFragment;
@@ -371,6 +372,17 @@ public class GeneratorActivity extends FragmentActivity {
 		transaction.commit();
 	}
 	
+	public void editItem(String itemName) {
+		Bundle passedData = new Bundle();
+		passedData.putString(XmlConst.NAME_ATTR, itemName);
+		ItemEditFragment newFragment = new ItemEditFragment();
+		newFragment.setArguments(passedData);
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+		transaction.replace(R.id.fragment_container, newFragment);
+		transaction.addToBackStack(null);
+		transaction.commit();
+	}
+
 	public void addTemplate(String templateName, String templateType, String itemName) {
 		File tempFile = new File(this.getFilesDir(), "temp_file.xml");
 		InputStream templateFileStream;
@@ -407,4 +419,5 @@ public class GeneratorActivity extends FragmentActivity {
 		}
 		startMenu(itemName + " equipped to " + slotName + ".");
 	}
+	
 }
