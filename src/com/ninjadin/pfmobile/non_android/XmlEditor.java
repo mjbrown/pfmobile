@@ -110,13 +110,14 @@ public class XmlEditor {
 		destWriter.write(newContent);
 		int depth = 0;
 		while (sourceLine != null) {
-			sourceLine = sourceReader.readLine();
-			if (sourceLine.trim().startsWith("<" + parentTag))
+			if (sourceLine.trim().startsWith("<" + parentTag + " "))
 				depth += 1;
-			if (sourceLine.trim().startsWith("</" + parentTag))
+			if (sourceLine.trim().startsWith("</" + parentTag + ">")) {
 				depth -= 1;
 			if (depth == 0)
 				break;
+			}
+			sourceLine = sourceReader.readLine();
 		}
 		while (sourceLine != null) {
 			destWriter.write(sourceLine);

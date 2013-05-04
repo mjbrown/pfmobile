@@ -34,6 +34,7 @@ public class ItemEditor {
 	
 	public void saveChanges(File tempFile) throws IOException {
 		String itemData = new String();
+		int i = 0;
 		for (Map<String, String> tag: item.groupData) {
 			itemData += "<" + XmlConst.ENHANCE_TAG;
 			for (Map.Entry<String, String> tag_attr: tag.entrySet()) {
@@ -42,16 +43,15 @@ public class ItemEditor {
 				itemData += " " + tag_attr.getKey() + "=\"" + tag_attr.getValue() + "\"";
 			}
 			itemData += " >\n";
-			for (List<Map<String,String>> property: item.itemData) {
-				for (Map<String, String> subtag: property) {
-					itemData += "<" + subtag.get("tag");
-					for (Map.Entry<String, String> subtag_attr: subtag.entrySet()) {
-						if ((subtag_attr.getKey().equals("tag") || (subtag_attr.getKey().equals("number"))))
-							continue;
-						itemData += " " + subtag_attr.getKey() + "=\"" + subtag_attr.getValue() + "\"";
-					}
-					itemData += " />\n";
+			List<Map<String,String>> property = item.itemData.get(i++);
+			for (Map<String, String> subtag: property) {
+				itemData += "<" + subtag.get("tag");
+				for (Map.Entry<String, String> subtag_attr: subtag.entrySet()) {
+					if ((subtag_attr.getKey().equals("tag") || (subtag_attr.getKey().equals("number"))))
+						continue;
+					itemData += " " + subtag_attr.getKey() + "=\"" + subtag_attr.getValue() + "\"";
 				}
+				itemData += " />\n";
 			}
 			itemData += "</" + XmlConst.ENHANCE_TAG + ">\n";
 		}
