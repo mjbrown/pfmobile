@@ -24,7 +24,7 @@ import com.ninjadin.pfmobile.R;
 import com.ninjadin.pfmobile.data.ExpListData;
 import com.ninjadin.pfmobile.data.XmlConst;
 import com.ninjadin.pfmobile.fragments.ChoiceSelectFragment;
-import com.ninjadin.pfmobile.fragments.ChoicesFragment;
+import com.ninjadin.pfmobile.fragments.LevelsFragment;
 import com.ninjadin.pfmobile.fragments.EquipmentFragment;
 import com.ninjadin.pfmobile.fragments.GeneratorMenuFragment;
 import com.ninjadin.pfmobile.fragments.InfoFragment;
@@ -205,7 +205,7 @@ public class GeneratorActivity extends FragmentActivity {
 	
 	public void launchLevels(View view) {
 		refreshCharData();
-		ChoicesFragment newFragment = new ChoicesFragment();
+		LevelsFragment newFragment = new LevelsFragment();
 		Bundle passedData = new Bundle();
 		passedData.putString("choiceType", "Levels");
 		newFragment.setArguments(passedData);

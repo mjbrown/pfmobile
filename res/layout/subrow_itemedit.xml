@@ -4,38 +4,81 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal" >
     
-    <Button
-        android:id="@+id/item_type"
+    <LinearLayout 
+        android:layout_width="0dip"
         android:layout_weight="1"
-        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    <TextView 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:text="Type" />
+    <TextView
+        android:id="@+id/item_type"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Type" 
-        android:textSize="16dp"
+        android:textSize="18sp"
         android:includeFontPadding="false"/>
+        
+    </LinearLayout>
     
-    <Button
-        android:id="@+id/item_stacktype"
+    <LinearLayout 
+        android:layout_width="0dip"
         android:layout_weight="1"
-        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="StackType" 
-        android:textSize="10dp"
+        android:orientation="vertical">
+    <TextView 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:text="Stack Type" />
+    <TextView
+        android:id="@+id/item_stacktype"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stack Type" 
+        android:textSize="18sp"
         android:includeFontPadding="false"/>
+        
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/item_source"
+    <LinearLayout 
+        android:layout_width="0dip"
         android:layout_weight="1"
-        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    <TextView 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:text="Source" />
+    <TextView
+        android:id="@+id/item_source"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Source" 
-        android:textSize="16dp"
+        android:textSize="18sp"
         android:includeFontPadding="false"/>
-
+        
+    </LinearLayout>
+    
+    <LinearLayout 
+        android:layout_width="0dip"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    <TextView 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:text="Value" />
     <EditText
         android:id="@+id/item_value"
-        android:layout_weight="1"
-        android:layout_width="0dp"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content" 
         android:text="Value" />
+    </LinearLayout>
 
 </LinearLayout>

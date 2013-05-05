@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <enchantmentTemplates>
+    <enhancement name="Masterwork Armor" slot="Armor">
+        <itemProperty type="Equipment Cost" value="150" />
+        <itemProperty type="Armor Check" value="-1" />
+    </enhancement>
     <enhancement name="Armor +1" slot="Armor">
         <itemProperty type="Equipment Cost" value="1000" />
         <itemProperty type="Armor Class" value="1" />

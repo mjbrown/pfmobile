@@ -50,10 +50,10 @@ public class ItemEditFragment extends Fragment {
 		try {
 			itemEditor = new ItemEditor(itemName, inventoryFile);
 			expList = (ExpandableListView) activity.findViewById(R.id.expandableListView1);
-			ExpandableListAdapter simpleExpAdapter = new SimpleExpandableListAdapter(
+			ExpandableListAdapter simpleExpAdapter = new ItemEditExpandableListAdapter(
 					activity,
 					itemEditor.item.groupData,
-					R.layout.titlerow_inventory,
+					R.layout.titlerow_filterselect,
 					new String[] { XmlConst.NAME_ATTR },
 					new int[] { R.id.title_text },
 					itemEditor.item.itemData,
@@ -117,8 +117,12 @@ public class ItemEditFragment extends Fragment {
 			if (convertView == null) {
 				convertView = View.inflate(mContext, R.layout.subrow_itemedit, null);
 				EditText editText = (EditText)convertView.findViewById(R.id.item_value);
+				editText.setText(itemData.get(groupPosition).get(childPosition).get(XmlConst.VALUE_ATTR));
 				ValueTextWatcher valueTextWatcher = new ValueTextWatcher(groupPosition, childPosition);
 				editText.addTextChangedListener(valueTextWatcher);
+				TextView textView = (TextView) convertView.findViewById(R.id.item_type);
+				if (textView != null)
+					textView.setText(itemData.get(groupPosition).get(childPosition).get(XmlConst.TYPE_ATTR));
 			}
 			return convertView;
 		}
