@@ -39,13 +39,9 @@ public class StatisticManager {
 			StatisticInstance newStat = new StatisticInstance(abilityModifierName);
 			statMap.put(abilityModifierName, newStat);
 		}
-		for (String saveName: PropertyLists.saveNames) {
+		for (String saveName: PropertyLists.basicStatsNames) {
 			StatisticInstance newStat = new StatisticInstance(saveName);
 			statMap.put(saveName, newStat);
-		}
-		for (String armorClassName: PropertyLists.armorClassNames) {
-			StatisticInstance newStat = new StatisticInstance(armorClassName, 10);
-			statMap.put(armorClassName, newStat);
 		}
 		for (String otherStatisticName: PropertyLists.otherStatisticNames) {
 			StatisticInstance newStat = new StatisticInstance(otherStatisticName);
@@ -59,7 +55,7 @@ public class StatisticManager {
 			StatisticInstance newStat = new StatisticInstance(speedName);
 			statMap.put(speedName, newStat);
 		}
-		for (String casterStatisticName: PropertyLists.casterStatisticNames) {
+		for (String casterStatisticName: PropertyLists.casterLevelNames) {
 			StatisticInstance newStat = new StatisticInstance(casterStatisticName);
 			statMap.put(casterStatisticName, newStat);
 		}
@@ -71,7 +67,7 @@ public class StatisticManager {
 			StatisticInstance newStat = new StatisticInstance(classLevelName);
 			statMap.put(classLevelName, newStat);
 		}
-		for (String spellFailureName: PropertyLists.spellFailureNames) {
+		for (String spellFailureName: PropertyLists.equipRelatedNames) {
 			StatisticInstance newStat = new StatisticInstance(spellFailureName);
 			statMap.put(spellFailureName, newStat);
 		}

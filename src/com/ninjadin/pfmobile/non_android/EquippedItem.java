@@ -60,7 +60,7 @@ public class EquippedItem {
 		for (String type: PropertyLists.itemBonuses) {
 			appendBonus(type);
 		}
-		for (String type: PropertyLists.spellFailureNames) {
+		for (String type: PropertyLists.equipRelatedNames) {
 			appendBonus(type);
 		}
 	}

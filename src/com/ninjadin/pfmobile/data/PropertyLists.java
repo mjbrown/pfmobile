@@ -1,5 +1,10 @@
 package com.ninjadin.pfmobile.data;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class PropertyLists {
 
 	final public static String stackableTypes[] = new String[] { "Base", "Racial", "Trait", "Feat",
@@ -27,44 +32,41 @@ public class PropertyLists {
 	final public static String abilityModifierNames[] = new String[] {"Strength Modifier", "Dexterity Modifier",
 	"Constitution Modifier", "Intelligence Modifier", "Wisdom Modifier", "Charisma Modifier" };
 
-	final public static String saveNames[] = new String[] { "Fortitude", "Reflex", "Will" };
+	final public static String basicStatsNames[] = new String[] {  "Character Level", "Base Attack", 
+		 "Combat Maneuver Bonus", "Hit Points", "Fortitude", "Reflex", "Will", "Armor Class", "Touch Armor Class", 
+		 "Flat Footed Armor Class", "Combat Maneuver Defense", };
 
-	final public static String armorClassNames[] = new String[] { "Armor Class", 
-	"Touch Armor Class", "Flat Footed Armor Class",  "Combat Maneuver Defense"};
-
-	final public static String reductionNames[] = new String[] { "Acid Resistance",
-	"Electricity Resistance", "Fire Resistance", "Cold Resistance", "Sonic Resistance",
-	"Force Resistance" };
+	final public static String reductionNames[] = new String[] { "Acid Resistance", "Electricity Resistance", 
+		"Fire Resistance", "Cold Resistance", "Sonic Resistance", "Force Resistance" };
 	
 	final public static String speedNames[] = new String[] { "Speed", "Fly Speed", 
-	"Climb Speed", "Swim Speed", "Burrow Speed", "Stealth Speed", "Crawl Speed"};
+		"Climb Speed", "Swim Speed", "Burrow Speed", "Stealth Speed", "Crawl Speed"};
 	
 	// Allows the tracking of all caster level types independently
 	// Prestige classes can be implemented as a choice of caster level advancement
-	final public static String casterStatisticNames[] = new String[] { "Wizard Caster Level",
+	final public static String casterLevelNames[] = new String[] { "Wizard Caster Level",
 		"Sorcerer Caster Level", "Ranger Caster Level", "Paladin Caster Level", "Bard Caster Level",
 		"Druid Caster Level", "Cleric Caster Level", "Arcane Caster Level", "Divine Caster Level" };
 	
 	// Tracking Spell Failure sources allows easier implementation of armored spellcasting classes like Bard
-	final public static String spellFailureNames[] = new String[] { "Arcane Spell Failure", "Light Armor Spell Failure",
-		"Medium Armor Spell Failure", "Heavy Armor Spell Failure", "Shield Spell Failure", };
+	final public static String equipRelatedNames[] = new String[] { "Arcane Spell Failure", "Light Armor Spell Failure",
+		"Medium Armor Spell Failure", "Heavy Armor Spell Failure", "Shield Spell Failure", "Armor Check",
+		"Maximum Dexterity Bonus", "Encumbrance", "Equipment Cost", };
 	
-	final public static String otherStatisticNames[] = new String[] { "Character Level", "Base Attack", 
-	"Armor Check", "Hit Points", "Maximum Dexterity Bonus", "Combat Maneuver Bonus", "Skill Points",
-	"Spell Resistance", "Initiative", "Spell Penetration", "Encumbrance", "Equipment Cost", "Sneak Attack Dice" };
+	final public static String otherStatisticNames[] = new String[] { "Skill Points",	"Spell Resistance", "Initiative", "Spell Penetration", "Sneak Attack Dice" };
 
 	final static public String[] slotNames = new String[] { "Head", "Headband", "Wrists", "Feet",
-	"Eyes", "Neck", "Shoulders", "Chest", "Body", "Armor", "Hands", "Ring", "Belt", "Held", };
+		"Eyes", "Neck", "Shoulders", "Chest", "Body", "Armor", "Hands", "Ring", "Belt", "Held", };
 
 	final static public String[] itemTypes = new String[] { "Item", "Simple Weapon", "Martial Weapon",
-	"Exotic Weapon", "Light Shield", "Heavy Shield", "Tower Shield", "Light Armor", "Medium Armor",
-	"Heavy Armor", };
+		"Exotic Weapon", "Light Shield", "Heavy Shield", "Tower Shield", "Light Armor", "Medium Armor",
+		"Heavy Armor", };
 
 	final static public String[] itemBonuses = new String[] { "Equipment Cost", 
 		"Encumbrance", "Flat Footed Armor Class", "Armor Class", "Armor Check", "Maximum Dexterity Bonus", };
 
 	final static public String[] armorQualities = new String[] { "Armor", "Max Dex", "Armor Check",
-	"Spell Failure", "Proficiency", "Size"};
+		"Spell Failure", "Proficiency", "Size"};
 
 	// Weapon specific attributes
 	final static public String[] weaponQualities = new String[] { "Range", "To Hit", 
@@ -83,4 +85,36 @@ public class PropertyLists {
 	final static public String[] weaponSpecials = new String[] { "Light", "One-handed", "Two-handed",
 		"Brace", "Double", "Monk", "Disarm", "Trip", "Finesse" };
 
+	// If this is changed, you must change statisticData() below
+	final public static String categories[] = new String[] { "Ability Scores", "Basic Stats", "Skills", "Class Levels",
+		"Damage Reduction", "Speed", "Caster Levels", "Equipment", "Equipment Related", "Other"};
+
+	final static public List<Map<String,String>> categoryData() {
+		return toListMap(categories);
+	}
+	
+	final static public List<List<Map<String,String>>> statisticData() {
+		List<List<Map<String,String>>> itemData = new ArrayList<List<Map<String,String>>>();
+		itemData.add(toListMap(abilityScoreNames));
+		itemData.add(toListMap(basicStatsNames));
+		itemData.add(toListMap(skillNames));
+		itemData.add(toListMap(classLevelNames));
+		itemData.add(toListMap(reductionNames));
+		itemData.add(toListMap(speedNames));
+		itemData.add(toListMap(casterLevelNames));
+		itemData.add(toListMap(slotNames));
+		itemData.add(toListMap(equipRelatedNames));
+		itemData.add(toListMap(otherStatisticNames));
+		return itemData;
+	}
+	
+	final static private List<Map<String,String>> toListMap(String[] stringArray) {
+		List<Map<String,String>> listMap = new ArrayList<Map<String,String>>();
+		for (String string: stringArray) {
+			Map<String,String> newMap = new HashMap<String,String>();
+			newMap.put(XmlConst.NAME_ATTR, string);
+			listMap.add(newMap);
+		}
+		return listMap;
+	}
 }
