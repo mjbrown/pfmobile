@@ -91,6 +91,8 @@ public class StatisticManager {
 				if (targetOfDependency != null) {
 					dependentUpon.add(targetOfDependency);
 				}
+				List<StatisticInstance> dependents = statDependencies.get(potential);
+				dependents.add(bonusRecipient);
 			}
 		}
 		StatisticBonus newBonus;
@@ -132,6 +134,7 @@ public class StatisticManager {
 	}
 	public int getValue(String statisticName) {
 		StatisticInstance stat = statMap.get(statisticName);
+		stat.update();		// TODO: This update shouldn't be necessary
 		return stat.getFinalValue();
 	}
 	public int evaluateValue(String value) {
