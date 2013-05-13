@@ -31,7 +31,6 @@ import com.ninjadin.pfmobile.fragments.InventoryFragment;
 import com.ninjadin.pfmobile.fragments.ItemEditFragment;
 import com.ninjadin.pfmobile.fragments.LevelsFragment;
 import com.ninjadin.pfmobile.fragments.ShowXMLFragment;
-import com.ninjadin.pfmobile.fragments.SkillsFragment;
 import com.ninjadin.pfmobile.fragments.StatisticsFragment;
 import com.ninjadin.pfmobile.fragments.TemplateSelectFragment;
 import com.ninjadin.pfmobile.non_android.CharacterEditor;
@@ -222,14 +221,6 @@ public class GeneratorActivity extends FragmentActivity {
 		transaction.commit();
 	}
 
-	public void launchSkills(View view) {
-		SkillsFragment newFragment = new SkillsFragment();
-		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-		transaction.replace(R.id.fragment_container, newFragment);
-		transaction.addToBackStack(null);
-		transaction.commit();
-	}
-	
 	public void levelChange(View view) {
 //		((CharacterInfoFragment) getSupportFragmentManager().findFragmentById(
 //				R.id.fragment_container)).saveInfo();

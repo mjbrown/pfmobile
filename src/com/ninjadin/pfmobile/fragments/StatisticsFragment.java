@@ -1,6 +1,5 @@
 package com.ninjadin.pfmobile.fragments;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -26,7 +25,6 @@ import com.ninjadin.pfmobile.non_android.StatisticManager;
 
 public class StatisticsFragment extends Fragment {
 	ExpandableListView expList;
-	CharacterSheetAdapter adapter;
 	StatisticManager manager;
 	CharacterEditor charEdit;
 	List<Map<String,String>> groupData;
@@ -50,7 +48,7 @@ public class StatisticsFragment extends Fragment {
 		ExpandableListAdapter adapter = new CharacterSheetAdapter(
 				activity,
 				groupData,
-				R.layout.titlerow_abilityscores,
+				R.layout.titlerow_charactersheet,
 				new String[] { XmlConst.NAME_ATTR },
 				new int[] { R.id.titlerow_text },
 				itemData,
@@ -60,11 +58,6 @@ public class StatisticsFragment extends Fragment {
 		expList.setAdapter(adapter);
 	}
 	private class CharacterSheetAdapter extends SimpleExpandableListAdapter {
-		private View abilityScoreTitle;
-		private View skillTitle;
-		private List<View> abilityScoreSubrows = new ArrayList<View>();
-		private List<View> skillSubrows = new ArrayList<View>();
-		
 		public CharacterSheetAdapter(Context context,
 				List<? extends Map<String, ?>> groupData, int groupLayout,
 				String[] groupFrom, int[] groupTo,
@@ -77,52 +70,60 @@ public class StatisticsFragment extends Fragment {
 		public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 			String category = groupData.get(groupPosition).get(XmlConst.NAME_ATTR);
 			if (convertView == null) {
-				convertView = View.inflate(getActivity(), R.layout.titlerow_abilityscores, null);
+				convertView = View.inflate(getActivity(), R.layout.titlerow_charactersheet, null);
 			}
-			TextView title;
+			TextView title = (TextView) convertView.findViewById(R.id.titlerow_text);
+			if (title != null)
+				title.setText(category);
+			TextView point_title = (TextView) convertView.findViewById(R.id.points_left);
 			TextView points_left = (TextView) convertView.findViewById(R.id.number_points_left);
 			if (points_left != null) {
 				if (category.equals("Ability Scores")) { 
 					points_left.setText(Integer.toString(charEdit.pointBuyRemaining) + " / 20");
-					abilityScoreTitle = convertView;
+					point_title.setText("Points Remaining:");
 				} else if (category.equals("Skills")) {
 					String ranks_used = Integer.toString(charEdit.totalSkillRanks());
 					String ranks_available = Integer.toString(manager.getValue("Skill Points"));
 					points_left.setText(ranks_used + " / " + ranks_available);
-					skillTitle = convertView;
+					point_title.setText("Points Used:");
+				} else {
+					points_left.setText("");
+					point_title.setText("");
 				}
 			}
-			title = (TextView) convertView.findViewById(R.id.titlerow_text);
-			if (title != null)
-				title.setText(category);
 			return convertView;
 		}
 		public View getChildView(int groupPosition, int childPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 			String category = groupData.get(groupPosition).get(XmlConst.NAME_ATTR);
+			String name = itemData.get(groupPosition).get(childPosition).get(XmlConst.NAME_ATTR);
 			if ((category.equals("Ability Scores")) || (category.equals("Skills"))) {
 				convertView = View.inflate(getActivity(), R.layout.subrow_abilityscores, null);
-				String score_name = itemData.get(groupPosition).get(childPosition).get(XmlConst.NAME_ATTR);
-				TextView tx_name = (TextView) convertView.findViewById(R.id.score_name);
-				if (tx_name != null)
-					tx_name.setText(score_name.substring(0, 3).toUpperCase());
-				String final_score = Integer.toString(manager.getValue(score_name));
+				String final_score = Integer.toString(manager.getValue(name));
 				TextView tx_final = (TextView) convertView.findViewById(R.id.final_score);
 				if (tx_final != null)
 					tx_final.setText(final_score);
-				TextView tx_modifier = (TextView) convertView.findViewById(R.id.score_modifier);
 				if (category.equals("Ability Scores")) {
-					// Base ability score
 					updateAbilityScoreSubrow(convertView, childPosition);
-					abilityScoreSubrows.add(childPosition, convertView);
 				} else if (category.equals("Skills")) {
 					updateSkillSubrow(convertView, childPosition);
-					skillSubrows.add(childPosition, convertView);
+				}
+			} else if (category.equals("Equipment")) {
+				convertView = View.inflate(getActivity(), R.layout.subrow_statistics, null);
+				TextView tx_modifier = (TextView) convertView.findViewById(R.id.score_modifier);
+				String item = charEdit.equipment.get(name);
+				if (item != null) {
+					tx_modifier.setText(item);
 				} else {
-					tx_modifier.setText("");
+					tx_modifier.setText("None");
 				}
 			} else {
-				convertView = View.inflate(getActivity(), R.layout.row_statistics, null);
+				convertView = View.inflate(getActivity(), R.layout.subrow_statistics, null);
+				TextView tx_modifier = (TextView) convertView.findViewById(R.id.score_modifier);
+				tx_modifier.setText(Integer.toString(manager.getValue(name)));
 			}
+			TextView tx_name = (TextView) convertView.findViewById(R.id.score_name);
+			if (tx_name != null)
+				tx_name.setText(name);
 			return convertView;
 		}
 
@@ -139,7 +140,7 @@ public class StatisticsFragment extends Fragment {
 			TextView tx_modifier = (TextView) parent.findViewById(R.id.score_modifier);
 			Integer modifier = manager.getValue(abilityName + " Modifier");
 			if (modifier < 0) {
-				tx_modifier.setText("-" + Integer.toString(modifier));
+				tx_modifier.setText(Integer.toString(modifier));
 			} else {
 				tx_modifier.setText("+" + Integer.toString(modifier));
 			}
@@ -178,7 +179,6 @@ public class StatisticsFragment extends Fragment {
 			
 		}
 		
-		
 		private OnClickListener abilityScoreListener = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -192,8 +192,6 @@ public class StatisticsFragment extends Fragment {
 					charEdit.incrementAbilityScore(childPosition);
 					manager.newBonus(PropertyLists.abilityScoreNames[childPosition], "Base", "Natural", "1");
 				}
-//				updateAbilityScoreSubrow(parent, childPosition);
-//				updateTitlesAndButtons();
 				expList.invalidateViews();
 			}
 		};
@@ -211,8 +209,6 @@ public class StatisticsFragment extends Fragment {
 					charEdit.skillRanks[childPosition] -= 1;
 					manager.newBonus(PropertyLists.skillNames[childPosition], "Base", "Natural", "-1");
 				}
-//				updateSkillSubrow(parent, childPosition);
-//				updateTitlesAndButtons();
 				expList.invalidateViews();
 			}
 		};

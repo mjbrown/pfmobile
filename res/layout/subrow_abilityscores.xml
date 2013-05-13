@@ -8,14 +8,21 @@
 	    android:id="@+id/score_name"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:textSize="22sp"
-	    android:text="Strength" />
-	
+	    android:layout_weight="1"
+	    android:textSize="22sp" />
+	<LinearLayout 
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_weight="1"
+	    android:orientation="horizontal" 
+	    android:layout_gravity="right"
+	    android:gravity="right">
 	<Button 
 	    android:id="@+id/minus"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:textSize="1sp"
+	    android:textSize="12sp"
+	    android:text="-"
 	    android:includeFontPadding="false"/>
 	
 	<TextView 
@@ -23,37 +30,40 @@
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:textSize="24sp"
-	    android:minWidth="42sp"/>
+	    android:minWidth="24sp"/>
 	
 	<Button 
 	    android:id="@+id/plus"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:textSize="1sp"
+	    android:textSize="12sp"
+	    android:text="+"
 	    android:includeFontPadding="false"/>
 	
 	<LinearLayout 
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:layout_weight="1"
+	    android:paddingRight="10sp"
+	    android:gravity="right"
 	    android:orientation="vertical">
 	    <TextView 
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:textSize="12sp"
-	        android:text="Final Score"/>
+	        android:text="Final"/>
 	    <TextView
 	        android:id="@+id/final_score" 
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:textSize="22sp"
+	        android:gravity="center"
 	        android:text="20"/>
 	 </LinearLayout>
 	
 	<LinearLayout 
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:layout_weight="1"
+	    android:gravity="right"
 	    android:orientation="vertical">
 	    <TextView 
 	        android:layout_width="wrap_content"
@@ -67,5 +77,5 @@
 	        android:textSize="22sp"
 	        android:text="+5"/>
 		</LinearLayout>
-	
+	</LinearLayout>
 </LinearLayout>
