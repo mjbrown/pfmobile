@@ -386,5 +386,12 @@ public class CharacterEditor {
 	public int getAbilityScore(int score) {
 		return base_stats[score];
 	}
-
+	
+	public int totalSkillRanks() {
+		int ranks_used = 0;
+		for (int skill: skillRanks) {
+			ranks_used += skill;
+		}
+		return ranks_used;
+	}
 }

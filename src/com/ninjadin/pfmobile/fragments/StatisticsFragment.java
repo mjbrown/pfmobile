@@ -1,5 +1,6 @@
 package com.ninjadin.pfmobile.fragments;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -59,6 +60,10 @@ public class StatisticsFragment extends Fragment {
 		expList.setAdapter(adapter);
 	}
 	private class CharacterSheetAdapter extends SimpleExpandableListAdapter {
+		private View abilityScoreTitle;
+		private View skillTitle;
+		private List<View> abilityScoreSubrows = new ArrayList<View>();
+		private List<View> skillSubrows = new ArrayList<View>();
 		
 		public CharacterSheetAdapter(Context context,
 				List<? extends Map<String, ?>> groupData, int groupLayout,
@@ -79,8 +84,12 @@ public class StatisticsFragment extends Fragment {
 			if (points_left != null) {
 				if (category.equals("Ability Scores")) { 
 					points_left.setText(Integer.toString(charEdit.pointBuyRemaining) + " / 20");
+					abilityScoreTitle = convertView;
 				} else if (category.equals("Skills")) {
-					points_left.setText(Integer.toString(manager.getValue("Skill Points")) + " / 20");
+					String ranks_used = Integer.toString(charEdit.totalSkillRanks());
+					String ranks_available = Integer.toString(manager.getValue("Skill Points"));
+					points_left.setText(ranks_used + " / " + ranks_available);
+					skillTitle = convertView;
 				}
 			}
 			title = (TextView) convertView.findViewById(R.id.titlerow_text);
@@ -104,19 +113,10 @@ public class StatisticsFragment extends Fragment {
 				if (category.equals("Ability Scores")) {
 					// Base ability score
 					updateAbilityScoreSubrow(convertView, childPosition);
+					abilityScoreSubrows.add(childPosition, convertView);
 				} else if (category.equals("Skills")) {
-					String score_value = Integer.toString(charEdit.skillRanks[childPosition]);
-					TextView tx_value = (TextView) convertView.findViewById(R.id.score);
-					if (tx_value != null)
-						tx_value.setText(score_value);
-					Button minus = (Button) convertView.findViewById(R.id.minus);
-					if (minus != null) {
-						minus.setOnClickListener(skillListener);
-					}
-					Button plus = (Button) convertView.findViewById(R.id.plus);
-					if (plus != null) {
-						plus.setOnClickListener(skillListener);
-					}
+					updateSkillSubrow(convertView, childPosition);
+					skillSubrows.add(childPosition, convertView);
 				} else {
 					tx_modifier.setText("");
 				}
@@ -125,101 +125,98 @@ public class StatisticsFragment extends Fragment {
 			}
 			return convertView;
 		}
-	}
-	private void updateAbilityScoreSubrow(View parent, int childPosition) {
-		TextView base_score = (TextView) parent.findViewById(R.id.score);
-		if (base_score != null) {
-			base_score.setText(Integer.toString(charEdit.getAbilityScore(childPosition)));
-		}
-		String abilityName = PropertyLists.abilityScoreNames[childPosition];
-		TextView final_score = (TextView) parent.findViewById(R.id.final_score);
-		if (final_score != null) {
-			final_score.setText(Integer.toString(manager.getValue(abilityName)));
-		}
-		TextView tx_modifier = (TextView) parent.findViewById(R.id.score_modifier);
-		Integer modifier = manager.getValue(abilityName + " Modifier");
-		if (modifier < 0) {
-			tx_modifier.setText("-" + Integer.toString(modifier));
-		} else {
-			tx_modifier.setText("+" + Integer.toString(modifier));
-		}
-		Button minus = (Button) parent.findViewById(R.id.minus);
-		if (minus != null) {
-			minus.setOnClickListener(abilityScoreListener);
-			minus.setEnabled(charEdit.canDecrementAbilityScore(childPosition));
-		}
-		Button plus = (Button) parent.findViewById(R.id.plus);
-		if (plus != null) {
-			plus.setOnClickListener(abilityScoreListener);
-			plus.setEnabled(charEdit.canIncrementAbilityScore(childPosition));
-		}
-	}
-	
-	private void updateTitlesAndButtons() {
-		View abilityScoreTitle = (View) expList.getChildAt(0);
-		if (abilityScoreTitle != null) {
-			TextView pts_left = (TextView) abilityScoreTitle.findViewById(R.id.number_points_left);
-			if (pts_left != null) {
-				pts_left.setText(Integer.toString(charEdit.pointBuyRemaining) + " / 20");
+
+		private void updateAbilityScoreSubrow(View parent, int childPosition) {
+			TextView base_score = (TextView) parent.findViewById(R.id.score);
+			if (base_score != null) {
+				base_score.setText(Integer.toString(charEdit.getAbilityScore(childPosition)));
 			}
-		}
-		for (int i = 0; i < PropertyLists.abilityScoreNames.length; i++) {
-			View abilityScoreSubrow = (View) expList.getChildAt(i+1);
-			if (abilityScoreSubrow != null) {
-				Button plus = (Button) abilityScoreSubrow.findViewById(R.id.plus);
-				if (plus != null) {
-					plus.setEnabled(charEdit.canIncrementAbilityScore(i));
-				}
-				Button minus = (Button) abilityScoreSubrow.findViewById(R.id.minus);
-				if (minus != null) {
-					minus.setEnabled(charEdit.canDecrementAbilityScore(i));
-				}
-			}
-		}
-		
-	}
-	
-	private OnClickListener abilityScoreListener = new OnClickListener() {
-		@Override
-		public void onClick(View v) {
-			View parent = (View) v.getParent();
-			int position = expList.getPositionForView(parent);
-			int childPosition = ExpandableListView.getPackedPositionChild(expList.getAdapter().getItemId(position));
-			if (v.getId() == R.id.minus) {
-				charEdit.decrementAbilityScore(childPosition);
-				manager.newBonus(PropertyLists.abilityScoreNames[childPosition], "Base", "Natural", "-1");
-			} else {
-				charEdit.incrementAbilityScore(childPosition);
-				manager.newBonus(PropertyLists.abilityScoreNames[childPosition], "Base", "Natural", "1");
-			}
-			updateAbilityScoreSubrow(parent, childPosition);
-			updateTitlesAndButtons();
-		}
-	};
-	
-	private OnClickListener skillListener = new OnClickListener() {
-		@Override
-		public void onClick(View v) {
-			View parent = (View) v.getParent();
-			int position = expList.getPositionForView(parent);
-			int childPosition = ExpandableListView.getPackedPositionChild(expList.getAdapter().getItemId(position));
-			if (v.getId() == R.id.plus) {
-				charEdit.skillRanks[childPosition] += 1;
-				manager.newBonus(PropertyLists.skillNames[childPosition], "Base", "Natural", "1");
-			} else {
-				charEdit.skillRanks[childPosition] -= 1;
-				manager.newBonus(PropertyLists.skillNames[childPosition], "Base", "Natural", "-1");
-			}
-//			updateSkill(parent, childPosition);
-			TextView ranks = (TextView) parent.findViewById(R.id.score);
-			if (ranks != null) {
-				ranks.setText(Integer.toString(charEdit.skillRanks[childPosition]));
-			}
+			String abilityName = PropertyLists.abilityScoreNames[childPosition];
 			TextView final_score = (TextView) parent.findViewById(R.id.final_score);
 			if (final_score != null) {
-				String skill_modifier = Integer.toString(manager.getValue(PropertyLists.skillNames[childPosition]));
-				final_score.setText(skill_modifier);
+				final_score.setText(Integer.toString(manager.getValue(abilityName)));
+			}
+			TextView tx_modifier = (TextView) parent.findViewById(R.id.score_modifier);
+			Integer modifier = manager.getValue(abilityName + " Modifier");
+			if (modifier < 0) {
+				tx_modifier.setText("-" + Integer.toString(modifier));
+			} else {
+				tx_modifier.setText("+" + Integer.toString(modifier));
+			}
+			Button minus = (Button) parent.findViewById(R.id.minus);
+			if (minus != null) {
+				minus.setOnClickListener(abilityScoreListener);
+				minus.setEnabled(charEdit.canDecrementAbilityScore(childPosition));
+			}
+			Button plus = (Button) parent.findViewById(R.id.plus);
+			if (plus != null) {
+				plus.setOnClickListener(abilityScoreListener);
+				plus.setEnabled(charEdit.canIncrementAbilityScore(childPosition));
 			}
 		}
-	};
+		private void updateSkillSubrow(View parent, int childPosition) {
+			String ranks = Integer.toString(charEdit.skillRanks[childPosition]);
+			String skill_name = PropertyLists.skillNames[childPosition];
+			TextView tx_value = (TextView) parent.findViewById(R.id.score);
+			if (tx_value != null)
+				tx_value.setText(ranks);
+			Button minus = (Button) parent.findViewById(R.id.minus);
+			if (minus != null) {
+				minus.setOnClickListener(skillListener);
+			}
+			Button plus = (Button) parent.findViewById(R.id.plus);
+			if (plus != null) {
+				plus.setOnClickListener(skillListener);
+			}
+			TextView tx_modifier = (TextView) parent.findViewById(R.id.score_modifier);
+			Integer modifier = manager.getValue(skill_name);
+			if (modifier < 0) {
+				tx_modifier.setText("-" + Integer.toString(modifier));
+			} else {
+				tx_modifier.setText("+" + Integer.toString(modifier));
+			}
+			
+		}
+		
+		
+		private OnClickListener abilityScoreListener = new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				View parent = (View) v.getParent();
+				int position = expList.getPositionForView(parent);
+				int childPosition = ExpandableListView.getPackedPositionChild(expList.getAdapter().getItemId(position));
+				if (v.getId() == R.id.minus) {
+					charEdit.decrementAbilityScore(childPosition);
+					manager.newBonus(PropertyLists.abilityScoreNames[childPosition], "Base", "Natural", "-1");
+				} else {
+					charEdit.incrementAbilityScore(childPosition);
+					manager.newBonus(PropertyLists.abilityScoreNames[childPosition], "Base", "Natural", "1");
+				}
+//				updateAbilityScoreSubrow(parent, childPosition);
+//				updateTitlesAndButtons();
+				expList.invalidateViews();
+			}
+		};
+		
+		private OnClickListener skillListener = new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				View parent = (View) v.getParent();
+				int position = expList.getPositionForView(parent);
+				int childPosition = ExpandableListView.getPackedPositionChild(expList.getAdapter().getItemId(position));
+				if (v.getId() == R.id.plus) {
+					charEdit.skillRanks[childPosition] += 1;
+					manager.newBonus(PropertyLists.skillNames[childPosition], "Base", "Natural", "1");
+				} else {
+					charEdit.skillRanks[childPosition] -= 1;
+					manager.newBonus(PropertyLists.skillNames[childPosition], "Base", "Natural", "-1");
+				}
+//				updateSkillSubrow(parent, childPosition);
+//				updateTitlesAndButtons();
+				expList.invalidateViews();
+			}
+		};
+	}
+	
+	
 }

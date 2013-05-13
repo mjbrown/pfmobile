@@ -24,13 +24,12 @@ import com.ninjadin.pfmobile.R;
 import com.ninjadin.pfmobile.data.ExpListData;
 import com.ninjadin.pfmobile.data.XmlConst;
 import com.ninjadin.pfmobile.fragments.ChoiceSelectFragment;
-import com.ninjadin.pfmobile.fragments.LevelsFragment;
 import com.ninjadin.pfmobile.fragments.EquipmentFragment;
 import com.ninjadin.pfmobile.fragments.GeneratorMenuFragment;
 import com.ninjadin.pfmobile.fragments.InfoFragment;
 import com.ninjadin.pfmobile.fragments.InventoryFragment;
 import com.ninjadin.pfmobile.fragments.ItemEditFragment;
-import com.ninjadin.pfmobile.fragments.PointBuyFragment;
+import com.ninjadin.pfmobile.fragments.LevelsFragment;
 import com.ninjadin.pfmobile.fragments.ShowXMLFragment;
 import com.ninjadin.pfmobile.fragments.SkillsFragment;
 import com.ninjadin.pfmobile.fragments.StatisticsFragment;
@@ -195,14 +194,6 @@ public class GeneratorActivity extends FragmentActivity {
 		transaction.commit();
 	}
 	
-	public void launchStats(View view) {
-		PointBuyFragment newFragment = new PointBuyFragment();
-		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-		transaction.replace(R.id.fragment_container, newFragment);
-		transaction.addToBackStack(null);
-		transaction.commit();
-	}
-	
 	public void launchLevels(View view) {
 		refreshCharData();
 		LevelsFragment newFragment = new LevelsFragment();
@@ -344,11 +335,6 @@ public class GeneratorActivity extends FragmentActivity {
 		transaction.commit();
 	}
 
-	public void statChange(View view) {
-		((PointBuyFragment) getSupportFragmentManager().findFragmentById(
-				R.id.fragment_container)).statChange(view);
-	}
-	
 	public void addFromTemplate(View view) {
 		Bundle passedData = new Bundle();
 		passedData.putString("selection type", XmlConst.ITEM_TAG);

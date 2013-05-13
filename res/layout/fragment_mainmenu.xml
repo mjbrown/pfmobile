@@ -33,20 +33,11 @@
         android:onClick="launchStatistics" />
 
     <Button
-        android:id="@+id/char_stats_button"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/char_statistics_button"
-        android:text="@string/char_stats" 
-        android:onClick="launchStats" />
-    
-    <Button
         android:id="@+id/char_levels_button"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/char_stats_button"
+        android:layout_below="@+id/char_statistics_button"
         android:text="@string/char_levels" 
         android:onClick="launchLevels" />
 

@@ -53,7 +53,8 @@ public class PropertyLists {
 		"Medium Armor Spell Failure", "Heavy Armor Spell Failure", "Shield Spell Failure", "Armor Check",
 		"Maximum Dexterity Bonus", "Encumbrance", "Equipment Cost", };
 	
-	final public static String otherStatisticNames[] = new String[] { "Skill Points",	"Spell Resistance", "Initiative", "Spell Penetration", "Sneak Attack Dice" };
+	final public static String otherStatisticNames[] = new String[] { "Skill Points",	
+		"Spell Resistance", "Initiative", "Spell Penetration", "Sneak Attack Dice" };
 
 	final static public String[] slotNames = new String[] { "Head", "Headband", "Wrists", "Feet",
 		"Eyes", "Neck", "Shoulders", "Chest", "Body", "Armor", "Hands", "Ring", "Belt", "Held", };
