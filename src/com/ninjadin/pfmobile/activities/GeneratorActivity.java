@@ -194,11 +194,21 @@ public class GeneratorActivity extends FragmentActivity {
 	}
 	
 	public void launchLevels(View view) {
-		refreshCharData();
+		try {
+			InputStream character = new FileInputStream(charFile);
+			expListData.initLevels(character);
+			character.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (XmlPullParserException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		LevelsFragment newFragment = new LevelsFragment();
-		Bundle passedData = new Bundle();
-		passedData.putString("choiceType", "Levels");
-		newFragment.setArguments(passedData);
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.fragment_container, newFragment);
 		transaction.addToBackStack(null);
@@ -222,8 +232,6 @@ public class GeneratorActivity extends FragmentActivity {
 	}
 
 	public void levelChange(View view) {
-//		((CharacterInfoFragment) getSupportFragmentManager().findFragmentById(
-//				R.id.fragment_container)).saveInfo();
 		if (view.getId() == R.id.levelDown) {
 			try {
 				charData.removeLevel();

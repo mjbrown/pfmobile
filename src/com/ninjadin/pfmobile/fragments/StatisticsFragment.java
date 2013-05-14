@@ -52,11 +52,18 @@ public class StatisticsFragment extends Fragment {
 				new String[] { XmlConst.NAME_ATTR },
 				new int[] { R.id.titlerow_text },
 				itemData,
-				R.layout.subrow_abilityscores,
+				R.layout.subrow_skills_scores,
 				new String[] { XmlConst.NAME_ATTR},
 				new int[] {R.id.score_name} );
 		expList.setAdapter(adapter);
 	}
+	
+	@Override
+	public void onPause() {
+		super .onPause();
+		((GeneratorActivity) getActivity()).saveCharacterState();
+	}
+	
 	private class CharacterSheetAdapter extends SimpleExpandableListAdapter {
 		public CharacterSheetAdapter(Context context,
 				List<? extends Map<String, ?>> groupData, int groupLayout,
@@ -97,7 +104,7 @@ public class StatisticsFragment extends Fragment {
 			String category = groupData.get(groupPosition).get(XmlConst.NAME_ATTR);
 			String name = itemData.get(groupPosition).get(childPosition).get(XmlConst.NAME_ATTR);
 			if ((category.equals("Ability Scores")) || (category.equals("Skills"))) {
-				convertView = View.inflate(getActivity(), R.layout.subrow_abilityscores, null);
+				convertView = View.inflate(getActivity(), R.layout.subrow_skills_scores, null);
 				String final_score = Integer.toString(manager.getValue(name));
 				TextView tx_final = (TextView) convertView.findViewById(R.id.final_score);
 				if (tx_final != null)
@@ -108,7 +115,7 @@ public class StatisticsFragment extends Fragment {
 					updateSkillSubrow(convertView, childPosition);
 				}
 			} else if (category.equals("Equipment")) {
-				convertView = View.inflate(getActivity(), R.layout.subrow_statistics, null);
+				convertView = View.inflate(getActivity(), R.layout.subrow_charsheet, null);
 				TextView tx_modifier = (TextView) convertView.findViewById(R.id.score_modifier);
 				String item = charEdit.equipment.get(name);
 				if (item != null) {
@@ -117,7 +124,7 @@ public class StatisticsFragment extends Fragment {
 					tx_modifier.setText("None");
 				}
 			} else {
-				convertView = View.inflate(getActivity(), R.layout.subrow_statistics, null);
+				convertView = View.inflate(getActivity(), R.layout.subrow_charsheet, null);
 				TextView tx_modifier = (TextView) convertView.findViewById(R.id.score_modifier);
 				tx_modifier.setText(Integer.toString(manager.getValue(name)));
 			}
@@ -204,10 +211,10 @@ public class StatisticsFragment extends Fragment {
 				int childPosition = ExpandableListView.getPackedPositionChild(expList.getAdapter().getItemId(position));
 				if (v.getId() == R.id.plus) {
 					charEdit.skillRanks[childPosition] += 1;
-					manager.newBonus(PropertyLists.skillNames[childPosition], "Base", "Natural", "1");
+					manager.newBonus(PropertyLists.skillNames[childPosition], "Ranks", "Natural", "1");
 				} else {
 					charEdit.skillRanks[childPosition] -= 1;
-					manager.newBonus(PropertyLists.skillNames[childPosition], "Base", "Natural", "-1");
+					manager.newBonus(PropertyLists.skillNames[childPosition], "Ranks", "Natural", "-1");
 				}
 				expList.invalidateViews();
 			}

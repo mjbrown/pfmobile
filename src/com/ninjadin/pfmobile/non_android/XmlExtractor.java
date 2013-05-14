@@ -10,6 +10,8 @@ import java.util.Map;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+import com.ninjadin.pfmobile.data.XmlConst;
+
 import android.util.Xml;
 
 public class XmlExtractor {
@@ -79,7 +81,7 @@ public class XmlExtractor {
 						singleList = new ArrayList<Map<String, String>>();
 						itemData.add(singleList);
 						curGroupMap.put("tag", tag);
-						curGroupMap.put("number", Integer.toString(tagCount++));
+						curGroupMap.put(XmlConst.NUM_ATTR, Integer.toString(tagCount++));
 						for (String tag_attr: tag_attrs) {
 							String attr_value = xmlParser.getAttributeValue(null, tag_attr);
 							if (attr_value != null)

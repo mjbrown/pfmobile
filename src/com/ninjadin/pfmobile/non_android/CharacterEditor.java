@@ -13,20 +13,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+import android.util.Xml;
+
 import com.ninjadin.pfmobile.data.PropertyLists;
 import com.ninjadin.pfmobile.data.XmlConst;
-
-
-import android.util.Xml;
 
 public class CharacterEditor {
 	public int charLevel = 0;
 
-	public XmlExtractor levels;
+	public List<Map<String,String>> levelData = new ArrayList<Map<String,String>>();
 	public Map<String, String> equipment;  // <SLOT, NAME>
 	
 	public CharacterInfo info;
@@ -74,7 +74,7 @@ public class CharacterEditor {
 				} else if (name.equals(XmlConst.INFO_TAG)) {
 					info.readInfo(parser);
 				} else if (name.equals(XmlConst.LEVELS_TAG)) {
-					choice_id += readLevels(parser, choice_id);
+					readLevels(parser, choice_id);
 				} else if (name.equals(XmlConst.SKILLS_TAG)) {
 					readSkills(parser);
 				} else if (name.equals(XmlConst.EQUIP_TAG)) {
@@ -99,15 +99,56 @@ public class CharacterEditor {
 		}
 	}
 	// Populate level names and the choices associated with each character level
-	public int readLevels(XmlPullParser parser, int choice_id) throws XmlPullParserException, IOException{
-		String[] tag_names = new String[] { XmlConst.LEVEL_TAG, };
-		String[] tag_attrs = new String[] { XmlConst.NUM_ATTR, };
-		String[] subtag_names = new String[] { XmlConst.CHOICE_TAG, XmlConst.CHOSEN_TAG, };
-		String[] subtag_attrs = new String[] { XmlConst.NAME_ATTR, XmlConst.GRPNAME_ATTR, XmlConst.SUBGRP, };
-		levels = new XmlExtractor(parser, 0, choice_id);
-		levels.getData(XmlConst.LEVELS_TAG, tag_names, tag_attrs, subtag_names, subtag_attrs);
-		charLevel = levels.groupData.size();
-		return levels.subTagCount;
+	public void readLevels(XmlPullParser parser, int choice_id) throws XmlPullParserException, IOException{
+		Stack<String> lastParents = new Stack<String>();
+		int id = choice_id;
+		while (parser.next() != XmlPullParser.END_DOCUMENT) {
+			// Run until the end of characterTemplate or END_DOCUMENT
+			if (parser.getEventType() == XmlPullParser.END_TAG) {
+				if (parser.getName() != null)
+					if (parser.getName().equals(XmlConst.CHARTEMPLATE_TAG))
+						break;
+			} 
+			if (parser.getEventType() == XmlPullParser.START_TAG) {
+				String name = parser.getName();
+				if (name != null) {
+					if (name.equals(XmlConst.LEVEL_TAG)) {
+						String number = parser.getAttributeValue(null, XmlConst.NUM_ATTR);
+						lastParents.push("Character Level " + number);
+						charLevel = Integer.parseInt(number);
+					} else if (name.equals(XmlConst.CHOICE_TAG) || name.equals(XmlConst.CHOSEN_TAG)) {
+						String groupName = parser.getAttributeValue(null, XmlConst.GRPNAME_ATTR);
+						String subGroup = parser.getAttributeValue(null, XmlConst.SUBGRP);
+						String selection = parser.getAttributeValue(null, XmlConst.NAME_ATTR);
+						String parent = lastParents.peek();
+						Map<String,String> newMap = new HashMap<String,String>();
+						if (groupName != null) {
+							newMap.put(XmlConst.GRPNAME_ATTR, groupName);
+						}
+						if (subGroup != null) {
+							newMap.put(XmlConst.SUBGRP, subGroup);
+						}
+						if (selection != null) {
+							newMap.put(XmlConst.NAME_ATTR, selection);
+							lastParents.push(selection);
+						}
+						if (parent != null) {
+							newMap.put(XmlConst.SOURCE_ATTR, parent);
+						}
+						newMap.put(XmlConst.NUM_ATTR, Integer.toString(id++));
+						levelData.add(newMap);
+					} 
+				}
+			} else if (parser.getEventType() == XmlPullParser.END_TAG) {
+				String name = parser.getName();
+				if (name != null) {
+					if (name.equals(XmlConst.LEVEL_TAG) || name.equals(XmlConst.CHOSEN_TAG)) {
+						if (lastParents.empty() != true)
+							lastParents.pop();
+					}
+				}
+			}
+		}
 	}
 	
 	public void writeCharacterData(File temp) throws IOException {
