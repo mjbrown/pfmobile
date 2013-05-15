@@ -23,15 +23,14 @@ import android.widget.Toast;
 import com.ninjadin.pfmobile.R;
 import com.ninjadin.pfmobile.data.ExpListData;
 import com.ninjadin.pfmobile.data.XmlConst;
+import com.ninjadin.pfmobile.fragments.CharacterSheetFragment;
 import com.ninjadin.pfmobile.fragments.ChoiceSelectFragment;
 import com.ninjadin.pfmobile.fragments.EquipmentFragment;
 import com.ninjadin.pfmobile.fragments.GeneratorMenuFragment;
-import com.ninjadin.pfmobile.fragments.InfoFragment;
 import com.ninjadin.pfmobile.fragments.InventoryFragment;
 import com.ninjadin.pfmobile.fragments.ItemEditFragment;
 import com.ninjadin.pfmobile.fragments.LevelsFragment;
 import com.ninjadin.pfmobile.fragments.ShowXMLFragment;
-import com.ninjadin.pfmobile.fragments.StatisticsFragment;
 import com.ninjadin.pfmobile.fragments.TemplateSelectFragment;
 import com.ninjadin.pfmobile.non_android.CharacterEditor;
 import com.ninjadin.pfmobile.non_android.InventoryEditor;
@@ -175,18 +174,10 @@ public class GeneratorActivity extends FragmentActivity {
 		super .onDestroy();
 	}
 	
-	public void launchCharInfo(View view) {
-		InfoFragment newFragment = new InfoFragment();
-		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-		transaction.replace(R.id.fragment_container, newFragment);
-		transaction.addToBackStack(null);
-		transaction.commit();
-	}
-	
 	public void launchStatistics(View view) {
 		saveCharacterState();
 		refreshCharData();
-		StatisticsFragment newFragment = new StatisticsFragment();
+		CharacterSheetFragment newFragment = new CharacterSheetFragment();
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.fragment_container, newFragment);
 		transaction.addToBackStack(null);
@@ -194,20 +185,7 @@ public class GeneratorActivity extends FragmentActivity {
 	}
 	
 	public void launchLevels(View view) {
-		try {
-			InputStream character = new FileInputStream(charFile);
-			expListData.initLevels(character);
-			character.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (XmlPullParserException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		refreshCharData();
 		LevelsFragment newFragment = new LevelsFragment();
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.fragment_container, newFragment);
@@ -231,30 +209,6 @@ public class GeneratorActivity extends FragmentActivity {
 		transaction.commit();
 	}
 
-	public void levelChange(View view) {
-		if (view.getId() == R.id.levelDown) {
-			try {
-				charData.removeLevel();
-				charData.charLevel -= 1;
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} else if (view.getId() == R.id.levelUp) {
-			InputStream charLevelData = getResources().openRawResource(R.raw.base_levels);
-			try {
-				charData.addLevel(charLevelData);
-				charData.charLevel += 1;
-				charLevelData.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		((InfoFragment) getSupportFragmentManager().findFragmentById(
-				R.id.fragment_container)).updateInfo();
-	}
-	
 	public void launchFilterSelect(View view, String groupName, String subGroup, String choiceId) {
 		ChoiceSelectFragment newFragment = new ChoiceSelectFragment();
 		Bundle passedData = new Bundle();

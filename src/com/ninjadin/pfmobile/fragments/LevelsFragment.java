@@ -1,5 +1,8 @@
 package com.ninjadin.pfmobile.fragments;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -8,9 +11,11 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -22,6 +27,7 @@ public class LevelsFragment extends Fragment {
 	ListView listView;
 	LevelsAdapter levelsAdapter;
 	List<Map<String, String>> groupData;
+	GeneratorActivity activity;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -32,9 +38,46 @@ public class LevelsFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super .onResume();
-		GeneratorActivity activity = (GeneratorActivity) getActivity();
-		groupData = activity.charData.levelData;
+		activity = (GeneratorActivity) getActivity();
 		listView = (ListView) activity.findViewById(R.id.listView1);
+		refreshViews();
+		Button level_down = (Button) activity.findViewById(R.id.levelDown);
+		if (level_down != null) {
+			level_down.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					activity.charData.removeLevel();
+					activity.refreshCharData();
+					refreshViews();
+					levelsAdapter.notifyDataSetChanged();
+					listView.invalidateViews();
+				}
+			});
+		}
+		Button level_up = (Button) activity.findViewById(R.id.levelUp);
+		if (level_up != null) {
+			level_up.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					InputStream charLevelData = activity.getResources().openRawResource(R.raw.base_levels);
+					activity.charData.addLevel(charLevelData);
+					try {
+						charLevelData.close();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					activity.refreshCharData();
+					refreshViews();
+					levelsAdapter.notifyDataSetChanged();
+					listView.invalidateViews();
+				}
+			});
+		}
+	}
+	
+	private void refreshViews() {
+		groupData = reverse(activity.charData.levelData);
 		levelsAdapter = new LevelsAdapter(activity, R.layout.subrow_levels, R.id.group_text, groupData);
 		listView.setAdapter(levelsAdapter);
 		listView.setOnItemClickListener(new ListView.OnItemClickListener() {
@@ -47,7 +90,22 @@ public class LevelsFragment extends Fragment {
 				activity.launchFilterSelect(view, groupName, subGroup, choiceId);
 			}
 		});
+		TextView level = (TextView) activity.findViewById(R.id.level_indicator);
+		if (level != null) {
+			level.setText("Level " + Integer.toString(activity.charData.charLevel));
+		}
 	}
+	
+	private List<Map<String,String>> reverse(List<Map<String,String>> list) {
+		List<Map<String,String>> reverseList = new ArrayList<Map<String,String>>();
+		int size = list.size();
+		for (int i = size-1; i > -1; i--) {
+			Map<String,String> xfer = list.get(i);
+			reverseList.add(xfer);
+		}
+		return reverseList;
+	}
+	
 	class LevelsAdapter extends ArrayAdapter<Map<String,String>> {
 		Context mContext;
 		int resource;

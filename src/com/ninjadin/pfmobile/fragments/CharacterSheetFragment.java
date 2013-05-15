@@ -23,7 +23,7 @@ import com.ninjadin.pfmobile.data.XmlConst;
 import com.ninjadin.pfmobile.non_android.CharacterEditor;
 import com.ninjadin.pfmobile.non_android.StatisticManager;
 
-public class StatisticsFragment extends Fragment {
+public class CharacterSheetFragment extends Fragment {
 	ExpandableListView expList;
 	StatisticManager manager;
 	CharacterEditor charEdit;

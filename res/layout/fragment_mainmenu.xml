@@ -15,20 +15,11 @@
     tools:context=".GeneratorActivity" >
 
     <Button
-        android:id="@+id/char_info_button"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:text="@string/char_info"
-        android:onClick="launchCharInfo" />
-
-    <Button
         android:id="@+id/char_statistics_button"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/char_info_button"
+        android:layout_alignParentTop="true"
         android:text="Character Sheet" 
         android:onClick="launchStatistics" />
 

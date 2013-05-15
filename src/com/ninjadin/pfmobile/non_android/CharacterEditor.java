@@ -29,8 +29,6 @@ public class CharacterEditor {
 	public List<Map<String,String>> levelData = new ArrayList<Map<String,String>>();
 	public Map<String, String> equipment;  // <SLOT, NAME>
 	
-	public CharacterInfo info;
-	
 	private File charFile;
 	private File tempFile;
 
@@ -41,7 +39,6 @@ public class CharacterEditor {
 	public CharacterEditor(File originalFile, File temporaryFile) throws XmlPullParserException, IOException {
 		charFile = originalFile;
 		tempFile = temporaryFile;
-		info = new CharacterInfo();
 		FileInputStream inStream;
 		XmlPullParser parser = Xml.newPullParser();
 		inStream = new FileInputStream(charFile);
@@ -72,7 +69,7 @@ public class CharacterEditor {
 				if (name.equals(XmlConst.POINTBUY_TAG)) {
 					readAbilityScores(parser);
 				} else if (name.equals(XmlConst.INFO_TAG)) {
-					info.readInfo(parser);
+
 				} else if (name.equals(XmlConst.LEVELS_TAG)) {
 					readLevels(parser, choice_id);
 				} else if (name.equals(XmlConst.SKILLS_TAG)) {
@@ -106,7 +103,7 @@ public class CharacterEditor {
 			// Run until the end of characterTemplate or END_DOCUMENT
 			if (parser.getEventType() == XmlPullParser.END_TAG) {
 				if (parser.getName() != null)
-					if (parser.getName().equals(XmlConst.CHARTEMPLATE_TAG))
+					if (parser.getName().equals(XmlConst.LEVELS_TAG))
 						break;
 			} 
 			if (parser.getEventType() == XmlPullParser.START_TAG) {
@@ -152,13 +149,12 @@ public class CharacterEditor {
 	}
 	
 	public void writeCharacterData(File temp) throws IOException {
-		String header = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<" + XmlConst.CHARTEMPLATE_TAG + ">\n" + startTag(XmlConst.INFO_TAG);
+		String header = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<" + XmlConst.CHARTEMPLATE_TAG + ">\n";
 // Create a temporary file with fresh Info/Stats
 		FileOutputStream outStream;
 		outStream = new FileOutputStream(temp);
 		outStream.write(header.getBytes());
-		info.insertInfo(outStream);
-		outStream.write((endTag(XmlConst.INFO_TAG) + startTag(XmlConst.POINTBUY_TAG)).getBytes());
+		outStream.write((startTag(XmlConst.POINTBUY_TAG)).getBytes());
 		writeAbilityScores(outStream);
 		outStream.write((endTag(XmlConst.POINTBUY_TAG) + startTag(XmlConst.SKILLS_TAG)).getBytes());
 		writeSkills(outStream);
@@ -219,18 +215,28 @@ public class CharacterEditor {
 		}
 	}
 
-	public void addLevel(InputStream charLevelData) throws IOException {
+	public void addLevel(InputStream charLevelData) {
 		String startData = "<" + XmlConst.LEVEL_TAG + " " + XmlConst.NUM_ATTR +"=\"" + Integer.toString(charLevel+1) + "\">";
 		String endData = "</" + XmlConst.LEVEL_TAG + ">";
 		String insertBefore = "</" + XmlConst.LEVELS_TAG + ">";
-		XmlEditor.copyReplace(charFile, tempFile, charLevelData, startData, endData, insertBefore, insertBefore, null, null);
+		try {
+			XmlEditor.copyReplace(charFile, tempFile, charLevelData, startData, endData, insertBefore, insertBefore, null, null);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		tempFile.renameTo(charFile);
 	}
 	
-	public void removeLevel() throws IOException {
+	public void removeLevel() {
 		String insertBefore = "<" + XmlConst.LEVEL_TAG + " " + XmlConst.NUM_ATTR + "=\"" + Integer.toString(charLevel) + "\">";
 		String continueOn = "</" + XmlConst.LEVELS_TAG + ">";
-		XmlEditor.copyReplace(charFile, tempFile, null, null, null, insertBefore, continueOn, null, null);
+		try {
+			XmlEditor.copyReplace(charFile, tempFile, null, null, null, insertBefore, continueOn, null, null);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		tempFile.renameTo(charFile);
 	}
 	
