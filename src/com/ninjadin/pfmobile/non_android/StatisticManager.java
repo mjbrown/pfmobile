@@ -26,8 +26,12 @@ public class StatisticManager {
 	private Map<String, List<StatisticInstance>> statDependencies;
 	// A map of items worn by the character
 	private Map<String, EquippedItem> itemMap;
+	// A map of proficiencies
+	private Map<String, Boolean> propertyNames;
+	// A map of feat/ability names for prerequisite purposes
 	
 	public StatisticManager() {
+		propertyNames = new HashMap<String, Boolean>();
 		statMap = new LinkedHashMap<String, StatisticInstance>();
 		statList = new ArrayList<String>();
 		statDependencies = new HashMap<String, List<StatisticInstance>>();
@@ -137,6 +141,16 @@ public class StatisticManager {
 		stat.update();		// TODO: This update shouldn't be necessary
 		return stat.getFinalValue();
 	}
+	
+	public boolean hasProperty(String name) {
+		Boolean property = propertyNames.get(name);
+		if (property != null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	public int evaluateValue(String value) {
 		String strippedValue = new String(value);
 		for (String operand: statList) {
@@ -178,6 +192,18 @@ public class StatisticManager {
 						EquippedItem newItem = new EquippedItem(name, inventory);
 						for (Map<String,String> bonus: newItem.bonusList) {
 							newBonus(bonus);
+						}
+					}
+				} else if (tag.equals(XmlConst.CHOICE_TAG) || (tag.equals(XmlConst.CHOSEN_TAG))) {
+					String name = parser.getAttributeValue(null, XmlConst.NAME_ATTR);
+					if (name != null) {
+						propertyNames.put(name, true);
+					}
+				} else if (tag.equals(XmlConst.PROFICIENCY_TAG)) {
+					String types = parser.getAttributeValue(null, XmlConst.TYPE_ATTR);
+					if (types != null) {
+						for (String type: types.split(",")) {
+							propertyNames.put(type, true);
 						}
 					}
 				}

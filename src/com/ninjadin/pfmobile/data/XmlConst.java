@@ -28,6 +28,9 @@ public class XmlConst {
 	final public static String ITEMPROPERTY_TAG = "itemProperty";
 	final public static String DAMAGE_TAG = "damage";
 
+	// Used as TAG in data files
+	final public static String PREREQ_TAG = "prerequisite";
+	
 	// Used as ATTRIBUTE in character file
 	final public static String GRPNAME_ATTR = "groupName";
 	final public static String NUM_ATTR = "number";
@@ -37,6 +40,8 @@ public class XmlConst {
 	final public static String STACKTYPE_ATTR = "stackType";
 	final public static String SOURCE_ATTR = "source";
 	
+	// Used as ATTRIBUTE in data files
+	final public static String COMPARE_ATTR = "comparator";
 	// Used as ATTRIBUTE 
 	final public static String SLOT_ATTR = "slot";
 	final public static String STATISTIC_ATTR = "statistic";

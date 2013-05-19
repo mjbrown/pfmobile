@@ -58,7 +58,7 @@
     </prerequisite>
     <prerequisite type="Rogue Level" comparator="Equals" values="1">
     <selection name="Rogue Lvl 2">
-        <bonus type="Rogue Lvl" value="1" />        
+        <bonus type="Rogue Level" value="1" />        
         <bonus type="Skill Points" value="8" />
         <bonus type="Hit Points" value="8" />
         <bonus type="Base Attack" value="1" />

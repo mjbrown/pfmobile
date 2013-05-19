@@ -210,6 +210,7 @@ public class GeneratorActivity extends FragmentActivity {
 	}
 
 	public void launchFilterSelect(View view, String groupName, String subGroup, String choiceId) {
+		refreshCharData();
 		ChoiceSelectFragment newFragment = new ChoiceSelectFragment();
 		Bundle passedData = new Bundle();
 		passedData.putString("groupName", groupName);

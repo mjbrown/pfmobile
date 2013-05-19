@@ -25,6 +25,7 @@ import android.widget.TextView;
 import com.ninjadin.pfmobile.R;
 import com.ninjadin.pfmobile.activities.GeneratorActivity;
 import com.ninjadin.pfmobile.data.XmlConst;
+import com.ninjadin.pfmobile.non_android.StatisticManager;
 import com.ninjadin.pfmobile.non_android.XmlExtractor;
 
 public class ChoiceSelectFragment extends Fragment {
@@ -33,10 +34,11 @@ public class ChoiceSelectFragment extends Fragment {
 	String groupName;
 	String subGroupName;
 	XmlExtractor choices;
+	StatisticManager manager;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_filterselect, container, false);
+		View view = inflater.inflate(R.layout.fragment_basicexpandable, container, false);
 		return view;
 	}
 
@@ -56,19 +58,20 @@ public class ChoiceSelectFragment extends Fragment {
 					XmlConst.CHOICE_TAG};
 			String[] subtag_attrs = new String[] { XmlConst.BONUSGRP, XmlConst.NAME_ATTR,
 					XmlConst.TYPE_ATTR, XmlConst.VALUE_ATTR };
-			choices = new XmlExtractor(dataFile);
+			manager = activity.dependencyManager;
+			choices = new XmlExtractor(dataFile, manager);
 			choices.findTagAttr(XmlConst.BONUSGRP, XmlConst.GRPNAME_ATTR, groupName);
 			if (subGroupName != null) {
 				if (!subGroupName.equals("Any")) {
 					choices.findTagAttr(XmlConst.SUBGRP, XmlConst.GRPNAME_ATTR, subGroupName);
-					choices.getData(XmlConst.SUBGRP, tags, tag_attrs, subtags, subtag_attrs);
+					choices.getPrereqMetData(XmlConst.SUBGRP, tags, tag_attrs, subtags, subtag_attrs);
 				} else {
-					choices.getData(XmlConst.BONUSGRP, tags, tag_attrs, subtags, subtag_attrs);
+					choices.getPrereqMetData(XmlConst.BONUSGRP, tags, tag_attrs, subtags, subtag_attrs);
 				}
 			} else {
-				choices.getData(XmlConst.BONUSGRP, tags, tag_attrs, subtags, subtag_attrs);
+				choices.getPrereqMetData(XmlConst.BONUSGRP, tags, tag_attrs, subtags, subtag_attrs);
 			}
-			expList = (ExpandableListView) activity.findViewById(R.id.filter_exp_listview);
+			expList = (ExpandableListView) activity.findViewById(R.id.expandableListView1);
 			ExpandableListAdapter baseAdapt = new FilterSelectSimpleExpandableListAdapter(
 					activity, 
 					choices.groupData, 
@@ -96,9 +99,11 @@ public class ChoiceSelectFragment extends Fragment {
 			e.printStackTrace();
 		}
 	}
+	
 	class FilterSelectSimpleExpandableListAdapter extends SimpleExpandableListAdapter {
 		Context mContext;
 		List<Map<String,String>> grpData;
+		List<List<Map<String,String>>> itmData;
 		
 		public FilterSelectSimpleExpandableListAdapter(Context context, List<Map<String, String>> groupData,
 				int groupLayout, String[] groupFrom, int[] groupTo, List<List<Map<String,String>>> childData, int childLayout,
@@ -106,6 +111,7 @@ public class ChoiceSelectFragment extends Fragment {
 			super (context, groupData, groupLayout, groupFrom, groupTo, childData, childLayout, childFrom, childTo);
 			mContext = context;
 			grpData = groupData;
+			itmData = childData;
 		}
 		
 		public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
@@ -125,6 +131,35 @@ public class ChoiceSelectFragment extends Fragment {
 			TextView textView = (TextView)convertView.findViewById(R.id.filtertitle_text);
 			if (textView != null)
 				textView.setText(grpData.get(groupPosition).get(XmlConst.NAME_ATTR));
+			return convertView;
+		}
+		
+		public View getChildView(int groupPosition, int childPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+			if (convertView == null) {
+				convertView = View.inflate(getActivity(), R.layout.subrow_filterselect, null);
+			}
+			TextView text = (TextView) convertView.findViewById(R.id.filterselect_text);
+			TextView text2 = (TextView) convertView.findViewById(R.id.filterselect_text2);
+			String tag = itmData.get(groupPosition).get(childPosition).get("tag");
+			String left_text = null, right_text = null;
+			if (tag.equals(XmlConst.PROFICIENCY_TAG)) {
+				left_text = "Proficiency";
+				right_text = itmData.get(groupPosition).get(childPosition).get(XmlConst.TYPE_ATTR);
+			} else if (tag.equals(XmlConst.CHOICE_TAG) || tag.equals(XmlConst.CHOSEN_TAG)) {
+				left_text = itmData.get(groupPosition).get(childPosition).get(XmlConst.GRPNAME_ATTR);
+				String subgroup = itmData.get(groupPosition).get(childPosition).get(XmlConst.SUBGRP);
+				if (subgroup != null)
+					right_text = subgroup;
+				else
+					right_text = "Any";
+			} else if (tag.equals(XmlConst.BONUS_TAG)) {
+				left_text = itmData.get(groupPosition).get(childPosition).get(XmlConst.TYPE_ATTR);
+				right_text = Integer.toString(manager.evaluateValue(itmData.get(groupPosition).get(childPosition).get(XmlConst.VALUE_ATTR)));
+			}
+			if ((text != null) && (text2 != null) && (right_text != null) && (left_text != null)) {
+				text.setText(left_text);
+				text2.setText(right_text);
+			}
 			return convertView;
 		}
 	}
