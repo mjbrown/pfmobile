@@ -88,7 +88,7 @@ public class XmlEditor {
 		
 	}
 	
-	final static public void replaceParentContent(File copyFrom, File copyTo, 
+	final static public void replaceParent(File copyFrom, File copyTo, 
 			String parentTag, String parentAttrs, String newContent) throws IOException {
 		FileInputStream copyFromStream = new FileInputStream(copyFrom);
 		InputStreamReader copyFromSR = new InputStreamReader(copyFromStream);
@@ -101,11 +101,11 @@ public class XmlEditor {
 		String sourceLine = " ";
 		while (sourceLine != null) {
 			sourceLine = sourceReader.readLine();
-			destWriter.write(sourceLine);
-			destWriter.newLine();
 			if (sourceLine.trim().startsWith("<" + parentTag + " " + parentAttrs)) {
 				break;
 			}
+			destWriter.write(sourceLine);
+			destWriter.newLine();
 		}
 		destWriter.write(newContent);
 		int depth = 0;
@@ -119,6 +119,7 @@ public class XmlEditor {
 			}
 			sourceLine = sourceReader.readLine();
 		}
+		sourceLine = sourceReader.readLine();
 		while (sourceLine != null) {
 			destWriter.write(sourceLine);
 			destWriter.newLine();

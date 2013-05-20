@@ -12,12 +12,14 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ExpandableListView;
 import android.widget.Toast;
 
 import com.ninjadin.pfmobile.R;
@@ -25,22 +27,25 @@ import com.ninjadin.pfmobile.data.ExpListData;
 import com.ninjadin.pfmobile.data.XmlConst;
 import com.ninjadin.pfmobile.fragments.CharacterSheetFragment;
 import com.ninjadin.pfmobile.fragments.ChoiceSelectFragment;
-import com.ninjadin.pfmobile.fragments.EquipmentFragment;
 import com.ninjadin.pfmobile.fragments.GeneratorMenuFragment;
 import com.ninjadin.pfmobile.fragments.InventoryFragment;
+import com.ninjadin.pfmobile.fragments.ItemEditDialogFragment;
+import com.ninjadin.pfmobile.fragments.ItemEditDialogFragment.ItemEditDialogListener;
 import com.ninjadin.pfmobile.fragments.ItemEditFragment;
 import com.ninjadin.pfmobile.fragments.LevelsFragment;
 import com.ninjadin.pfmobile.fragments.ShowXMLFragment;
 import com.ninjadin.pfmobile.fragments.TemplateSelectFragment;
 import com.ninjadin.pfmobile.non_android.CharacterEditor;
 import com.ninjadin.pfmobile.non_android.InventoryEditor;
+import com.ninjadin.pfmobile.non_android.ItemEditor;
 import com.ninjadin.pfmobile.non_android.StatisticManager;
 
-public class GeneratorActivity extends FragmentActivity {
+public class GeneratorActivity extends FragmentActivity implements ItemEditDialogListener {
 	public CharacterEditor charData;
 	public StatisticManager dependencyManager;
 	public InventoryEditor inventoryManager;
 	public ExpListData expListData;
+	public ItemEditor itemEditor;
 	public String masterCharFilename;
 	public String inventoryFilename;
 	public String tempFilename;
@@ -102,8 +107,7 @@ public class GeneratorActivity extends FragmentActivity {
 	@Override
 	public void onResume() {
 		super .onResume();
-		refreshCharData();
-		refreshInventoryData();
+		refreshCharData();  // Fragments rely upon this data being initialised.
 	}
 	
 	public void refreshCharData() {
@@ -114,6 +118,7 @@ public class GeneratorActivity extends FragmentActivity {
 		charFile = new File(this.getFilesDir(), masterCharFilename);
 		tempFile = new File(this.getFilesDir(), tempFilename);
 		inventoryFile = new File(this.getFilesDir(), inventoryFilename);
+		inventoryManager = new InventoryEditor(inventoryFile);
 		dependencyManager = new StatisticManager();
 		expListData = new ExpListData();
 		try {
@@ -124,27 +129,6 @@ public class GeneratorActivity extends FragmentActivity {
 			inStream = (InputStream) getResources().openRawResource(R.raw.dependencies);
 			dependencyManager.readXMLBonuses(inStream, inventoryFile);
 			inStream.close();
-			inStream = (InputStream) getResources().openRawResource(R.raw.enchantments);
-			expListData.initEnchantTemplates(inStream);
-			inStream.close();
-		} catch (XmlPullParserException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	public void refreshInventoryData() {
-		Intent intent = getIntent();
-		InputStream templateStream = this.getResources().openRawResource(R.raw.equipment);
-		try {
-			inventoryManager = new InventoryEditor(inventoryFile, templateStream);
-			templateStream.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (XmlPullParserException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -187,14 +171,6 @@ public class GeneratorActivity extends FragmentActivity {
 	public void launchLevels(View view) {
 		refreshCharData();
 		LevelsFragment newFragment = new LevelsFragment();
-		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-		transaction.replace(R.id.fragment_container, newFragment);
-		transaction.addToBackStack(null);
-		transaction.commit();
-	}
-	
-	public void launchEquipment(View view) {
-		EquipmentFragment newFragment = new EquipmentFragment();
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.fragment_container, newFragment);
 		transaction.addToBackStack(null);
@@ -335,7 +311,6 @@ public class GeneratorActivity extends FragmentActivity {
 				inventoryManager.addFromTemplate(templateFileStream, templateName, tempFile);
 			}
 			templateFileStream.close();
-			refreshInventoryData();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -360,4 +335,19 @@ public class GeneratorActivity extends FragmentActivity {
 		startMenu(itemName + " equipped to " + slotName + ".");
 	}
 	
+	public void showItemEditDialog(int groupPosition, int childPosition) {
+		DialogFragment dialog = new ItemEditDialogFragment();
+		dialog.show(getSupportFragmentManager(), "ItemEditDialogFragment");
+	}
+	
+	@Override
+	public void onItemEditPositiveClick(DialogFragment dialog) {
+		ExpandableListView expList = (ExpandableListView) findViewById(R.id.expandableListView1);
+		expList.invalidateViews();
+	}
+	
+	@Override
+	public void onItemEditNegativeClick(DialogFragment dialog) {
+		
+	}
 }

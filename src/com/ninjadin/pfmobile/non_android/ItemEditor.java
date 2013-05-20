@@ -13,6 +13,9 @@ import com.ninjadin.pfmobile.data.XmlConst;
 public class ItemEditor {
 	public XmlExtractor item;
 	public String name;
+	private String new_name;
+	public String slot;
+	private String new_slot;
 	private File inventory;
 	
 	public ItemEditor(String itemName, File inventoryFile) throws XmlPullParserException, IOException {
@@ -22,6 +25,9 @@ public class ItemEditor {
 		inStream = new FileInputStream(inventoryFile);
 		item = new XmlExtractor(inStream);
 		item.findTagAttr(XmlConst.ITEM_TAG, XmlConst.NAME_ATTR, itemName);
+		slot = item.getAttribute(XmlConst.SLOT_ATTR);
+		new_name = name;
+		new_slot = slot;
 		String[] tags = new String[] { XmlConst.ENHANCE_TAG };
 		String[] tag_attrs = new String[] { XmlConst.NAME_ATTR };
 		String[] subtags = new String[] { XmlConst.ITEMPROPERTY_TAG, XmlConst.DAMAGE_TAG,
@@ -33,7 +39,8 @@ public class ItemEditor {
 	}
 	
 	public void saveChanges(File tempFile) throws IOException {
-		String itemData = new String();
+		String itemData = "<" + XmlConst.ITEM_TAG + " " + XmlConst.NAME_ATTR + "=\"" + new_name + "\" "
+				+ XmlConst.SLOT_ATTR + "=\"" + new_slot + "\" >\n";
 		int i = 0;
 		for (Map<String, String> tag: item.groupData) {
 			itemData += "<" + XmlConst.ENHANCE_TAG;
@@ -55,10 +62,19 @@ public class ItemEditor {
 			}
 			itemData += "</" + XmlConst.ENHANCE_TAG + ">\n";
 		}
+		itemData += "</" + XmlConst.ITEM_TAG + ">\n";
 		File copyFrom = inventory;
 		File copyTo = tempFile;
 		String parentAttrs = XmlConst.NAME_ATTR + "=\"" + name;
-		XmlEditor.replaceParentContent(copyFrom, copyTo, XmlConst.ITEM_TAG, parentAttrs, itemData);
+		XmlEditor.replaceParent(copyFrom, copyTo, XmlConst.ITEM_TAG, parentAttrs, itemData);
 		copyTo.renameTo(inventory);
+	}
+	
+	public void rename(String rename) {
+		new_name = rename;
+	}
+	
+	public void reslot(String reslot) {
+		new_slot = reslot;
 	}
 }

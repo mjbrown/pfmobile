@@ -1,7 +1,12 @@
 package com.ninjadin.pfmobile.fragments;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
+
+import org.xmlpull.v1.XmlPullParserException;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -18,7 +23,9 @@ import android.widget.TextView;
 
 import com.ninjadin.pfmobile.R;
 import com.ninjadin.pfmobile.activities.GeneratorActivity;
+import com.ninjadin.pfmobile.data.ExpListData;
 import com.ninjadin.pfmobile.data.XmlConst;
+import com.ninjadin.pfmobile.non_android.XmlExtractor;
 
 public class TemplateSelectFragment extends Fragment {
 	ExpandableListView expList;
@@ -37,14 +44,38 @@ public class TemplateSelectFragment extends Fragment {
 		GeneratorActivity activity = (GeneratorActivity) getActivity();
 		Bundle args = this.getArguments();
 		templateType = args.getString("selection type");
+		XmlExtractor data = null;
 		if (templateType.equals(XmlConst.ENHANCE_TAG)) {
 			itemName = args.getString(XmlConst.NAME_ATTR);
-			groupData = activity.expListData.enchantTemplates.groupData;
-			itemData = activity.expListData.enchantTemplates.itemData;
+			InputStream inStream = (InputStream) getResources().openRawResource(R.raw.enchantments);
+			try {
+				data = ExpListData.initEnchantTemplates(inStream);
+				inStream.close();
+			} catch (XmlPullParserException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} else {
-			groupData = activity.inventoryManager.templateData.groupData;
-			itemData = activity.inventoryManager.templateData.itemData;
+			InputStream templateStream = this.getResources().openRawResource(R.raw.equipment);
+			try {
+				data = ExpListData.initItemTemplates(templateStream);
+				templateStream.close();
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (XmlPullParserException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
+		groupData = data.groupData;
+		itemData = data.itemData;
 		expList = (ExpandableListView) activity.findViewById(R.id.filter_exp_listview);
 		ExpandableListAdapter simpleExpAdapter = new TemplateSelectSimpleExpandableListAdapter(
 				activity,

@@ -115,19 +115,19 @@ public class ChoiceSelectFragment extends Fragment {
 		}
 		
 		public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-			if (convertView == null) {
+//			if (convertView == null) {
 				convertView = View.inflate(mContext, R.layout.titlerow_filterselect, null);
-				Button addButton = (Button)convertView.findViewById(R.id.filtertitle_add);
-				if (addButton != null)
-				addButton.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View view) {
-						int groupPos = expList.getPositionForView((View) view.getParent());
-						String selectionName = choices.groupData.get(groupPos).get(XmlConst.NAME_ATTR);
-						((GeneratorActivity) getActivity()).addSelection(choiceId, groupName, subGroupName, selectionName);
-					}
-				});
-			}
+//			}
+			Button addButton = (Button)convertView.findViewById(R.id.filtertitle_add);
+			if (addButton != null)
+			addButton.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					int groupPos = expList.getPositionForView((View) view.getParent());
+					String selectionName = choices.groupData.get(groupPos).get(XmlConst.NAME_ATTR);
+					((GeneratorActivity) getActivity()).addSelection(choiceId, groupName, subGroupName, selectionName);
+				}
+			});
 			TextView textView = (TextView)convertView.findViewById(R.id.filtertitle_text);
 			if (textView != null)
 				textView.setText(grpData.get(groupPosition).get(XmlConst.NAME_ATTR));
@@ -135,9 +135,9 @@ public class ChoiceSelectFragment extends Fragment {
 		}
 		
 		public View getChildView(int groupPosition, int childPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-			if (convertView == null) {
+//			if (convertView == null) {
 				convertView = View.inflate(getActivity(), R.layout.subrow_filterselect, null);
-			}
+//			}
 			TextView text = (TextView) convertView.findViewById(R.id.filterselect_text);
 			TextView text2 = (TextView) convertView.findViewById(R.id.filterselect_text2);
 			String tag = itmData.get(groupPosition).get(childPosition).get("tag");

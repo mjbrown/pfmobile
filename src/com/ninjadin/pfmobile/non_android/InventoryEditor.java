@@ -27,53 +27,8 @@ public class InventoryEditor {
 	public List<Map<String, String>> equipmentSlots;
 	public List<List<Map<String, String>>> equipmentItems;
 	
-	public InventoryEditor(File fullInventory, InputStream templateStream) throws FileNotFoundException, XmlPullParserException, IOException {
+	public InventoryEditor(File fullInventory) {
 		inventoryFile = fullInventory;
-		FileInputStream inStream = new FileInputStream(inventoryFile);
-		XmlPullParser inventoryParser = Xml.newPullParser();
-		try {
-			inventoryParser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
-			inventoryParser.setInput(inStream, null);
-			inventoryParser.nextTag();
-			String[] tags = new String[] { XmlConst.ITEM_TAG };
-			String[] tag_attrs = new String[] { XmlConst.NAME_ATTR, XmlConst.SLOT_ATTR, };
-			String[] subtags = new String[] { XmlConst.ITEMPROPERTY_TAG, XmlConst.DAMAGE_TAG };
-			String[] subtag_attrs = new String[] { XmlConst.NAME_ATTR, XmlConst.TYPE_ATTR, 
-					XmlConst.VALUE_ATTR , XmlConst.STATISTIC_ATTR, XmlConst.SOURCE_ATTR, };
-			xmlData = new XmlExtractor(inventoryParser);
-			xmlData.getData("inventory", tags, tag_attrs, subtags, subtag_attrs);
-		} finally {
-			inStream.close();
-		}
-		XmlPullParser templateParser = Xml.newPullParser();
-		templateParser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
-		templateParser.setInput(templateStream, null);
-		templateParser.nextTag();
-		String[] tags = new String[] { XmlConst.TEMPLATE_TAG };
-		String[] tag_attrs = new String[] { XmlConst.NAME_ATTR };
-		String[] subtags = new String[] { XmlConst.ITEM_TAG };
-		String[] subtag_attrs = new String[] { XmlConst.NAME_ATTR, XmlConst.SLOT_ATTR, };
-		templateData = new XmlExtractor(templateParser);
-		templateData.getData("equipmentTemplates", tags, tag_attrs, subtags, subtag_attrs);
-		getSlotItems();
-	}
-	
-	public void getSlotItems() {
-		equipmentSlots = new ArrayList<Map<String, String>>();
-		equipmentItems = new ArrayList<List<Map<String, String>>>();
-		for (String slot: PropertyLists.slotNames) {
-			Map<String, String> slotMap = new HashMap<String, String>();
-			slotMap.put(XmlConst.NAME_ATTR, slot);
-			equipmentSlots.add(slotMap);
-			List<Map<String, String>> itemList = new ArrayList<Map<String,String>>();
-			for (Map<String, String> itemInfo: xmlData.groupData) {
-				String itemSlot = itemInfo.get(XmlConst.SLOT_ATTR);
-				if (itemSlot.equals(slot)) {
-					itemList.add(itemInfo);
-				}
-			}
-			equipmentItems.add(itemList);
-		}
 	}
 	
 	public void addFromTemplate(InputStream templateFileStream, String templateName, 

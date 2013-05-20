@@ -11,121 +11,25 @@
 	    <race type="humanoid" subType="human,orc" size="medium" />
 	    <choice groupName="Racial Ability Score" />
 	    <bonus type="Speed" stackType="Base" value="30" />
-	    <sightBonus type="darkvision" value="60" />
-	    <skillBonus type="intimidate" stackType="racial" value="2" duration="Permanent" />
-		<prerequisite tag="weaponProficiency" type="martial" value="all">
-	    	<weaponProficiency type="exotic" value="Axe, Orc Double" />
+	    <bonus type="Darkvision" value="60" />
+	    <bonus type="Intimidate" stackType="Racial" value="2" />
+		<prerequisite name="Martial Weapon">
+	    	<proficiency type="Axe, Orc Double" />
 		</prerequisite>
 	</selection>
 	<selection name="Elf">
-	    <race type="humanoid" size="medium">
-	        <subType type="elf" />
-	    </race>
-	    <speedBonus type="normal" value="30" duration="Permanent" />
-		<sightBonus type="lowlight" value="60" duration="Permanent" />
-	    <statBonus type="dexterity" stackType="racial" value="2" duration="Permanent" />
-	    <statBonus type="intelligence" stackType="racial" value="2" duration="Permanent" />
-	    <statBonus  type="constitution" stackType="racial" value="-2" duration="Permanent" />
-	    <skillBonus type="perception" stackType="racial" value="2" duration="Permanent" />
-	    <saveBonus type="will" stackType="racial" value="2" duration="Permanent">
-	        <condition versus="spell" />
-	        <condition spellSchool="Enchantment" />
-	    </saveBonus>
-		
-	    <condition type="spell">
-	        <condition versus="spell" />
-	        <condition spellName="Sleep" />
-	    </condition>
-	    <proficiency type="weapon" value="Curve Blade, elven" >
-	        <prerequisite tag="proficiency" type="weapon" value="martial" />
+	    <race type="humanoid" subType="elf" size="medium" />
+		<bonus type="Low Light" value="60" />
+	    <bonus type="Dexterity" stackType="Racial" value="2" />
+	    <bonus type="Intelligence" stackType="Racial" value="2" />
+	    <bonus  type="Constitution" stackType="Racial" value="-2" />
+	    <bonus type="Perception" stackType="Racial" value="2" />
+	    <!-- TODO +2 vs. Enchantment -->
+	    <!-- TODO Immune to Sleep -->
+	    <prerequisite name="Martial Weapon" />
+	        <proficiency type="Curve Blade, elven" >
 	    </proficiency>
-	    <proficiency type="weapon" value="Longsword" />
-	    <proficiency type="weapon" value="Longbow" />
-	</selection>
-	<selection name="Dwarf">
-	    <race type="humanoid" size="medium">
-	        <subType type="dwarf" />
-	    </race>
-	    <speedBonus type="normal" value="20" duration="Permanent" />
-	    <sightBonus type="darkvision" value="60" duration="Permanent" />
-	    <statBonus type="constitution" stackType="racial" value="2" duration="Permanent" />
-	    <statBonus type="wisdom" stackType="racial" value="2" duration="Permanent" />
-	    <statBonus type="charisma" stackType="racial" value="-2" duraiton="Permanent" />
-
-	    <acBonus stackType="dodge" value="4" duration="Permanent">
-	        <condition versus="giant" />
-	    </acBonus>
-
-	    <saveBonus type="all" stackType="racial" value="2" duration="Permanent">
-	        <condition versus="spell" />
-	    </saveBonus>
-	    <bonus type="trip" value="4" />
-	    <bonus stackType="racial" value="4" duration="Permanent">
-	        <condition versus="bullRush" />
-	    </bonus>
-	    <cmdBonus stackType="racial" value="4" duration="Permanent">
-	        <condition versus="trip" />
-	    </cmdBonus>
-	    <proficiency type="weapon" value="Waraxe, Dwarven">
-	        <prerequisite tag="proficiency" type="weapon" value="martial" />
-	    </proficiency>
-	</selection>
-	<selection name="Half-elf">
-	    <race type="humanoid" size="medium">
-	        <subType type="human" />
-	        <subType type="elf" />
-	    </race>
-	    <choice groupName="racialStat" />
-	    <choice groupName="favoredClass" />
-	    <choice groupName="skillFocus" />
-	    <speedBonus type="normal" value="30" duration="Permanent" />
-	    <sightBonus type="lowlight" value="60" duration="Permanent" />
-	    <skillBonus type="perception" stackType="racial" value="2" duration="Permanent" />
-	    <saveBonus type="will" stackType="racial" value="2" duration="Permanent">
-	        <condition versus="spell" />
-	        <condition spellSchool="Enchantment" />
-	    </saveBonus>
-	    <immunity type="spell">
-	        <condition versus="spell" />
-	        <condition spellName="Sleep" />
-	    </immunity>
-	</selection>
-	<selection name="Halfling">
-	    <race type="humanoid" size="small">
-	        <subType type="halfling" />
-	    </race>
-	    <speedBonus type="normal" value="20" duration="Permanent" />
-	    <statBonus type="strength" stackType="racial" value="-2" duration="Permanent" />
-	    <statBonus type="dexterity" stackType="racial" value="2" duration="Permanent" />
-	    <statBonus type="charisma" stackType="racial" value="2" duraiton="Permanent" />
-	    <skillBonus type="perception" stackType="racial" value="2" duration="Permanent" />
-	    <skillBonus type="acrobatics" stackType="racial" value="2" duration="Permanent" />
-	    <skillBonus type="climb" stackType="racial" value="2" duration="Permanent" />
-	    <saveBonus type="all" stackType="racial" value="1" duration="Permanent" />
-	    <saveBonus type="will" stackType="racial" value="3" duration="Permanent">
-	        <condition versus="fear" />
-	    </saveBonus>
-	    <proficiency type="weapon" value="Sling" />
-	    <proficiency type="weapon" value="Sling Staff, Halfling" >
-	        <prerequisite tag="proficiency" type="weapon" value="martial" />
-	    </proficiency>
-	</selection>
-	<selection name="Gnome">
-	    <race type="humanoid" size="small">
-	        <subType type="gnome" />
-	    </race>
-	    <speedBonus type="normal" value="20" duration="Permanent" />
-	    <sightBonus type="lowlight" value="60" duration="Permanent" />
-	    <statBonus type="strength" stackType="racial" value="-2" duration="Permanent" />
-	    <statBonus type="constitution" stackType="racial" value="2" duration="Permanent" />
-	    <statBonus type="charisma" stackType="racial" value="2" duration="Permanent" />
-	    <skillBonus type="perception" stackType="racial" value="2" duration="Permanent" />
-	    <saveBonus type="will" stackType="racial" value="2" duration="Permanent">
-	        <condition spellSchool="illusion" />
-	    </saveBonus>
-	    <acBonus stackType="dodge" value="4" duration="Permanent">
-	        <condition versus="giant" />
-	    </acBonus> 
-	    <choice groupName="gnomeCraftProf" />
+	    <proficiency type="Longsword" />
+	    <proficiency type="Longbow" />
 	</selection>
 </bonusGroup>

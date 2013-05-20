@@ -71,6 +71,11 @@ public class XmlExtractor {
 		}
 	}
 	
+	public String getAttribute(String attr) {
+		String value = xmlParser.getAttributeValue(null, attr);
+		return value;
+	}
+	
 
 	public void getData(String endTag, String[] tags, String[] tag_attrs, String[] subtags, String[] subtag_attrs) throws XmlPullParserException, IOException {
 		while (xmlParser.next() != XmlPullParser.END_DOCUMENT) {

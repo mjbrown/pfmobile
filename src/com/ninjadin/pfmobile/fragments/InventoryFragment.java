@@ -1,15 +1,21 @@
 package com.ninjadin.pfmobile.fragments;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
+
+import org.xmlpull.v1.XmlPullParserException;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
@@ -18,7 +24,9 @@ import android.widget.TextView;
 
 import com.ninjadin.pfmobile.R;
 import com.ninjadin.pfmobile.activities.GeneratorActivity;
+import com.ninjadin.pfmobile.data.ExpListData;
 import com.ninjadin.pfmobile.data.XmlConst;
+import com.ninjadin.pfmobile.non_android.XmlExtractor;
 
 public class InventoryFragment extends Fragment {
 	ExpandableListView expList;
@@ -30,15 +38,29 @@ public class InventoryFragment extends Fragment {
 	public void onResume() {
 		super .onResume();
 		GeneratorActivity activity = (GeneratorActivity) getActivity();
-		//Bundle args = this.getArguments();
+		XmlExtractor data = null;
+		try {
+			InputStream inventoryStream = new FileInputStream(activity.inventoryFile);
+			data = ExpListData.initInventory(inventoryStream);
+			inventoryStream.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (XmlPullParserException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		expList = (ExpandableListView) activity.findViewById(R.id.inventory_exp_listview);
 		ExpandableListAdapter simpleExpAdapter = new InventoryExpandableListAdapter(
 				activity,
-				activity.inventoryManager.xmlData.groupData,
+				data.groupData,
 				R.layout.titlerow_inventory,
 				new String[] { XmlConst.NAME_ATTR },
 				new int[] { R.id.title_text },
-				activity.inventoryManager.xmlData.itemData,
+				data.itemData,
 				android.R.layout.simple_expandable_list_item_2,
 				new String[] { XmlConst.TYPE_ATTR, XmlConst.VALUE_ATTR },
 				new int[] {android.R.id.text1, android.R.id.text2 } );
@@ -59,26 +81,39 @@ public class InventoryFragment extends Fragment {
 		public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 			if (convertView == null) {
 				convertView = View.inflate(mContext, R.layout.titlerow_inventory, null);
-				Button enhanceButton = (Button)convertView.findViewById(R.id.inventory_enhance);
-				if (enhanceButton != null)
-				enhanceButton.setOnClickListener(new OnClickListener() {
+			}
+			Button enhanceButton = (Button)convertView.findViewById(R.id.inventory_enhance);
+			if (enhanceButton != null)
+			enhanceButton.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					int groupPos = expList.getPositionForView((View) view.getParent());
+					String itemName = grpData.get(groupPos).get(XmlConst.NAME_ATTR);
+					((GeneratorActivity) getActivity()).enchantFromTemplate(itemName);
+				}
+			});
+			Button editButton = (Button)convertView.findViewById(R.id.inventory_edititem);
+			if (editButton != null)
+				editButton.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View view) {
 						int groupPos = expList.getPositionForView((View) view.getParent());
 						String itemName = grpData.get(groupPos).get(XmlConst.NAME_ATTR);
-						((GeneratorActivity) getActivity()).enchantFromTemplate(itemName);
+						((GeneratorActivity) getActivity()).editItem(itemName);
 					}
 				});
-				Button editButton = (Button)convertView.findViewById(R.id.inventory_edititem);
-				if (editButton != null)
-					editButton.setOnClickListener(new OnClickListener() {
-						@Override
-						public void onClick(View view) {
-							int groupPos = expList.getPositionForView((View) view.getParent());
-							String itemName = grpData.get(groupPos).get(XmlConst.NAME_ATTR);
-							((GeneratorActivity) getActivity()).editItem(itemName);
-						}
-					});
+			Button equip_button = (Button) convertView.findViewById(R.id.inventory_equipitem);
+			if (equip_button != null) {
+				equip_button.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						int groupPos = expList.getPositionForView((View) view.getParent());
+						String itemName = grpData.get(groupPos).get(XmlConst.NAME_ATTR);
+						String slotName = grpData.get(groupPos).get(XmlConst.SLOT_ATTR);
+						((GeneratorActivity) getActivity()).equipItem(slotName, itemName);
+					}
+				});
+				
 			}
 			TextView textView = (TextView)convertView.findViewById(R.id.title_text);
 			if (textView != null)
