@@ -1,13 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
-    
+    android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/itemedit_value" 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
-</LinearLayout>
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical" >
+	    
+		<Spinner 
+		    android:id="@+id/itemedit_bonustype"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content" />
+		
+		<Spinner 
+		    android:id="@+id/itemedit_stacktype"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content" />
+		
+		<Spinner 
+		    android:id="@+id/itemedit_sourcetype"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content" />
+		
+		<EditText
+	        android:id="@+id/itemedit_value" 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        />
+	</LinearLayout>
+
+</ScrollView>

@@ -23,12 +23,11 @@ public class ExpListData {
 	public static XmlExtractor initInventory(InputStream inventoryStream) throws XmlPullParserException, IOException {
 		String[] tags = new String[] { XmlConst.ITEM_TAG };
 		String[] tag_attrs = new String[] { XmlConst.NAME_ATTR, XmlConst.SLOT_ATTR, };
-		String[] subtags = new String[] { XmlConst.ITEMPROPERTY_TAG, XmlConst.DAMAGE_TAG };
-		String[] subtag_attrs = new String[] { XmlConst.NAME_ATTR, XmlConst.TYPE_ATTR, 
-				XmlConst.VALUE_ATTR , XmlConst.STATISTIC_ATTR, XmlConst.SOURCE_ATTR, };
-		XmlExtractor inventory = new XmlExtractor(inventoryStream);
-		inventory.getData("inventory", tags, tag_attrs, subtags, subtag_attrs);
-		return inventory;
+		String[] subtags = new String[] { XmlConst.ENHANCE_TAG };
+		String[] subtag_attrs = new String[] { XmlConst.NAME_ATTR,  };
+		XmlExtractor full_inventory = new XmlExtractor(inventoryStream);
+		full_inventory.getData("inventory", tags, tag_attrs, subtags, subtag_attrs);
+		return full_inventory;
 	}
 	
 	public static XmlExtractor initItemTemplates(InputStream templatesStream) throws XmlPullParserException, IOException {

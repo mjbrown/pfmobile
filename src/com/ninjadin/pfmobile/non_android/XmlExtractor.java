@@ -24,6 +24,10 @@ public class XmlExtractor {
 	XmlPullParser xmlParser;
 	StatisticManager manager;
 	
+	public XmlExtractor() {
+		
+	}
+	
 	public XmlExtractor(XmlPullParser parser, int tagCountStart, int subTagCountStart) throws XmlPullParserException, IOException {
 		tagCount = tagCountStart;
 		subTagCount = subTagCountStart;
@@ -75,7 +79,6 @@ public class XmlExtractor {
 		String value = xmlParser.getAttributeValue(null, attr);
 		return value;
 	}
-	
 
 	public void getData(String endTag, String[] tags, String[] tag_attrs, String[] subtags, String[] subtag_attrs) throws XmlPullParserException, IOException {
 		while (xmlParser.next() != XmlPullParser.END_DOCUMENT) {

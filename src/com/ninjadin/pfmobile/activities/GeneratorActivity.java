@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -337,17 +339,28 @@ public class GeneratorActivity extends FragmentActivity implements ItemEditDialo
 	
 	public void showItemEditDialog(int groupPosition, int childPosition) {
 		DialogFragment dialog = new ItemEditDialogFragment();
+		itemEditor.setPosition(groupPosition, childPosition);
 		dialog.show(getSupportFragmentManager(), "ItemEditDialogFragment");
 	}
 	
 	@Override
-	public void onItemEditPositiveClick(DialogFragment dialog) {
+	public void onItemEditPositiveClick(ItemEditDialogFragment dialog) {
+		itemEditor.setBonusType(dialog.bonus_spinner.getSelectedItem().toString());
+		itemEditor.setStackType(dialog.stack_spinner.getSelectedItem().toString());
+		itemEditor.setSourceType(dialog.source_spinner.getSelectedItem().toString());
+		itemEditor.setValue(dialog.valueEdit.getText().toString());
+		try {
+			itemEditor.saveChanges(tempFile);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		ExpandableListView expList = (ExpandableListView) findViewById(R.id.expandableListView1);
 		expList.invalidateViews();
 	}
 	
 	@Override
-	public void onItemEditNegativeClick(DialogFragment dialog) {
+	public void onItemEditNegativeClick(ItemEditDialogFragment dialog) {
 		
 	}
 }

@@ -7,6 +7,9 @@ import java.util.Map;
 
 public class PropertyLists {
 
+	final public static String bonusSources[] = new String[] { "Natural", "Supernatural", 
+		"Spell", };
+	
 	final public static String stackableTypes[] = new String[] { "Base", "Racial", "Trait", "Feat",
 	"Dodge", "Class", "Inherent", "Ranks"};
 

@@ -1,6 +1,5 @@
 package com.ninjadin.pfmobile.fragments;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -33,9 +32,7 @@ import com.ninjadin.pfmobile.non_android.ItemEditor;
 public class ItemEditFragment extends Fragment {
 	ExpandableListView expList;
 	String itemName;
-	File inventoryFile;
-	File tempFile;
-	ItemEditor itemEditor;
+	GeneratorActivity activity;
 	Spinner slot_spinner;
 	EditText name_edit;
 
@@ -48,20 +45,17 @@ public class ItemEditFragment extends Fragment {
 		super .onResume();
 		Bundle args = this.getArguments();
 		itemName = args.getString(XmlConst.NAME_ATTR);
-		GeneratorActivity activity = (GeneratorActivity) getActivity();
-		inventoryFile = activity.inventoryFile;
-		tempFile = activity.tempFile;
+		activity = (GeneratorActivity) getActivity();
 		try {
-			activity.itemEditor = new ItemEditor(itemName, inventoryFile);
-			itemEditor = activity.itemEditor;
+			activity.itemEditor = new ItemEditor(itemName, activity.inventoryFile);
 			expList = (ExpandableListView) activity.findViewById(R.id.expandableListView1);
 			ExpandableListAdapter simpleExpAdapter = new ItemEditExpandableListAdapter(
 					activity,
-					itemEditor.item.groupData,
+					activity.itemEditor.item.groupData,
 					R.layout.titlerow_filterselect,
 					new String[] { XmlConst.NAME_ATTR },
 					new int[] { R.id.title_text },
-					itemEditor.item.itemData,
+					activity.itemEditor.item.itemData,
 					R.layout.subrow_itemedit,
 					new String[] { XmlConst.TYPE_ATTR, XmlConst.VALUE_ATTR },
 					new int[] {R.id.item_type, R.id.item_value } );
@@ -78,7 +72,7 @@ public class ItemEditFragment extends Fragment {
 			public boolean onChildClick(ExpandableListView arg0, View arg1,
 					int arg2, int arg3, long arg4) {
 				// TODO Auto-generated method stub
-				((GeneratorActivity) getActivity()).showItemEditDialog(arg2, arg3);
+				activity.showItemEditDialog(arg2, arg3);
 				return false;
 			}
 			
@@ -89,8 +83,9 @@ public class ItemEditFragment extends Fragment {
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
 		slot_spinner.setAdapter(adapter);
 		for (int position = 0; position < PropertyLists.slotNames.length; position++) {
-			if (PropertyLists.slotNames[position].equals(itemEditor.slot)) {
+			if (PropertyLists.slotNames[position].equals(activity.itemEditor.slot)) {
 				slot_spinner.setSelection(position);
+				break;
 			}
 		}
 		name_edit = (EditText) activity.findViewById(R.id.itemedit_rename);
@@ -101,9 +96,9 @@ public class ItemEditFragment extends Fragment {
 	public void onPause() {
 		super .onPause();
 		try {
-			itemEditor.rename(name_edit.getText().toString());
-			itemEditor.reslot(slot_spinner.getSelectedItem().toString());
-			itemEditor.saveChanges(tempFile);
+			activity.itemEditor.rename(name_edit.getText().toString());
+			activity.itemEditor.reslot(slot_spinner.getSelectedItem().toString());
+			activity.itemEditor.saveChanges(activity.tempFile);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -18,6 +18,9 @@ public class ItemEditor {
 	private String new_slot;
 	private File inventory;
 	
+	// Used by ItemEditFragment and ItemEditDialogFragment to synch item updates
+	private Map<String,String> property;
+	
 	public ItemEditor(String itemName, File inventoryFile) throws XmlPullParserException, IOException {
 		inventory = inventoryFile;
 		name = itemName;
@@ -36,6 +39,38 @@ public class ItemEditor {
 				XmlConst.SOURCE_ATTR, XmlConst.VALUE_ATTR };
 		item.getData(XmlConst.ITEM_TAG, tags, tag_attrs, subtags, subtag_attrs);
 		inStream.close();
+	}
+	
+	public void setPosition(int groupPos, int childPos) {
+		property = item.itemData.get(groupPos).get(childPos);
+	}
+	
+	public String getBonusType() {
+		return property.get(XmlConst.TYPE_ATTR);
+	}
+	public void setBonusType(String bonusType) {
+		property.put(XmlConst.TYPE_ATTR, bonusType);
+	}
+	
+	public String getStackType() {
+		return property.get(XmlConst.STACKTYPE_ATTR);
+	}
+	public void setStackType(String stackType) {
+		property.put(XmlConst.STACKTYPE_ATTR, stackType);
+	}
+	
+	public String getSourceType() {
+		return property.get(XmlConst.SOURCE_ATTR);
+	}
+	public void setSourceType(String sourceType) {
+		property.put(XmlConst.SOURCE_ATTR, sourceType);
+	}
+	
+	public String getValue() {
+		return property.get(XmlConst.VALUE_ATTR);
+	}
+	public void setValue(String value) {
+		property.put(XmlConst.VALUE_ATTR, value);
 	}
 	
 	public void saveChanges(File tempFile) throws IOException {

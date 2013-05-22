@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,20 +17,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.SimpleExpandableListAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.ninjadin.pfmobile.R;
 import com.ninjadin.pfmobile.activities.GeneratorActivity;
 import com.ninjadin.pfmobile.data.ExpListData;
+import com.ninjadin.pfmobile.data.PropertyLists;
 import com.ninjadin.pfmobile.data.XmlConst;
 import com.ninjadin.pfmobile.non_android.XmlExtractor;
 
 public class InventoryFragment extends Fragment {
 	ExpandableListView expList;
+	Spinner slot_spinner;
+	InventoryExpandableListAdapter expAdapt;
+	XmlExtractor full_inventory;
+	List<Map<String,String>> groupData;
+	List<List<Map<String,String>>> itemData;
+	final static String all = "All";
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_inventory, container, false);
@@ -37,11 +49,14 @@ public class InventoryFragment extends Fragment {
 	}
 	public void onResume() {
 		super .onResume();
+		Bundle args = this.getArguments();
+		String slotName = null;
+		if (args != null)
+			slotName = args.getString(XmlConst.SLOT_ATTR);
 		GeneratorActivity activity = (GeneratorActivity) getActivity();
-		XmlExtractor data = null;
 		try {
 			InputStream inventoryStream = new FileInputStream(activity.inventoryFile);
-			data = ExpListData.initInventory(inventoryStream);
+			full_inventory = ExpListData.initInventory(inventoryStream);
 			inventoryStream.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -53,19 +68,72 @@ public class InventoryFragment extends Fragment {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		groupData = full_inventory.groupData;
+		itemData = full_inventory.itemData;
 		expList = (ExpandableListView) activity.findViewById(R.id.inventory_exp_listview);
-		ExpandableListAdapter simpleExpAdapter = new InventoryExpandableListAdapter(
-				activity,
-				data.groupData,
+		slot_spinner = (Spinner) activity.findViewById(R.id.slot_spinner);
+		List<String> slot_names = new ArrayList<String>();
+		slot_names.add(all);
+		for (String slot: PropertyLists.slotNames)
+			slot_names.add(slot);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, slot_names);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+		slot_spinner.setAdapter(adapter);
+		for (int position = 0; position < PropertyLists.slotNames.length; position++) {
+			if (PropertyLists.slotNames[position].equals(slotName)) {
+				slot_spinner.setSelection(position);
+				break;
+			}
+		}
+		slot_spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				// TODO Auto-generated method stub
+				filter_inventory(slot_spinner.getSelectedItem().toString());
+			}
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		if (slotName != null) {
+			filter_inventory(slotName);
+		} else {
+			filter_inventory(all);
+		}
+	}
+	
+	private void filter_inventory(String slot) {
+		if (slot.equals(all)) {
+			groupData = full_inventory.groupData;
+			itemData = full_inventory.itemData;
+		} else {
+			groupData = new ArrayList<Map<String,String>>();
+			itemData = new ArrayList<List<Map<String,String>>>();
+			for (int item = 0; item < full_inventory.groupData.size(); item++) {
+				String item_slot = full_inventory.groupData.get(item).get(XmlConst.SLOT_ATTR);
+				if (slot.equals(item_slot)) {
+					groupData.add(full_inventory.groupData.get(item));
+					itemData.add(full_inventory.itemData.get(item));
+				}
+			}
+		}
+		expAdapt = new InventoryExpandableListAdapter(
+				getActivity(),
+				groupData,
 				R.layout.titlerow_inventory,
 				new String[] { XmlConst.NAME_ATTR },
 				new int[] { R.id.title_text },
-				data.itemData,
+				itemData,
 				android.R.layout.simple_expandable_list_item_2,
 				new String[] { XmlConst.TYPE_ATTR, XmlConst.VALUE_ATTR },
 				new int[] {android.R.id.text1, android.R.id.text2 } );
-		expList.setAdapter(simpleExpAdapter);
+		expList.setAdapter(expAdapt);
+		expList.invalidateViews();
 	}
+	
 	class InventoryExpandableListAdapter extends SimpleExpandableListAdapter {
 		Context mContext;
 		List<Map<String,String>> grpData;

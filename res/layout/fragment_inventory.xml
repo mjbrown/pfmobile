@@ -14,30 +14,18 @@
             android:id="@+id/button_template"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
 	        android:includeFontPadding="false"
 	        android:textSize="14sp"
-            android:text="Add From Template"
+            android:text="Create New"
             android:onClick="addFromTemplate" />
-        <Button 
-            android:id="@+id/button_empty"
+        <Spinner 
+            android:id="@+id/slot_spinner"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="wrap_content"
-	        android:textSize="14sp"
-	        android:includeFontPadding="false"
-            android:text="Create Empty"
-            android:onClick="createEmpty" />
+            android:layout_height="match_parent" />
     </LinearLayout>
 
-    <!-- Pretty hint text, and maxLines -->
-    <EditText android:id="@+building_list/search_box" 
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:hint="type to filter"
-        android:inputType="text"
-        android:maxLines="1"/>
-    
     <!-- Set height to 0, and let the weight param expand it -->
     <ExpandableListView
         android:id="@+id/inventory_exp_listview"
