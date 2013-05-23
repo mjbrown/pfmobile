@@ -1,53 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 	<levelInfo>
-		<characterLevel number="1">
+	    <characterLevel number="0">
 			<choice groupName="Race" />
+			<choice groupName="Favored Class Bonus" />
+		</characterLevel>
+		<characterLevel number="1">
 			<choice groupName="Class Level" />
-			<choice groupName="Feat" desc="Lvl 1 Feat" />
-			<choice groupName="Favored Class" />
-			<bonus type="Character Level" stackType="Base" value="1" />
+			<choice groupName="Feat" />
+			<bonus type="Character Level" value="1" />
 		</characterLevel>
 		<characterLevel number="2">
 		    <choice groupName="Class Level" />
-			<bonus type="Character Level" stackType="Base" value="1" />
+			<bonus type="Character Level" value="1" />
 		</characterLevel>
 		<characterLevel number="3">
 			<choice groupName="Class Level" />
-			<choice groupName="Feat" desc="Lvl 3 Feat" />
-			<bonus type="Character Level" stackType="Base" value="1" />
+			<choice groupName="Feat" />
+			<bonus type="Character Level" value="1" />
 		</characterLevel>
 		<characterLevel number="4">
 			<choice groupName="Class Level" />
 			<choice groupName="Ability Score Point" />
-			<bonus type="Character Level" stackType="Base" value="1" />
+			<bonus type="Character Level" value="1" />
 		</characterLevel>
 		<characterLevel number="5">
 			<choice groupName="Class Level" />
 			<choice groupName="Feat" />
-			<bonus type="Character Level" stackType="Base" value="1" />
+			<bonus type="Character Level" value="1" />
 		</characterLevel>
 		<characterLevel number="6">
 			<choice groupName="Class Level" />
-			<bonus type="Character Level" stackType="Base" value="1" />
+			<bonus type="Character Level" value="1" />
 		</characterLevel>
 		<characterLevel number="7">
 			<choice groupName="Class Level" />
-			<choice groupName="Feat" desc="Lvl 7 Feat" />
-			<bonus type="Character Level" stackType="Base" value="1" />
+			<choice groupName="Feat" />
+			<bonus type="Character Level" value="1" />
 		</characterLevel>
 		<characterLevel number="8">
 			<choice groupName="Class Level" />
-			<choice groupName="Ability Score Point" desc="Lvl 8 Stat Point" />
-			<bonus type="Character Level" stackType="Base" value="1" />
+			<choice groupName="Ability Score Point" />
+			<bonus type="Character Level" value="1" />
 		</characterLevel>
 		<characterLevel number="9">
 			<choice groupName="Class Level" />
-			<choice groupName="Feat" desc="Lvl 9 Feat"/>
-			<bonus type="Character Level" stackType="Base" value="1" />
+			<choice groupName="Feat" />
+			<bonus type="Character Level" value="1" />
 		</characterLevel>
 		<characterLevel number="10">
 			<choice groupName="Class Level" />
-			<bonus type="Character Level" stackType="Base" value="1" />
+			<bonus type="Character Level" value="1" />
+		</characterLevel>
+		<characterLevel number="11">
+			<choice groupName="Class Level" />
+			<choice groupName="Feat" />
+			<bonus type="Character Level" value="1" />
+		</characterLevel>
+		<characterLevel number="12">
+		    <choice groupName="Class Level" />
+			<bonus type="Character Level" value="1" />
+		</characterLevel>
+		<characterLevel number="13">
+			<choice groupName="Class Level" />
+			<choice groupName="Feat" />
+			<bonus type="Character Level" value="1" />
+		</characterLevel>
+		<characterLevel number="14">
+			<choice groupName="Class Level" />
+			<choice groupName="Ability Score Point" />
+			<bonus type="Character Level" value="1" />
+		</characterLevel>
+		<characterLevel number="15">
+			<choice groupName="Class Level" />
+			<choice groupName="Feat" />
+			<bonus type="Character Level" value="1" />
+		</characterLevel>
+		<characterLevel number="16">
+			<choice groupName="Class Level" />
+			<bonus type="Character Level" value="1" />
+		</characterLevel>
+		<characterLevel number="17">
+			<choice groupName="Class Level" />
+			<choice groupName="Feat" />
+			<bonus type="Character Level" value="1" />
+		</characterLevel>
+		<characterLevel number="18">
+			<choice groupName="Class Level" />
+			<choice groupName="Ability Score Point" />
+			<bonus type="Character Level" value="1" />
+		</characterLevel>
+		<characterLevel number="19">
+			<choice groupName="Class Level" />
+			<choice groupName="Feat" />
+			<bonus type="Character Level" value="1" />
+		</characterLevel>
+		<characterLevel number="20">
+			<choice groupName="Class Level" />
+			<bonus type="Character Level" value="1" />
 		</characterLevel>
 	</levelInfo>
 	

@@ -32,7 +32,7 @@ public class CharacterEditor {
 	private File charFile;
 	private File tempFile;
 
-	public int[] skillRanks = new int[35];
+	public int[] skillRanks = new int[PropertyLists.skillNames.length];
 	public int pointBuyRemaining = 20;
 	private int base_stats[] = { 10, 10, 10, 10, 10, 10 };
 	
@@ -49,6 +49,11 @@ public class CharacterEditor {
 			readCharacterData(parser);
 		} finally {
 			inStream.close();
+		}
+		for (int i = 0; i < PropertyLists.skillNames.length; i++) {
+			if (skillRanks[i] > charLevel) {
+				skillRanks[i] = charLevel;
+			}
 		}
 	}
 	
@@ -68,8 +73,6 @@ public class CharacterEditor {
 			if (name != null) {
 				if (name.equals(XmlConst.POINTBUY_TAG)) {
 					readAbilityScores(parser);
-				} else if (name.equals(XmlConst.INFO_TAG)) {
-
 				} else if (name.equals(XmlConst.LEVELS_TAG)) {
 					readLevels(parser, choice_id);
 				} else if (name.equals(XmlConst.SKILLS_TAG)) {
@@ -182,6 +185,8 @@ public class CharacterEditor {
 		String value = " " + XmlConst.VALUE_ATTR + "=\"";
 		String tagFooter = "\" />\n";
 		for (int i = 0; i < PropertyLists.skillNames.length; i++) {
+			if (skillRanks[i] > charLevel)
+				skillRanks[i] = charLevel;
 			if (skillRanks[i] > 0)
 				outStream.write((tagHeader + PropertyLists.skillNames[i] + stackType + value + Integer.toString(skillRanks[i]) + tagFooter).getBytes());
 		}
@@ -440,5 +445,15 @@ public class CharacterEditor {
 			ranks_used += skill;
 		}
 		return ranks_used;
+	}
+	public boolean canSkillUp(int skill) {
+		if (skillRanks[skill] < charLevel)
+			return true;
+		return false;
+	}
+	public boolean canSkillDown(int skill) {
+		if (skillRanks[skill] > 0)
+			return true;
+		return false;
 	}
 }

@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <otherStuff>
 <bonusGroup groupName="Racial Ability Score">
-	<selection name="STR+2">
+	<selection name="Strength + 2">
 		<bonus type="Strength" stackType="Base" value="2" />
 	</selection>
-	<selection name="DEX+2">
+	<selection name="Dexterity + 2">
 	    <bonus type="Dexterity" stackType="Base" value="2" />
 	</selection>
-	<selection name="CON+2">
+	<selection name="Constitution + 2">
 	    <bonus type="Constitution" stackType="Base" value="2" />
 	</selection>
-	<selection name="INT+2">
+	<selection name="Intelligence + 2">
 	    <bonus type="Intelligence" stackType="Base" value="2" />
 	</selection>
-	<selection name="WIS+2">
+	<selection name="Wisdom + 2">
 	    <bonus type="Wisdom" stackType="Base" value="2" />
 	</selection>
-	<selection name="CHA+2">
+	<selection name="Charisma + 2">
 	    <bonus type="Charisma" stackType="Base" value="2" />
 	</selection>
 </bonusGroup>
@@ -69,6 +69,45 @@
     <selection name="Weapon Training">
         <!-- TODO -->
     </selection>
-    
+</bonusGroup>
+<bonusGroup groupName="Ability Score Point">
+	<selection name="Strength + 1">
+		<bonus type="Strength" value="1" />
+	</selection>
+	<selection name="Dexterity + 1">
+	    <bonus type="Dexterity" value="1" />
+	</selection>
+	<selection name="Constitution + 1">
+	    <bonus type="Constitution" value="1" />
+	</selection>
+	<selection name="Intelligence + 1">
+	    <bonus type="Intelligence" value="1" />
+	</selection>
+	<selection name="Wisdom + 1">
+	    <bonus type="Wisdom" value="1" />
+	</selection>
+	<selection name="Charisma + 1">
+	    <bonus type="Charisma" value="1" />
+	</selection>
+</bonusGroup>
+<bonusGroup groupName="Favored Class Bonus">
+    <selection name="Rogue, Skill Points">
+        <bonus type="Skill Points" value="[Rogue Level]" />
+    </selection>
+    <selection name="Rogue, Hit Points">
+        <bonus type="Hit Points" value="[Rogue Level]" />
+    </selection>
+    <selection name="Ranger, Skill Points">
+        <bonus type="Skill Points" value="[Ranger Level]" />
+    </selection>
+    <selection name="Ranger, Hit Points">
+        <bonus type="Hit Points" value="[Ranger Level]" />
+    </selection>
+    <selection name="Fighter, Skill Points">
+        <bonus type="Skill Points" value="[Fighter Level]" />
+    </selection>
+    <selection name="Fighter, Hit Points">
+        <bonus type="Hit Points" value="[Fighter Level]" />
+    </selection>
 </bonusGroup>
 </otherStuff>

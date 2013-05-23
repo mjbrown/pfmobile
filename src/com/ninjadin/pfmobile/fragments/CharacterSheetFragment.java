@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -86,12 +87,17 @@ public class CharacterSheetFragment extends Fragment {
 			TextView points_left = (TextView) convertView.findViewById(R.id.number_points_left);
 			if (points_left != null) {
 				if (category.equals("Ability Scores")) { 
-					points_left.setText(Integer.toString(charEdit.pointBuyRemaining) + " / 20");
+					points_left.setText(Integer.toString(charEdit.pointBuyRemaining) + " out of 20");
+					points_left.setTextColor(Color.BLACK);
 					point_title.setText("Points Remaining:");
 				} else if (category.equals("Skills")) {
 					String ranks_used = Integer.toString(charEdit.totalSkillRanks());
 					String ranks_available = Integer.toString(manager.getValue("Skill Points"));
 					points_left.setText(ranks_used + " / " + ranks_available);
+					if (charEdit.totalSkillRanks() > manager.getValue("Skill Points"))
+						points_left.setTextColor(Color.RED);
+					else
+						points_left.setTextColor(Color.BLACK);
 					point_title.setText("Points Used:");
 				} else {
 					points_left.setText("");
@@ -105,10 +111,6 @@ public class CharacterSheetFragment extends Fragment {
 			String name = itemData.get(groupPosition).get(childPosition).get(XmlConst.NAME_ATTR);
 			if ((category.equals("Ability Scores")) || (category.equals("Skills"))) {
 				convertView = View.inflate(getActivity(), R.layout.subrow_skills_scores, null);
-				String final_score = Integer.toString(manager.getValue(name));
-				TextView tx_final = (TextView) convertView.findViewById(R.id.final_score);
-				if (tx_final != null)
-					tx_final.setText(final_score);
 				if (category.equals("Ability Scores")) {
 					updateAbilityScoreSubrow(convertView, childPosition);
 				} else if (category.equals("Skills")) {
@@ -163,6 +165,12 @@ public class CharacterSheetFragment extends Fragment {
 			}
 		}
 		private void updateSkillSubrow(View parent, int childPosition) {
+			TextView tx_final = (TextView) parent.findViewById(R.id.final_score);
+			if (tx_final != null)
+				tx_final.setText("");
+			TextView tx_final_label = (TextView) parent.findViewById(R.id.final_label);
+			if (tx_final_label != null)
+				tx_final_label.setText("");
 			String ranks = Integer.toString(charEdit.skillRanks[childPosition]);
 			String skill_name = PropertyLists.skillNames[childPosition];
 			TextView tx_value = (TextView) parent.findViewById(R.id.score);
@@ -171,19 +179,20 @@ public class CharacterSheetFragment extends Fragment {
 			Button minus = (Button) parent.findViewById(R.id.minus);
 			if (minus != null) {
 				minus.setOnClickListener(skillListener);
+				minus.setEnabled(charEdit.canSkillDown(childPosition));
 			}
 			Button plus = (Button) parent.findViewById(R.id.plus);
 			if (plus != null) {
 				plus.setOnClickListener(skillListener);
+				plus.setEnabled(charEdit.canSkillUp(childPosition));
 			}
 			TextView tx_modifier = (TextView) parent.findViewById(R.id.score_modifier);
 			Integer modifier = manager.getValue(skill_name);
 			if (modifier < 0) {
-				tx_modifier.setText("-" + Integer.toString(modifier));
+				tx_modifier.setText(Integer.toString(modifier));
 			} else {
 				tx_modifier.setText("+" + Integer.toString(modifier));
 			}
-			
 		}
 		
 		private OnClickListener abilityScoreListener = new OnClickListener() {

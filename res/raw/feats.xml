@@ -14,16 +14,16 @@
     </selection>
     <subGroup groupName="Combat">
 	    <selection name="Armor Proficiency, Light">
-	        <proficiency type="lightArmor" value="all" />
+	        <proficiency type="Light Armor" />
 	    </selection>
-	    <prerequisite tag="proficiency" type="lightArmor" value="all">
+	    <prerequisite name="Light Armor" >
 	        <selection name="Armor Proficiency, Medium">
-	            <proficiency type="mediumArmor" value="all" />
+	            <proficiency type="Medium Armor" />
 	        </selection>
 	    </prerequisite>
-	    <prerequisite tag="proficiency" type="mediumArmor" value="all">
+	    <prerequisite name="Medium Armor" >
 	        <selection name="Armor Proficiency, Heavy">
-	            <proficiency type="heavyArmor" value="all" />
+	            <proficiency type="Heavy Armor" />
 	        </selection>
 	    </prerequisite>
     </subGroup>

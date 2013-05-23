@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -43,6 +44,10 @@ public class LevelsFragment extends Fragment {
 		refreshViews();
 		Button level_down = (Button) activity.findViewById(R.id.levelDown);
 		if (level_down != null) {
+			if (activity.charData.charLevel == 0)
+				level_down.setEnabled(false);
+			else
+				level_down.setEnabled(true);
 			level_down.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View view) {
@@ -56,6 +61,10 @@ public class LevelsFragment extends Fragment {
 		}
 		Button level_up = (Button) activity.findViewById(R.id.levelUp);
 		if (level_up != null) {
+			if (activity.charData.charLevel == 20)
+				level_up.setEnabled(false);
+			else
+				level_up.setEnabled(true);
 			level_up.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View view) {
@@ -135,6 +144,7 @@ public class LevelsFragment extends Fragment {
 				String selectionName = item.get(XmlConst.NAME_ATTR);
 				if (groupName != null) {
 					group.setText(groupName);
+					group.setTextColor(Color.BLUE);
 				} else {
 					group.setText("WTF!");
 				}
@@ -142,16 +152,20 @@ public class LevelsFragment extends Fragment {
 					subGroup.setText(subGroupName);
 				} else {
 					subGroup.setText("Any");
+					subGroup.setTextColor(Color.GRAY);
 				}
 				if (sourceName != null) {
 					source.setText(sourceName);
+					source.setTextColor(Color.GRAY);
 				} else {
 					source.setText("WTF!");
 				}
 				if (selectionName != null) {
 					name.setText(selectionName);
+					name.setTextColor(Color.rgb(0, 0xAA, 0));
 				} else {
 					name.setText("Not selected.");
+					name.setTextColor(Color.RED);
 				}
 			}
 			return convertView;

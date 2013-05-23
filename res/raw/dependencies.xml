@@ -29,8 +29,8 @@
     <bonus type="Reflex" value="[Dexterity Modifier]" />
     <bonus type="Will" value="[Wisdom Modifier]" />
     
-	<bonus type="Acrobatics,Climb,Disable Device,Escape Artist,Fly" value="[Armor Check]" />
-	<bonus type="Ride,Sleight Of Hand,Stealth,Swim" value="[Armor Check]" />
+	<bonus type="Acrobatics,Climb,Disable Device,Escape Artist,Fly" value="- [Armor Check]" />
+	<bonus type="Ride,Sleight Of Hand,Stealth,Swim" value="- [Armor Check]" />
 	
     <bonus type="Acrobatics" value="[Dexterity Modifier]" />
     <bonus type="Appraise" value="[Intelligence Modifier]" />

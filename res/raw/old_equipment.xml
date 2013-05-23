@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<equipmentTemplates>
+    <template name="Headgear">
+        <item name="Crown" slot="Head" >
+            <itemProperty type="Equipment Cost" value="1" />
+            <itemProperty type="Hardness" value="2" />
+            <itemProperty type="Hit Points" value="5" />
+            <itemProperty type="Encumbrance" value="1" />
+        </item>
+    </template>
+    <template name="Headband">
+        <item name="Kohona Symbol" slot="Headband" >
+            <itemProperty type="Equipment Cost" value="1" />
+            <itemProperty type="Hardness" value="2" />
+            <itemProperty type="Hit Points" value="5" />
+            <itemProperty type="Encumbrance" value="1" />
+        </item>
+    </template>
+    <template name="Eyes">
+        <item name="Glasses" slot="Eyes" >
+            <itemProperty type="Cost" value="1" />
+            <itemProperty type="Hardness" value="2" />
+            <itemProperty type="Hit Points" value="5" />
+            <itemProperty type="Encumbrance" value="1" />
+        </item>
+    </template>
+    <template name="Light Armor">
+        <item name="Studded Leather" slot="Armor" >
+            <enhancement name="Base Item">
+	            <itemProperty type="Proficiency" value="Light Armor" />
+	            <itemProperty type="Size" value="Light" />
+	            <itemProperty type="Flat Footed Armor Class" value="3" />
+	            <itemProperty type="Armor Class" value="3" />
+	            <itemProperty type="Maximum Dexterity Bonus" value="5" />
+		        <itemProperty type="Armor Check" value="1" />
+		        <itemProperty type="Light Armor Spell Failure" value="15" />
+		        <itemProperty type="Equipment Cost" value="25" />
+		        <itemProperty type="Encumbrance" value="20" />"
+		        <itemProperty type="Hardness" value="2" />
+		        <itemProperty type="Hit Points" value="15" />
+	    	</enhancement>
+        </item>
+    </template>
+    <template name="Medium Armor">
+        <item name="Steel Breastplate" slot="Armor" >
+            <enhancement name="Base Item">
+	            <itemProperty type="Proficiency" value="Medium Armor" />
+	            <itemProperty type="Size" value="Medium" />
+	            <itemProperty type="Flat Footed Armor Class" value="6" />
+	            <itemProperty type="Armor Class" value="6" />
+		        <itemProperty type="Maximum Dexterity Bonus" value="3" />
+		        <itemProperty type="Armor Check" value="4" />
+		        <itemProperty type="Medium Armor Spell Failure" value="25" />
+		        <itemProperty type="Equipment Cost" value="200" />
+		        <itemProperty type="Encumbrance" value="30" />
+		        <itemProperty type="Hardness" value="10" />
+		        <itemProperty type="Hit Points" value="30" />
+		    </enhancement>
+	    </item>
+    </template>
+    <template name="Heavy Armor">
+        <item name="Steel Half-plate" slot="Armor">
+            <enhancement name="Base Item">
+	            <itemProperty type="Proficiency" value="Heavy Armor" />
+	            <itemProperty type="Size" value="Heavy" />
+	            <itemProperty type="Flat Footed Armor Class" value="8" />
+	            <itemProperty type="Armor Class" value="8" />
+	            <itemProperty type="Maximum Dexterity Bonus" value="0" />
+		        <itemProperty type="Armor Check" value="7" />
+		        <itemProperty type="Heavy Armor Spell Failure" value="40" />
+		        <itemProperty type="Equipment Cost" value="600" />
+		        <itemProperty type="Encumbrance" value="50" />
+		        <itemProperty type="Hardness" value="10" />
+		        <itemProperty type="Hit Points" value="40" />
+		    </enhancement>
+	    </item>
+    </template>
+    <template name="Magical Two-handed Simple Weapon">
+		<item name="+1 Fire Spear" slot="Held" >
+            <enhancement name="Base Item">
+		    	<itemProperty type="Proficiency" value="Simple Weapon,Spear" />
+			    <itemProperty type="Size" value="Two-handed" />
+			    <itemProperty type="Range" value="20" />
+			    <itemProperty type="Critical Range" value="1" />
+			    <itemProperty type="Critical Multiplier" value="3" />
+			    <itemProperty type="Special" value="Brace" />
+		       	<itemProperty type="Encumbrance" value="6" />
+		       	<itemProperty type="Cost" value="2" />
+		       	<itemProperty type="Hardness" value="5" />
+		       	<itemProperty type="Hit Points" value="10" />
+		        <damage type="Normal,Critical" statistic="Hit Points" source="Piercing" value="[1d8]" />
+	        </enhancement>
+	       	<enhancement name="Masterwork">
+	       		<itemProperty type="To Hit" source="Natural" value="1" />
+	       	</enhancement>
+	       	<enhancement name="+1">
+		       	<itemProperty type="To Hit" source="Magic" value="1" />
+		       	<itemProperty type="Hardness" value="2" />
+		       	<itemProperty type="Hit Points" value="10" />
+		       	<damage type="Normal,Critical" statistic="Hit Points" source="Magic" value="1" />
+		    </enhancement>
+		    <enhancement name="Fire">
+       	    	<damage type="Normal" statistic="Hit Points" source="Fire,Magic" value="[1d6]" />
+       	    </enhancement>
+	    </item>
+    </template>
+    <template name="Simple Double Weapon">
+        <weapon name="Quarterstaff" type="Simple Weapon" size="Two-handed" source="Bludgeoning" 
+            criticalRange="[20]" multiplier="2" dice="[1d6]" 
+            special="Double,Monk" >
+            <bonus type="Encumbrance" value="2" />
+        </weapon>
+    </template>
+   <template name="Martial Two-handed Weapon">
+        <weapon name="Falchion" type="Martial Weapon" size="Two-handed" source="Slashing"
+            criticalRange="[18,19,20]" multiplier="2" dice="[2d4]">
+            <bonus type="Encumbrance" value="8" />
+            <bonus type="Equipment Cost" value="75" />
+        </weapon>
+    </template>
+    <template name="Heavy Flail">
+        <weapon name="Heavy Flail" type="Martial Weapon" size="Two-handed" source="Bludgeoning"
+            criticalRange="[19,20]" multiplier="2" dice="[1d10]"
+            special="Disarm,Trip">
+			<bonus type="Encumbrance" value="10" />
+			<bonus type="Equipment Cost" value="15" />
+        </weapon>
+    </template>
+    <template name="Elven Curve Blade">
+        <weapon name="Elven Curve Blade" type="Exotic Weapon" size="Two-handed" source="Slashing"
+            criticalRange="[18,19,20]" multiplier="2" dice="[1d10]" 
+            special="Finesse">
+            <weaponBonus type="Defensive" versus="Sunder" value="2" />
+        </weapon>
+    </template>
+    <template name="Buckler">
+        <shield name="Buckler" type="Light Shield" >
+        	<bonus type="Armor Class" stackType="Shield" value="1" />
+        	<bonus type="Shield Spell Failure" value="5" />
+        	<bonus type="Encumbrance" value="5" />
+        	<bonus type="Equipment Cost" value="155" />
+        </shield>
+    </template>
+    <template name="Light Steel Shield">
+        <shield name="Light Steel Shield" type="Light Shield">
+        	<bonus type="Armor Class" stackType="Shield" value="1" />
+        	<bonus type="Shield Spell Failure" value="5" />
+        	<bonus type="Encumbrance" value="5" />
+        	<bonus type="Equipment Cost" value="159" />
+        </shield>
+    </template>
+    <template name="Heavy Steel Shield">
+        <shield name="Heavy Steel Shield" type="Heavy Shield">
+        	<bonus type="Armor Class" stackType="Shield" value="2" />
+        	<bonus type="Armor Check" value="1" />
+        	<bonus type="Shield Spell Failure" value="15" />
+        	<bonus type="Encumbrance" value="15" />
+        	<bonus type="Equipment Cost" value="170" />
+        </shield>
+    </template>
+    <template name="Dagger">
+        <weapon name="Dagger" type="Simple Weapon" size="Light" source="Slashing,Piercing"
+            criticalRange="[19,20]" multiplier="2" dice="[1d4]"
+            range="10" >
+            <bonus type="Encumbrance" value="1" />
+            <bonus type="Equipment Cost" value="2" />
+        </weapon>
+    </template>
+    <template name="Morningstar">
+        <weapon name="Morningstar" type="Simple Weapon" size="One-handed" source="Piercing,Bludgeoning"
+            criticalRange="[20]" multiplier="2" dice="[1d8]">
+            <bonus type="Encumbrance" value="6" />
+            <bonus type="Equipment Cost" value="8" />
+        </weapon>
+    </template>
+    <template name="Kukri">
+        <weapon name="Kukri" type="Martial Weapon" size="Light" source="Slashing"
+            criticalRange="[18.19,20]" multiplier="2" dice="[1d4]" >
+            <bonus type="Encumbrance" value="2" />
+            <bonus type="Equipment Cost" value="8" />
+        </weapon>
+    </template>
+    <template name="Rapier">
+        <weapon name="Rapier" type="Martial Weapon" size="One-handed" source="Piercing"
+            criticalRange="[18,19,20]" multiplier="2" dice="[1d6]"
+            special="Finesse" >
+            <bonus type="Encumbrance" value="2" />
+            <bonus type="Equipment Cost" value="20" />
+        </weapon>
+    </template>
+    <template name="Nunchaku">
+        <weapon name="Nunchaku" type="Exotic Weapon" size="Light" source="Bludgeoning"
+            criticalRange="[20]" multiplier="2" dice="[1d6]"
+            special="Monk,Disarm" >
+            <bonus type="Encumbrance" value="2" />
+            <bonus type="Equipment Cost" value="2" />
+        </weapon>
+    </template>
+</equipmentTemplates>

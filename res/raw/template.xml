@@ -11,6 +11,10 @@
 	<skills>
 	</skills>
 	<levels>
+	<characterLevel number="0">
+		<choice groupName="Race" />
+		<choice groupName="Favored Class Bonus" />
+	</characterLevel>
 	</levels>
 	<equipment>
 	    <equipItem slot="Head">

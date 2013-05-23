@@ -21,7 +21,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.Spinner;
@@ -128,8 +127,8 @@ public class InventoryFragment extends Fragment {
 				new int[] { R.id.title_text },
 				itemData,
 				android.R.layout.simple_expandable_list_item_2,
-				new String[] { XmlConst.TYPE_ATTR, XmlConst.VALUE_ATTR },
-				new int[] {android.R.id.text1, android.R.id.text2 } );
+				new String[] { XmlConst.NAME_ATTR },
+				new int[] {android.R.id.text1 } );
 		expList.setAdapter(expAdapt);
 		expList.invalidateViews();
 	}

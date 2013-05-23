@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <enchantmentTemplates>
-    <enhancement name="Masterwork Armor" slot="Armor">
-        <itemProperty type="Equipment Cost" value="150" />
-        <itemProperty type="Armor Check" value="-1" />
+    <enhancement name="Masterwork Armor">
+        <bonus type="Equipment Cost" value="150" />
+        <bonus type="Armor Check" value="-1" />
     </enhancement>
-    <enhancement name="Armor +1" slot="Armor">
-        <itemProperty type="Equipment Cost" value="1000" />
-        <itemProperty type="Armor Class" value="1" />
-        <itemProperty type="Flat Footed Armor Class" value="1" />
+    <enhancement name="Armor Enhancement">
+        <bonus type="Equipment Cost" value="1000" />
+        <bonus type="Armor Class" stackType="Armor Enhancement" source="Magical" value="1" />
+        <bonus type="Flat Footed Armor Class" stackType="Armor Enhancement" source="Magical" value="1" />
         <itemProperty type="Hardness" value="2" />
         <itemProperty type="Hit Points" value="10" />
     </enhancement>
-    <enhancement name="Armor +2" slot="Armor">
-        <itemProperty type="Equipment Cost" value="4000" />
-        <itemProperty type="Armor Class" value="2" />
-        <itemProperty type="Flat Footed Armor Class" value="2" />
-        <itemProperty type="Hardness" value="4" />
-        <itemProperty type="Hit Points" value="20" />
+    <enhancement name="Ability Score Enhancement">
+        <bonus type="Equipment Cost" value="2000" />
+        <bonus type="Strength" stackType="Enhancement" source="Magical" value="2" />
     </enhancement>
-    <enhancement name="Armor +3" slot="Armor">
-        <itemProperty type="Equipment Cost" value="9000" />
-        <itemProperty type="Armor Class" value="3" />
-        <itemProperty type="Flat Footed Armor Class" value="3" />
-        <itemProperty type="Hardness" value="6" />
-        <itemProperty type="Hit Points" value="30" />
+    <enhancement name="Damage Reduction">
+        <bonus type="Equipment Cost" value="12000" />
+        <bonus type="Fire Resistance" stackType="Enhancement" source="Magical" value="10" />
+    </enhancement>
+    <enhancement name="Resistance">
+        <bonus type="Equipment Cost" value="1000" />
+        <bonus type="Fortitude" stackType="Enhancement" source="Magical" value="1" />
+        <bonus type="Reflex" stackType="Enhancement" source="Magical" value="1" />
+        <bonus type="Will" stackType="Enhancement" source="Magical" value="1" />
     </enhancement>
 </enchantmentTemplates>

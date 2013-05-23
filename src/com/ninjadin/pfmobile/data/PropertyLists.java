@@ -8,14 +8,14 @@ import java.util.Map;
 public class PropertyLists {
 
 	final public static String bonusSources[] = new String[] { "Natural", "Supernatural", 
-		"Spell", };
+		"Magical", };
 	
 	final public static String stackableTypes[] = new String[] { "Base", "Racial", "Trait", "Feat",
 	"Dodge", "Class", "Inherent", "Ranks"};
 
 	final public static String notStackableTypes[] = new String[] { "Unnamed", "Aid Another", 
 	"Flank", "Circumstance", "Divine", "Profane", "Alchemical", "Enhancement", "Class Skill",
-	"Competence", "Ability", "Morale", "Armor", "Deflection", "Luck",
+	"Competence", "Ability", "Morale", "Armor", "Deflection", "Luck", "Armor Enhancement",
 	"Morale", "Natural Armor", "Size", "Range", "High Ground", "Shield", "Shield Enhancement", };
 
 	final public static String[] skillNames = new String[] { "Acrobatics", "Appraise", "Bluff",
@@ -52,7 +52,8 @@ public class PropertyLists {
 		"Druid Caster Level", "Cleric Caster Level", "Arcane Caster Level", "Divine Caster Level" };
 	
 	// Tracking Spell Failure sources allows easier implementation of armored spellcasting classes like Bard
-	final public static String equipRelatedNames[] = new String[] { "Arcane Spell Failure", "Light Armor Spell Failure",
+	final public static String equipRelatedNames[] = new String[] { "Bard Spell Failure", "Wizard Spell Failure",
+		"Sorcerer Spell Failure", "Magus Spell Failure", "Light Armor Spell Failure",
 		"Medium Armor Spell Failure", "Heavy Armor Spell Failure", "Shield Spell Failure", "Armor Check",
 		"Maximum Dexterity Bonus", "Encumbrance", "Equipment Cost", };
 	

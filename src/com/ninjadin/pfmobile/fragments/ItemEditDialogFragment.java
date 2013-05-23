@@ -118,7 +118,8 @@ public class ItemEditDialogFragment extends DialogFragment {
 		
 		valueEdit = (EditText) dialog.findViewById(R.id.itemedit_value);
 		if (valueEdit != null) {
-			valueEdit.setText(activity.itemEditor.getValue());
+			valueEdit.setText("");
+			valueEdit.setHint(activity.itemEditor.getValue());
 		}
 	}
 	

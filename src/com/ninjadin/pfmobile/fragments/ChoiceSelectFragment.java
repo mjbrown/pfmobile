@@ -56,7 +56,7 @@ public class ChoiceSelectFragment extends Fragment {
 			String[] tag_attrs = new String[] {XmlConst.NAME_ATTR };
 			String[] subtags = new String[] {XmlConst.BONUS_TAG, XmlConst.PROFICIENCY_TAG, 
 					XmlConst.CHOICE_TAG};
-			String[] subtag_attrs = new String[] { XmlConst.BONUSGRP, XmlConst.NAME_ATTR,
+			String[] subtag_attrs = new String[] { XmlConst.GRPNAME_ATTR, XmlConst.NAME_ATTR,
 					XmlConst.TYPE_ATTR, XmlConst.VALUE_ATTR };
 			manager = activity.dependencyManager;
 			choices = new XmlExtractor(dataFile, manager);
