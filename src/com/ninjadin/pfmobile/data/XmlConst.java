@@ -30,6 +30,8 @@ public class XmlConst {
 
 	// Used as TAG in data files
 	final public static String PREREQ_TAG = "prerequisite";
+	final public static String CONDITIONAL_TAG = "conditional";
+	final public static String CONDITION_TAG = "condition";
 	
 	// Used as ATTRIBUTE in character file
 	final public static String GRPNAME_ATTR = "groupName";

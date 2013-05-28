@@ -74,7 +74,7 @@ public class LoginLoadActivity extends Activity {
 			out.close();
 			FileOutputStream oStream = new FileOutputStream(inventoryFile);
 			oStream.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n".getBytes());
-			oStream.write("<inventory>\n</inventory>\n".getBytes());
+			oStream.write("<inventory>\n<template name=\"Unarmored\">\n<item name=\"Unarmored\" slot=\"Armor\" >\n<enhancement name=\"Base Item\">\n<bonus type=\"Equipment Cost\" value=\"0\" />\n<bonus type=\"Encumbrance\" value=\"0\" />\"\n<condition name=\"Unarmored\" />\n</enhancement>\n</item>\n</template>\n</inventory>\n".getBytes());
     		oStream.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

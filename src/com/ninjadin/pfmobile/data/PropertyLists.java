@@ -7,6 +7,10 @@ import java.util.Map;
 
 public class PropertyLists {
 
+	final public static String conditionNames[] = new String[] { "Unarmored", "Light Armor", "Medium Armor",
+		"Heavy Armor", "No Off Hand", "Light Off Hand", "One-handed Off Hand", "No Main Hand", "Light Main Hand",
+		"One-handed Main Hand", "Two-handed", };
+	
 	final public static String bonusSources[] = new String[] { "Natural", "Supernatural", 
 		"Magical", };
 	
@@ -27,7 +31,7 @@ public class PropertyLists {
 
 	final public static String[] classLevelNames = new String[] { "Fighter Level", "Rogue Level",
 	"Wizard Level", "Sorcerer Level", "Paladin Level", "Ranger Level", "Monk Level", "Barbarian Level",
-	"Bard Level" };
+	"Bard Level", "Druid Level", "Cleric Level" };
 
 	final public static String abilityScoreNames[] = new String[] { "Strength", "Dexterity", 
 	"Constitution", "Intelligence", "Wisdom", "Charisma", };

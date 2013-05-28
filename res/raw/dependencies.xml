@@ -20,6 +20,10 @@
     <bonus type="Armor Class" value="min [Dexterity Modifier] [Maximum Dexterity Bonus]" />
     <bonus type="Touch Armor Class" value="min [Dexterity Modifier] [Maximum Dexterity Bonus]" />
     
+    <conditional name="Unarmored">
+        <bonus type="Maximum Dexterity Bonus" value="1000" />
+    </conditional>
+    
     <bonus type="Combat Maneuver Bonus" value="[Strength Modifier] + [Base Attack]" />
     <bonus type="Combat Maneuver Defense" value="[Strength Modifier] + [Dexterity Modifier] + [Base Attack]" />
     

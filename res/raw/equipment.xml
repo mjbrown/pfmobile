@@ -1,51 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <equipmentTemplates>
-    <template name="Head">
-        <item name="Crown" slot="Head" >
-            <bonus type="Equipment Cost" value="1" />
-            <itemProperty type="Hardness" value="2" />
-            <itemProperty type="Hit Points" value="5" />
-            <bonus type="Encumbrance" value="1" />
+    <template name="Blank Item">
+        <item name="Unnamed" slot="Head" >
+            <enhancement name="Base Item">
+	            <bonus type="Equipment Cost" value="1" />
+	            <bonus type="Encumbrance" value="1" />
+	            <itemProperty type="Hardness" value="2" />
+	            <itemProperty type="Hit Points" value="5" />
+            </enhancement>
         </item>
     </template>
-    <template name="Headband">
-        <item name="Kohona Symbol" slot="Headband" >
-            <bonus type="Equipment Cost" value="1" />
-            <itemProperty type="Hardness" value="2" />
-            <itemProperty type="Hit Points" value="5" />
-            <bonus type="Encumbrance" value="1" />
-        </item>
-    </template>
-    <template name="Eyes">
-        <item name="Glasses" slot="Eyes" >
-            <bonus type="Equipment Cost" value="1" />
-            <itemProperty type="Hardness" value="2" />
-            <itemProperty type="Hit Points" value="5" />
-            <bonus type="Encumbrance" value="1" />
+    <template name="Unarmored">
+        <item name="Unarmored" slot="Armor" >
+            <enhancement name="Base Item">
+		        <bonus type="Equipment Cost" value="0" />
+		        <bonus type="Encumbrance" value="0" />"
+	            <condition name="Unarmored" />
+            </enhancement>
         </item>
     </template>
     <template name="Light Armor">
-        <item name="Studded Leather" slot="Armor" >
+        <item name="Steel Chain Shirt" slot="Armor" >
             <enhancement name="Base Item">
 	            <itemProperty type="Proficiency" value="Light Armor" />
-	            <itemProperty type="Size" value="Light" />
-	            <bonus type="Flat Footed Armor Class" stackType="Armor" value="3" />
-	            <bonus type="Armor Class" stackType="Armor" value="3" />
-	            <bonus type="Maximum Dexterity Bonus" value="5" />
-		        <bonus type="Armor Check" value="1" />
-		        <bonus type="Light Armor Spell Failure" value="15" />
-		        <bonus type="Equipment Cost" value="25" />
-		        <bonus type="Encumbrance" value="20" />"
+	            <bonus type="Flat Footed Armor Class" stackType="Armor" value="4" />
+	            <bonus type="Armor Class" stackType="Armor" value="4" />
+	            <bonus type="Maximum Dexterity Bonus" value="4" />
+		        <bonus type="Armor Check" value="2" />
+		        <bonus type="Light Armor Spell Failure" value="20" />
+		        <bonus type="Equipment Cost" value="100" />
+		        <bonus type="Encumbrance" value="25" />"
 		        <itemProperty type="Hardness" value="2" />
 		        <itemProperty type="Hit Points" value="15" />
-	    	</enhancement>
+	            <condition name="Light Armor" />
+		    </enhancement>
         </item>
     </template>
     <template name="Medium Armor">
         <item name="Steel Breastplate" slot="Armor" >
             <enhancement name="Base Item">
 	            <itemProperty type="Proficiency" value="Medium Armor" />
-	            <itemProperty type="Size" value="Medium" />
 	            <bonus type="Flat Footed Armor Class" stackType="Armor" value="6" />
 	            <bonus type="Armor Class" stackType="Armor" value="6" />
 		        <bonus type="Maximum Dexterity Bonus" value="3" />
@@ -55,6 +49,7 @@
 		        <bonus type="Encumbrance" value="30" />
 		        <itemProperty type="Hardness" value="10" />
 		        <itemProperty type="Hit Points" value="30" />
+	            <condition name="Medium Armor" />
 		    </enhancement>
 	    </item>
     </template>
@@ -62,7 +57,6 @@
         <item name="Steel Half-plate" slot="Armor">
             <enhancement name="Base Item">
 	            <itemProperty type="Proficiency" value="Heavy Armor" />
-	            <itemProperty type="Size" value="Heavy" />
 	            <bonus type="Flat Footed Armor Class" stackType="Armor" value="8" />
 	            <bonus type="Armor Class" stackType="Armor" value="8" />
 	            <bonus type="Maximum Dexterity Bonus" value="0" />
@@ -72,6 +66,7 @@
 		        <bonus type="Encumbrance" value="50" />
 		        <itemProperty type="Hardness" value="10" />
 		        <itemProperty type="Hit Points" value="40" />
+		        <condition name="Heavy Armor" />
 		    </enhancement>
 	    </item>
     </template>

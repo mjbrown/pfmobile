@@ -31,7 +31,7 @@
 	    </equipItem>
 	    <equipItem slot="Body">
 	    </equipItem>
-	    <equipItem slot="Armor">
+	    <equipItem slot="Armor" name="Unarmored">
 	    </equipItem>
 	    <equipItem slot="Hands">
 	    </equipItem>

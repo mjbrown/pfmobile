@@ -17,6 +17,7 @@ public class EquippedItem {
 	private String name;
 	// List of character bonuses provided by this item
 	public List<Map<String,String>> bonusList;
+	public String condition = null;
 	
 	public EquippedItem(String itemName, File inventory) {
 		name = itemName;
@@ -27,14 +28,16 @@ public class EquippedItem {
 			inStream = new FileInputStream(inventory);
 			parser = new XmlExtractor(inStream);
 			parser.findTagAttr(XmlConst.ITEM_TAG, XmlConst.NAME_ATTR, itemName);
-			String[] tags = new String[] { XmlConst.ITEMPROPERTY_TAG, XmlConst.BONUS_TAG };
+			String[] tags = new String[] { XmlConst.ITEMPROPERTY_TAG, XmlConst.BONUS_TAG, XmlConst.CONDITION_TAG };
 			String[] tag_attrs = new String[] { XmlConst.TYPE_ATTR, XmlConst.VALUE_ATTR, 
-					XmlConst.STACKTYPE_ATTR, XmlConst.SOURCE_ATTR, };
+					XmlConst.STACKTYPE_ATTR, XmlConst.SOURCE_ATTR, XmlConst.NAME_ATTR, };
 			parser.getData(XmlConst.ITEM_TAG, tags, tag_attrs, null, null);
 			for (Map<String, String> property: parser.groupData) {
 				String tag = property.get("tag");
 				if (tag.equals(XmlConst.BONUS_TAG)) {
 					bonusList.add(property);
+				} else if (tag.equals(XmlConst.CONDITION_TAG)) {
+					condition = property.get(XmlConst.NAME_ATTR);
 				}
 			}
 			inStream.close();

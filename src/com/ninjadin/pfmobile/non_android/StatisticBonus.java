@@ -8,22 +8,33 @@ public class StatisticBonus {
 	private List<StatisticInstance> dependentUpon;
 	public String stackType;
 	public String source;
+	private boolean isActive;
 	
 	public StatisticBonus(String stack, String src, String val) {
 		this.stackType = stack;
 		this.source = src;
+		this.isActive = true;
 		setValue(val);
 	}
 	public StatisticBonus(String stack, String src, String val, List<StatisticInstance> depends) {
 		this.stackType = stack;
 		this.source = src;
+		this.isActive = true;
 		setValue(val);
 		this.dependentUpon = depends;
 	}
 	private void setValue(String val) {
 		this.value = val;
 	}
+	public void disable() {
+		this.isActive = false;
+	}
+	public void enable() {
+		this.isActive = true;
+	}
 	public int getValue() {
+		if (isActive == false)
+			return 0;
 		String expression = new String(this.value);
 		if (dependentUpon != null) {
 			for (StatisticInstance dep: dependentUpon) {

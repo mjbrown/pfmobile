@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -24,14 +25,14 @@ public class StatisticManager {
 	public List<String> statList;
 	// Lists of dependent CharacterStatistics
 	private Map<String, List<StatisticInstance>> statDependencies;
-	// A map of items worn by the character
-	private Map<String, EquippedItem> itemMap;
-	// A map of proficiencies
-	private Map<String, Boolean> propertyNames;
-	// A map of feat/ability names for prerequisite purposes
+	// A map of feat names and proficiencies for determining if prerequisites are met
+	public ConditionalBonus prereqs = new ConditionalBonus();
+	private Map<String, Boolean> prerequisites;
+	// A map of equipment / environment conditions
+	public ConditionalBonus conditions = new ConditionalBonus();
 	
 	public StatisticManager() {
-		propertyNames = new HashMap<String, Boolean>();
+		prerequisites = new HashMap<String, Boolean>();
 		statMap = new LinkedHashMap<String, StatisticInstance>();
 		statList = new ArrayList<String>();
 		statDependencies = new HashMap<String, List<StatisticInstance>>();
@@ -82,10 +83,10 @@ public class StatisticManager {
 		}
 	}
 	
-	public void newBonus(String statisticType, String stackType, String source, String value) {
+	public StatisticBonus newBonus(String statisticType, String stackType, String source, String value) {
 		StatisticInstance bonusRecipient = statMap.get(statisticType);
 		if (bonusRecipient == null) // Not a valid target
-			return;
+			return null;
 		List<StatisticInstance> dependentUpon = new ArrayList<StatisticInstance>();
 		String strippedValue = new String(value);
 		for (String potential: statList) {
@@ -111,9 +112,10 @@ public class StatisticManager {
 		// Trigger update on all Statistics dependent upon bonusRecipient
 		if (bonusRecipient.update() && (dependents != null))
 			recursiveUpdate(dependents);
+		return newBonus;
 	}
 	
-	public void newBonus(Map<String, String> bonusMap) {
+	public StatisticBonus newBonus(Map<String, String> bonusMap) {
 		String type = bonusMap.get(XmlConst.TYPE_ATTR);
 		String value = bonusMap.get(XmlConst.VALUE_ATTR);
 		if ((type != null) && (value != null)) {
@@ -123,8 +125,9 @@ public class StatisticManager {
 			String source = bonusMap.get(XmlConst.SOURCE_ATTR);
 			if (source == null)
 				source = "Natural";
-			newBonus(type, stackType, source, value);
+			return newBonus(type, stackType, source, value);
 		}
+		return null;
 	}
 	
 	private void recursiveUpdate(List<StatisticInstance> dependents) {
@@ -143,7 +146,7 @@ public class StatisticManager {
 	}
 	
 	public boolean hasProperty(String name) {
-		Boolean property = propertyNames.get(name);
+		Boolean property = prerequisites.get(name);
 		if (property != null) {
 			return true;
 		} else {
@@ -164,15 +167,44 @@ public class StatisticManager {
 		return StatisticBonus.evaluate(strippedValue);
 	}
 	public void readXMLBonuses(InputStream inStream, File inventory) throws IOException, XmlPullParserException {
+		Stack<String> lastPrereq = new Stack<String>();
+		Stack<String> lastConditional = new Stack<String>();
+		lastPrereq.push("None.");
+		lastConditional.push("None.");
 		XmlPullParser parser = Xml.newPullParser();
 		parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
 		parser.setInput(inStream, null);
 		while (parser.next() != XmlPullParser.END_DOCUMENT) {
+			if (parser.getEventType() == XmlPullParser.END_TAG) {
+				String name = parser.getName();
+				if (name != null) {
+					if (name.equals(XmlConst.PREREQ_TAG)) {
+						lastPrereq.pop();
+					} else if (name.equals(XmlConst.CONDITIONAL_TAG)) {
+						lastConditional.pop();
+					}
+				}
+				continue;
+			}
 			if (parser.getEventType() != XmlPullParser.START_TAG)
 				continue;
 			String tag = parser.getName();
 			if (tag != null) {
-				if (tag.equals(XmlConst.BONUS_TAG)) {
+				if (tag.equals(XmlConst.PREREQ_TAG)) {
+					String name = parser.getAttributeValue(null, XmlConst.NAME_ATTR);
+					if (name != null) {
+						lastPrereq.push(name);
+					} else {
+						lastPrereq.push("Invalid Prereq!");
+					}
+				} else if (tag.equals(XmlConst.CONDITIONAL_TAG)) {
+					String name = parser.getAttributeValue(null, XmlConst.NAME_ATTR);
+					if (name != null) {
+						lastConditional.push(name);
+					} else {
+						lastConditional.push("Invalid Conditional!");
+					}
+				} else if (tag.equals(XmlConst.BONUS_TAG)) {
 					String types = parser.getAttributeValue(null, XmlConst.TYPE_ATTR);
 					String stackType = parser.getAttributeValue(null, XmlConst.STACKTYPE_ATTR);
 					String value = parser.getAttributeValue(null, XmlConst.VALUE_ATTR);
@@ -183,7 +215,13 @@ public class StatisticManager {
 						if (source == null)
 							source = "Natural";
 						for (String type: types.split(",")) {
-							newBonus(type, stackType, source, value);
+							StatisticBonus conditionalBonus = newBonus(type, stackType, source, value);
+							if (!lastPrereq.peek().equals("None.")) {
+								prereqs.addBonus(lastPrereq.peek(), conditionalBonus);
+							}
+							if (!lastConditional.peek().equals("None.")) {
+								conditions.addBonus(lastConditional.peek(), conditionalBonus);
+							}
 						}
 					}
 				} else if (tag.equals(XmlConst.EQUIPITEM_TAG)) {
@@ -193,20 +231,91 @@ public class StatisticManager {
 						for (Map<String,String> bonus: newItem.bonusList) {
 							newBonus(bonus);
 						}
+						if (newItem.condition != null) {
+							conditions.putCondition(newItem.condition);
+						}
 					}
 				} else if (tag.equals(XmlConst.CHOICE_TAG) || (tag.equals(XmlConst.CHOSEN_TAG))) {
 					String name = parser.getAttributeValue(null, XmlConst.NAME_ATTR);
 					if (name != null) {
-						propertyNames.put(name, true);
+						prerequisites.put(name, true);
+						prereqs.putCondition(name);
 					}
 				} else if (tag.equals(XmlConst.PROFICIENCY_TAG)) {
 					String types = parser.getAttributeValue(null, XmlConst.TYPE_ATTR);
 					if (types != null) {
 						for (String type: types.split(",")) {
-							propertyNames.put(type, true);
+							prerequisites.put(type, true);
+							prereqs.putCondition(type);
 						}
 					}
 				}
+			}
+		}
+	}
+	private class ConditionalBonus {
+		Map<String, Boolean> conditions = new HashMap<String,Boolean>();
+		List<String> typeList = new ArrayList<String>();
+		List<StatisticBonus> bonusList = new ArrayList<StatisticBonus>();
+		List<String> invalidList = new ArrayList<String>();
+		List<String> invalidCondition = new ArrayList<String>();
+		
+		public void putCondition(String condition) {
+			conditions.put(condition, true);
+			refreshConditionals();
+		}
+		public void putConditionalCondition(String conditional, String condition) {
+			if (hasCondition(conditional)) {
+				conditions.put(condition, true);
+			} else {
+				invalidList.add(conditional);
+				invalidCondition.add(condition);
+			}
+		}
+		
+		
+		private boolean hasCondition(String names) {
+			boolean ret = false;
+			for (String name: names.split(",")) {
+				Boolean conditionActive = conditions.get(name);
+				if (conditionActive != null) {
+					if (conditionActive == true) {
+						ret = true;
+						break;
+					}
+				}
+			}
+			return ret;
+		}
+		
+		private void refreshConditionals() {
+			// Check deferred conditions
+			for (int i = 0; i < invalidList.size(); i++) {
+				String names = invalidList.get(i);
+				if (hasCondition(names)) {
+					putCondition(invalidCondition.get(i));
+					invalidList.remove(i);
+					invalidCondition.remove(i);
+				}
+			}
+			for (int i = 0; i < typeList.size(); i++) {
+				StatisticBonus bonus = bonusList.get(i);
+				String names = typeList.get(i);
+				if (hasCondition(names)) {
+					bonus.enable();
+				} else {
+					bonus.disable();
+				}
+			}
+		}
+		
+		public void addBonus(String condition, StatisticBonus bonus) {
+			typeList.add(condition);
+			bonusList.add(bonus);
+			if (conditions.get(condition) != null) {
+				bonus.enable();
+			} else {
+				bonus.disable();
 			}
 		}
 	}

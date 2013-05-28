@@ -13,6 +13,10 @@
         <bonus type="Ride" stackType="Feat" value="2" />
     </selection>
     <subGroup groupName="Combat">
+        <selection name="Agile Maneuvers">
+            <bonus type="Combat Maneuver Bonus" value="- [Strength]" />
+            <bonus type="Combat Maneuver Bonus" value="[Dexterity]" />
+        </selection>
 	    <selection name="Armor Proficiency, Light">
 	        <proficiency type="Light Armor" />
 	    </selection>
