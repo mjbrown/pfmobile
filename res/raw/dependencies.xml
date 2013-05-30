@@ -72,4 +72,19 @@
     <bonus type="Swim" value="[Strength Modifier]" />
     <bonus type="Use Magic Device" value="[Charisma Modifier]" />
 
+    <attack name="Basic">
+        <attackBonus type="To Hit" value="[Base Attack]" />
+        <attackBonus type="To Damage" value="0" />
+        <attackBonus type="Source" value="Natural" />
+        <attackBonus type="Critical Range" value="1" />
+        <attackBonus type="Critical Multiplier" value="2" />
+        <attackBonus type="Range" value="5" />
+    </attack>
+    <attack name="Melee Attack" inherits="Basic">
+        <attackBonus type="To Hit" value="[Strength Modifier]" />
+        <attackBonus type="To Damage" value="[Strength Modifier]" />
+    </attack>
+    <attack name="Ranged Attack" inherits="Basic">
+        <attackBonus type="To Hit" value="[Dexterity Modifier]" />
+    </attack>
 </basicDependencies>

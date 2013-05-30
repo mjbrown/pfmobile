@@ -501,6 +501,7 @@
             <bonus type="Fortitude" value="2" />
             <bonus type="Reflex" value="2" />
             <bonus type="Will" value="2" />
+            <choice groupName="Feat" specific="Catch Off-Guard,Combat Reflexes,Deflect Arrows,Dodge,Improved Grapple,Scorpion Style,Throw Anything" />
 	        <proficiency type="Club,Light Crossbow,Heavy Crossbow,Dagger,Handaxe,Javelin,Kama,Nunchaku,Quarterstaff,Sai,Shortspear,Short Sword,Shuriken,Siangham,Sling,Spear" />
 	        <bonus type="Acrobatics,Climb,Craft,Escape Artist,Intimidate,History,Religion,Perception,Perform,Profession,Ride,Sense Motive,Stealth,Swim" stackType="Class Skill" value="3" />
         </selection>

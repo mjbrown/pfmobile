@@ -185,12 +185,13 @@ public class GeneratorActivity extends FragmentActivity implements ItemEditDialo
 		transaction.commit();
 	}
 
-	public void launchFilterSelect(View view, String groupName, String subGroup, String choiceId) {
+	public void launchFilterSelect(View view, String groupName, String subGroup, String specificNames, String choiceId) {
 		refreshCharData();
 		ChoiceSelectFragment newFragment = new ChoiceSelectFragment();
 		Bundle passedData = new Bundle();
-		passedData.putString("groupName", groupName);
-		passedData.putString("subGroup", subGroup);
+		passedData.putString(XmlConst.GRPNAME_ATTR, groupName);
+		passedData.putString(XmlConst.SUBGRP, subGroup);
+		passedData.putString(XmlConst.SPECIFIC_ATTR, specificNames);
 		passedData.putString("charFileName", charFile.getName());
 		passedData.putString("choiceId", choiceId);
 		if (groupName.equals("Race")) {
@@ -211,7 +212,7 @@ public class GeneratorActivity extends FragmentActivity implements ItemEditDialo
 		transaction.commit();
 	}
 	
-	public void addSelection(int choiceId, String groupName, String subGroup, String selectionName) {
+	public void addSelection(int choiceId, String groupName, String subGroup, String specificNames, String selectionName) {
 		InputStream dataFile;
 		if (groupName.equals("Race")) {
 			dataFile = getResources().openRawResource(R.raw.races);
@@ -225,7 +226,7 @@ public class GeneratorActivity extends FragmentActivity implements ItemEditDialo
 			dataFile = getResources().openRawResource(R.raw.other);
 		}
 		try {
-			charData.insertChoice(dataFile, choiceId, groupName, subGroup, selectionName);
+			charData.insertChoice(dataFile, choiceId, groupName, subGroup, specificNames, selectionName);
 			dataFile.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

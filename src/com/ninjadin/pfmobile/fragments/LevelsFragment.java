@@ -96,7 +96,8 @@ public class LevelsFragment extends Fragment {
 				String groupName = groupData.get(groupPosition).get(XmlConst.GRPNAME_ATTR);
 				String choiceId = groupData.get(groupPosition).get(XmlConst.NUM_ATTR);
 				String subGroup = groupData.get(groupPosition).get(XmlConst.SUBGRP);
-				activity.launchFilterSelect(view, groupName, subGroup, choiceId);
+				String specificNames = groupData.get(groupPosition).get(XmlConst.SPECIFIC_ATTR);
+				activity.launchFilterSelect(view, groupName, subGroup, specificNames, choiceId);
 			}
 		});
 		TextView level = (TextView) activity.findViewById(R.id.level_indicator);

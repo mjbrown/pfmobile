@@ -3,6 +3,9 @@
 	<selection name="Human">
 	    <race type="humanoid" subTypes="human" size="medium" />
 	    <bonus type="Speed" stackType="Base" value="30" />
+	    <conditional name="Medium Armor,Medium Load,Heavy Armor,Heavy Load">
+	        <bonus type="Speed" value="-10" />
+	    </conditional>
 	    <choice groupName="Racial Ability Score" />
 	    <choice groupName="Feat" />
 	    <skillsPerLevel value="1" />
@@ -11,10 +14,13 @@
 	    <race type="humanoid" subType="human,orc" size="medium" />
 	    <choice groupName="Racial Ability Score" />
 	    <bonus type="Speed" stackType="Base" value="30" />
+	    <conditional name="Medium Armor,Medium Load,Heavy Armor,Heavy Load">
+	        <bonus type="Speed" value="-10" />
+	    </conditional>
 	    <bonus type="Darkvision" value="60" />
 	    <bonus type="Intimidate" stackType="Racial" value="2" />
 		<prerequisite name="Martial Weapon">
-	    	<proficiency type="Axe, Orc Double" />
+	    	<proficiency type="Orc Double Axe" />
 		</prerequisite>
 	</selection>
 	<selection name="Elf">
@@ -27,9 +33,13 @@
 	    <!-- TODO +2 vs. Enchantment -->
 	    <!-- TODO Immune to Sleep -->
 	    <prerequisite name="Martial Weapon" />
-	        <proficiency type="Curve Blade, elven" >
+	        <proficiency type="Elven Curve Blade" >
 	    </proficiency>
 	    <proficiency type="Longsword" />
 	    <proficiency type="Longbow" />
-	</selection>
+	    <bonus type="Speed" value="30" />
+	    <conditional name="Medium Armor,Medium Load,Heavy Armor,Heavy Load">
+	        <bonus type="Speed" value="-10" />
+	    </conditional>
+	    </selection>
 </bonusGroup>

@@ -17,18 +17,27 @@
             <bonus type="Combat Maneuver Bonus" value="- [Strength]" />
             <bonus type="Combat Maneuver Bonus" value="[Dexterity]" />
         </selection>
-	    <selection name="Armor Proficiency, Light">
+	    <selection name="Light Armor Proficiency">
 	        <proficiency type="Light Armor" />
 	    </selection>
 	    <prerequisite name="Light Armor" >
-	        <selection name="Armor Proficiency, Medium">
+	        <selection name="Medium Armor Proficiency">
 	            <proficiency type="Medium Armor" />
 	        </selection>
 	    </prerequisite>
 	    <prerequisite name="Medium Armor" >
-	        <selection name="Armor Proficiency, Heavy">
+	        <selection name="Heavy Armor Proficiency">
 	            <proficiency type="Heavy Armor" />
 	        </selection>
 	    </prerequisite>
+	    <prerequisite type="Dexterity" value="13">
+	        <selection name="Dodge">
+	            <bonus type="Armor Class" stackType="Dodge" value="1" />
+	            <bonus type="Touch Armor Class" stackType="Dodge" value="1" />
+	        </selection>
+	    </prerequisite>
+	    <selection name="Deflect Arrows">
+	        <!-- TODO Save vs. Ranged attacks -->
+	    </selection>
     </subGroup>
 </bonusGroup>

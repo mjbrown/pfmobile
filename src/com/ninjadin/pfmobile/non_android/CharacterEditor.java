@@ -120,6 +120,7 @@ public class CharacterEditor {
 						String groupName = parser.getAttributeValue(null, XmlConst.GRPNAME_ATTR);
 						String subGroup = parser.getAttributeValue(null, XmlConst.SUBGRP);
 						String selection = parser.getAttributeValue(null, XmlConst.NAME_ATTR);
+						String specificNames = parser.getAttributeValue(null, XmlConst.SPECIFIC_ATTR);
 						String parent = lastParents.peek();
 						Map<String,String> newMap = new HashMap<String,String>();
 						if (groupName != null) {
@@ -134,6 +135,9 @@ public class CharacterEditor {
 						}
 						if (parent != null) {
 							newMap.put(XmlConst.SOURCE_ATTR, parent);
+						}
+						if (specificNames != null) {
+							newMap.put(XmlConst.SPECIFIC_ATTR, specificNames);
 						}
 						newMap.put(XmlConst.NUM_ATTR, Integer.toString(id++));
 						levelData.add(newMap);
@@ -265,7 +269,7 @@ public class CharacterEditor {
 	}
 
 
-	public void insertChoice(InputStream dataStream, int choiceId, String groupName, String subGroup, String selectionName) throws IOException {
+	public void insertChoice(InputStream dataStream, int choiceId, String groupName, String subGroup, String specificNames, String selectionName) throws IOException {
 		InputStreamReader dataReader = new InputStreamReader(dataStream);
 		BufferedReader choiceInput = new BufferedReader(dataReader);
 		
@@ -307,6 +311,9 @@ public class CharacterEditor {
 		destChar.write("<" + XmlConst.CHOSEN_TAG + " " + XmlConst.GRPNAME_ATTR + "=\"" + groupName + "\"");
 		if (subGroup != null) {
 			destChar.write(" " + XmlConst.SUBGRP + "=\"" + subGroup + "\"");
+		}
+		if (specificNames != null) {
+			destChar.write(" " + XmlConst.SPECIFIC_ATTR + "=\"" + specificNames + "\"");
 		}
 		destChar.write(" " + XmlConst.NAME_ATTR + "=\"" + selectionName + "\">");
 		destChar.newLine();

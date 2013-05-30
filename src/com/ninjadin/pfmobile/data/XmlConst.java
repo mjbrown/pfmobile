@@ -35,6 +35,7 @@ public class XmlConst {
 	
 	// Used as ATTRIBUTE in character file
 	final public static String GRPNAME_ATTR = "groupName";
+	final public static String SPECIFIC_ATTR = "specific";
 	final public static String NUM_ATTR = "number";
 	final public static String NAME_ATTR = "name";
 	final public static String TYPE_ATTR = "type";

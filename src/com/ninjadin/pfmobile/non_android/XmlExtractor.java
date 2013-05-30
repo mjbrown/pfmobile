@@ -80,6 +80,21 @@ public class XmlExtractor {
 		return value;
 	}
 
+	public void filterSpecific(String specificNames) {
+		List<Map<String,String>> newGroupData = new ArrayList<Map<String,String>>();
+		List<List<Map<String,String>>> newItemData = new ArrayList<List<Map<String,String>>>();
+		for (int i = 0; i < groupData.size(); i++) {
+			for (String name: specificNames.split(",")) {
+				if (groupData.get(i).get(XmlConst.NAME_ATTR).equals(name)) {
+					newGroupData.add(groupData.get(i));
+					newItemData.add(itemData.get(i));
+					break;
+				}
+			}
+		}
+		groupData = newGroupData;
+		itemData = newItemData;
+	}
 	public void getData(String endTag, String[] tags, String[] tag_attrs, String[] subtags, String[] subtag_attrs) throws XmlPullParserException, IOException {
 		while (xmlParser.next() != XmlPullParser.END_DOCUMENT) {
 			if (xmlParser.getEventType() == XmlPullParser.END_TAG) {

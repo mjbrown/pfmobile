@@ -33,6 +33,7 @@ public class ChoiceSelectFragment extends Fragment {
 	int choiceId;
 	String groupName;
 	String subGroupName;
+	String specificNames;
 	XmlExtractor choices;
 	StatisticManager manager;
 	
@@ -50,6 +51,7 @@ public class ChoiceSelectFragment extends Fragment {
 			Bundle args = this.getArguments();
 			groupName = args.getString(XmlConst.GRPNAME_ATTR);
 			subGroupName = args.getString(XmlConst.SUBGRP);
+			specificNames = args.getString(XmlConst.SPECIFIC_ATTR);
 			choiceId = Integer.parseInt(args.getString("choiceId"));
 			InputStream dataFile = activity.getResources().openRawResource(args.getInt("rawDataInt"));
 			String[] tags = new String[] { XmlConst.SELECTION_TAG };
@@ -68,6 +70,9 @@ public class ChoiceSelectFragment extends Fragment {
 				} else {
 					choices.getPrereqMetData(XmlConst.BONUSGRP, tags, tag_attrs, subtags, subtag_attrs);
 				}
+			} else if (specificNames != null) {
+				choices.getData(XmlConst.BONUSGRP, tags, tag_attrs, subtags, subtag_attrs);
+				choices.filterSpecific(specificNames);
 			} else {
 				choices.getPrereqMetData(XmlConst.BONUSGRP, tags, tag_attrs, subtags, subtag_attrs);
 			}
@@ -125,7 +130,7 @@ public class ChoiceSelectFragment extends Fragment {
 				public void onClick(View view) {
 					int groupPos = expList.getPositionForView((View) view.getParent());
 					String selectionName = choices.groupData.get(groupPos).get(XmlConst.NAME_ATTR);
-					((GeneratorActivity) getActivity()).addSelection(choiceId, groupName, subGroupName, selectionName);
+					((GeneratorActivity) getActivity()).addSelection(choiceId, groupName, subGroupName, specificNames, selectionName);
 				}
 			});
 			TextView textView = (TextView)convertView.findViewById(R.id.filtertitle_text);
