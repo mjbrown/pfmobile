@@ -18,16 +18,16 @@
             <bonus type="Combat Maneuver Bonus" value="[Dexterity]" />
         </selection>
 	    <selection name="Light Armor Proficiency">
-	        <proficiency type="Light Armor" />
+	        <condition key="Proficiency" type="Light Armor" />
 	    </selection>
-	    <prerequisite name="Light Armor" >
+	    <prerequisite key="Proficiency" name="Light Armor" >
 	        <selection name="Medium Armor Proficiency">
-	            <proficiency type="Medium Armor" />
+	            <condition key="Proficiency" type="Medium Armor" />
 	        </selection>
 	    </prerequisite>
-	    <prerequisite name="Medium Armor" >
+	    <prerequisite key="Proficiency" name="Medium Armor" >
 	        <selection name="Heavy Armor Proficiency">
-	            <proficiency type="Heavy Armor" />
+	            <condition key="Proficiency" type="Heavy Armor" />
 	        </selection>
 	    </prerequisite>
 	    <prerequisite type="Dexterity" value="13">

@@ -6,10 +6,10 @@
     <bonus type="Intelligence Modifier" value="[Intelligence] / 2 - 5" />
     <bonus type="Wisdom Modifier" value="[Wisdom] / 2 - 5" />
     <bonus type="Charisma Modifier" value="[Charisma] / 2 - 5" />
-    
+
     <bonus type="Hit Points" value="[Constitution Modifier] * [Character Level]" />
     <bonus type="Skill Points" value="[Intelligence Modifier] * [Character Level]" />
-    
+
     <bonus type="Climb Speed" value="[Speed] / 4" />
     <bonus type="Swim Speed" value="[Speed] / 4" />
     <bonus type="Stealth Speed" value="[Speed] / 2" />
@@ -17,10 +17,10 @@
     
     <bonus type="Armor Class,Flat Footed Armor Class,Touch Armor Class,Combat Maneuver Defense" value="10" />
     
-    <bonus type="Armor Class" value="min [Dexterity Modifier] [Maximum Dexterity Bonus]" />
-    <bonus type="Touch Armor Class" value="min [Dexterity Modifier] [Maximum Dexterity Bonus]" />
+    <bonus type="Armor Class" value="min( [Dexterity Modifier] , [Maximum Dexterity Bonus] )" />
+    <bonus type="Touch Armor Class" value="min( [Dexterity Modifier] , [Maximum Dexterity Bonus] )" />
     
-    <conditional name="Unarmored">
+    <conditional key="Equipment" name="Unarmored">
         <bonus type="Maximum Dexterity Bonus" value="1000" />
     </conditional>
     
@@ -72,19 +72,43 @@
     <bonus type="Swim" value="[Strength Modifier]" />
     <bonus type="Use Magic Device" value="[Charisma Modifier]" />
 
-    <attack name="Basic">
-        <attackBonus type="To Hit" value="[Base Attack]" />
-        <attackBonus type="To Damage" value="0" />
-        <attackBonus type="Source" value="Natural" />
+    <action type="Attack" name="Melee Full Attack" cost="Full Round">
+        <attackBonus type="To Hit" value="[Base Attack] + [Strength]" />
         <attackBonus type="Critical Range" value="1" />
         <attackBonus type="Critical Multiplier" value="2" />
         <attackBonus type="Range" value="5" />
-    </attack>
-    <attack name="Melee Attack" inherits="Basic">
-        <attackBonus type="To Hit" value="[Strength Modifier]" />
-        <attackBonus type="To Damage" value="[Strength Modifier]" />
-    </attack>
-    <attack name="Ranged Attack" inherits="Basic">
-        <attackBonus type="To Hit" value="[Dexterity Modifier]" />
-    </attack>
+        <attack weapon="Main Hand" versus="Armor Class">
+            
+        </attack>
+        <conditional key="Statistic" type="Base Attack" value="6">
+            <attack weapon="Main Hand" versus="Armor Class">
+                <attackBonus type="To Hit" value="-5"/>
+            </attack>
+        </conditional>
+        <conditional key="Statistic" type="Base Attack" value="11">
+            <attack weapon="Main Hand" versus="Armor Class">
+                <attackBonus type="To Hit" value="-10"/>
+            </attack>
+        </conditional>
+        <conditional key="Statistic" type="Base Attack" value="16">
+            <attack weapon="Main Hand" versus="Armor Class">
+                <attackBonus type="To Hit" value="-15"/>
+            </attack>
+        </conditional>
+    </action>
+    <action type="Attack" name="Two Weapon Fighting Full Attack" inherits="Melee Full Attack">
+        <attackBonus weapon="Main Hand" type="To Hit" value="-6" />
+        <attackBonus weapon="Off Hand" type="To Hit" value="-10" />
+        <conditional key="Status" name="Light Off Hand">
+            <attackBonus weapon="Main Hand" type="To Hit" value="2" />
+            <attackBonus weapon="Off Hand" type="To Hit" value="2" />
+        </conditional>
+        <conditional key="Prerequisite" name="Two Weapon Fighting">
+            <attackBonus weapon="Main Hand" type="To Hit" value="2" />
+            <attackBonus weapon="Off Hand" type="To Hit" value="6" />
+        </conditional>
+        <attack weapon="Off Hand" versus="Armor Class">
+            
+        </attack>
+    </action>
 </basicDependencies>

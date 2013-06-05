@@ -73,7 +73,7 @@ public class ItemEditor {
 		property.put(XmlConst.VALUE_ATTR, value);
 	}
 	
-	public void saveChanges(File tempFile) throws IOException {
+	public String getXML() throws IOException {
 		String itemData = "<" + XmlConst.ITEM_TAG + " " + XmlConst.NAME_ATTR + "=\"" + new_name + "\" "
 				+ XmlConst.SLOT_ATTR + "=\"" + new_slot + "\" >\n";
 		int i = 0;
@@ -98,6 +98,11 @@ public class ItemEditor {
 			itemData += "</" + XmlConst.ENHANCE_TAG + ">\n";
 		}
 		itemData += "</" + XmlConst.ITEM_TAG + ">\n";
+		return itemData;
+	}
+	
+	public void saveToInventory(File tempFile) throws IOException {
+		String itemData = getXML();
 		File copyFrom = inventory;
 		File copyTo = tempFile;
 		String parentAttrs = XmlConst.NAME_ATTR + "=\"" + name;

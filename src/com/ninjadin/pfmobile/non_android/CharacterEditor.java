@@ -85,9 +85,19 @@ public class CharacterEditor {
 				break;
 		}
 	}
+	
+	public void equipItem(String itemData, String slot) throws IOException {
+		File copyFrom = charFile;
+		File copyTo = tempFile;
+		String name = equipment.get(slot);
+		String parentAttrs = XmlConst.NAME_ATTR + "=\"" + name;
+		XmlEditor.replaceParent(copyFrom, copyTo, XmlConst.ITEM_TAG, parentAttrs, itemData);
+		copyTo.renameTo(charFile);
+	}
+
 	public void readEquipment(XmlPullParser parser) throws XmlPullParserException, IOException {
 		equipment = new HashMap<String, String> ();
-		String[] tag_names = new String[] { XmlConst.EQUIPITEM_TAG };
+		String[] tag_names = new String[] { XmlConst.ITEM_TAG };
 		String[] tag_attrs = new String[] { XmlConst.SLOT_ATTR, XmlConst.NAME_ATTR };
 		XmlExtractor equipItems = new XmlExtractor(parser);
 		equipItems.getData(XmlConst.EQUIP_TAG, tag_names, tag_attrs, null, null);
@@ -249,7 +259,7 @@ public class CharacterEditor {
 		tempFile.renameTo(charFile);
 	}
 	
-	public void equipItem(String slot, String name) throws IOException {
+/*	public void equipItem(String slot, String name) throws IOException {
 		String insertBefore = "<" + XmlConst.EQUIPITEM_TAG + " " + XmlConst.SLOT_ATTR + "=\"" + slot;
 		String continueOn = "</" + XmlConst.EQUIPITEM_TAG + ">";
 		String customBefore = "<" + XmlConst.EQUIPITEM_TAG + " " + XmlConst.SLOT_ATTR + "=\"" + slot + 
@@ -257,7 +267,7 @@ public class CharacterEditor {
 		XmlEditor.copyReplace(charFile, tempFile, null, null, null, insertBefore, continueOn, customBefore, null);
 		tempFile.renameTo(charFile);
 	}
-
+*/
 	private void copyChoiceData(File sourceChar, File destChar, File levelData) throws IOException {
 		String startData = "<" + XmlConst.LEVELS_TAG + ">";
 		String endData = "</" + XmlConst.EQUIP_TAG + ">";

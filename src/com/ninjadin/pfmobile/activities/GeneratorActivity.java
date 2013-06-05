@@ -327,9 +327,14 @@ public class GeneratorActivity extends FragmentActivity implements ItemEditDialo
 	
 	public void equipItem(String slotName, String itemName) {
 		try {
+			itemEditor = new ItemEditor(itemName, inventoryFile);
+			String itemData = itemEditor.getXML();
 			if (charData != null)
-				charData.equipItem(slotName, itemName);
+				charData.equipItem(itemData, slotName);
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (XmlPullParserException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -349,7 +354,7 @@ public class GeneratorActivity extends FragmentActivity implements ItemEditDialo
 		itemEditor.setSourceType(dialog.source_spinner.getSelectedItem().toString());
 		itemEditor.setValue(dialog.valueEdit.getText().toString());
 		try {
-			itemEditor.saveChanges(tempFile);
+			itemEditor.saveToInventory(tempFile);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

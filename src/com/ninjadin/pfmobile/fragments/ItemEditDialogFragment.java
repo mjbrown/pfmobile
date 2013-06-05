@@ -70,13 +70,13 @@ public class ItemEditDialogFragment extends DialogFragment {
 		super .onResume();
 		activity = (GeneratorActivity)getActivity();
 		bonus_spinner = (Spinner) dialog.findViewById(R.id.itemedit_bonustype);
-		ArrayAdapter<String> bonus_adapter = new ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, activity.dependencyManager.statList);
+		ArrayAdapter<String> bonus_adapter = new ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, activity.dependencyManager.stat_list);
 		bonus_adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
 		if (bonus_spinner != null) {
 			bonus_spinner.setAdapter(bonus_adapter);
 			String bonusType = activity.itemEditor.getBonusType();
-			for (int position = 0; position < activity.dependencyManager.statList.size(); position++) {
-				if (activity.dependencyManager.statList.get(position).equals(bonusType)) {
+			for (int position = 0; position < activity.dependencyManager.stat_list.size(); position++) {
+				if (activity.dependencyManager.stat_list.get(position).equals(bonusType)) {
 					bonus_spinner.setSelection(position);
 					break;
 				}

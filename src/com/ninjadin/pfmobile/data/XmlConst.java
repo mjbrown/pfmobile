@@ -42,6 +42,7 @@ public class XmlConst {
 	final public static String VALUE_ATTR = "value";
 	final public static String STACKTYPE_ATTR = "stackType";
 	final public static String SOURCE_ATTR = "source";
+	final public static String KEY_ATTR = "key";
 	
 	// Used as ATTRIBUTE in data files
 	final public static String COMPARE_ATTR = "comparator";

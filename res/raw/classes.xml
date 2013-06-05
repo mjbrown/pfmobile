@@ -7,9 +7,9 @@
         <bonus type="Hit Points" value="12" />
         <bonus type="Base Attack" value="1" />
 		<bonus type="Fortitude" value="2" />
-		<proficiency type="Simple Weapon,Martial Weapon" />
-        <proficiency type="Light Armor,Medium Armor" />
-        <proficiency type="Light Shield,Heavy Shield" />
+		<condition key="Proficiency" name="Simple Weapon,Martial Weapon" />
+        <condition key="Proficiency" name="Light Armor,Medium Armor" />
+        <condition key="Proficiency" name="Light Shield,Heavy Shield" />
         <bonus type="Acrobatics,Climb,Craft,Handle Animal,Intimidate,Nature" stackType="Class Skill" value="3" />
         <bonus type="Perception,Ride,Survival,Swim" stackType="Class Skill" value="3" />
     </selection>
@@ -105,9 +105,9 @@
 		<bonus type="Reflex" value="2" />
 		<bonus type="Will" value="2" />
         <bonus type="Arcana,Dungeoneering,Engineering,Geography,History,Local,Nature,Nobility,Planes,Religion" stackType="Base" value="[Bard Level] + 1 / 2" />
-		<proficiency type="Simple Weapon,Longsword,Rapier,Sap,Shortsword,Shortbow,Whip" />
-        <proficiency type="Light Armor" />
-        <proficiency type="Light Shield,Heavy Shield" />
+		<condition key="Proficiency" name="Simple Weapon,Longsword,Rapier,Sap,Shortsword,Shortbow,Whip" />
+        <condition key="Proficiency" name="Light Armor" />
+        <condition key="Proficiency" name="Light Shield,Heavy Shield" />
         <bonus type="Acrobatics,Appraise,Bluff,Climb,Craft,Diplomacy,Disguise,Escape Artist,Intimidate" stackType="Class Skill" value="3" />
         <bonus type="Arcana,Dungeoneering,Engineering,Geography,History,Local,Nature,Nobility,Planes,Religion" stackType="Class Skill" value="3" />
         <bonus type="Linguistics,Perception,Perform,Profession,Sense Motive,Sleight Of Hand,Spellcraft,Stealth,Use Magic Device" stackType="Class Skill" value="3" />
@@ -203,9 +203,9 @@
         <bonus type="Hit Points" value="8" />
 		<bonus type="Fortitude" value="2" />
 		<bonus type="Will" value="2" />
-		<proficiency type="Simple Weapon" />
-        <proficiency type="Light Armor,Medium Armor" />
-        <proficiency type="Light Shield,Heavy Shield" />
+		<condition key="Proficiency" name="Simple Weapon" />
+        <condition key="Proficiency" name="Light Armor,Medium Armor" />
+        <condition key="Proficiency" name="Light Shield,Heavy Shield" />
         <bonus type="Appraise,Craft,Diplomacy,Heal" stackType="Class Skill" value="3" />
         <bonus type="Arcana,History,Nobility,Planes,Religion" stackType="Class Skill" value="3" />
         <bonus type="Linguistics,Profession,Sense Motive,Spellcraft" stackType="Class Skill" value="3" />
@@ -301,9 +301,9 @@
         <bonus type="Hit Points" value="8" />
 		<bonus type="Fortitude" value="2" />
 		<bonus type="Will" value="2" />
-		<proficiency type="Simple Weapon" />
-        <proficiency type="Light Armor,Medium Armor" />
-        <proficiency type="Light Shield,Heavy Shield" />
+		<condition key="Proficiency" name="Simple Weapon" />
+        <condition key="Proficiency" name="Light Armor,Medium Armor" />
+        <condition key="Proficiency" name="Light Shield,Heavy Shield" />
         <bonus type="Appraise,Craft,Diplomacy,Heal" stackType="Class Skill" value="3" />
         <bonus type="Arcana,History,Nobility,Planes,Religion" stackType="Class Skill" value="3" />
         <bonus type="Linguistics,Profession,Sense Motive,Spellcraft" stackType="Class Skill" value="3" />
@@ -400,9 +400,9 @@
         <bonus type="Base Attack" value="1" />
 		<bonus type="Fortitude" value="2" />
         <choice groupName="Feat" subGroup="Combat" />
-		<proficiency type="Simple Weapon,Martial Weapon" value="All" />
-        <proficiency type="Light Armor,Medium Armor,Heavy Armor" value="All" />
-        <proficiency type="Light Shield,Heavy Shield,Tower Shield" value="All" />
+		<condition key="Proficiency" name="Simple Weapon,Martial Weapon" />
+        <condition key="Proficiency" name="Light Armor,Medium Armor,Heavy Armor" />
+        <condition key="Proficiency" name="Light Shield,Heavy Shield,Tower Shield" />
         <bonus type="Climb,Craft,Handle Animal,Intimidate,Dungeoneering" stackType="Class Skill" value="3" />
         <bonus type="Engineering,Profession,Ride,Survival,Swim" stackType="Class Skill" value="3" />
     </selection>
@@ -502,7 +502,7 @@
             <bonus type="Reflex" value="2" />
             <bonus type="Will" value="2" />
             <choice groupName="Feat" specific="Catch Off-Guard,Combat Reflexes,Deflect Arrows,Dodge,Improved Grapple,Scorpion Style,Throw Anything" />
-	        <proficiency type="Club,Light Crossbow,Heavy Crossbow,Dagger,Handaxe,Javelin,Kama,Nunchaku,Quarterstaff,Sai,Shortspear,Short Sword,Shuriken,Siangham,Sling,Spear" />
+	        <condition key="Proficiency" name="Club,Light Crossbow,Heavy Crossbow,Dagger,Handaxe,Javelin,Kama,Nunchaku,Quarterstaff,Sai,Shortspear,Short Sword,Shuriken,Siangham,Sling,Spear" />
 	        <bonus type="Acrobatics,Climb,Craft,Escape Artist,Intimidate,History,Religion,Perception,Perform,Profession,Ride,Sense Motive,Stealth,Swim" stackType="Class Skill" value="3" />
         </selection>
     </prerequisite>
@@ -600,9 +600,9 @@
             <bonus type="Fortitude" value="2" />
             <bonus type="Will" value="2" />
             <bonus type="Paladin Caster Level" value="1" />
-	        <proficiency type="Light Armor,Medium Armor,Heavy Armor" />
-	        <proficiency type="Light Shield,Heavy Shield" />
-	        <proficiency type="Simple Weapon,Martial Weapon" />
+	        <condition key="Proficiency" name="Light Armor,Medium Armor,Heavy Armor" />
+	        <condition key="Proficiency" name="Light Shield,Heavy Shield" />
+	        <condition key="Proficiency" name="Simple Weapon,Martial Weapon" />
 	        <bonus type="Craft,Diplomacy,Handle Animal,Heal,Nobility,Religion,Profession,Ride,Sense Motive,Spellcraft" stackType="Class Skill" value="3" />
             <!-- TODO Aura of Good -->
             <!-- TODO Smite Evil -->
@@ -716,9 +716,9 @@
      	    <bonus type="Base Attack" value="1"/>
      	    <bonus type="Fortitude" value="2" />
      	    <bonus type="Reflex" value="2" />
-	        <proficiency type="Light Armor,Medium Armor" />
-	        <proficiency type="Light Shield,Heavy Shield" />
-	        <proficiency type="Simple Weapon,Martial Weapon" />
+	        <condition key="Proficiency" name="Light Armor,Medium Armor" />
+	        <condition key="Proficiency" name="Light Shield,Heavy Shield" />
+	        <condition key="Proficiency" name="Simple Weapon,Martial Weapon" />
 	        <bonus type="Climb,Craft,Handle Animal,Heal,Intimidate,Dungeoneering,Geography,Nature" stackType="Class Skill" value="3" />
 	        <bonus type="Perception,Profession,Ride,Spellcraft,Stealth,Survival,Swim" stackType="Class Skill" value="3" />
 	        <!-- TODO Favored Enemy -->
@@ -819,10 +819,10 @@
         <bonus type="Hit Points" value="8" />
         <bonus type="Base Attack" value="0" />
 		<bonus type="Reflex" value="2" />
-        <proficiency type="Simple Weapon" value="All" />
-        <proficiency type="Martial Weapon" value="Rapier,Sap,Shortbow,Short Sword" />
-        <proficiency type="Exotic Weapon" value="Hand Crossbow" />
-        <proficiency type="Light Armor" value="All" />
+        <condition key="Proficiency" name="Simple Weapon" value="All" />
+        <condition key="Proficiency" name="Martial Weapon" value="Rapier,Sap,Shortbow,Short Sword" />
+        <condition key="Proficiency" name="Exotic Weapon" value="Hand Crossbow" />
+        <condition key="Proficiency" name="Light Armor" value="All" />
         <bonus type="Sneak Attack Dice" value="1" />
         <bonus type="Acrobatics,Appraise,Bluff,Climb,Craft,Diplomacy,Disable Device,Disguise" stackType="Class Skill" value="3" />
         <bonus type="Escape Artist,Intimidate,Dungeoneering,LocalLinguistics,Perception,Perform" stackType="Class Skill" value="3" />
@@ -925,7 +925,7 @@
             <bonus type="Hit Points" value="6" />
             <bonus type="Skill Points" value="2" />
             <bonus type="Will" value="2" />
-	        <proficiency type="Simple Weapon" />
+	        <condition key="Proficiency" name="Simple Weapon" />
 	        <bonus type="Appraise,Bluff,Craft,Fly,Intimidate,Arcana,Profession,Spellcraft,Use Magic Device" stackType="Class Skill" value="3" />
         </selection>
     </prerequisite>
@@ -1024,7 +1024,7 @@
             <bonus type="Hit Points" value="6" />
             <bonus type="Skill Points" value="2" />
             <bonus type="Will" value="2" />
-	        <proficiency type="Club,Dagger,Heavy Crossbow,Light Crossbow,Quarterstaff" />
+	        <condition key="Proficiency" name="Club,Dagger,Heavy Crossbow,Light Crossbow,Quarterstaff" />
 	        <bonus type="Appraise,Craft,Fly,Linguistics,Profession,Spellcraft" stackType="Class Skill" value="3" />
         	<bonus type="Arcana,Dungeoneering,Engineering,Geography,History,Local,Nature,Nobility,Planes,Religion" stackType="Class Skill" value="3" />
 	    </selection>

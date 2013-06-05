@@ -98,7 +98,7 @@ public class ItemEditFragment extends Fragment {
 		try {
 			activity.itemEditor.rename(name_edit.getText().toString());
 			activity.itemEditor.reslot(slot_spinner.getSelectedItem().toString());
-			activity.itemEditor.saveChanges(activity.tempFile);
+			activity.itemEditor.saveToInventory(activity.tempFile);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

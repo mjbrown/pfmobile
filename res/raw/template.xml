@@ -17,38 +17,39 @@
 	</characterLevel>
 	</levels>
 	<equipment>
-	    <equipItem slot="Head">
-	    </equipItem>
-	    <equipItem slot="Headband">
-	    </equipItem>
-	    <equipItem slot="Eyes">
-	    </equipItem>
-	    <equipItem slot="Neck">
-	    </equipItem>
-	    <equipItem slot="Shoulders">
-	    </equipItem>
-	    <equipItem slot="Chest">
-	    </equipItem>
-	    <equipItem slot="Body">
-	    </equipItem>
-	    <equipItem slot="Armor" name="Unarmored">
-	    </equipItem>
-	    <equipItem slot="Hands">
-	    </equipItem>
-	    <equipItem slot="Wrists">
-	    </equipItem>
-	    <equipItem slot="Ring 1">
-		</equipItem>
-	    <equipItem slot="Ring 2">
-		</equipItem>
-	    <equipItem slot="Belt">
-		</equipItem>
-	    <equipItem slot="Held 1">
-		</equipItem>
-	    <equipItem slot="Held 2">
-		</equipItem>
-	    <equipItem slot="Feet">
-	    </equipItem>
+	    <item name="Unarmored" slot="Armor">
+	        <condition key="Equipment" name="Unarmored" />
+	    </item>
+	    <item name="No Head Equipped" slot="Head">
+	    </item>
+	    <item name="No Headband Equipped" slot="Headband">
+	    </item>
+	    <item name="No Eyes Equipped" slot="Eyes">
+	    </item>
+	    <item name="No Neck Equipped" slot="Neck">
+	    </item>
+	    <item name="No Shoulders Equipped" slot="Shoulders">
+	    </item>
+	    <item name="No Chest Equipped" slot="Chest">
+	    </item>
+	    <item name="No Body Equipped" slot="Body">
+	    </item>
+	    <item name="No Hands Equipped" slot="Hands">
+	    </item>
+	    <item name="No Wrists Equipped" slot="Wrists">
+	    </item>
+	    <item name="No Ring 1 Equipped" slot="Ring 1">
+		</item>
+	    <item name="No Ring 2 Equipped" slot="Ring 2">
+		</item>
+	    <item name="No Belt Equipped" slot="Belt">
+		</item>
+	    <item name="No Held 1 Equipped" slot="Held 1">
+		</item>
+	    <item name="No Held 2 Equipped" slot="Held 2">
+		</item>
+	    <item name="No Feet Equipped" slot="Feet">
+	    </item>
 	</equipment>
 	<spells>
 	</spells>

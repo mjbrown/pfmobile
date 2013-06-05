@@ -139,6 +139,7 @@ public class XmlExtractor {
 				if (tag.equals(XmlConst.PREREQ_TAG)) {
 					String types = xmlParser.getAttributeValue(null, XmlConst.TYPE_ATTR);
 					String names = xmlParser.getAttributeValue(null, XmlConst.NAME_ATTR);
+					String key = xmlParser.getAttributeValue(null, XmlConst.KEY_ATTR);
 					boolean meetsPrereq = false;
 					String lastPrereqReadable = "Invalid Prerequisite Definition";
 					if (types != null) {
@@ -171,10 +172,10 @@ public class XmlExtractor {
 							}
 						}
 					}
-					if (names != null) {
+					if ((key != null) && (names != null)) {
 						for (String name: names.split(",")) {
 							lastPrereqReadable = name;
-							if (manager.hasProperty(name)) {
+							if (manager.hasProperty(key, name)) {
 								meetsPrereq = true;
 								break;
 							}

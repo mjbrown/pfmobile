@@ -7,18 +7,25 @@ import java.util.Map;
 
 public class PropertyLists {
 
-	final public static String conditionNames[] = new String[] { "Unarmored", "Light Armor", "Medium Armor",
+	final public static String statisticPrereq = "Statistic";
+	final public static String prerequisite = "Prerequisite";
+	final public static String keyNames[] = new String[] { "Statistic", "Status", prerequisite, "Equipment", 
+		"Proficiency", "Attack Source", "Attack Target", "Damage Source", "Damage Target", };
+	
+	final public static String statusNames[] = new String[] { "Unarmored", "Light Armor", "Medium Armor",
 		"Heavy Armor", "No Off Hand", "Light Off Hand", "One-handed Off Hand", "No Main Hand", "Light Main Hand",
 		"One-handed Main Hand", "Two-handed", };
 	
 	final public static String bonusSources[] = new String[] { "Natural", "Supernatural", 
 		"Magical", };
 	
+	final public static String ranks = "Ranks";
 	final public static String stackableTypes[] = new String[] { "Base", "Racial", "Trait", "Feat",
-	"Dodge", "Class", "Inherent", "Ranks"};
+	"Dodge", "Class", "Inherent", ranks};
 
+	final public static String class_skill = "Class Skill";
 	final public static String notStackableTypes[] = new String[] { "Unnamed", "Aid Another", 
-	"Flank", "Circumstance", "Divine", "Profane", "Alchemical", "Enhancement", "Class Skill",
+	"Flank", "Circumstance", "Divine", "Profane", "Alchemical", "Enhancement", class_skill,
 	"Competence", "Ability", "Morale", "Armor", "Deflection", "Luck", "Armor Enhancement",
 	"Morale", "Natural Armor", "Size", "Range", "High Ground", "Shield", "Shield Enhancement", };
 
@@ -65,7 +72,7 @@ public class PropertyLists {
 		"Spell Resistance", "Initiative", "Spell Penetration", "Sneak Attack Dice" };
 
 	final static public String[] slotNames = new String[] { "Head", "Headband", "Wrists", "Feet",
-		"Eyes", "Neck", "Shoulders", "Chest", "Body", "Armor", "Hands", "Ring", "Belt", "Held", };
+		"Eyes", "Neck", "Shoulders", "Chest", "Body", "Armor", "Hands", "Ring 1", "Ring 2", "Belt", "Held 1", "Held 2", };
 
 	final static public String[] itemTypes = new String[] { "Item", "Simple Weapon", "Martial Weapon",
 		"Exotic Weapon", "Light Shield", "Heavy Shield", "Tower Shield", "Light Armor", "Medium Armor",
@@ -77,8 +84,8 @@ public class PropertyLists {
 		"Spell Failure", "Proficiency", "Size"};
 
 	// Weapon specific attributes
-	final static public String[] weaponQualities = new String[] { "Range", "To Hit", 
-		"Critical Range", "Critical Multiplier", "Proficiency", "Size"};
+	final static public String[] attackProperties = new String[] { "To Hit", "Range",
+		"Critical Range", "Critical Multiplier", };
 
 	// Weapon damage types
 	final static public String[] damageTypes = new String[] { "Subdual", "Normal", 

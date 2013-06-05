@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <bonusGroup groupName="Race">
 	<selection name="Human">
-	    <race type="humanoid" subTypes="human" size="medium" />
+	    <property name="Humanoid,Human,Medium Size" />
 	    <bonus type="Speed" stackType="Base" value="30" />
-	    <conditional name="Medium Armor,Medium Load,Heavy Armor,Heavy Load">
+	    <conditional key="Equipment" name="Medium Armor,Medium Load,Heavy Armor,Heavy Load">
 	        <bonus type="Speed" value="-10" />
 	    </conditional>
 	    <choice groupName="Racial Ability Score" />
 	    <choice groupName="Feat" />
-	    <skillsPerLevel value="1" />
+	    <bonus type="Skill Points" value="[Character Level]" />
 	</selection>
 	<selection name="Half-Orc">
-	    <race type="humanoid" subType="human,orc" size="medium" />
+	    <property name="Humanoid,Human,Orc,Medium Size" />
 	    <choice groupName="Racial Ability Score" />
 	    <bonus type="Speed" stackType="Base" value="30" />
-	    <conditional name="Medium Armor,Medium Load,Heavy Armor,Heavy Load">
+	    <conditional key="Equipment" name="Medium Armor,Medium Load,Heavy Armor,Heavy Load">
 	        <bonus type="Speed" value="-10" />
 	    </conditional>
 	    <bonus type="Darkvision" value="60" />
 	    <bonus type="Intimidate" stackType="Racial" value="2" />
-		<prerequisite name="Martial Weapon">
-	    	<proficiency type="Orc Double Axe" />
-		</prerequisite>
+		<conditional key="Proficiency" name="Martial Weapon">
+	    	<condition key="Proficiency" name="Orc Double Axe" />
+		</conditional>
 	</selection>
 	<selection name="Elf">
-	    <race type="humanoid" subType="elf" size="medium" />
+	    <property type="Humanoid,Elf,Medium Size" />
 		<bonus type="Low Light" value="60" />
 	    <bonus type="Dexterity" stackType="Racial" value="2" />
 	    <bonus type="Intelligence" stackType="Racial" value="2" />
@@ -32,13 +32,13 @@
 	    <bonus type="Perception" stackType="Racial" value="2" />
 	    <!-- TODO +2 vs. Enchantment -->
 	    <!-- TODO Immune to Sleep -->
-	    <prerequisite name="Martial Weapon" />
-	        <proficiency type="Elven Curve Blade" >
-	    </proficiency>
-	    <proficiency type="Longsword" />
-	    <proficiency type="Longbow" />
+	    <conditional key="Proficiency" name="Martial Weapon" >
+	        <condition key="Proficiency" name="Elven Curve Blade" />
+	    </conditional>
+	    <condition key="Proficiency" name="Longsword" />
+	    <condition key="Proficiency" name="Longbow" />
 	    <bonus type="Speed" value="30" />
-	    <conditional name="Medium Armor,Medium Load,Heavy Armor,Heavy Load">
+	    <conditional key="Equipment" name="Medium Armor,Medium Load,Heavy Armor,Heavy Load">
 	        <bonus type="Speed" value="-10" />
 	    </conditional>
 	    </selection>
