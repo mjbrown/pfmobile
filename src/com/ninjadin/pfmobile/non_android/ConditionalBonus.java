@@ -1,40 +1,38 @@
 package com.ninjadin.pfmobile.non_android;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.ninjadin.pfmobile.data.PropertyLists;
 
 public class ConditionalBonus {
 	private String value;
 	private String stackType;
 	private String source;
-	private boolean isActive;
-	Map<String, List<KeyValuePair>> conditions = null;
+	private boolean meetsConditions = true;
+	private boolean isActivated = true;
+	ConditionList condition_list = null;
 	
 	public ConditionalBonus(String stack, String src, String val) {
 		this.stackType = stack;
 		this.source = src;
-		this.isActive = true;
 		this.value = val;
 	}
 	
 	public ConditionalBonus() {
-		this.isActive = true;
+		this.meetsConditions = true;
 	}
 	
 	public Boolean isActive() {
-		return isActive;
+		return (meetsConditions & isActivated);
 	}
 	
-	public void activate() {
-		this.isActive = true;
+	public void meetsConditions() {
+		this.meetsConditions = true;
 	}
 	
-	public void deactivate() {
-		this.isActive = false;
+	public void failsConditions() {
+		this.meetsConditions = false;
+	}
+	
+	public String getSource() {
+		return source;
 	}
 	
 	public String getStackType() {
@@ -42,28 +40,17 @@ public class ConditionalBonus {
 	}
 
 	public String getStringValue() {
-		if (isActive == false)
+		if (meetsConditions == false)
 			return "0";
 		return this.value;
 	}
 	
-	public Map<String,List<KeyValuePair>> getConditions() {
-		return conditions;
+	public ConditionList getConditions() {
+		return condition_list;
 	}
 	
-/*	public void setPrerequisites(List<List<KeyValuePair>> prerequisites) {
-		prereqs = new ArrayList<List<KeyValuePair>>();
-		for (List<KeyValuePair> or_list: )
-	}
-*/	
-	public void setConditions(Map<String,List<KeyValuePair>> bonus_conditions) {
-		conditions = new HashMap<String,List<KeyValuePair>>();
-		for (String key: PropertyLists.keyNames) {
-			List<KeyValuePair> kv_list = new ArrayList<KeyValuePair>();
-			for (KeyValuePair condition: bonus_conditions.get(key))
-				kv_list.add(condition);
-			conditions.put(key, kv_list);
-		}
-		this.isActive = false;
+	public void setConditions(ConditionList bonus_conditions) {
+		condition_list = new ConditionList(bonus_conditions);
+		this.meetsConditions = false;
 	}
 }

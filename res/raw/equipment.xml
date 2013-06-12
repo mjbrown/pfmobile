@@ -71,55 +71,19 @@
 	    </item>
     </template>
     <template name="Shortsword">
-        <item name="Shortsword" slot="Held">
+        <item name="Shortsword" slot="Main Hand">
             <enhancement name="Base Item">
                 <itemProperty type="Proficiency" value="Martial Weapon,Shortsword" />
                 <bonus type="Equipment Cost" value="15" />
                 <bonus type="Encumbrance" value="3" />
-            </enhancement>
-            <weapon type="Main Hand">
-                <damage type="Normal,Critical" source="Natural,Piercing" value="[1d6] + [Strength]" />
-                <attackBonus type="Critical Range" value="1" />
                 <condition key="Equipment" name="Main Hand Finesse" />
-            </weapon>
-            <weapon type="Off Hand" >
-                <damage type="Normal,Critical" source="Natural,Piercing" value="[Strength] / 2 + [1d6]" />
-                <attackBonus type="Critical Range" value="1" />
-                <condition key="Equipment" name="Off Hand Finesse" />
-                <condition key="Equipment" name="Light Off Hand" />
-            </weapon>
-        </item>
-    </template>
-    <template name="Rapier">
-        <item name="Rapier" slot="Held">
-            <enhancement name="Base Item">
-                <itemProperty type="Proficiency" value="Martial Weapon,Rapier" />
-                <bonus type="Equipment Cost" value="15" />
-                <bonus type="Encumbrance" value="3" />
             </enhancement>
-            <weapon type="Main Hand" >
-                <damage type="Normal,Critical" source="Natural,Piercing" value="[1d6] + [Strength]" />
-                <attackBonus type="Critical Range" value="2" />
-                <condition key="Equipment" name="Main Hand Finesse" />
-            </weapon>
-            <weapon type="Off Hand" >
-                <damage type="Normal,Critical" source="Natural,Piercing" value="[Strength] / 2 + [1d6]" />
-                <attackBonus type="Critical Range" value="2" />
-                <condition key="Equipment" name="Off Hand Finesse" />
-            </weapon>
-        </item>
-    </template>
-    <template name="Greatsword">
-        <item name="Greatsword" slot="Held">
-            <enhancement name="Base Item">
-                <itemProperty type="Proficiency" value="Martial Weapon,Greatsword" />
-                <bonus type="Equipment Cost" value="15" />
-                <bonus type="Encumbrance" value="6" />
-            </enhancement>
-            <weapon type="Two Hand" >
-                <damage type="Normal,Critical" source="Natural,Slashing" value="[Strength] / 2 + [1d6] + [Strength]" />
-                <attackBonus type="Critical Range" value="1" />
-            </weapon>
+            <augment type="Attack" name="Main Hand Melee Attack">
+                <bonus type="Critical Range" value="1" />
+            </augment>
+            <augment type="On Hit" name="Main Hand Melee Weapon Damage" source="Piercing">
+            	<bonus type="Damage" value="[1d6]" />
+            </augment>
         </item>
     </template>
 </equipmentTemplates>

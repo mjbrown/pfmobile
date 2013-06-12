@@ -72,43 +72,115 @@
     <bonus type="Swim" value="[Strength Modifier]" />
     <bonus type="Use Magic Device" value="[Charisma Modifier]" />
 
-    <action type="Attack" name="Melee Full Attack" cost="Full Round">
-        <attackBonus type="To Hit" value="[Base Attack] + [Strength]" />
-        <attackBonus type="Critical Range" value="1" />
-        <attackBonus type="Critical Multiplier" value="2" />
-        <attackBonus type="Range" value="5" />
-        <attack weapon="Main Hand" versus="Armor Class">
-            
-        </attack>
+    <onHitEffect type="Hit Points" name="Main Hand Melee Weapon Damage" source="Natural" >
+        <bonus type="Damage" value="[Strength Modifier]"/>
+        <bonus type="Critical Multiplier" value="2" />
+    </onHitEffect>
+    <onHitEffect type="Hit Points" name="Off Hand Melee Weapon Damage" source="Natural" >
+        <bonus type="Damage" value="[Strength Modifier] / 2" />
+        <bonus type="Critical Multiplier" value="2" />
+    </onHitEffect>
+    <onHitEffect type="Hit Points" name="One Hand Melee Weapon Damage" source="Natural" >
+        <bonus type="Damage" value="[Strength Modifier]" />
+        <bonus type="Critical Multiplier" value="2" />
+    </onHitEffect>
+    <onHitEffect type="Hit Points" name="Two Hand Melee Weapon Damage" source="Natural" >
+        <bonus type="Damage" value="[Strength Modifier] * 3 / 2" />
+        <bonus type="Critical Multiplier" value="2" />
+    </onHitEffect>
+    
+	<attack name="Melee Attack" parent="New Attack" versus="Armor Class">
+	    <bonus type="To Hit" value="[Strength Modifier]" />
+	</attack>
+    <attack name="Main Hand Melee Attack" parent="Melee Attack" versus="Armor Class" >
+        <bonus type="Damage" value="[Strength Modifier]" />
+        <bonus type="To Hit" value="-6" />
+        <conditional key="Prerequisite" value="Two Weapon Fighting">
+            <bonus type="To Hit" value="2" />
+        </conditional>
+        <conditional key="Status" value="Light Off Hand">
+            <bonus type="To Hit" value="2" />
+        </conditional>
+    </attack>
+    <attack name="Off Hand Melee Attack" parent="Melee Attack" versus="Armor Class">
+        <bonus type="Damage" value="[Strength Modifier] / 2" />
+        <bonus type="To Hit" value="-6" />
+        <conditional key="Prerequisite" value="Two Weapon Fighting">
+            <bonus type="To Hit" value="2" />
+        </conditional>
+        <conditional key="Status" value="Light Off Hand">
+            <bonus type="To Hit" value="2" />
+        </conditional>
+    </attack>
+    <attack name="One Hand Melee Attack" parent="Melee Attack" versus="Armor Class">
+        <bonus type="Damage" value="[Strength Modifier]" />
+    </attack>
+    <attack name="Two Hand Melee Attack" parent="Melee Attack" versus="Armor Class">
+        <bonus type="Damage" value="[Strength Modifier] * 2" />
+    </attack>
+    <action name="Two Hand Melee Full Attack" cost="Full Round">
+        <attack parent="Two Hand Melee Attack" />
         <conditional key="Statistic" type="Base Attack" value="6">
-            <attack weapon="Main Hand" versus="Armor Class">
-                <attackBonus type="To Hit" value="-5"/>
+            <attack parent="Two Hand Melee Attack" >
+                <bonus type="To Hit" value="-5"/>
             </attack>
         </conditional>
         <conditional key="Statistic" type="Base Attack" value="11">
-            <attack weapon="Main Hand" versus="Armor Class">
-                <attackBonus type="To Hit" value="-10"/>
+            <attack parent="Two Hand Melee Attack" >
+                <bonus type="To Hit" value="-10"/>
             </attack>
         </conditional>
         <conditional key="Statistic" type="Base Attack" value="16">
-            <attack weapon="Main Hand" versus="Armor Class">
-                <attackBonus type="To Hit" value="-15"/>
+            <attack parent="Two Hand Melee Attack" >
+                <bonus type="To Hit" value="-15"/>
             </attack>
         </conditional>
     </action>
-    <action type="Attack" name="Two Weapon Fighting Full Attack" inherits="Melee Full Attack">
-        <attackBonus weapon="Main Hand" type="To Hit" value="-6" />
-        <attackBonus weapon="Off Hand" type="To Hit" value="-10" />
-        <conditional key="Status" name="Light Off Hand">
-            <attackBonus weapon="Main Hand" type="To Hit" value="2" />
-            <attackBonus weapon="Off Hand" type="To Hit" value="2" />
+    <action name="One Hand Melee Full Attack" cost="Full Round">
+        <attack parent="One Hand Melee Attack" />
+        <conditional key="Statistic" type="Base Attack" value="6">
+            <attack parent="One Hand Melee Attack" >
+                <bonus type="To Hit" value="-5"/>
+            </attack>
         </conditional>
-        <conditional key="Prerequisite" name="Two Weapon Fighting">
-            <attackBonus weapon="Main Hand" type="To Hit" value="2" />
-            <attackBonus weapon="Off Hand" type="To Hit" value="6" />
+        <conditional key="Statistic" type="Base Attack" value="11">
+            <attack parent="One Hand Melee Attack" >
+                <bonus type="To Hit" value="-10"/>
+            </attack>
         </conditional>
-        <attack weapon="Off Hand" versus="Armor Class">
-            
-        </attack>
+        <conditional key="Statistic" type="Base Attack" value="16">
+            <attack parent="One Hand Melee Attack" >
+                <bonus type="To Hit" value="-15"/>
+            </attack>
+        </conditional>
+    </action>
+    <action name="Two-Weapon Fighting" cost="Full Round" >
+        <attack parent="Main Hand Melee Attack" />
+        <attack parent="Off Hand Melee Attack" />
+        <conditional key="Statistic" type="Base Attack" value="6">
+            <attack parent="Main Hand Melee Attack" >
+                <bonus type="To Hit" value="-5"/>
+            </attack>
+            <conditional key="Prerequisite" name="Improved Two-Weapon Fighting">
+	            <attack parent="Off Hand Melee Attack" >
+	                <bonus type="To Hit" value="-5" />
+	            </attack>
+            </conditional>
+        </conditional>
+        <conditional key="Statistic" type="Base Attack" value="11">
+            <attack parent="Main Hand Melee Attack" >
+                <bonus type="To Hit" value="-10"/>
+            </attack>
+            <conditional key="Prerequisite" name="Greater Two-Weapon Fighting">
+	            <attack parent="Off Hand Melee Attack" >
+	                <bonus type="To Hit" value="-10" />
+	            </attack>
+            </conditional>
+        </conditional>
+        <conditional key="Statistic" type="Base Attack" value="16">
+            <attack parent="Main Hand Melee Attack" >
+                <bonus type="To Hit" value="-15"/>
+            </attack>
+        </conditional>
     </action>
 </basicDependencies>

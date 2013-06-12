@@ -31,12 +31,12 @@ public class ItemEditor {
 		slot = item.getAttribute(XmlConst.SLOT_ATTR);
 		new_name = name;
 		new_slot = slot;
-		String[] tags = new String[] { XmlConst.ENHANCE_TAG };
-		String[] tag_attrs = new String[] { XmlConst.NAME_ATTR };
+		String[] tags = new String[] { XmlConst.ENHANCE_TAG, XmlConst.WEAPON_TAG };
+		String[] tag_attrs = new String[] { XmlConst.NAME_ATTR , XmlConst.TYPE_ATTR };
 		String[] subtags = new String[] { XmlConst.ITEMPROPERTY_TAG, XmlConst.DAMAGE_TAG,
-				XmlConst.BONUS_TAG };
+				XmlConst.BONUS_TAG, XmlConst.CONDITION_TAG, XmlConst.ATTACKBONUS_TAG };
 		String[] subtag_attrs = new String[] { XmlConst.TYPE_ATTR, XmlConst.STACKTYPE_ATTR,
-				XmlConst.SOURCE_ATTR, XmlConst.VALUE_ATTR };
+				XmlConst.SOURCE_ATTR, XmlConst.VALUE_ATTR, XmlConst.NAME_ATTR, XmlConst.KEY_ATTR };
 		item.getData(XmlConst.ITEM_TAG, tags, tag_attrs, subtags, subtag_attrs);
 		inStream.close();
 	}

@@ -22,6 +22,13 @@ public class XmlConst {
 	final public static String SPELLS_TAG = "spells";
 	final public static String BONUS_TAG = "bonus";
 	final public static String PROFICIENCY_TAG = "proficiency";
+	final public static String WEAPON_TAG = "weapon";
+	final public static String ATTACKBONUS_TAG = "attackBonus";
+	final public static String CONDITIONAL_TAG = "conditional";
+	final public static String CONDITION_TAG = "condition";
+	final public static String ACTION_TAG = "action";
+	final public static String ATTACK_TAG = "attack";
+	final public static String ONHIT_TAG = "onHitEffect";
 	
 	// Used as TAG in inventory files
 	final public static String ITEM_TAG = "item";
@@ -30,8 +37,6 @@ public class XmlConst {
 
 	// Used as TAG in data files
 	final public static String PREREQ_TAG = "prerequisite";
-	final public static String CONDITIONAL_TAG = "conditional";
-	final public static String CONDITION_TAG = "condition";
 	
 	// Used as ATTRIBUTE in character file
 	final public static String GRPNAME_ATTR = "groupName";
@@ -43,6 +48,9 @@ public class XmlConst {
 	final public static String STACKTYPE_ATTR = "stackType";
 	final public static String SOURCE_ATTR = "source";
 	final public static String KEY_ATTR = "key";
+	final public static String COST_ATTR = "cost";
+	final public static String VERSUS_ATTR = "versus";
+	final public static String PARENT_ATTR = "parent";
 	
 	// Used as ATTRIBUTE in data files
 	final public static String COMPARE_ATTR = "comparator";

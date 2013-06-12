@@ -72,33 +72,20 @@ public class PropertyLists {
 		"Spell Resistance", "Initiative", "Spell Penetration", "Sneak Attack Dice" };
 
 	final static public String[] slotNames = new String[] { "Head", "Headband", "Wrists", "Feet",
-		"Eyes", "Neck", "Shoulders", "Chest", "Body", "Armor", "Hands", "Ring 1", "Ring 2", "Belt", "Held 1", "Held 2", };
-
-	final static public String[] itemTypes = new String[] { "Item", "Simple Weapon", "Martial Weapon",
-		"Exotic Weapon", "Light Shield", "Heavy Shield", "Tower Shield", "Light Armor", "Medium Armor",
-		"Heavy Armor", };
-
-	final static public String[] itemBonuses = new String[] { "Flat Footed Armor Class", "Armor Class", };
-
-	final static public String[] armorQualities = new String[] { "Armor", "Max Dex", "Armor Check",
-		"Spell Failure", "Proficiency", "Size"};
+		"Eyes", "Neck", "Shoulders", "Chest", "Body", "Armor", "Hands", "Ring 1", "Ring 2", "Belt", "Main Hand", "Off Hand", "One Hand", "Two Hand" };
 
 	// Weapon specific attributes
 	final static public String[] attackProperties = new String[] { "To Hit", "Range",
-		"Critical Range", "Critical Multiplier", };
+		"Critical Range", "Save DC", "Damage", "Number Of Uses",};
 
-	// Weapon damage types
-	final static public String[] damageTypes = new String[] { "Subdual", "Normal", 
-		"Critical", };
-
+	// Damage properties
+	final static public String[] damageProperties = new String[] { "Normal Damage", "Condition",
+		"Critical Multiplier", "Duration", "Number Of Uses", };
+	
 	// Weapon damage sources
 	final static public String[] damageSources = new String[] { "Piercing", "Slashing", "Bludgeoning", 
 		"Fire", "Cold", "Electricity", "Sonic", "Negative Energy", "Positive Energy", "Holy", "Magic", "Bleed",
 		"Adamantine", "Cold Iron", "Silver", "Poison" };
-
-	// Things that are handled in a special way, weapon can have 1 or more
-	final static public String[] weaponSpecials = new String[] { "Light", "One-handed", "Two-handed",
-		"Brace", "Double", "Monk", "Disarm", "Trip", "Finesse" };
 
 	// If this is changed, you must change statisticData() below
 	final public static String categories[] = new String[] { "Ability Scores", "Basic Stats", "Skills", "Class Levels",
