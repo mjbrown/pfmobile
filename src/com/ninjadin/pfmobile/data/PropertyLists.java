@@ -75,12 +75,21 @@ public class PropertyLists {
 		"Eyes", "Neck", "Shoulders", "Chest", "Body", "Armor", "Hands", "Ring 1", "Ring 2", "Belt", "Main Hand", "Off Hand", "One Hand", "Two Hand" };
 
 	// Weapon specific attributes
-	final static public String[] attackProperties = new String[] { "To Hit", "Range",
-		"Critical Range", "Save DC", "Damage", "Number Of Uses",};
+	final static public String to_hit = "To Hit";
+	final static public String range = "Range";
+	final static public String crit_range = "Critical Range";
+	final static public String[] attackProperties = new String[] { to_hit, "Range",
+		crit_range, "Save DC", "Number Of Uses",};
 
+	final static public String[] criticalRangeStrings = new String[] { "20", "19-20", "18-20", 
+		"17-20", "16-20", "15-20", "14-20", "13-20", "12-20", "11-20", "10-20", };
+	
 	// Damage properties
-	final static public String[] damageProperties = new String[] { "Normal Damage", "Condition",
-		"Critical Multiplier", "Duration", "Number Of Uses", };
+	final static public String damage = "Damage";
+	final static public String damage_dice = "Damage Dice";
+	final static public String crit_multiplier = "Critical Multiplier";
+	final static public String[] damageProperties = new String[] { damage, damage_dice, "Condition",
+		crit_multiplier, "Duration", "Number Of Uses", };
 	
 	// Weapon damage sources
 	final static public String[] damageSources = new String[] { "Piercing", "Slashing", "Bludgeoning", 

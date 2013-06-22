@@ -14,10 +14,6 @@ public class StatisticGroup extends ConditionalBonus {
 	protected ConditionList conditions = null;
 	private Map<String,StatisticInstance> statistics = new HashMap<String,StatisticInstance>();
 	
-	public StatisticGroup() {
-		
-	}
-	
 	public StatisticGroup(StatisticGroup group_parent) {
 		parent = group_parent;
 	}
@@ -55,15 +51,42 @@ public class StatisticGroup extends ConditionalBonus {
 	}
 	
 	public int getValue(String stat_name) {
+		Log.d("GET_VAL", stat_name + ":" + getStringValue(stat_name));
+		return evaluate(getStringValue(stat_name));
+	}
+	
+	public String getStringValue(String stat_name) {
 		StatisticInstance stat = statistics.get(stat_name);
-		if (parent == null)
-			return evaluate(stat.getFinalStringValue());
-		else
-			return parent.getValue(stat_name) + evaluate(stat.getFinalStringValue());
+		String ret_string = "";
+		String parent_value = "";
+		String stat_string = "";
+		if (parent != null) {
+			parent_value = parent.getStringValue(stat_name);
+		}
+		if (stat != null) {
+			stat_string = stat.getFinalStringValue();
+		}
+		if (parent_value.equals("0") || stat_string.equals("0")) {
+			if (!parent_value.equals("0"))
+				ret_string = parent_value;
+			else
+				ret_string = stat_string;
+		} else {
+			ret_string = parent_value + " + " + stat_string;
+		}
+		return ret_string;
+	}
+	
+	public String getInheritedStringValue(String stat_name) {
+		// Ignore parent
+		return statistics.get(stat_name).getFinalStringValue();
 	}
 	
 	public int evaluate(String value) {
-//		Log.d("PreStripped", value);
+		//Log.d("PreStripped", value);
+		if (parent != null) {
+			return parent.evaluate(value);
+		}
 		String strippedValue = new String(value);
 		for (String operand: getKeyList()) {
 			if (value.contains("[" + operand + "]")) {
@@ -73,7 +96,7 @@ public class StatisticGroup extends ConditionalBonus {
 				}
 			}
 		}
-//		Log.d("StrippedEval", strippedValue);
+		//Log.d("StrippedEval", strippedValue);
 		return recursiveEvaluate(strippedValue);
 	}
 	

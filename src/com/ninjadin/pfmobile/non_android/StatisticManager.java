@@ -20,7 +20,7 @@ import com.ninjadin.pfmobile.data.XmlConst;
 
 public class StatisticManager {
 	// A map of all CharacterStatistics
-	private StatisticGroup master_stats = new StatisticGroup();
+	private StatisticGroup master_stats = new StatisticGroup(null);
 	// A list of all CharacterStatistics names
 	public List<String> stat_list;
 	// A list of all Conditional Bonuses (no unconditional bonuses)
@@ -29,7 +29,7 @@ public class StatisticManager {
 	// A map of equipment / environment conditions
 	Map<String,Map<String,ConditionalBonus>> conditions = new HashMap<String,Map<String,ConditionalBonus>>();;
 	
-	// A map of NAMEDactions available to the character
+	// A map of NAMED actions available to the character
 	Map<String, ActionGroup> combatActions = new HashMap<String, ActionGroup>();
 	
 	// A map of NAMED Attack Groups the character has available
@@ -56,21 +56,21 @@ public class StatisticManager {
 		master_stats.addStatNames(PropertyLists.classLevelNames);
 		master_stats.addStatNames(PropertyLists.equipRelatedNames);
 		master_stats.addStatNames(PropertyLists.attackProperties);
+		master_stats.addStatNames(PropertyLists.damageProperties);
 		stat_list = master_stats.getKeyList();
-		AttackGroup basicAttack = new AttackGroup("Armor Class", master_stats);
-		attacks.put("New Attack", basicAttack);
 	}
 	
 	public void newBonus(String statisticType, String stackType, String source, String value) {
-		StatisticInstance bonusRecipient = master_stats.getStatistic(statisticType);
-		if (bonusRecipient != null) { // Not a valid target
-			ConditionalBonus newBonus = new ConditionalBonus(stackType, source, value);
+		master_stats.addBonus(statisticType, stackType, source, value);
+//		StatisticInstance bonusRecipient = master_stats.getStatistic(statisticType);
+//		if (bonusRecipient != null) { // Not a valid target
+//			ConditionalBonus newBonus = new ConditionalBonus(stackType, source, value);
 			// Add the bonus to the statistic
-			bonusRecipient.addBonus(newBonus);
+//			bonusRecipient.addBonus(newBonus);
 			for (String stat: stat_list) {
 				master_stats.getStatistic(stat).isDirty = true;
 			}
-		}
+//		}
 		return;
 	}
 	
@@ -104,7 +104,7 @@ public class StatisticManager {
 				if (name != null) {
 					if (name.equals(XmlConst.CONDITIONAL_TAG)) {
 						currentConditions.endConditional();
-					} else if (name.equals(XmlConst.ACTION_TAG) || name.equals(XmlConst.ATTACK_TAG)) {
+					} else if (name.equals(XmlConst.ACTION_TAG) || name.equals(XmlConst.ATTACK_TAG) || name.equals(XmlConst.ONHIT_TAG)) {
 						lastObject.pop();
 					}
 				}
@@ -132,7 +132,7 @@ public class StatisticManager {
 						for (String type: types.split(",")) {
 							ConditionalBonus conditionalBonus = stat_group.addBonus(type, stackType, source, values);
 							if (currentConditions.hasConditions()) {
-								Log.d("COND_BNS", "Adding conditional bonus: " + type + " " + values);
+								//Log.d("COND_BNS", "Adding conditional bonus: " + type + " " + values);
 								conditionalBonus.setConditions(currentConditions);
 								conditional_bonuses.add(conditionalBonus);
 								updateConditionalBonus(conditionalBonus);
@@ -171,7 +171,7 @@ public class StatisticManager {
 					}
 				} else if (tag.equals(XmlConst.ACTION_TAG)) {
 					String action_cost = parser.getAttributeValue(null, XmlConst.COST_ATTR);
-					ActionGroup newAction = new ActionGroup(action_cost, master_stats);
+					ActionGroup newAction = new ActionGroup(action_cost, null, master_stats);
 					if (currentConditions.hasConditions()) {
 						newAction.setConditions(currentConditions);
 						conditional_bonuses.add(newAction);
@@ -183,33 +183,41 @@ public class StatisticManager {
 					String versus = parser.getAttributeValue(null, XmlConst.VERSUS_ATTR);
 					String parent = parser.getAttributeValue(null, XmlConst.PARENT_ATTR);
 					AttackGroup newAttack, inheritedAttack = null;
+					StatisticGroup parentGroup = null;
 					if (parent != null) 
 						inheritedAttack = attacks.get(parent);
-					if (inheritedAttack != null)
-						newAttack = new AttackGroup(inheritedAttack, lastObject.peek());
-					else
-						newAttack = new AttackGroup(versus, lastObject.peek());
+					if (!(lastObject.peek() == master_stats)) {
+						//Log.d("ATTACK", "Attack " + names + " has inherited " + parent);
+						parentGroup = lastObject.peek();
+					}
+					newAttack = new AttackGroup(versus, inheritedAttack, parentGroup);
 					if (currentConditions.hasConditions()) {
 						newAttack.setConditions(currentConditions);
 						conditional_bonuses.add(newAttack);
 					}
 					if (names != null)		// Named attack means it is referenced elsewhere
 						attacks.put(names, newAttack);
+					if (lastObject.peek() instanceof ActionGroup) {
+						ActionGroup action_group = (ActionGroup) lastObject.peek();
+						action_group.addAttack(newAttack);
+					} else {
+						//Log.d("ATTACK", "Parent of attack isn't action! " + names);
+					}
 					lastObject.push(newAttack);
 				} else if (tag.equals(XmlConst.ONHIT_TAG)) {
 					String parent = parser.getAttributeValue(null, XmlConst.PARENT_ATTR);
 					OnHitEffect newOnHit, inheritedOnHit = null;
+					StatisticGroup parentGroup = null;
 					if (parent != null)
 						inheritedOnHit = effects.get(parent);
-					if (inheritedOnHit != null)
-						newOnHit = new OnHitEffect(inheritedOnHit, lastObject.peek());
-					else
-						newOnHit = new OnHitEffect(types, lastObject.peek());
-					AttackGroup parentAttack = (AttackGroup) lastObject.peek();
+					if (!(lastObject.peek() == master_stats))
+						parentGroup = lastObject.peek();
+					newOnHit = new OnHitEffect(types, inheritedOnHit, parentGroup);
 					if (lastObject.peek() instanceof AttackGroup) {
+						AttackGroup parentAttack = (AttackGroup) lastObject.peek();
 						parentAttack.addEffect(newOnHit);
 					} else {
-						Log.d("ON_HIT", "Parent of OnHitEffect isn't an Attack!");
+						//Log.d("ON_HIT", "Parent of OnHitEffect isn't an Attack! " + names);
 					}
 					if (currentConditions.hasConditions()) {
 						newOnHit.setConditions(currentConditions);
@@ -234,7 +242,7 @@ public class StatisticManager {
 			bonus.meetsConditions();
 		} else {
 			bonus.failsConditions();
-			Log.d("Condition", "Condition not met:" + bonus.getStringValue());
+			//Log.d("Condition", "Condition not met:" + bonus.getStringValue());
 		}
 	}
 	
@@ -270,5 +278,53 @@ public class StatisticManager {
 			}
 		}
 		return false;
+	}
+	
+	public List<Map<String,String>> getActionData() {
+		List<Map<String,String>> atk_list = new ArrayList<Map<String,String>>();
+		for (Map.Entry<String, ActionGroup> entry: combatActions.entrySet()) {
+			String to_hit_string = "";
+			String damage_string = "";
+			String damage_source = "";
+			String crit_multiplier = "";
+			String crit_range = "";
+			String range = "";
+			Map<String,String> action = new HashMap<String,String>();
+			atk_list.add(action);
+			for (AttackGroup atk: entry.getValue().getAttacks()) {
+				to_hit_string += atk.getValue(PropertyLists.to_hit) + "/";
+			}
+			List<AttackGroup> attacks = entry.getValue().getAttacks();
+			if (attacks.size() > 0) {
+				AttackGroup first_attack = attacks.get(0);
+				range += first_attack.getValue(PropertyLists.range);
+				crit_range += PropertyLists.criticalRangeStrings[first_attack.getValue(PropertyLists.crit_range)];
+				List<OnHitEffect> effects = first_attack.getEffects();
+				String sum_damage = "";
+				for (OnHitEffect effect: effects) {
+					String dmg = effect.getStringValue(PropertyLists.damage_dice);
+					if (dmg.contains("d")) {
+						for (String token: dmg.split(" "))
+							if (token.contains("d"))
+								damage_string += token + "+";
+					}
+					sum_damage += " + " + effect.getStringValue(PropertyLists.damage);
+				}
+				Log.d("DMG_STR", damage_string);
+				damage_string += Integer.toString(master_stats.evaluate(sum_damage));
+				if (effects.size() > 0) {
+					OnHitEffect first_effect = first_attack.getEffects().get(0);
+					crit_multiplier += first_effect.getValue(PropertyLists.crit_multiplier);
+				}
+			}
+			action.put(XmlConst.NAME_ATTR, entry.getKey());
+			action.put(PropertyLists.to_hit, to_hit_string);
+			action.put(PropertyLists.damage, damage_string);
+			action.put(XmlConst.SOURCE_ATTR, damage_source);
+			action.put(PropertyLists.crit_range, crit_range);
+			action.put(PropertyLists.range, range);
+			action.put(PropertyLists.crit_multiplier, crit_multiplier);
+		}
+		return atk_list;
 	}
 }

@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.ninjadin.pfmobile.R;
 import com.ninjadin.pfmobile.data.ExpListData;
 import com.ninjadin.pfmobile.data.XmlConst;
+import com.ninjadin.pfmobile.fragments.AttackFragment;
 import com.ninjadin.pfmobile.fragments.CharacterSheetFragment;
 import com.ninjadin.pfmobile.fragments.ChoiceSelectFragment;
 import com.ninjadin.pfmobile.fragments.GeneratorMenuFragment;
@@ -171,6 +172,15 @@ public class GeneratorActivity extends FragmentActivity implements ItemEditDialo
 	public void launchLevels(View view) {
 		refreshCharData();
 		LevelsFragment newFragment = new LevelsFragment();
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+		transaction.replace(R.id.fragment_container, newFragment);
+		transaction.addToBackStack(null);
+		transaction.commit();
+	}
+	
+	public void launchAttacks(View view) {
+		refreshCharData();
+		AttackFragment newFragment = new AttackFragment();
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.fragment_container, newFragment);
 		transaction.addToBackStack(null);

@@ -40,7 +40,7 @@ public class ConditionList {
 	}
 	
 	public boolean hasConditions() {
-		return last_conditional.peek().equals("None.");
+		return !last_conditional.peek().equals("None.");
 	}
 	
 	public void startConditional(String key, String name, String type, String value) {
@@ -67,7 +67,7 @@ public class ConditionList {
 	public void endConditional() {
 		String last = last_conditional.pop();
 		List<KeyValuePair> last_list = bonus_conditions.get(last);
-		if (last_list != null)
+		if ((last_list != null) && (last_list.size() > 0))
 			last_list.remove(last_list.size()-1);
 	}
 

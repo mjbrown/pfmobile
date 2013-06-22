@@ -71,19 +71,31 @@
 	    </item>
     </template>
     <template name="Shortsword">
-        <item name="Shortsword" slot="Main Hand">
+        <item name="Shortsword" slot="Held">
             <enhancement name="Base Item">
                 <itemProperty type="Proficiency" value="Martial Weapon,Shortsword" />
                 <bonus type="Equipment Cost" value="15" />
                 <bonus type="Encumbrance" value="3" />
-                <condition key="Equipment" name="Main Hand Finesse" />
             </enhancement>
-            <augment type="Attack" name="Main Hand Melee Attack">
-                <bonus type="Critical Range" value="1" />
-            </augment>
-            <augment type="On Hit" name="Main Hand Melee Weapon Damage" source="Piercing">
-            	<bonus type="Damage" value="[1d6]" />
-            </augment>
+            <weapon name="Shortsword" slot="Main Hand">
+                <condition key="Equipment" name="Main Hand Finesse" />
+	            <augment type="Attack" modify="Main Hand Melee Attack,One Hand Melee Attack">
+	                <bonus type="Critical Range" value="1" />
+	            </augment>
+	            <augment type="On Hit" modify="Main Hand Melee Weapon Damage,One Hand Melee Weapon Damage" source="Piercing">
+	            	<bonus type="Damage Dice" value="1d6" />
+	            </augment>
+            </weapon>
+            <weapon name="Shortsword" slot="Off Hand">
+                <condition key="Equipment" name="Off Hand Finesse" />
+                <condition key="Equipment" name="Light Off Hand" />
+                <augment type="Attack" modify="Off Hand Melee Attack">
+                    <bonus type="Critical Range" value="1" />
+                </augment>
+                <augment type="On Hit" modify="Off Hand Melee Weapon Damage" >
+                    <bonus type="Damage Dice" value="1d6" />
+                </augment>
+            </weapon>
         </item>
     </template>
 </equipmentTemplates>

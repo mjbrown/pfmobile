@@ -47,7 +47,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/char_inventory_button"
-        android:text="Attacks and Actions" />
+        android:text="Attacks and Actions" 
+        android:onClick="launchAttacks"/>
 
     <Button
         android:id="@+id/char_spells_button"
