@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 public class PropertyLists {
+	final public static String all = "All";
+
+	final public static String actionCosts[] = { "Full Round", "Standard",
+		"Move", "Swift", "Immediate", "Free" };
 
 	final public static String statisticPrereq = "Statistic";
 	final public static String prerequisite = "Prerequisite";
@@ -38,7 +42,7 @@ public class PropertyLists {
 
 	final public static String[] classLevelNames = new String[] { "Fighter Level", "Rogue Level",
 	"Wizard Level", "Sorcerer Level", "Paladin Level", "Ranger Level", "Monk Level", "Barbarian Level",
-	"Bard Level", "Druid Level", "Cleric Level" };
+	"Bard Level", "Druid Level", "Cleric Level", "Oracle Level" };
 
 	final public static String abilityScoreNames[] = new String[] { "Strength", "Dexterity", 
 	"Constitution", "Intelligence", "Wisdom", "Charisma", };

@@ -90,24 +90,118 @@
 	    <bonus type="Charisma" value="1" />
 	</selection>
 </bonusGroup>
-<bonusGroup groupName="Favored Class Bonus">
-    <selection name="Rogue, Skill Points">
-        <bonus type="Skill Points" value="[Rogue Level]" />
+<bonusGroup groupName="Favored Class">
+    <selection name="Favored Class Barbarian">
     </selection>
-    <selection name="Rogue, Hit Points">
-        <bonus type="Hit Points" value="[Rogue Level]" />
+    <selection name="Favored Class Bard">
     </selection>
-    <selection name="Ranger, Skill Points">
-        <bonus type="Skill Points" value="[Ranger Level]" />
+    <selection name="Favored Class Cleric">
     </selection>
-    <selection name="Ranger, Hit Points">
-        <bonus type="Hit Points" value="[Ranger Level]" />
+    <selection name="Favored Class Druid">
     </selection>
-    <selection name="Fighter, Skill Points">
-        <bonus type="Skill Points" value="[Fighter Level]" />
+    <selection name="Favored Class Fighter">
     </selection>
-    <selection name="Fighter, Hit Points">
-        <bonus type="Hit Points" value="[Fighter Level]" />
+    <selection name="Favored Class Monk">
     </selection>
+    <selection name="Favored Class Paladin">
+    </selection>
+    <selection name="Favored Class Ranger">
+    </selection>
+    <selection name="Favored Class Rogue">
+    </selection>
+    <selection name="Favored Class Sorcerer">
+    </selection>
+    <selection name="Favored Class Wizard">
+    </selection>
+    <selection name="Favored Class Oracle">
+    </selection>
+</bonusGroup>
+<bonusGroup groupName="Favored Class Point">
+    <selection name="Hit Point">
+        <bonus type="Hit Points" value="1" />
+    </selection>
+    <selection name="Skill Point">
+        <bonus type="Skill Points" value="1" />
+    </selection>
+</bonusGroup>
+<bonusGroup groupName="Oracle Curse">
+    <selection name="Clouded Vision">
+        
+    </selection>
+    <selection name="Deaf">
+        
+    </selection>
+    <selection name="Haunted">
+        
+    </selection>
+    <selection name="Lame">
+        
+    </selection>
+    <selection name="Tongues">
+        
+    </selection>
+    <selection name="Wasting">
+        
+    </selection>
+</bonusGroup>
+<bonusGroup groupName="Oracle Mystery">
+    <selection name="Battle">
+        
+    </selection>
+    <selection name="Bonus">
+        
+    </selection>
+    <selection name="Flame">
+        
+    </selection>
+    <selection name="Heavens">
+        
+    </selection>
+    <selection name="Life">
+        
+    </selection>
+    <selection name="Lore">
+        <bonus type="Appraise,Arcana,Dungeoneering,Engineering,Geography,History,Local,Nature,Nobility,Planes,Religion" stackType="Class Skill" value="3" />
+        
+    </selection>
+</bonusGroup>
+<bonusGroup groupName="Oracle Revelation">
+    <prerequisite key="Prerequisite" name="Lore">
+        <selection name="Arcane Archivist">
+            
+        </selection>
+        <selection name="Automatic Writing">
+            
+        </selection>
+        <selection name="Brain Drain">
+            
+        </selection>
+        <selection name="Focused Trance">
+            
+        </selection>
+        <selection name="Lore Keeper">
+            
+        </selection>
+        <selection name="Mental Acuity">
+            
+        </selection>
+        <selection name="Sidestep Secret">
+            <bonus type="Armor Class" value="- [Dexterity Modifier]" />
+            <bonus type="Armor Class" value="max( [Dexterity Modifier] , [Charisma Modifier] )" />
+            <bonus type="Touch Armor Class" value="- [Dexterity Modifier]" />
+            <bonus type="Touch Armor Class" value="max( [Dexterity Modifier] , [Charisma Modifier] )" />
+            <bonus type="Reflex" value="- [Dexterity Modifier]" />
+            <bonus type="Reflex" value="max( [Dexterity Modifier] , [Charisma Modifier] )" />
+        </selection>
+        <selection name="Spontaneous Symbology">
+            
+        </selection>
+        <selection name="Think On It">
+            
+        </selection>
+        <selection name="Whirlwind Lesson">
+            
+        </selection>
+    </prerequisite>
 </bonusGroup>
 </otherStuff>

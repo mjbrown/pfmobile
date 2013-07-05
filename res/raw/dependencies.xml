@@ -8,7 +8,6 @@
     <bonus type="Charisma Modifier" value="[Charisma] / 2 - 5" />
 
     <bonus type="Hit Points" value="[Constitution Modifier] * [Character Level]" />
-    <bonus type="Skill Points" value="[Intelligence Modifier] * [Character Level]" />
 	<bonus type="To Hit" value="[Base Attack]" />
 	
     <bonus type="Climb Speed" value="[Speed] / 4" />
@@ -184,5 +183,11 @@
                 <bonus type="To Hit" value="-15"/>
             </attack>
         </conditional>
+    </action>
+    <action name="Equip Main Hand" cost="Move">
+        
+    </action>
+    <action name="Equip Off Hand" cost="Move">
+        
     </action>
 </basicDependencies>

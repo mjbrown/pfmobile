@@ -41,5 +41,14 @@
 	    <conditional key="Equipment" name="Medium Armor,Medium Load,Heavy Armor,Heavy Load">
 	        <bonus type="Speed" value="-10" />
 	    </conditional>
-	    </selection>
+	</selection>
+	<selection name="Suli">
+	    <bonus type="Strength" value="2" />
+	    <bonus type="Charisma" value="2" />
+	    <bonus type="Intelligence" value="-2" />
+	    <bonus type="Diplomacy" value="2" />
+	    <bonus type="Sense Motive" value="2" />
+	    <bonus type="Acid Resistance,Fire Resistance,Cold Resistance,Electricity Resistance" value="5" />
+	    
+	</selection>
 </bonusGroup>

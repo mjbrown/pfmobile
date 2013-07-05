@@ -4,6 +4,26 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="40sp"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
+        <Button 
+            android:id="@+id/button_createnew"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+	        android:includeFontPadding="false"
+	        android:textSize="14sp"
+            android:text="Create New" />
+        <Spinner 
+            android:id="@+id/cost_spinner"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+    
 	<ListView 
 	    android:id="@+id/listView1"
 	    android:layout_width="fill_parent"

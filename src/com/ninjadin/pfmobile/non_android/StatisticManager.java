@@ -318,6 +318,7 @@ public class StatisticManager {
 				}
 			}
 			action.put(XmlConst.NAME_ATTR, entry.getKey());
+			action.put(XmlConst.TYPE_ATTR, entry.getValue().getCost());
 			action.put(PropertyLists.to_hit, to_hit_string);
 			action.put(PropertyLists.damage, damage_string);
 			action.put(XmlConst.SOURCE_ATTR, damage_source);

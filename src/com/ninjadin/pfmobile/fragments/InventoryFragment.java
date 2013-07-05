@@ -40,7 +40,6 @@ public class InventoryFragment extends Fragment {
 	XmlExtractor full_inventory;
 	List<Map<String,String>> groupData;
 	List<List<Map<String,String>>> itemData;
-	final static String all = "All";
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_inventory, container, false);
@@ -72,7 +71,7 @@ public class InventoryFragment extends Fragment {
 		expList = (ExpandableListView) activity.findViewById(R.id.inventory_exp_listview);
 		slot_spinner = (Spinner) activity.findViewById(R.id.slot_spinner);
 		List<String> slot_names = new ArrayList<String>();
-		slot_names.add(all);
+		slot_names.add(PropertyLists.all);
 		for (String slot: PropertyLists.slotNames)
 			slot_names.add(slot);
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, slot_names);
@@ -100,12 +99,12 @@ public class InventoryFragment extends Fragment {
 		if (slotName != null) {
 			filter_inventory(slotName);
 		} else {
-			filter_inventory(all);
+			filter_inventory(PropertyLists.all);
 		}
 	}
 	
 	private void filter_inventory(String slot) {
-		if (slot.equals(all)) {
+		if (slot.equals(PropertyLists.all)) {
 			groupData = full_inventory.groupData;
 			itemData = full_inventory.itemData;
 		} else {

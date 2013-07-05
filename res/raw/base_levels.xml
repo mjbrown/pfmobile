@@ -2,7 +2,7 @@
 	<levelInfo>
 	    <characterLevel number="0">
 			<choice groupName="Race" />
-			<choice groupName="Favored Class Bonus" />
+			<choice groupName="Favored Class" />
 		</characterLevel>
 		<characterLevel number="1">
 			<choice groupName="Class Level" />
