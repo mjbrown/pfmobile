@@ -259,15 +259,6 @@ public class CharacterEditor {
 		tempFile.renameTo(charFile);
 	}
 	
-/*	public void equipItem(String slot, String name) throws IOException {
-		String insertBefore = "<" + XmlConst.EQUIPITEM_TAG + " " + XmlConst.SLOT_ATTR + "=\"" + slot;
-		String continueOn = "</" + XmlConst.EQUIPITEM_TAG + ">";
-		String customBefore = "<" + XmlConst.EQUIPITEM_TAG + " " + XmlConst.SLOT_ATTR + "=\"" + slot + 
-				"\" " + XmlConst.NAME_ATTR + "=\"" + name + "\">";
-		XmlEditor.copyReplace(charFile, tempFile, null, null, null, insertBefore, continueOn, customBefore, null);
-		tempFile.renameTo(charFile);
-	}
-*/
 	private void copyChoiceData(File sourceChar, File destChar, File levelData) throws IOException {
 		String startData = "<" + XmlConst.LEVELS_TAG + ">";
 		String endData = "</" + XmlConst.EQUIP_TAG + ">";
@@ -277,7 +268,6 @@ public class CharacterEditor {
 		XmlEditor.copyReplace(sourceChar, destChar, fromStream, startData, endData, insertBefore, continueOn, null, null);
 		fromStream.close();
 	}
-
 
 	public void insertChoice(InputStream dataStream, int choiceId, String groupName, String subGroup, String specificNames, String selectionName) throws IOException {
 		InputStreamReader dataReader = new InputStreamReader(dataStream);

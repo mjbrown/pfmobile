@@ -13,8 +13,9 @@ public class PropertyLists {
 
 	final public static String statisticPrereq = "Statistic";
 	final public static String prerequisite = "Prerequisite";
-	final public static String keyNames[] = new String[] { "Statistic", "Status", prerequisite, "Equipment", 
-		"Proficiency", "Attack Source", "Attack Target", "Damage Source", "Damage Target", };
+	final public static String activated = "Activated";
+	final public static String keyNames[] = new String[] { "Statistic", "Uses", "Status", prerequisite, "Equipment", 
+		"Proficiency", "Attack Source", "Attack Target", "Damage Source", "Damage Target", "Activated", };
 	
 	final public static String statusNames[] = new String[] { "Unarmored", "Light Armor", "Medium Armor",
 		"Heavy Armor", "No Off Hand", "Light Off Hand", "One-handed Off Hand", "No Main Hand", "Light Main Hand",
@@ -131,5 +132,34 @@ public class PropertyLists {
 			listMap.add(newMap);
 		}
 		return listMap;
+	}
+	
+	final static public List<String> stat_list() {
+		List<String> stat_names = new ArrayList<String>();
+		for (String item: abilityScoreNames)
+			stat_names.add(item);
+		for (String item: abilityModifierNames)
+			stat_names.add(item);
+		for (String item: basicStatsNames)
+			stat_names.add(item);
+		for (String item: otherStatisticNames)
+			stat_names.add(item);
+		for (String item: reductionNames)
+			stat_names.add(item);
+		for (String item: speedNames)
+			stat_names.add(item);
+		for (String item: casterLevelNames)
+			stat_names.add(item);
+		for (String item: skillNames)
+			stat_names.add(item);
+		for (String item: classLevelNames)
+			stat_names.add(item);
+		for (String item: equipRelatedNames)
+			stat_names.add(item);
+		for (String item: attackProperties)
+			stat_names.add(item);
+		for (String item: damageProperties)
+			stat_names.add(item);
+		return stat_names;
 	}
 }

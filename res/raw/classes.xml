@@ -745,8 +745,13 @@
 	        <condition key="Proficiency" name="Simple Weapon,Martial Weapon" />
 	        <bonus type="Craft,Diplomacy,Handle Animal,Heal,Nobility,Religion,Profession,Ride,Sense Motive,Spellcraft" stackType="Class Skill" value="3" />
             <!-- TODO Aura of Good -->
-            <!-- TODO Smite Evil -->
-            <!-- TODO Detect Evil -->
+            <bonus type="Smite Evil Uses" value="1" />
+            <action name="Smite Evil" cost="Swift" uses="Smite Evil Uses" >
+                
+            </action>
+            <action name="Detect Evil" cost="Move" >
+                
+            </action>
         </selection>
     </prerequisite>
     <prerequisite type="Paladin Level" comparator="Equals" value="1">
@@ -760,6 +765,21 @@
             <bonus type="Fortitude,Reflex,Will" value="[Charisma Modifier]" />
             <bonus type="Paladin Caster Level" value="1" />
             <!-- TODO Lay on Hands -->
+            <condition key="Uses" type="Lay On Hands Uses" value="[Charisma Modifier] + ( [Paladin Level] / 2 )" />
+            <action name="Lay On Hands, Self" cost="Swift" uses="Lay On Hands Uses">
+                <attack target="Self">
+                    <onHitEffect>
+                        <bonus type="Damage Dice" value="( [Paladin Level] / 2 ) d 6" />
+                    </onHitEffect>
+                </attack>
+            </action>
+            <action name="Lay On Hands, Other" cost="Standard" uses="Lay On Hands Uses">
+                <attack>
+                    <onHitEffect>
+                        <bonus type="Damage Dice" value="( [Paladin Level] / 2 ) d 6" />
+                    </onHitEffect>
+                </attack>
+            </action>
             </selection>
     </prerequisite>
     <prerequisite type="Paladin Level" comparator="Equals" value="2">

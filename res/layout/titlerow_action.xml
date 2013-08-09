@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <TextView
+        android:id="@+id/action_title_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:textIsSelectable="true"
+        android:textSize="24sp" />
+
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+        
+    <Button 
+		android:text="Perform"
+        android:id="@+id/action_perform_button"
+        android:layout_width="0dip"
+        android:layout_height="35sp"
+        android:layout_weight="1.2"
+        android:textSize="12sp"
+        android:focusable="false"
+        android:includeFontPadding="false" />
+
+    <Button 
+		android:text="Summary"
+        android:id="@+id/action_summary_button"
+        android:layout_width="0dip"
+        android:layout_height="35sp"
+        android:layout_weight="1.2"
+        android:textSize="12sp"
+        android:focusable="false"
+        android:includeFontPadding="false" />
+
+    <Button 
+		android:text="Edit"
+        android:id="@+id/action_edit_button"
+        android:layout_width="0dip"
+        android:layout_height="35sp"
+        android:layout_weight="1"
+        android:textSize="12sp"
+        android:focusable="false"
+        android:includeFontPadding="false" />
+    
+    <Button 
+		android:text="Hide"
+        android:id="@+id/action_hide_button"
+        android:layout_width="0dip"
+        android:layout_height="35sp"
+        android:layout_weight="1"
+        android:textSize="12sp"
+        android:focusable="false"
+        android:includeFontPadding="false" />
+    
+    </LinearLayout>
+
+</LinearLayout>

@@ -83,6 +83,14 @@
         android:text="Show Inventory XML"
         android:onClick="launchInventoryXML" />
     
-
+    <Button 
+        android:id="@+id/eff_show_xml" 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/inv_show_xml"
+        android:text="Show Effect XML"
+        android:onClick="launchEffectXML" />
+    
 </RelativeLayout>
 </ScrollView>

@@ -18,17 +18,6 @@ public class StatisticGroup extends ConditionalBonus {
 		parent = group_parent;
 	}
 	
-	public void addStatNames(String[] stat_name_array) {
-		for (String stat_name: stat_name_array) {
-			StatisticInstance newStat = new StatisticInstance();
-			statistics.put(stat_name, newStat);
-		}
-	}
-	
-	public StatisticInstance getStatistic(String stat_name) {
-		return statistics.get(stat_name);
-	}
-	
 	public List<String> getKeyList() {
 		List<String> key_list = new ArrayList<String>();
 		for (Map.Entry<String, StatisticInstance> entry: statistics.entrySet()) {
@@ -39,8 +28,10 @@ public class StatisticGroup extends ConditionalBonus {
 	
 	public ConditionalBonus addBonus(String stat_name, String stack_type, String source, String val) {
 		StatisticInstance bonusRecipient = statistics.get(stat_name);
-		if (bonusRecipient == null) // Not a valid target
-			return new ConditionalBonus();	 // return a conditional bonus but don't attach it to anythin
+		if (bonusRecipient == null) {// Not an existing target
+			bonusRecipient = new StatisticInstance();
+			statistics.put(stat_name, bonusRecipient);
+		}
 		ConditionalBonus newBonus = new ConditionalBonus(stack_type, source, val);
 		// Add the bonus to the statistic
 		bonusRecipient.addBonus(newBonus);
@@ -57,6 +48,8 @@ public class StatisticGroup extends ConditionalBonus {
 	
 	public String getStringValue(String stat_name) {
 		StatisticInstance stat = statistics.get(stat_name);
+		if (stat == null) 
+			return "0";
 		String ret_string = "";
 		String parent_value = "";
 		String stat_string = "";
@@ -75,11 +68,6 @@ public class StatisticGroup extends ConditionalBonus {
 			ret_string = parent_value + " + " + stat_string;
 		}
 		return ret_string;
-	}
-	
-	public String getInheritedStringValue(String stat_name) {
-		// Ignore parent
-		return statistics.get(stat_name).getFinalStringValue();
 	}
 	
 	public int evaluate(String value) {

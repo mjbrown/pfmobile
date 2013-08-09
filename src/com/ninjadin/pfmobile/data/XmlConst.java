@@ -29,6 +29,9 @@ public class XmlConst {
 	final public static String ACTION_TAG = "action";
 	final public static String ATTACK_TAG = "attack";
 	final public static String ONHIT_TAG = "onHitEffect";
+	final public static String ACTIVATEDEFFECT_TAG = "activatedEffect";
+	final public static String APPLYCOND_TAG = "onHitCondition";
+
 	
 	// Used as TAG in inventory files
 	final public static String ITEM_TAG = "item";
@@ -51,6 +54,10 @@ public class XmlConst {
 	final public static String COST_ATTR = "cost";
 	final public static String VERSUS_ATTR = "versus";
 	final public static String PARENT_ATTR = "parent";
+	final public static String TARGET_ATTR = "target";
+	final public static String VISIBLE_ATTR = "visible";
+	final public static String USES_ATTR = "uses";
+	final public static String UNIQUE_ATTR = "unique";
 	
 	// Used as ATTRIBUTE in data files
 	final public static String COMPARE_ATTR = "comparator";

@@ -10,12 +10,16 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.Button;
+import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
+import android.widget.SimpleExpandableListAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemSelectedListener;
 
 import com.ninjadin.pfmobile.R;
 import com.ninjadin.pfmobile.activities.GeneratorActivity;
@@ -23,36 +27,26 @@ import com.ninjadin.pfmobile.data.PropertyLists;
 import com.ninjadin.pfmobile.data.XmlConst;
 
 public class AttackFragment extends Fragment {
-	ListView listView;
+	ExpandableListView expListView;
 	GeneratorActivity activity;
-	List<Map<String,String>> attackData;
-	List<Map<String,String>> full_action_data;
-	AttackAdapter attackAdapter;
+	List<Map<String,String>> filtered_action_list = null;
+	List<Map<String,String>> full_action_list;
+	List<List<Map<String,String>>> filtered_action_data = null;
+	List<List<Map<String,String>>> full_action_data;
 	Spinner action_type_spinner;
+	String active_filter = null;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_attack, container, false);
-		return view;
-	}
-
-	@Override
-	public void onResume() {
-		super .onResume();
 		activity = (GeneratorActivity) getActivity();
-		listView = (ListView) activity.findViewById(R.id.listView1);
-		full_action_data = activity.dependencyManager.getActionData();
-		attackData = full_action_data;
-		attackAdapter = new AttackAdapter(activity, 
-				R.layout.subrow_attack, 
-				R.id.name_text, 
-				attackData);
-		listView.setAdapter(attackAdapter);
-		action_type_spinner = (Spinner) activity.findViewById(R.id.cost_spinner);
+		View view = inflater.inflate(R.layout.fragment_attack, container, false);
+		expListView = (ExpandableListView) view.findViewById(R.id.action_expListView);
+		action_type_spinner = (Spinner) view.findViewById(R.id.cost_spinner);
 		List<String> action_types = new ArrayList<String>();
 		action_types.add(PropertyLists.all);
-		for (String slot: PropertyLists.actionCosts)
+		for (String slot: PropertyLists.actionCosts) {
 			action_types.add(slot);
+		}
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, action_types);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
 		action_type_spinner.setAdapter(adapter);
@@ -69,64 +63,120 @@ public class AttackFragment extends Fragment {
 				
 			}
 		});
+		if (savedInstanceState != null) {
+			active_filter = savedInstanceState.getString("filter");
+		}
+		if (active_filter != null) {
+			int filter_pos = adapter.getPosition(active_filter);
+			action_type_spinner.setSelection(filter_pos);
+		} else {
+			active_filter = PropertyLists.all;
+		}
+		return view;
+	}
+
+	@Override
+	public void onResume() {
+		super .onResume();
+		full_action_list = activity.dependencyManager.getActionList();
+		full_action_data = activity.dependencyManager.getActionData();
+		filter_actions(active_filter);
+/*
+		attackData = full_action_data;
+		attackAdapter = new AttackAdapter(activity, 
+				R.layout.subrow_attack, 
+				R.id.name_text, 
+				attackData);
+		listView.setAdapter(attackAdapter);
+		listView.setOnItemClickListener(new ListView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int groupPosition, long id) {
+				String action_name = attackData.get(groupPosition).get(XmlConst.NAME_ATTR);
+				activity.performAction(action_name);
+			}
+		});
+*/
 	}
 	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super .onSaveInstanceState(outState);
+		if (action_type_spinner != null) {
+			String filter = action_type_spinner.getSelectedItem().toString();
+			outState.putString("filter", filter);
+		}
+	}
+
 	private void filter_actions(String cost) {
 		if (cost.equals(PropertyLists.all)) {
-			attackData = full_action_data;
+			filtered_action_list = full_action_list;
+			filtered_action_data = full_action_data;
 		} else {
-			attackData = new ArrayList<Map<String,String>>();
-			for (Map<String,String> action: full_action_data) {
-				if (action.get(XmlConst.TYPE_ATTR).equals(cost)) {
-					attackData.add(action);
+			filtered_action_list = new ArrayList<Map<String,String>>();
+			filtered_action_data = new ArrayList<List<Map<String,String>>>();
+			for (int i = 0; i < full_action_list.size(); i++) {
+				if (full_action_list.get(i).get(XmlConst.COST_ATTR).equals(cost)) {
+					filtered_action_list.add(full_action_list.get(i));
+					filtered_action_data.add(full_action_data.get(i));
 				}
 			}
 		}
-		attackAdapter = new AttackAdapter(	activity, 
-											R.layout.subrow_attack, 
-											R.id.name_text, 
-											attackData);
-		listView.setAdapter(attackAdapter);
-		listView.invalidateViews();
+		ActionAdapter baseAdapt = new ActionAdapter(
+				getActivity(),
+				filtered_action_list,
+				R.layout.titlerow_action,
+				new String[] { XmlConst.NAME_ATTR },
+				new int[] {R.id.action_title_text },
+				filtered_action_data,
+				R.layout.subrow_filterselect,
+				new String[] { XmlConst.BONUS_TAG },
+				new int[] {R.id.filterselect_text }
+				);
+		expListView.setAdapter(baseAdapt);
+		expListView.invalidateViews();
 	}
 	
-	class AttackAdapter extends ArrayAdapter<Map<String,String>> {
+	class ActionAdapter extends SimpleExpandableListAdapter {
 		Context mContext;
-		int resource;
 		List<Map<String,String>> groupData;
+		List<List<Map<String,String>>> itemData;
 		
-		public AttackAdapter(Context context, int rowLayoutResId, int textViewResourceId, List<Map<String,String>> objects) {
-			super (context, textViewResourceId, objects);
+		public ActionAdapter(Context context, List<Map<String,String>> groupData, int title_layout_id, 
+					String[] groupNames, int[] groupIds, List<List<Map<String,String>>> itemData, 
+					int subrow_layout_id, String[] itemNames, int[] itemIds) {
+			super(context, groupData, title_layout_id, groupNames, groupIds, itemData, subrow_layout_id, itemNames, itemIds);
 			mContext = context;
-			resource = rowLayoutResId;
-			groupData = objects;
+			this.groupData = groupData;
+			this.itemData = itemData;
 		}
 		
-		public View getView(int position, View convertView, ViewGroup parent) {
+		public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 			if (convertView == null) {
 				LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				convertView = inflater.inflate(resource, null);
+				convertView = inflater.inflate(R.layout.titlerow_action, null);
 			}
-			TextView name = (TextView) convertView.findViewById(R.id.name_text);
-			TextView tohit = (TextView) convertView.findViewById(R.id.tohit_text);
-			TextView damage = (TextView) convertView.findViewById(R.id.damage_text);
-			TextView critical = (TextView) convertView.findViewById(R.id.critical_text);
-			TextView damage_type = (TextView) convertView.findViewById(R.id.damagetype_text);
-			Map<String,String> entry = groupData.get(position);
-			if (name != null) {
-				name.setText(entry.get(XmlConst.NAME_ATTR));
+			TextView title_text = (TextView) convertView.findViewById(R.id.action_title_text);
+			if (title_text != null) {
+				String text = groupData.get(groupPosition).get(XmlConst.NAME_ATTR);
+				title_text.setText(text);
 			}
-			if (tohit != null) {
-				tohit.setText(entry.get(PropertyLists.to_hit));
-			}
-			if (damage != null) {
-				damage.setText(entry.get(PropertyLists.damage));
-			}
-			if (critical != null) {
-				critical.setText(entry.get(PropertyLists.crit_range) + "/" + entry.get(PropertyLists.crit_multiplier));
-			}
-			if (damage_type != null) {
-				damage_type.setText(entry.get(XmlConst.SOURCE_ATTR));
+			Button perform_button = (Button) convertView.findViewById(R.id.action_perform_button);
+			if (perform_button != null)
+				perform_button.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						int groupPos = expListView.getPositionForView((View) view.getParent());
+						String action_name = groupData.get(groupPos).get(XmlConst.NAME_ATTR);
+						((GeneratorActivity) getActivity()).performAction(action_name);
+					}
+				});
+			return convertView;
+		}
+		
+		public View getChildView(int groupPosition, int childPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+			if (convertView == null) {
+				LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				convertView = inflater.inflate(R.layout.titlerow_charactersheet, null);
 			}
 			return convertView;
 		}

@@ -44,14 +44,14 @@ public class LevelsFragment extends Fragment {
 		refreshViews();
 		Button level_down = (Button) activity.findViewById(R.id.levelDown);
 		if (level_down != null) {
-			if (activity.charData.charLevel == 0)
+			if (activity.characterEditor.charLevel == 0)
 				level_down.setEnabled(false);
 			else
 				level_down.setEnabled(true);
 			level_down.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View view) {
-					activity.charData.removeLevel();
+					activity.characterEditor.removeLevel();
 					activity.refreshCharData();
 					refreshViews();
 					levelsAdapter.notifyDataSetChanged();
@@ -61,7 +61,7 @@ public class LevelsFragment extends Fragment {
 		}
 		Button level_up = (Button) activity.findViewById(R.id.levelUp);
 		if (level_up != null) {
-			if (activity.charData.charLevel == 20)
+			if (activity.characterEditor.charLevel == 20)
 				level_up.setEnabled(false);
 			else
 				level_up.setEnabled(true);
@@ -69,7 +69,7 @@ public class LevelsFragment extends Fragment {
 				@Override
 				public void onClick(View view) {
 					InputStream charLevelData = activity.getResources().openRawResource(R.raw.base_levels);
-					activity.charData.addLevel(charLevelData);
+					activity.characterEditor.addLevel(charLevelData);
 					try {
 						charLevelData.close();
 					} catch (IOException e) {
@@ -86,7 +86,7 @@ public class LevelsFragment extends Fragment {
 	}
 	
 	private void refreshViews() {
-		groupData = reverse(activity.charData.levelData);
+		groupData = reverse(activity.characterEditor.levelData);
 		levelsAdapter = new LevelsAdapter(activity, R.layout.subrow_levels, R.id.group_text, groupData);
 		listView.setAdapter(levelsAdapter);
 		listView.setOnItemClickListener(new ListView.OnItemClickListener() {
@@ -102,7 +102,7 @@ public class LevelsFragment extends Fragment {
 		});
 		TextView level = (TextView) activity.findViewById(R.id.level_indicator);
 		if (level != null) {
-			level.setText("Level " + Integer.toString(activity.charData.charLevel));
+			level.setText("Level " + Integer.toString(activity.characterEditor.charLevel));
 		}
 	}
 	

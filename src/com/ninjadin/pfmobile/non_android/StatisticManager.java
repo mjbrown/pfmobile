@@ -1,6 +1,5 @@
 package com.ninjadin.pfmobile.non_android;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -21,8 +20,6 @@ import com.ninjadin.pfmobile.data.XmlConst;
 public class StatisticManager {
 	// A map of all CharacterStatistics
 	private StatisticGroup master_stats = new StatisticGroup(null);
-	// A list of all CharacterStatistics names
-	public List<String> stat_list;
 	// A list of all Conditional Bonuses (no unconditional bonuses)
 	private List<ConditionalBonus> conditional_bonuses;
 	
@@ -36,7 +33,7 @@ public class StatisticManager {
 	Map<String, AttackGroup> attacks = new HashMap<String, AttackGroup>();
 	
 	// A map of NAMED OnHitEffects
-	Map<String, OnHitEffect> effects = new HashMap<String, OnHitEffect>();
+	Map<String, OnHitDamage> effects = new HashMap<String, OnHitDamage>();
 	
 	public StatisticManager() {
 		for (String key: PropertyLists.keyNames) {
@@ -44,34 +41,10 @@ public class StatisticManager {
 			conditions.put(key, condition_map);
 		}
 		conditional_bonuses = new ArrayList<ConditionalBonus>();
-		stat_list = new ArrayList<String>();
-		master_stats.addStatNames(PropertyLists.abilityScoreNames);
-		master_stats.addStatNames(PropertyLists.abilityModifierNames);
-		master_stats.addStatNames(PropertyLists.basicStatsNames);
-		master_stats.addStatNames(PropertyLists.otherStatisticNames);
-		master_stats.addStatNames(PropertyLists.reductionNames);
-		master_stats.addStatNames(PropertyLists.speedNames);
-		master_stats.addStatNames(PropertyLists.casterLevelNames);
-		master_stats.addStatNames(PropertyLists.skillNames);
-		master_stats.addStatNames(PropertyLists.classLevelNames);
-		master_stats.addStatNames(PropertyLists.equipRelatedNames);
-		master_stats.addStatNames(PropertyLists.attackProperties);
-		master_stats.addStatNames(PropertyLists.damageProperties);
-		stat_list = master_stats.getKeyList();
 	}
 	
 	public void newBonus(String statisticType, String stackType, String source, String value) {
 		master_stats.addBonus(statisticType, stackType, source, value);
-//		StatisticInstance bonusRecipient = master_stats.getStatistic(statisticType);
-//		if (bonusRecipient != null) { // Not a valid target
-//			ConditionalBonus newBonus = new ConditionalBonus(stackType, source, value);
-			// Add the bonus to the statistic
-//			bonusRecipient.addBonus(newBonus);
-			for (String stat: stat_list) {
-				master_stats.getStatistic(stat).isDirty = true;
-			}
-//		}
-		return;
 	}
 	
 	public int getValue(String statisticName) {
@@ -91,20 +64,24 @@ public class StatisticManager {
 		}
 	}
 	
-	public void readXMLBonuses(InputStream inStream, File inventory) throws IOException, XmlPullParserException {
+	public void readXMLBonuses(InputStream inStream) throws IOException, XmlPullParserException {
 		ConditionList currentConditions = new ConditionList();
 		Stack<StatisticGroup> lastObject = new Stack<StatisticGroup>();
 		lastObject.push(master_stats);
 		XmlPullParser parser = Xml.newPullParser();
 		parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
 		parser.setInput(inStream, null);
+		String last_item_name = null;
 		while (parser.next() != XmlPullParser.END_DOCUMENT) {
 			if (parser.getEventType() == XmlPullParser.END_TAG) {
 				String name = parser.getName();
 				if (name != null) {
-					if (name.equals(XmlConst.CONDITIONAL_TAG)) {
+					if ((name.equals(XmlConst.CONDITIONAL_TAG)) || (name.equals(XmlConst.ACTIVATEDEFFECT_TAG))) {
 						currentConditions.endConditional();
-					} else if (name.equals(XmlConst.ACTION_TAG) || name.equals(XmlConst.ATTACK_TAG) || name.equals(XmlConst.ONHIT_TAG)) {
+					} else if (name.equals(XmlConst.ITEM_TAG)) {
+						currentConditions.endConditional();
+						last_item_name = null;
+					}else if (name.equals(XmlConst.ACTION_TAG) || name.equals(XmlConst.ATTACK_TAG) || name.equals(XmlConst.ONHIT_TAG)) {
 						lastObject.pop();
 					}
 				}
@@ -116,8 +93,12 @@ public class StatisticManager {
 			if (tag != null) {
 				String key = parser.getAttributeValue(null, XmlConst.KEY_ATTR);
 				String names = parser.getAttributeValue(null, XmlConst.NAME_ATTR);
+				if ((last_item_name != null) && (names != null)) {
+					names = names.replace("[Item Name]", last_item_name);
+				}
 				String types = parser.getAttributeValue(null, XmlConst.TYPE_ATTR);
 				String values = parser.getAttributeValue(null, XmlConst.VALUE_ATTR);
+				String uses = parser.getAttributeValue(null, XmlConst.USES_ATTR);
 				if (tag.equals(XmlConst.CONDITIONAL_TAG)) {
 					currentConditions.startConditional(key, names, types, values);
 				} else if (tag.equals(XmlConst.BONUS_TAG)) {
@@ -171,18 +152,31 @@ public class StatisticManager {
 					}
 				} else if (tag.equals(XmlConst.ACTION_TAG)) {
 					String action_cost = parser.getAttributeValue(null, XmlConst.COST_ATTR);
-					ActionGroup newAction = new ActionGroup(action_cost, null, master_stats);
+					String parent = parser.getAttributeValue(null, XmlConst.PARENT_ATTR);
+					String visible = parser.getAttributeValue(null, XmlConst.VISIBLE_ATTR);
+					ActionGroup action = null;
+					if (names != null)
+						action = combatActions.get(names);
+					if (action == null) {
+						ActionGroup parent_action = combatActions.get(parent);
+						action = new ActionGroup(action_cost, uses, parent_action, master_stats);
+						if (visible != null) {
+							if (visible.equals("No"))
+								action.setVisibility(false);
+						}
+					}
 					if (currentConditions.hasConditions()) {
-						newAction.setConditions(currentConditions);
-						conditional_bonuses.add(newAction);
+						action.setConditions(currentConditions);
+						conditional_bonuses.add(action);
 					}
 					if (names != null)		// Named action means it is referenced elsewhere
-						combatActions.put(names, newAction);
-					lastObject.push(newAction);
+						combatActions.put(names, action);
+					lastObject.push(action);
 				} else if (tag.equals(XmlConst.ATTACK_TAG)) {
 					String versus = parser.getAttributeValue(null, XmlConst.VERSUS_ATTR);
 					String parent = parser.getAttributeValue(null, XmlConst.PARENT_ATTR);
-					AttackGroup newAttack, inheritedAttack = null;
+					String target = parser.getAttributeValue(null, XmlConst.TARGET_ATTR);
+					AttackGroup inheritedAttack = null;
 					StatisticGroup parentGroup = null;
 					if (parent != null) 
 						inheritedAttack = attacks.get(parent);
@@ -190,7 +184,11 @@ public class StatisticManager {
 						//Log.d("ATTACK", "Attack " + names + " has inherited " + parent);
 						parentGroup = lastObject.peek();
 					}
-					newAttack = new AttackGroup(versus, inheritedAttack, parentGroup);
+					AttackGroup newAttack = null;
+					if (names != null)
+						newAttack = attacks.get(names);
+					if (newAttack == null)
+						newAttack = new AttackGroup(versus, target, uses, inheritedAttack, parentGroup);
 					if (currentConditions.hasConditions()) {
 						newAttack.setConditions(currentConditions);
 						conditional_bonuses.add(newAttack);
@@ -206,16 +204,20 @@ public class StatisticManager {
 					lastObject.push(newAttack);
 				} else if (tag.equals(XmlConst.ONHIT_TAG)) {
 					String parent = parser.getAttributeValue(null, XmlConst.PARENT_ATTR);
-					OnHitEffect newOnHit, inheritedOnHit = null;
+					OnHitDamage inheritedOnHit = null;
 					StatisticGroup parentGroup = null;
 					if (parent != null)
 						inheritedOnHit = effects.get(parent);
 					if (!(lastObject.peek() == master_stats))
 						parentGroup = lastObject.peek();
-					newOnHit = new OnHitEffect(types, inheritedOnHit, parentGroup);
+					OnHitDamage newOnHit = null;
+					if (names != null)
+						newOnHit = effects.get(names);
+					if (newOnHit == null)
+						newOnHit = new OnHitDamage(types, uses, inheritedOnHit, parentGroup);
 					if (lastObject.peek() instanceof AttackGroup) {
 						AttackGroup parentAttack = (AttackGroup) lastObject.peek();
-						parentAttack.addEffect(newOnHit);
+						parentAttack.addOnHitDamage(newOnHit);
 					} else {
 						//Log.d("ON_HIT", "Parent of OnHitEffect isn't an Attack! " + names);
 					}
@@ -226,6 +228,20 @@ public class StatisticManager {
 					if (names != null)
 						effects.put(names, newOnHit);
 					lastObject.push(newOnHit);
+				} else if (tag.equals(XmlConst.ACTIVATEDEFFECT_TAG)) {
+					currentConditions.startConditional(PropertyLists.activated, names, types, values);
+				} else if (tag.equals(XmlConst.ITEM_TAG)) {
+					currentConditions.startConditional(PropertyLists.activated, names, types, values);
+					last_item_name = names;
+				} else if (tag.equals(XmlConst.APPLYCOND_TAG)) {
+					String unique = parser.getAttributeValue(null, XmlConst.UNIQUE_ATTR);
+					OnHitCondition apply_cond = new OnHitCondition(key, names, unique); 
+					if (lastObject.peek() instanceof ActionGroup) {
+						ActionGroup action_group = (ActionGroup) lastObject.peek();
+						action_group.addOnHitCondition(apply_cond);
+					} else {
+						//Log.d("APPLYCOND", "Parent of applycond isn't action! " + names);
+					}
 				}
 			}
 		}
@@ -280,52 +296,40 @@ public class StatisticManager {
 		return false;
 	}
 	
-	public List<Map<String,String>> getActionData() {
+	public List<Map<String,String>> getActionList() {
 		List<Map<String,String>> atk_list = new ArrayList<Map<String,String>>();
 		for (Map.Entry<String, ActionGroup> entry: combatActions.entrySet()) {
-			String to_hit_string = "";
-			String damage_string = "";
-			String damage_source = "";
-			String crit_multiplier = "";
-			String crit_range = "";
-			String range = "";
-			Map<String,String> action = new HashMap<String,String>();
-			atk_list.add(action);
-			for (AttackGroup atk: entry.getValue().getAttacks()) {
-				to_hit_string += atk.getValue(PropertyLists.to_hit) + "/";
-			}
-			List<AttackGroup> attacks = entry.getValue().getAttacks();
-			if (attacks.size() > 0) {
-				AttackGroup first_attack = attacks.get(0);
-				range += first_attack.getValue(PropertyLists.range);
-				crit_range += PropertyLists.criticalRangeStrings[first_attack.getValue(PropertyLists.crit_range)];
-				List<OnHitEffect> effects = first_attack.getEffects();
-				String sum_damage = "";
-				for (OnHitEffect effect: effects) {
-					String dmg = effect.getStringValue(PropertyLists.damage_dice);
-					if (dmg.contains("d")) {
-						for (String token: dmg.split(" "))
-							if (token.contains("d"))
-								damage_string += token + "+";
-					}
-					sum_damage += " + " + effect.getStringValue(PropertyLists.damage);
-				}
-				Log.d("DMG_STR", damage_string);
-				damage_string += Integer.toString(master_stats.evaluate(sum_damage));
-				if (effects.size() > 0) {
-					OnHitEffect first_effect = first_attack.getEffects().get(0);
-					crit_multiplier += first_effect.getValue(PropertyLists.crit_multiplier);
-				}
-			}
-			action.put(XmlConst.NAME_ATTR, entry.getKey());
-			action.put(XmlConst.TYPE_ATTR, entry.getValue().getCost());
-			action.put(PropertyLists.to_hit, to_hit_string);
-			action.put(PropertyLists.damage, damage_string);
-			action.put(XmlConst.SOURCE_ATTR, damage_source);
-			action.put(PropertyLists.crit_range, crit_range);
-			action.put(PropertyLists.range, range);
-			action.put(PropertyLists.crit_multiplier, crit_multiplier);
+			ActionGroup action = entry.getValue();
+			if (action.isVisible() == false)
+				continue;
+			Map<String,String> visible_action = new HashMap<String,String>();
+			visible_action.put(XmlConst.NAME_ATTR, entry.getKey());
+			visible_action.put(XmlConst.COST_ATTR, action.getCost());
+			visible_action.put(XmlConst.USES_ATTR, action.getUses());
+			atk_list.add(visible_action);
 		}
 		return atk_list;
 	}
+	
+	public List<List<Map<String,String>>> getActionData() {
+		List<List<Map<String,String>>> atk_data = new ArrayList<List<Map<String,String>>>();
+		for (Map.Entry<String, ActionGroup> entry: combatActions.entrySet()) {
+			ActionGroup action = entry.getValue();
+			if (action.isVisible() == false)
+				continue;
+			List<Map<String,String>> visible_action = new ArrayList<Map<String,String>>();
+			atk_data.add(visible_action);
+		}
+		return atk_data;
+	}
+	
+	public List<Map<String,String>> getActionData(String action_name) {
+		List<Map<String,String>> atk_data = new ArrayList<Map<String,String>>();
+		return atk_data;
+	}
+	
+	public List<AttackGroup> getAttacks(String action_name) {
+		return combatActions.get(action_name).getAttacks();
+	}
+
 }

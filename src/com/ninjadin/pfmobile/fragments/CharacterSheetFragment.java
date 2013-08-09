@@ -42,7 +42,7 @@ public class CharacterSheetFragment extends Fragment {
 		super .onResume();
 		GeneratorActivity activity = (GeneratorActivity) getActivity();
 		manager = activity.dependencyManager;
-		charEdit = activity.charData;
+		charEdit = activity.characterEditor;
 		groupData = PropertyLists.categoryData();
 		itemData = PropertyLists.statisticData();
 		expList = (ExpandableListView) activity.findViewById(R.id.expandableListView1);
@@ -66,6 +66,8 @@ public class CharacterSheetFragment extends Fragment {
 	}
 	
 	private class CharacterSheetAdapter extends SimpleExpandableListAdapter {
+		Context mContext;
+		
 		public CharacterSheetAdapter(Context context,
 				List<? extends Map<String, ?>> groupData, int groupLayout,
 				String[] groupFrom, int[] groupTo,
@@ -73,12 +75,14 @@ public class CharacterSheetFragment extends Fragment {
 				int childLayout, String[] childFrom, int[] childTo) {
 			super(context, groupData, groupLayout, groupFrom, groupTo, childData,
 					childLayout, childFrom, childTo);
+			mContext = context;
 			// TODO Auto-generated constructor stub
 		}
 		public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 			String category = groupData.get(groupPosition).get(XmlConst.NAME_ATTR);
 			if (convertView == null) {
-				convertView = View.inflate(getActivity(), R.layout.titlerow_charactersheet, null);
+				LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				convertView = inflater.inflate(R.layout.titlerow_charactersheet, null);
 			}
 			TextView title = (TextView) convertView.findViewById(R.id.titlerow_text);
 			if (title != null)
@@ -109,15 +113,16 @@ public class CharacterSheetFragment extends Fragment {
 		public View getChildView(int groupPosition, int childPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 			String category = groupData.get(groupPosition).get(XmlConst.NAME_ATTR);
 			String name = itemData.get(groupPosition).get(childPosition).get(XmlConst.NAME_ATTR);
+			LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			if ((category.equals("Ability Scores")) || (category.equals("Skills"))) {
-				convertView = View.inflate(getActivity(), R.layout.subrow_skills_scores, null);
+				convertView = inflater.inflate(R.layout.subrow_skills_scores, null);
 				if (category.equals("Ability Scores")) {
 					updateAbilityScoreSubrow(convertView, childPosition);
 				} else if (category.equals("Skills")) {
 					updateSkillSubrow(convertView, childPosition);
 				}
 			} else if (category.equals("Equipment")) {
-				convertView = View.inflate(getActivity(), R.layout.subrow_charsheet, null);
+				convertView = inflater.inflate(R.layout.subrow_charsheet, null);
 				TextView tx_modifier = (TextView) convertView.findViewById(R.id.score_modifier);
 				String item = charEdit.equipment.get(name);
 				if (item != null) {
@@ -126,7 +131,7 @@ public class CharacterSheetFragment extends Fragment {
 					tx_modifier.setText("None");
 				}
 			} else {
-				convertView = View.inflate(getActivity(), R.layout.subrow_charsheet, null);
+				convertView = inflater.inflate( R.layout.subrow_charsheet, null);
 				TextView tx_modifier = (TextView) convertView.findViewById(R.id.score_modifier);
 				tx_modifier.setText(Integer.toString(manager.getValue(name)));
 			}

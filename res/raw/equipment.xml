@@ -77,27 +77,40 @@
                 <bonus type="Equipment Cost" value="15" />
                 <bonus type="Encumbrance" value="3" />
             </enhancement>
-            <action name="Equip Main Hand Shortsword" inherits="Equip Main Hand">
-	            <activeEffect name="Main Hand">
-	                <condition key="Equipment" name="Main Hand Finesse" />
-		            <augment type="Attack" modify="Main Hand Melee Attack,One Hand Melee Attack">
-		                <bonus type="Critical Range" value="1" />
-		            </augment>
-		            <augment type="On Hit" modify="Main Hand Melee Weapon Damage,One Hand Melee Weapon Damage" source="Piercing">
-		            	<bonus type="Damage Dice" value="1d6" />
-		            </augment>
-	            </activeEffect>
-            </action>
-            <weapon name="Shortsword" slot="Off Hand">
+            <activatedEffect name="Main Hand [Item Name]">
+                <condition key="Equipment" name="Main Hand Finesse" />
+	            <attack name="Main Hand Melee Attack">
+	                <bonus type="Critical Range" value="1" />
+	            </attack>
+	            <onHitEffect name="Main Hand Melee Weapon Damage" source="Piercing">
+	            	<bonus type="Damage Dice" value="1d6" />
+	            </onHitEffect>
+            </activatedEffect>
+            <activatedEffect name="Off Hand [Item Name]" >
                 <condition key="Equipment" name="Off Hand Finesse" />
                 <condition key="Equipment" name="Light Off Hand" />
-                <augment type="Attack" modify="Off Hand Melee Attack">
+                <attack name="Off Hand Melee Attack">
                     <bonus type="Critical Range" value="1" />
-                </augment>
-                <augment type="On Hit" modify="Off Hand Melee Weapon Damage" >
+                </attack>
+                <onHitEffect name="Off Hand Melee Weapon Damage" >
                     <bonus type="Damage Dice" value="1d6" />
-                </augment>
-            </weapon>
+                </onHitEffect>
+	        </activatedEffect>
+	        <action name="Equip Two Hand [Item Name]" parent="Equip Main Hand Weapon" >
+                <attack target="Self">
+	                <onHitCondition key="Activated" name="Main Hand [Item Name]" unique="Two Hand" />
+                </attack>
+	        </action>
+            <action name="Equip Main Hand [Item Name]" parent="Equip Main Hand Weapon" >
+                <attack target="Self">
+	                <onHitCondition key="Activated" name="Main Hand [Item Name]" unique="Main Hand" />
+                </attack>
+            </action>
+            <action name="Equip Off Hand [Item Name]" parent="Equip Off Hand Weapon" >
+                <attack target="Self">
+	                <onHitCondition key="Activated" name="Off Hand [Item Name]" unique="Off Hand" />
+                </attack>
+            </action>
         </item>
     </template>
 </equipmentTemplates>

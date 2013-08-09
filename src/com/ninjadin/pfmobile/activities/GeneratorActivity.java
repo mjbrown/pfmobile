@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -23,7 +25,6 @@ import android.widget.ExpandableListView;
 import android.widget.Toast;
 
 import com.ninjadin.pfmobile.R;
-import com.ninjadin.pfmobile.data.ExpListData;
 import com.ninjadin.pfmobile.data.XmlConst;
 import com.ninjadin.pfmobile.fragments.AttackFragment;
 import com.ninjadin.pfmobile.fragments.CharacterSheetFragment;
@@ -36,22 +37,27 @@ import com.ninjadin.pfmobile.fragments.ItemEditFragment;
 import com.ninjadin.pfmobile.fragments.LevelsFragment;
 import com.ninjadin.pfmobile.fragments.ShowXMLFragment;
 import com.ninjadin.pfmobile.fragments.TemplateSelectFragment;
+import com.ninjadin.pfmobile.non_android.AttackGroup;
 import com.ninjadin.pfmobile.non_android.CharacterEditor;
+import com.ninjadin.pfmobile.non_android.EffectEditor;
 import com.ninjadin.pfmobile.non_android.InventoryEditor;
 import com.ninjadin.pfmobile.non_android.ItemEditor;
+import com.ninjadin.pfmobile.non_android.OnHitCondition;
 import com.ninjadin.pfmobile.non_android.StatisticManager;
 
 public class GeneratorActivity extends FragmentActivity implements ItemEditDialogListener {
-	public CharacterEditor charData;
 	public StatisticManager dependencyManager;
-	public InventoryEditor inventoryManager;
-	public ExpListData expListData;
+	public CharacterEditor characterEditor;
+	public InventoryEditor inventoryEditor;
 	public ItemEditor itemEditor;
+	public EffectEditor effectEditor;
 	public String masterCharFilename;
 	public String inventoryFilename;
+	public String effectFilename;
 	public String tempFilename;
 	public File charFile;
 	public File inventoryFile;
+	public File effectFile;
 	public File tempFile;
 	
 	@Override
@@ -115,20 +121,28 @@ public class GeneratorActivity extends FragmentActivity implements ItemEditDialo
 		Intent intent = getIntent();
 		masterCharFilename = intent.getStringExtra(LoginLoadActivity.CHARFILE_MESSAGE);
 		inventoryFilename = intent.getStringExtra(LoginLoadActivity.INVFILE_MESSAGE);
+		effectFilename = intent.getStringExtra(LoginLoadActivity.EFFECTFILE_MESSAGE);
 		tempFilename = masterCharFilename.concat(".temp");
 		charFile = new File(this.getFilesDir(), masterCharFilename);
 		tempFile = new File(this.getFilesDir(), tempFilename);
+		effectFile = new File(this.getFilesDir(), effectFilename);
 		inventoryFile = new File(this.getFilesDir(), inventoryFilename);
-		inventoryManager = new InventoryEditor(inventoryFile);
 		dependencyManager = new StatisticManager();
-		expListData = new ExpListData();
 		try {
-			charData = new CharacterEditor(charFile, tempFile);
+			characterEditor = new CharacterEditor(charFile, tempFile);
+			inventoryEditor = new InventoryEditor(inventoryFile);
+			effectEditor = new EffectEditor(effectFile);
 			InputStream inStream = new FileInputStream(charFile);
-			dependencyManager.readXMLBonuses(inStream, inventoryFile);
+			dependencyManager.readXMLBonuses(inStream);
 			inStream.close();
 			inStream = (InputStream) getResources().openRawResource(R.raw.dependencies);
-			dependencyManager.readXMLBonuses(inStream, inventoryFile);
+			dependencyManager.readXMLBonuses(inStream);
+			inStream.close();
+			inStream = new FileInputStream(inventoryFile);
+			dependencyManager.readXMLBonuses(inStream);
+			inStream.close();
+			inStream = new FileInputStream(effectFile);
+			dependencyManager.readXMLBonuses(inStream);
 			inStream.close();
 		} catch (XmlPullParserException e) {
 			// TODO Auto-generated catch block
@@ -147,8 +161,9 @@ public class GeneratorActivity extends FragmentActivity implements ItemEditDialo
 	public void saveCharacterState() {
 		try {
 			File newTemp = new File(this.getCacheDir(), "temp");
-			charData.writeCharacterData(newTemp);
+			characterEditor.writeCharacterData(newTemp);
 			newTemp.delete();
+			effectEditor.saveEffects(effectFile);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -236,7 +251,7 @@ public class GeneratorActivity extends FragmentActivity implements ItemEditDialo
 			dataFile = getResources().openRawResource(R.raw.other);
 		}
 		try {
-			charData.insertChoice(dataFile, choiceId, groupName, subGroup, specificNames, selectionName);
+			characterEditor.insertChoice(dataFile, choiceId, groupName, subGroup, specificNames, selectionName);
 			dataFile.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -268,6 +283,17 @@ public class GeneratorActivity extends FragmentActivity implements ItemEditDialo
 	public void launchInventoryXML(View view) {
 		Bundle passedData = new Bundle();
 		passedData.putString("filename", inventoryFilename);
+		ShowXMLFragment newFragment = new ShowXMLFragment();
+		newFragment.setArguments(passedData);
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+		transaction.replace(R.id.fragment_container, newFragment);
+		transaction.addToBackStack(null);
+		transaction.commit();
+	}
+
+	public void launchEffectXML(View view) {
+		Bundle passedData = new Bundle();
+		passedData.putString("filename", effectFilename);
 		ShowXMLFragment newFragment = new ShowXMLFragment();
 		newFragment.setArguments(passedData);
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -316,10 +342,10 @@ public class GeneratorActivity extends FragmentActivity implements ItemEditDialo
 		try {
 			if (templateType.equals(XmlConst.ENHANCE_TAG)) {
 				templateFileStream = this.getResources().openRawResource(R.raw.enchantments);
-				inventoryManager.enchantFromTemplate(templateFileStream, templateName, itemName, tempFile);
+				inventoryEditor.enchantFromTemplate(templateFileStream, templateName, itemName, tempFile);
 			} else {
 				templateFileStream = this.getResources().openRawResource(R.raw.equipment);
-				inventoryManager.addFromTemplate(templateFileStream, templateName, tempFile);
+				inventoryEditor.addFromTemplate(templateFileStream, templateName, tempFile);
 			}
 			templateFileStream.close();
 		} catch (FileNotFoundException e) {
@@ -336,19 +362,23 @@ public class GeneratorActivity extends FragmentActivity implements ItemEditDialo
 	}
 	
 	public void equipItem(String slotName, String itemName) {
-		try {
-			itemEditor = new ItemEditor(itemName, inventoryFile);
-			String itemData = itemEditor.getXML();
-			if (charData != null)
-				charData.equipItem(itemData, slotName);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (XmlPullParserException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		if (effectEditor != null)
+				effectEditor.activateEffect(itemName, slotName);
 		startMenu(itemName + " equipped to " + slotName + ".");
+	}
+	
+	public void performAction(String action_name) {
+		List<AttackGroup> attacks = dependencyManager.getAttacks(action_name);
+		for (AttackGroup attack: attacks) {
+			if (attack.getTarget().equals("Self")) {
+				List<OnHitCondition> conds = attack.getOnHitConditions();
+				for (OnHitCondition cond: conds) {
+					Map<String,String> condition = cond.getConditionMap();
+					effectEditor.activateEffect(condition.get(XmlConst.NAME_ATTR), condition.get(XmlConst.UNIQUE_ATTR));
+				}
+			}
+		}
+		startMenu(action_name + " action taken.");
 	}
 	
 	public void showItemEditDialog(int groupPosition, int childPosition) {
