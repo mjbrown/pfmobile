@@ -7,11 +7,10 @@ import java.util.Map;
 
 import android.util.Log;
 
-public class StatisticGroup extends ConditionalBonus {
+public class StatisticGroup extends Conditional {
 	public String type;
 
 	StatisticGroup parent = null;
-	protected ConditionList conditions = null;
 	private Map<String,StatisticInstance> statistics = new HashMap<String,StatisticInstance>();
 	
 	public StatisticGroup(StatisticGroup group_parent) {
@@ -26,13 +25,13 @@ public class StatisticGroup extends ConditionalBonus {
 		return key_list;
 	}
 	
-	public ConditionalBonus addBonus(String stat_name, String stack_type, String source, String val) {
+	public Bonus addBonus(String stat_name, String stack_type, String source, String val) {
 		StatisticInstance bonusRecipient = statistics.get(stat_name);
 		if (bonusRecipient == null) {// Not an existing target
 			bonusRecipient = new StatisticInstance();
 			statistics.put(stat_name, bonusRecipient);
 		}
-		ConditionalBonus newBonus = new ConditionalBonus(stack_type, source, val);
+		Bonus newBonus = new Bonus(stack_type, source, val);
 		// Add the bonus to the statistic
 		bonusRecipient.addBonus(newBonus);
 		for (String stat: getKeyList()) {
@@ -42,7 +41,6 @@ public class StatisticGroup extends ConditionalBonus {
 	}
 	
 	public int getValue(String stat_name) {
-		Log.d("GET_VAL", stat_name + ":" + getStringValue(stat_name));
 		return evaluate(getStringValue(stat_name));
 	}
 	
@@ -56,9 +54,7 @@ public class StatisticGroup extends ConditionalBonus {
 		if (parent != null) {
 			parent_value = parent.getStringValue(stat_name);
 		}
-		if (stat != null) {
-			stat_string = stat.getFinalStringValue();
-		}
+		stat_string = stat.getFinalStringValue();
 		if (parent_value.equals("0") || stat_string.equals("0")) {
 			if (!parent_value.equals("0"))
 				ret_string = parent_value;
@@ -71,7 +67,6 @@ public class StatisticGroup extends ConditionalBonus {
 	}
 	
 	public int evaluate(String value) {
-		//Log.d("PreStripped", value);
 		if (parent != null) {
 			return parent.evaluate(value);
 		}
@@ -84,7 +79,6 @@ public class StatisticGroup extends ConditionalBonus {
 				}
 			}
 		}
-		//Log.d("StrippedEval", strippedValue);
 		return recursiveEvaluate(strippedValue);
 	}
 	

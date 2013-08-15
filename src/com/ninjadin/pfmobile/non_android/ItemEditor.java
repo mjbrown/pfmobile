@@ -105,7 +105,7 @@ public class ItemEditor {
 		String itemData = getXML();
 		File copyFrom = inventory;
 		File copyTo = tempFile;
-		String parentAttrs = XmlConst.NAME_ATTR + "=\"" + name;
+		String parentAttrs = XmlConst.NAME_ATTR + "=\"" + name + "\"";
 		XmlEditor.replaceParent(copyFrom, copyTo, XmlConst.ITEM_TAG, parentAttrs, itemData);
 		copyTo.renameTo(inventory);
 	}

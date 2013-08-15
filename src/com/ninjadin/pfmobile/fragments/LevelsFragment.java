@@ -52,6 +52,7 @@ public class LevelsFragment extends Fragment {
 				@Override
 				public void onClick(View view) {
 					activity.characterEditor.removeLevel();
+					activity.dirtyFiles = true;
 					activity.refreshCharData();
 					refreshViews();
 					levelsAdapter.notifyDataSetChanged();
@@ -76,6 +77,7 @@ public class LevelsFragment extends Fragment {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+					activity.dirtyFiles = true;
 					activity.refreshCharData();
 					refreshViews();
 					levelsAdapter.notifyDataSetChanged();

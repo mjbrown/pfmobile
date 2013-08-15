@@ -11,7 +11,7 @@ import com.ninjadin.pfmobile.data.PropertyLists;
 
 public class StatisticInstance {
 	private String finalStringValue;
-	private List<ConditionalBonus> bonuses = new ArrayList<ConditionalBonus>();
+	private List<Bonus> bonuses = new ArrayList<Bonus>();
 	boolean isDirty = true;
 	
 	private static final Map<String, Boolean> isStackable;
@@ -40,7 +40,7 @@ public class StatisticInstance {
 	// This pretty much handles stacks vs doesn't
 	private void updateFinalStringValue() {
 		Map<String,String> stackTypeValues = new HashMap<String,String>();
-		for (ConditionalBonus bonus: bonuses) {
+		for (Bonus bonus: bonuses) {
 			String priorStackValue = stackTypeValues.get(bonus.getStackType());
 			if (priorStackValue == null) {
 				stackTypeValues.put(bonus.getStackType(), bonus.getStringValue());
@@ -63,7 +63,7 @@ public class StatisticInstance {
 			finalStringValue = "0";
 	}
 	
-	public void addBonus(ConditionalBonus newBonus) {
+	public void addBonus(Bonus newBonus) {
 		bonuses.add(newBonus);
 	}
 }

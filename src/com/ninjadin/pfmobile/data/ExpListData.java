@@ -2,12 +2,17 @@ package com.ninjadin.pfmobile.data;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import org.xmlpull.v1.XmlPullParserException;
 
 import com.ninjadin.pfmobile.non_android.XmlExtractor;
 
 public class ExpListData {
+	public List<Map<String,String>> groupData = new ArrayList<Map<String,String>>();
+	public List<List<Map<String,String>>> itemData = new ArrayList<List<Map<String,String>>>();
 	
 	public static XmlExtractor initLevels(InputStream character) throws XmlPullParserException, IOException {
 		String[] tag_names = new String[] { XmlConst.LEVEL_TAG, };

@@ -9,13 +9,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.Spinner;
@@ -23,11 +22,13 @@ import android.widget.TextView;
 
 import com.ninjadin.pfmobile.R;
 import com.ninjadin.pfmobile.activities.GeneratorActivity;
+import com.ninjadin.pfmobile.data.ExpListData;
 import com.ninjadin.pfmobile.data.PropertyLists;
 import com.ninjadin.pfmobile.data.XmlConst;
 
-public class AttackFragment extends Fragment {
+public class ActionFragment extends Fragment {
 	ExpandableListView expListView;
+	ExpListData expListData;
 	GeneratorActivity activity;
 	List<Map<String,String>> filtered_action_list = null;
 	List<Map<String,String>> full_action_list;
@@ -72,30 +73,22 @@ public class AttackFragment extends Fragment {
 		} else {
 			active_filter = PropertyLists.all;
 		}
+		Button modifiers = (Button) view.findViewById(R.id.button_modifiers);
+		if (modifiers != null)
+			modifiers.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					((GeneratorActivity) getActivity()).showModifierDialog();
+					expListView.invalidateViews();
+				}
+			});
 		return view;
 	}
 
 	@Override
 	public void onResume() {
 		super .onResume();
-		full_action_list = activity.dependencyManager.getActionList();
-		full_action_data = activity.dependencyManager.getActionData();
-		filter_actions(active_filter);
-/*
-		attackData = full_action_data;
-		attackAdapter = new AttackAdapter(activity, 
-				R.layout.subrow_attack, 
-				R.id.name_text, 
-				attackData);
-		listView.setAdapter(attackAdapter);
-		listView.setOnItemClickListener(new ListView.OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int groupPosition, long id) {
-				String action_name = attackData.get(groupPosition).get(XmlConst.NAME_ATTR);
-				activity.performAction(action_name);
-			}
-		});
-*/
+		reloadActionData();
 	}
 	
 	@Override
@@ -106,7 +99,12 @@ public class AttackFragment extends Fragment {
 			outState.putString("filter", filter);
 		}
 	}
-
+	public void reloadActionData() {
+		expListData = activity.dependencyManager.getActionData();
+		full_action_list = expListData.groupData;
+		full_action_data = expListData.itemData;
+		filter_actions(active_filter);
+	}
 	private void filter_actions(String cost) {
 		if (cost.equals(PropertyLists.all)) {
 			filtered_action_list = full_action_list;
@@ -128,9 +126,9 @@ public class AttackFragment extends Fragment {
 				new String[] { XmlConst.NAME_ATTR },
 				new int[] {R.id.action_title_text },
 				filtered_action_data,
-				R.layout.subrow_filterselect,
-				new String[] { XmlConst.BONUS_TAG },
-				new int[] {R.id.filterselect_text }
+				R.layout.subrow_action,
+				new String[] { XmlConst.TARGET_ATTR },
+				new int[] {R.id.action_effect }
 				);
 		expListView.setAdapter(baseAdapt);
 		expListView.invalidateViews();
@@ -176,7 +174,22 @@ public class AttackFragment extends Fragment {
 		public View getChildView(int groupPosition, int childPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 			if (convertView == null) {
 				LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				convertView = inflater.inflate(R.layout.titlerow_charactersheet, null);
+				convertView = inflater.inflate(R.layout.subrow_action, null);
+			}
+			TextView to_hit_value = (TextView) convertView.findViewById(R.id.to_hit_value);
+			if (to_hit_value != null) {
+				String text = itemData.get(groupPosition).get(childPosition).get(PropertyLists.to_hit);
+				to_hit_value.setText(text);
+			}
+			TextView damage_value = (TextView) convertView.findViewById(R.id.damage_value);
+			if (damage_value != null) {
+				String text = itemData.get(groupPosition).get(childPosition).get(PropertyLists.damage);
+				damage_value.setText(text);
+			}
+			TextView crit_range = (TextView) convertView.findViewById(R.id.critical_value);
+			if (crit_range != null) {
+				String text = itemData.get(groupPosition).get(childPosition).get(PropertyLists.crit_range);
+				crit_range.setText(text);
 			}
 			return convertView;
 		}

@@ -43,15 +43,15 @@ public class ConditionList {
 		return !last_conditional.peek().equals("None.");
 	}
 	
-	public void startConditional(String key, String name, String type, String value) {
+	public void startConditional(String key, String name, String type, String value, String comparator) {
 		if (key != null) {
 			last_conditional.push(key);
 			List<KeyValuePair> condition_list = bonus_conditions.get(key); 
 			if (condition_list != null) {
 				if (name != null) {
-					condition_list.add(new KeyValuePair(name, null));
+					condition_list.add(new KeyValuePair(name, null, comparator));
 				} else if ((type != null) && (value != null)) {
-					condition_list.add(new KeyValuePair(type, value));
+					condition_list.add(new KeyValuePair(type, value, comparator));
 				} else {
 					Log.d("ReadXML", "Conditional with key, without name or type/value:" + key);
 				}

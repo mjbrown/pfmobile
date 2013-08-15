@@ -3,110 +3,75 @@
     <prerequisite type="Barbarian Level" comparator="Equals" value="0">
     <selection name="Barbarian Level 1">
 	    <bonus type="Barbarian Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 4 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="12" />
-        <bonus type="Base Attack" value="1" />
-		<bonus type="Fortitude" value="2" />
+        <bonus type="Skill Points" value="( max( 1 , ( 4 + [Intelligence Modifier] ) ) * [Barbarian Level] )" />
+        <bonus type="Hit Points" value="( [Barbarian Level] * 12 * [HP Numerator] / [HP Denominator] )" />
+        <bonus type="Hit Points" value="( 12 - ( 12 * [HP Numerator] / [HP Denominator] ) )" stackType="Max HP First Level" />
+        <bonus type="Base Attack" value="[Barbarian Level]" />
+        <bonus type="Fortitude" value="2 + ( [Barbarian Level] / 2 )" />
+        <bonus type="Reflex,Will" value="( [Barbarian Level] / 3 )" />
 		<condition key="Proficiency" name="Simple Weapon,Martial Weapon" />
         <condition key="Proficiency" name="Light Armor,Medium Armor" />
         <condition key="Proficiency" name="Light Shield,Heavy Shield" />
         <bonus type="Acrobatics,Climb,Craft,Handle Animal,Intimidate,Nature" stackType="Class Skill" value="3" />
         <bonus type="Perception,Ride,Survival,Swim" stackType="Class Skill" value="3" />
-        <prerequisite key="Prerequisite" name="Favored Class Barbarian" >
-            <choice groupName="Favored Class Point" />
-        </prerequisite>
     </selection>
 	</prerequisite>
     <prerequisite type="Barbarian Level" comparator="Equals" value="1">
     <selection name="Barbarian Level 2">
 	    <bonus type="Barbarian Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 4 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="12" />
-        <bonus type="Base Attack" value="1" />
-		<bonus type="Fortitude" value="1" />
     </selection>
 	</prerequisite>
     <prerequisite type="Barbarian Level" comparator="Equals" value="2">
     <selection name="Barbarian Level 3">
 	    <bonus type="Barbarian Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 4 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="12" />
-        <bonus type="Base Attack" value="1" />
-		<bonus type="Reflex" value="1" />
-		<bonus type="Will" value="1" />
     </selection>
 	</prerequisite>
     <prerequisite type="Barbarian Level" comparator="Equals" value="3">
     <selection name="Barbarian Level 4">
 	    <bonus type="Barbarian Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 4 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="12" />
-        <bonus type="Base Attack" value="1" />
-		<bonus type="Fortitude" value="1" />
     </selection>
 	</prerequisite>
     <prerequisite type="Barbarian Level" comparator="Equals" value="4">
     <selection name="Barbarian Level 5">
 	    <bonus type="Barbarian Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 4 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="12" />
-        <bonus type="Base Attack" value="1" />
     </selection>
 	</prerequisite>
     <prerequisite type="Barbarian Level" comparator="Equals" value="5">
     <selection name="Barbarian Level 6">
 	    <bonus type="Barbarian Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 4 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="12" />
-        <bonus type="Base Attack" value="1" />
-		<bonus type="Fortitude" value="1" />
-        <bonus type="Reflex" value="1" />
-		<bonus type="Will" value="1" />
     </selection>
 	</prerequisite>
     <prerequisite type="Barbarian Level" comparator="Equals" value="6">
     <selection name="Barbarian Level 7">
 	    <bonus type="Barbarian Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 4 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="12" />
-        <bonus type="Base Attack" value="1" />
     </selection>
 	</prerequisite>
     <prerequisite type="Barbarian Level" comparator="Equals" value="7">
     <selection name="Barbarian Level 8">
 	    <bonus type="Barbarian Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 4 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="12" />
-        <bonus type="Base Attack" value="1" />
-		<bonus type="Fortitude" value="1" />
     </selection>
 	</prerequisite>
     <prerequisite type="Barbarian Level" comparator="Equals" value="8">
     <selection name="Barbarian Level 9">
 	    <bonus type="Barbarian Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 4 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="12" />
-        <bonus type="Base Attack" value="1" />
-		<bonus type="Reflex" value="1" />
-		<bonus type="Will" value="1" />
     </selection>
 	</prerequisite>
     <prerequisite type="Barbarian Level" comparator="Equals" value="9">
     <selection name="Barbarian Level 10">
 	    <bonus type="Barbarian Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 4 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="12" />
-        <bonus type="Base Attack" value="1" />
-		<bonus type="Fortitude" value="1" />
     </selection>
 	</prerequisite>
     <prerequisite type="Bard Level" comparator="Equals" value="0">
     <selection name="Bard Level 1">
 	    <bonus type="Bard Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 6 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="8" />
-		<bonus type="Reflex" value="2" />
-		<bonus type="Will" value="2" />
+	    <bonus type="Base Attack" value="( [Bard Level] * 3 / 4 )" />
+        <bonus type="Skill Points" value="( max( 1 , ( 6 + [Intelligence Modifier] ) ) * [Bard Level] )" />
+        <bonus type="Bard Spell Levels" value="[Bard Level]" />
+        <bonus type="Bard Caster Level" value="[Bard Level]" />
+        <bonus type="Hit Points" value="( [Bard Level] * 8 * [HP Numerator] / [HP Denominator] )" />
+        <bonus type="Hit Points" value="( 8 - ( 8 * [HP Numerator] / [HP Denominator] ) )" stackType="Max HP First Level" />
+        <bonus type="Reflex,Will" value="2 + ( [Bard Level] / 2 )" />
+		<bonus type="Fortitude" value="( [Bard Level] / 3 )" />
         <bonus type="Arcana,Dungeoneering,Engineering,Geography,History,Local,Nature,Nobility,Planes,Religion" stackType="Base" value="[Bard Level] + 1 / 2" />
 		<condition key="Proficiency" name="Simple Weapon,Longsword,Rapier,Sap,Shortsword,Shortbow,Whip" />
         <condition key="Proficiency" name="Light Armor" />
@@ -119,93 +84,59 @@
     <prerequisite type="Bard Level" comparator="Equals" value="1">
     <selection name="Bard Level 2">
 	    <bonus type="Bard Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 6 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="8" />
-        <bonus type="Base Attack" value="1" />
-		<bonus type="Reflex" value="1" />
-		<bonus type="Will" value="1" />
     </selection>
 	</prerequisite>    
     <prerequisite type="Bard Level" comparator="Equals" value="2">
     <selection name="Bard Level 3">
 	    <bonus type="Bard Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 6 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="8" />
-        <bonus type="Base Attack" value="1" />
-		<bonus type="Fortitude" value="1" />
     </selection>
 	</prerequisite>    
     <prerequisite type="Bard Level" comparator="Equals" value="3">
     <selection name="Bard Level 4">
 	    <bonus type="Bard Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 6 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="8" />
-        <bonus type="Base Attack" value="1" />
-		<bonus type="Reflex" value="1" />
-		<bonus type="Will" value="1" />
     </selection>
 	</prerequisite>    
     <prerequisite type="Bard Level" comparator="Equals" value="4">
     <selection name="Bard Level 5">
 	    <bonus type="Bard Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 6 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="8" />
     </selection>
 	</prerequisite>    
     <prerequisite type="Bard Level" comparator="Equals" value="5">
     <selection name="Bard Level 6">
 	    <bonus type="Bard Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 6 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="8" />
-        <bonus type="Base Attack" value="1" />
-		<bonus type="Fortitude" value="1" />
-        <bonus type="Reflex" value="1" />
-		<bonus type="Will" value="1" />
     </selection>
 	</prerequisite>    
     <prerequisite type="Bard Level" comparator="Equals" value="6">
     <selection name="Bard Level 7">
 	    <bonus type="Bard Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 6 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="8" />
-        <bonus type="Base Attack" value="1" />
     </selection>
 	</prerequisite>    
     <prerequisite type="Bard Level" comparator="Equals" value="7">
     <selection name="Bard Level 8">
 	    <bonus type="Bard Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 6 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="8" />
-        <bonus type="Base Attack" value="1" />
-        <bonus type="Reflex" value="1" />
-		<bonus type="Will" value="1" />
     </selection>
 	</prerequisite>    
     <prerequisite type="Bard Level" comparator="Equals" value="8">
     <selection name="Bard Level 9">
 	    <bonus type="Bard Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 6 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="8" />
-		<bonus type="Fortitude" value="1" />
     </selection>
 	</prerequisite>
     <prerequisite type="Bard Level" comparator="Equals" value="9">
     <selection name="Bard Level 10">
 	    <bonus type="Bard Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 6 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="8" />
-        <bonus type="Base Attack" value="1" />
-        <bonus type="Reflex" value="1" />
-		<bonus type="Will" value="1" />
     </selection>
 	</prerequisite>    
 	<prerequisite type="Cleric Level" comparator="Equals" value="0">
     <selection name="Cleric Level 1">
 	    <bonus type="Cleric Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="8" />
-		<bonus type="Fortitude" value="2" />
-		<bonus type="Will" value="2" />
+	    <bonus type="Cleric Caster Level" value="[Cleric Level]" />
+	    <bonus type="Cleric Spell Levels" value="[Cleric Level]" />
+	    <bonus type="Base Attack" value="( [Cleric Level] * 3 / 4 )" />
+        <bonus type="Skill Points" value="( max( 1 , ( 2 + [Intelligence Modifier] ) ) * [Cleric Level] )" />
+        <bonus type="Hit Points" value="( [Cleric Level] * 8 * [HP Numerator] / [HP Denominator] )" />
+        <bonus type="Hit Points" value="( 8 - ( 8 * [HP Numerator] / [HP Denominator] ) )" stackType="Max HP First Level" />
+		<bonus type="Fortitude,Will" value="2 + ( [Cleric Level] / 2 )" />
+		<bonus type="Will" value="( [Cleric Level] / 3 )" />
 		<condition key="Proficiency" name="Simple Weapon" />
         <condition key="Proficiency" name="Light Armor,Medium Armor" />
         <condition key="Proficiency" name="Light Shield,Heavy Shield" />
@@ -217,93 +148,59 @@
     <prerequisite type="Cleric Level" comparator="Equals" value="1">
     <selection name="Cleric Level 2">
 	    <bonus type="Cleric Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="8" />
-        <bonus type="Base Attack" value="1" />
-		<bonus type="Fortitude" value="1" />
-		<bonus type="Will" value="1" />
     </selection>
 	</prerequisite>    
     <prerequisite type="Cleric Level" comparator="Equals" value="2">
     <selection name="Cleric Level 3">
 	    <bonus type="Cleric Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="8" />
-        <bonus type="Base Attack" value="1" />
-		<bonus type="Reflex" value="1" />
     </selection>
 	</prerequisite>    
     <prerequisite type="Cleric Level" comparator="Equals" value="3">
     <selection name="Cleric Level 4">
 	    <bonus type="Cleric Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="8" />
-        <bonus type="Base Attack" value="1" />
-		<bonus type="Fortitude" value="1" />
-		<bonus type="Will" value="1" />
     </selection>
 	</prerequisite>
     <prerequisite type="Cleric Level" comparator="Equals" value="4">
     <selection name="Cleric Level 5">
 	    <bonus type="Cleric Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="8" />
     </selection>
 	</prerequisite>    
     <prerequisite type="Cleric Level" comparator="Equals" value="5">
     <selection name="Cleric Level 6">
 	    <bonus type="Cleric Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="8" />
-        <bonus type="Base Attack" value="1" />
-		<bonus type="Fortitude" value="1" />
-		<bonus type="Reflex" value="1" />
-		<bonus type="Will" value="1" />
     </selection>
 	</prerequisite>    
     <prerequisite type="Cleric Level" comparator="Equals" value="6">
     <selection name="Cleric Level 7">
 	    <bonus type="Cleric Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="8" />
-        <bonus type="Base Attack" value="1" />
     </selection>
 	</prerequisite>    
     <prerequisite type="Cleric Level" comparator="Equals" value="7">
     <selection name="Cleric Level 8">
 	    <bonus type="Cleric Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="8" />
-        <bonus type="Base Attack" value="1" />
-		<bonus type="Fortitude" value="1" />
-		<bonus type="Will" value="1" />
     </selection>
 	</prerequisite>    
     <prerequisite type="Cleric Level" comparator="Equals" value="8">
     <selection name="Cleric Level 9">
 	    <bonus type="Cleric Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="8" />
-		<bonus type="Reflex" value="1" />
     </selection>
 	</prerequisite>    
     <prerequisite type="Cleric Level" comparator="Equals" value="9">
     <selection name="Cleric Level 10">
 	    <bonus type="Cleric Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="8" />
-        <bonus type="Base Attack" value="1" />
-		<bonus type="Fortitude" value="1" />
-		<bonus type="Will" value="1" />
     </selection>
 	</prerequisite>    
     <prerequisite type="Druid Level" comparator="Equals" value="0">
     <selection name="Druid Level 1">
 	    <bonus type="Druid Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 4 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="8" />
-		<bonus type="Fortitude" value="2" />
-		<bonus type="Will" value="2" />
+	    <bonus type="Druid Caster Level" value="[Druid Level]" />
+	    <bonus type="Druid Spell Levels" value="[Druid Level]" />
+	    <bonus type="Base Attack" value="( [Druid Level] * 3 / 4 )" />
+        <bonus type="Skill Points" value="( max( 1 , ( 4 + [Intelligence Modifier] ) ) * [Druid Level] )" />
+        <bonus type="Hit Points" value="( [Druid Level] * 8 * [HP Numerator] / [HP Denominator] )" />
+        <bonus type="Hit Points" value="( 8 - ( 8 * [HP Numerator] / [HP Denominator] ) )" stackType="Max HP First Level" />
+		<bonus type="Fortitude,Will" value="2 + ( [Druid Level] / 2 )" />
+		<bonus type="Reflex" value="( [Druid Level] / 3 )" />
 		<condition key="Proficiency" name="Simple Weapon" />
         <condition key="Proficiency" name="Light Armor,Medium Armor" />
         <condition key="Proficiency" name="Light Shield,Heavy Shield" />
@@ -315,93 +212,57 @@
     <prerequisite type="Druid Level" comparator="Equals" value="1">
     <selection name="Druid Level 2">
 	    <bonus type="Druid Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 4 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="8" />
-        <bonus type="Base Attack" value="1" />
-		<bonus type="Fortitude" value="1" />
-		<bonus type="Will" value="1" />
     </selection>
 	</prerequisite>    
     <prerequisite type="Druid Level" comparator="Equals" value="2">
     <selection name="Druid Level 3">
 	    <bonus type="Druid Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 4 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="8" />
-        <bonus type="Base Attack" value="1" />
-		<bonus type="Reflex" value="1" />
     </selection>
 	</prerequisite>    
     <prerequisite type="Druid Level" comparator="Equals" value="3">
     <selection name="Druid Level 4">
 	    <bonus type="Druid Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 4 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="8" />
-        <bonus type="Base Attack" value="1" />
-		<bonus type="Fortitude" value="1" />
-		<bonus type="Will" value="1" />
     </selection>
 	</prerequisite>
     <prerequisite type="Druid Level" comparator="Equals" value="4">
     <selection name="Druid Level 5">
 	    <bonus type="Druid Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 4 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="8" />
     </selection>
 	</prerequisite>    
     <prerequisite type="Druid Level" comparator="Equals" value="5">
     <selection name="Druid Level 6">
 	    <bonus type="Druid Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 4 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="8" />
-        <bonus type="Base Attack" value="1" />
-		<bonus type="Fortitude" value="1" />
-		<bonus type="Reflex" value="1" />
-		<bonus type="Will" value="1" />
     </selection>
 	</prerequisite>    
     <prerequisite type="Druid Level" comparator="Equals" value="6">
     <selection name="Druid Level 7">
 	    <bonus type="Druid Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 4 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="8" />
-        <bonus type="Base Attack" value="1" />
     </selection>
 	</prerequisite>    
     <prerequisite type="Druid Level" comparator="Equals" value="7">
     <selection name="Druid Level 8">
 	    <bonus type="Druid Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 4 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="8" />
-        <bonus type="Base Attack" value="1" />
-		<bonus type="Fortitude" value="1" />
-		<bonus type="Will" value="1" />
     </selection>
 	</prerequisite>    
     <prerequisite type="Druid Level" comparator="Equals" value="8">
     <selection name="Druid Level 9">
 	    <bonus type="Druid Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 4 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="8" />
-		<bonus type="Reflex" value="1" />
     </selection>
 	</prerequisite>    
     <prerequisite type="Druid Level" comparator="Equals" value="9">
     <selection name="Druid Level 10">
 	    <bonus type="Druid Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 4 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="8" />
-        <bonus type="Base Attack" value="1" />
-		<bonus type="Fortitude" value="1" />
-		<bonus type="Will" value="1" />
     </selection>
 	</prerequisite>        
     <prerequisite type="Fighter Level" comparator="Equals" value="0">
     <selection name="Fighter Level 1">
 	    <bonus type="Fighter Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="10" />
-        <bonus type="Base Attack" value="1" />
-		<bonus type="Fortitude" value="2" />
+	    <bonus type="Base Attack" value="[Fighter Level]" />
+        <bonus type="Skill Points" value="( max( 1 , ( 2 + [Intelligence Modifier] ) ) * [Fighter Level] )" />
+        <bonus type="Hit Points" value="( [Fighter Level] * 10 * [HP Numerator] / [HP Denominator] )" />
+        <bonus type="Hit Points" value="( 10 - ( 10 * [HP Numerator] / [HP Denominator] ) )" stackType="Max HP First Level" />
+		<bonus type="Fortitude" value="2 + ( [Fighter Level] / 2 )" />
+		<bonus type="Reflex,Will" value="( [Fighter Level] / 3 )" />
         <choice groupName="Feat" subGroup="Combat" />
 		<condition key="Proficiency" name="Simple Weapon,Martial Weapon" />
         <condition key="Proficiency" name="Light Armor,Medium Armor,Heavy Armor" />
@@ -413,10 +274,6 @@
     <prerequisite type="Fighter Level" comparator="Equals" value="1">
 	<selection name="Fighter Level 2">
 	    <bonus type="Fighter Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-	    <bonus type="Fortitude" value="1" />
-	    <bonus type="Base Attack" value="1" />
-	    <bonus type="Hit Points" value="10" />
         <choice groupName="Feat" subGroup="Combat" />
 		<!-- TODO: Bravery -->
         </selection>
@@ -424,86 +281,62 @@
     <prerequisite type="Fighter Level" comparator="Equals" value="2">
 		<selection name="Fighter Level 3">
 		    <bonus type="Fighter Level" value="1" />
-	        <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-	        <bonus type="Base Attack" value="1" />
-	        <bonus type="Reflex" value="1" />
-	        <bonus type="Will" value="1" />
-	        <bonus type="Hit Points" value="10" />
 			<!-- TODO: Armor Training -->
 	    </selection>
     </prerequisite>
     <prerequisite type="Fighter Level" comparator="Equals" value="3">
 		<selection name="Fighter Level 4">
 		    <bonus type="Fighter Level" value="1" />
-	        <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-	        <bonus type="Base Attack" value="1" />
-	        <bonus type="Fortitude" value="1" />
-	        <bonus type="Hit Points" value="10" />
 	    </selection>
     </prerequisite>
     <prerequisite type="Fighter Level" comparator="Equals" value="4">
 		<selection name="Fighter Level 5">
 		    <bonus type="Fighter Level" value="1" />
-	        <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-	        <bonus type="Base Attack" value="1" />
-	        <bonus type="Hit Points" value="10" />
 	    </selection>
     </prerequisite>
     <prerequisite type="Fighter Level" comparator="Equals" value="5">
 		<selection name="Fighter Level 6">
 		    <bonus type="Fighter Level" value="1" />
-	        <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-	        <bonus type="Base Attack" value="1" />
-	        <bonus type="Fortitude" value="1" />
-	        <bonus type="Reflex" value="1" />
-	        <bonus type="Will" value="1" />
-	        <bonus type="Hit Points" value="10" />
 	    </selection>
     </prerequisite>
     <prerequisite type="Fighter Level" comparator="Equals" value="6">
 		<selection name="Fighter Level 7">
 		    <bonus type="Fighter Level" value="1" />
-	        <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-	        <bonus type="Base Attack" value="1" />
-	        <bonus type="Hit Points" value="10" />
 	    </selection>
     </prerequisite>
     <prerequisite type="Fighter Level" comparator="Equals" value="7">
 		<selection name="Fighter Level 8">
 		    <bonus type="Fighter Level" value="1" />
-	        <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-	        <bonus type="Base Attack" value="1" />
-	        <bonus type="Fortitude" value="1" />
-	        <bonus type="Hit Points" value="10" />
 	    </selection>
     </prerequisite>
     <prerequisite type="Fighter Level" comparator="Equals" value="8">
 		<selection name="Fighter Level 9">
 		    <bonus type="Fighter Level" value="1" />
-	        <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-	        <bonus type="Base Attack" value="1" />
-	        <bonus type="Reflex" value="1" />
-	        <bonus type="Will" value="1" />
-	        <bonus type="Hit Points" value="10" />
 	    </selection>
     </prerequisite>
     <prerequisite type="Fighter Level" comparator="Equals" value="9">
 		<selection name="Fighter Level 10">
 		    <bonus type="Fighter Level" value="1" />
-	        <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-	        <bonus type="Base Attack" value="1" />
-	        <bonus type="Fortitude" value="1" />
-	        <bonus type="Hit Points" value="10" />
 	    </selection>
+    </prerequisite>
+    <prerequisite type="Magus Level" comparator="Equals" value="0">
+        <selection name="Magus Level 1">
+            <bonus type="Magus Level" value="1" />
+	        <bonus type="Hit Points" value="( [Magus Level] * 8 * [HP Numerator] / [HP Denominator] )" />
+	        <bonus type="Hit Points" value="( 8 - ( 8 * [HP Numerator] / [HP Denominator] ) )" stackType="Max HP First Level" />
+            <bonus type="Fortitude,Will" value="2 + ( [Magus Level] / 2 )" />
+            <bonus type="Reflex" value="( [Magus Level] / 3 )" />
+            <bonus type="Base Attack" value="( [Magus Level] * 3 / 4 )" />
+        </selection>
     </prerequisite>
     <prerequisite type="Monk Level" comparator="Equals" value="0">
         <selection name="Monk Level 1">
             <bonus type="Monk Level" value="1" />
-            <bonus type="Hit Points" value="8" />
-            <bonus type="Skill Points" value="max( 1 , ( 4 + [Intelligence Modifier] ) )" />
-            <bonus type="Fortitude" value="2" />
-            <bonus type="Reflex" value="2" />
-            <bonus type="Will" value="2" />
+            <bonus type="Base Attack" value="( [Monk Level] * 3 / 4 )" />
+	        <bonus type="Hit Points" value="( [Monk Level] * 8 * [HP Numerator] / [HP Denominator] )" />
+	        <bonus type="Hit Points" value="( 8 - ( 8 * [HP Numerator] / [HP Denominator] ) )" stackType="Max HP First Level" />
+            <bonus type="Skill Points" value="( max( 1 , ( 4 + [Intelligence Modifier] ) ) * [Monk Level] )" />
+            <bonus type="Fortitude,Reflex,Will" value="2 + ( [Monk Level] / 2 )" />
             <choice groupName="Feat" specific="Catch Off-Guard,Combat Reflexes,Deflect Arrows,Dodge,Improved Grapple,Scorpion Style,Throw Anything" />
 	        <condition key="Proficiency" name="Club,Light Crossbow,Heavy Crossbow,Dagger,Handaxe,Javelin,Kama,Nunchaku,Quarterstaff,Sai,Shortspear,Short Sword,Shuriken,Siangham,Sling,Spear" />
 	        <bonus type="Acrobatics,Climb,Craft,Escape Artist,Intimidate,History,Religion,Perception,Perform,Profession,Ride,Sense Motive,Stealth,Swim" stackType="Class Skill" value="3" />
@@ -512,101 +345,62 @@
     <prerequisite type="Monk Level" comparator="Equals" value="1">
         <selection name="Monk Level 2">
             <bonus type="Monk Level" value="1" />
-            <bonus type="Hit Points" value="8" />
-            <bonus type="Skill Points" value="max( 1 , ( 4 + [Intelligence Modifier] ) )" />
-            <bonus type="Base Attack" value="1" />
-            <bonus type="Fortitude" value="1" />
-            <bonus type="Reflex" value="1" />
-            <bonus type="Will" value="1" />
         </selection>
     </prerequisite>
     <prerequisite type="Monk Level" comparator="Equals" value="2">
         <selection name="Monk Level 3">
             <bonus type="Monk Level" value="1" />
-            <bonus type="Hit Points" value="8" />
-            <bonus type="Skill Points" value="max( 1 , ( 4 + [Intelligence Modifier] ) )" />
-            <bonus type="Base Attack" value="1" />
         </selection>
     </prerequisite>
     <prerequisite type="Monk Level" comparator="Equals" value="3">
         <selection name="Monk Level 4">
             <bonus type="Monk Level" value="1" />
-            <bonus type="Hit Points" value="8" />
-            <bonus type="Skill Points" value="max( 1 , ( 4 + [Intelligence Modifier] ) )" />
-            <bonus type="Base Attack" value="1" />
-            <bonus type="Fortitude" value="1" />
-            <bonus type="Reflex" value="1" />
-            <bonus type="Will" value="1" />
         </selection>
     </prerequisite>
     <prerequisite type="Monk Level" comparator="Equals" value="4">
         <selection name="Monk Level 5">
             <bonus type="Monk Level" value="1" />
-            <bonus type="Hit Points" value="8" />
-            <bonus type="Skill Points" value="max( 1 , ( 4 + [Intelligence Modifier] ) )" />
         </selection>
     </prerequisite>
     <prerequisite type="Monk Level" comparator="Equals" value="5">
         <selection name="Monk Level 6">
             <bonus type="Monk Level" value="1" />
-            <bonus type="Hit Points" value="8" />
-            <bonus type="Skill Points" value="max( 1 , ( 4 + [Intelligence Modifier] ) )" />
-            <bonus type="Base Attack" value="1" />
-            <bonus type="Fortitude" value="1" />
-            <bonus type="Reflex" value="1" />
-            <bonus type="Will" value="1" />
         </selection>
     </prerequisite>
     <prerequisite type="Monk Level" comparator="Equals" value="6">
         <selection name="Monk Level 7">
             <bonus type="Monk Level" value="1" />
-            <bonus type="Hit Points" value="8" />
-            <bonus type="Base Attack" value="1" />
-            <bonus type="Skill Points" value="max( 1 , ( 4 + [Intelligence Modifier] ) )" />
         </selection>
     </prerequisite>
     <prerequisite type="Monk Level" comparator="Equals" value="7">
         <selection name="Monk Level 8">
             <bonus type="Monk Level" value="1" />
-            <bonus type="Hit Points" value="8" />
-            <bonus type="Skill Points" value="max( 1 , ( 4 + [Intelligence Modifier] ) )" />
-            <bonus type="Base Attack" value="1" />
-            <bonus type="Fortitude" value="1" />
-            <bonus type="Reflex" value="1" />
-            <bonus type="Will" value="1" />
         </selection>
     </prerequisite>
     <prerequisite type="Monk Level" comparator="Equals" value="8">
         <selection name="Monk Level 9">
             <bonus type="Monk Level" value="1" />
-            <bonus type="Hit Points" value="8" />
-            <bonus type="Skill Points" value="max( 1 , ( 4 + [Intelligence Modifier] ) )" />
         </selection>
     </prerequisite>
     <prerequisite type="Monk Level" comparator="Equals" value="9">
         <selection name="Monk Level 10">
             <bonus type="Monk Level" value="1" />
-            <bonus type="Hit Points" value="8" />
-            <bonus type="Skill Points" value="max( 1 , ( 4 + [Intelligence Modifier] ) )" />
-            <bonus type="Base Attack" value="1" />
-            <bonus type="Fortitude" value="1" />
-            <bonus type="Reflex" value="1" />
-            <bonus type="Will" value="1" />
         </selection>
     </prerequisite>
     <prerequisite type="Oracle Level" comparator="Equals" value="0">
         <selection name="Oracle Level 1">
             <bonus type="Oracle Level" value="1" />
-            <bonus type="Oracle Caster Level" value="1" />
-            <bonus type="Hit Points" value="8" />
-            <bonus type="Skill Points" value="max( 1 , ( 4 + [Intelligence Modifier] ) )" />
-            <bonus type="Will" value="2" />
+            <bonus type="Oracle Caster Level" value="[Oracle Level]" />
+            <bonus type="Oracle Spell Levels" value="[Oracle Level]" />
+            <bonus type="Base Attack" value="( [Oracle Level] * 3 / 4 )" />
+	        <bonus type="Hit Points" value="( [Oracle Level] * 8 * [HP Numerator] / [HP Denominator] )" />
+	        <bonus type="Hit Points" value="( 8 - ( 8 * [HP Numerator] / [HP Denominator] ) )" stackType="Max HP First Level" />
+            <bonus type="Skill Points" value="( max( 1 , ( 4 + [Intelligence Modifier] ) ) * [Oracle Level] )" />
+            <bonus type="Will" value="2 + ( [Oracle Level] / 2 )" />
+            <bonus type="Fortitude,Reflex" value="( [Oracle Level] / 3 )" />
             <choice groupName="Oracle Curse" />
             <choice groupName="Oracle Mystery" />
             <choice groupName="Oracle Revelation" />
-	        <conditional key="Prerequisite" name="Favored Class Oracle" >
-	            <choice groupName="Favored Class Point" />
-	        </conditional>
             <condition key="Proficiency" name="Club,Dagger,Heavy Crossbow,Light Crossbow,Quarterstaff" />
 	        <bonus type="Craft,Diplomacy,Heal,Profession,Sense Motive,Spellcraft" stackType="Class Skill" value="3" />
         	<bonus type="History,Planes,Religion" stackType="Class Skill" value="3" />
@@ -615,131 +409,59 @@
     <prerequisite type="Oracle Level" comparator="Equals" value="1">
         <selection name="Oracle Level 2">
             <bonus type="Oracle Level" value="1" />
-            <bonus type="Oracle Caster Level" value="1" />
-            <bonus type="Hit Points" value="8" />
-            <bonus type="Base Attack" value="1" />
-            <bonus type="Skill Points" value="max( 1 , ( 4 + [Intelligence Modifier] ) )" />
-            <bonus type="Will" value="1" />
-	        <conditional key="Prerequisite" name="Favored Class Oracle" >
-	            <choice groupName="Favored Class Point" />
-	        </conditional>
-            </selection>
+        </selection>
     </prerequisite>
     <prerequisite type="Oracle Level" comparator="Equals" value="2">
         <selection name="Oracle Level 3">
             <bonus type="Oracle Level" value="1" />
-            <bonus type="Oracle Caster Level" value="1" />
-            <bonus type="Hit Points" value="8" />
-            <bonus type="Base Attack" value="1" />
-            <bonus type="Skill Points" value="max( 1 , ( 4 + [Intelligence Modifier] ) )" />
-            <bonus type="Fortitude" value="1" />
-            <bonus type="Reflex" value="1" />
             <choice groupName="Oracle Revelation" />
-	        <conditional key="Prerequisite" name="Favored Class Oracle" >
-	            <choice groupName="Favored Class Point" />
-	        </conditional>
-            </selection>
+        </selection>
     </prerequisite>
     <prerequisite type="Oracle Level" comparator="Equals" value="3">
         <selection name="Oracle Level 4">
             <bonus type="Oracle Level" value="1" />
-            <bonus type="Oracle Caster Level" value="1" />
-            <bonus type="Hit Points" value="8" />
-            <bonus type="Base Attack" value="1" />
-            <bonus type="Skill Points" value="max( 1 , ( 4 + [Intelligence Modifier] ) )" />
-            <bonus type="Will" value="1" />
-	        <conditional key="Prerequisite" name="Favored Class Oracle" >
-	            <choice groupName="Favored Class Point" />
-	        </conditional>
-            </selection>
+        </selection>
     </prerequisite>
     <prerequisite type="Oracle Level" comparator="Equals" value="4">
         <selection name="Oracle Level 5">
             <bonus type="Oracle Level" value="1" />
-            <bonus type="Oracle Caster Level" value="1" />
-            <bonus type="Hit Points" value="8" />
-            <bonus type="Skill Points" value="max( 1 , ( 4 + [Intelligence Modifier] ) )" />
-	        <conditional key="Prerequisite" name="Favored Class Oracle" >
-	            <choice groupName="Favored Class Point" />
-	        </conditional>
-            </selection>
+        </selection>
     </prerequisite>
     <prerequisite type="Oracle Level" comparator="Equals" value="5">
         <selection name="Oracle Level 6">
             <bonus type="Oracle Level" value="1" />
-            <bonus type="Oracle Caster Level" value="1" />
-            <bonus type="Hit Points" value="8" />
-            <bonus type="Base Attack" value="1" />
-            <bonus type="Skill Points" value="max( 1 , ( 4 + [Intelligence Modifier] ) )" />
-            <bonus type="Fortitude" value="1" />
-            <bonus type="Reflex" value="1" />
-            <bonus type="Will" value="1" />
-	        <conditional key="Prerequisite" name="Favored Class Oracle" >
-	            <choice groupName="Favored Class Point" />
-	        </conditional>
-            </selection>
+        </selection>
     </prerequisite>
     <prerequisite type="Oracle Level" comparator="Equals" value="6">
         <selection name="Oracle Level 7">
             <bonus type="Oracle Level" value="1" />
-            <bonus type="Oracle Caster Level" value="1" />
-            <bonus type="Hit Points" value="8" />
-            <bonus type="Base Attack" value="1" />
-            <bonus type="Skill Points" value="max( 1 , ( 4 + [Intelligence Modifier] ) )" />
             <choice groupName="Oracle Revelation" />
-	        <conditional key="Prerequisite" name="Favored Class Oracle" >
-	            <choice groupName="Favored Class Point" />
-	        </conditional>
-            </selection>
+        </selection>
     </prerequisite>
     <prerequisite type="Oracle Level" comparator="Equals" value="7">
         <selection name="Oracle Level 8">
             <bonus type="Oracle Level" value="1" />
-            <bonus type="Oracle Caster Level" value="1" />
-            <bonus type="Hit Points" value="8" />
-            <bonus type="Base Attack" value="1" />
-            <bonus type="Skill Points" value="max( 1 , ( 4 + [Intelligence Modifier] ) )" />
-            <bonus type="Will" value="1" />
-	        <conditional key="Prerequisite" name="Favored Class Oracle" >
-	            <choice groupName="Favored Class Point" />
-	        </conditional>
-            </selection>
+        </selection>
     </prerequisite>
     <prerequisite type="Oracle Level" comparator="Equals" value="8">
         <selection name="Oracle Level 9">
             <bonus type="Oracle Level" value="1" />
-            <bonus type="Oracle Caster Level" value="1" />
-            <bonus type="Hit Points" value="8" />
-            <bonus type="Skill Points" value="max( 1 , ( 4 + [Intelligence Modifier] ) )" />
-            <bonus type="Fortitude" value="1" />
-            <bonus type="Reflex" value="1" />
-	        <conditional key="Prerequisite" name="Favored Class Oracle" >
-	            <choice groupName="Favored Class Point" />
-	        </conditional>
-            </selection>
+        </selection>
     </prerequisite>
     <prerequisite type="Oracle Level" comparator="Equals" value="9">
         <selection name="Oracle Level 10">
             <bonus type="Wizard Level" value="1" />
-            <bonus type="Oracle Caster Level" value="1" />
-            <bonus type="Hit Points" value="8" />
-            <bonus type="Base Attack" value="1" />
-            <bonus type="Skill Points" value="max( 1 , ( 4 + [Intelligence Modifier] ) )" />
-            <bonus type="Will" value="1" />
-	        <conditional key="Prerequisite" name="Favored Class Oracle" >
-	            <choice groupName="Favored Class Point" />
-	        </conditional>
-            </selection>
+        </selection>
     </prerequisite>
     <prerequisite type="Paladin Level" comparator="Equals" value="0">
         <selection name="Paladin Level 1">
             <bonus type="Paladin Level" value="1" />
-            <bonus type="Hit Points" value="10" />
-            <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-            <bonus type="Base Attack" value="1" />
-            <bonus type="Fortitude" value="2" />
-            <bonus type="Will" value="2" />
-            <bonus type="Paladin Caster Level" value="1" />
+            <bonus type="Base Attack" value="[Paladin Level]" />
+	        <bonus type="Hit Points" value="( [Paladin Level] * 10 * [HP Numerator] / [HP Denominator] )" />
+	        <bonus type="Hit Points" value="( 10 - ( 10 * [HP Numerator] / [HP Denominator] ) )" stackType="Max HP First Level" />
+            <bonus type="Skill Points" value="( max( 1 , ( 2 + [Intelligence Modifier] ) ) * [Paladin Level] )" />
+            <bonus type="Fortitude,Will" value="2 + ( [Paladin Level] / 2 )" />
+            <bonus type="Reflex" value="( [Paladin Level] / 3 )" />
 	        <condition key="Proficiency" name="Light Armor,Medium Armor,Heavy Armor" />
 	        <condition key="Proficiency" name="Light Shield,Heavy Shield" />
 	        <condition key="Proficiency" name="Simple Weapon,Martial Weapon" />
@@ -757,39 +479,28 @@
     <prerequisite type="Paladin Level" comparator="Equals" value="1">
         <selection name="Paladin Level 2">
             <bonus type="Paladin Level" value="1" />
-            <bonus type="Hit Points" value="10" />
-            <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-            <bonus type="Base Attack" value="1" />
-            <bonus type="Fortitude" value="1" />
-            <bonus type="Will" value="1" />
             <bonus type="Fortitude,Reflex,Will" value="[Charisma Modifier]" />
-            <bonus type="Paladin Caster Level" value="1" />
             <!-- TODO Lay on Hands -->
             <condition key="Uses" type="Lay On Hands Uses" value="[Charisma Modifier] + ( [Paladin Level] / 2 )" />
             <action name="Lay On Hands, Self" cost="Swift" uses="Lay On Hands Uses">
                 <attack target="Self">
                     <onHitEffect>
-                        <bonus type="Damage Dice" value="( [Paladin Level] / 2 ) d 6" />
+                        <bonus type="Damage d6" value="( [Paladin Level] / 2 )" />
                     </onHitEffect>
                 </attack>
             </action>
             <action name="Lay On Hands, Other" cost="Standard" uses="Lay On Hands Uses">
                 <attack>
                     <onHitEffect>
-                        <bonus type="Damage Dice" value="( [Paladin Level] / 2 ) d 6" />
+                        <bonus type="Damage d6" value="( [Paladin Level] / 2 )" />
                     </onHitEffect>
                 </attack>
             </action>
-            </selection>
+        </selection>
     </prerequisite>
     <prerequisite type="Paladin Level" comparator="Equals" value="2">
         <selection name="Paladin Level 3">
             <bonus type="Paladin Level" value="1" />
-            <bonus type="Hit Points" value="10" />
-            <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-            <bonus type="Base Attack" value="1" />
-            <bonus type="Reflex" value="1" />
-            <bonus type="Paladin Caster Level" value="1" />
             <!-- TODO Aura of Courage -->
             <!-- TODO Divine Health -->
             <!-- TODO Mercy -->
@@ -798,84 +509,49 @@
     <prerequisite type="Paladin Level" comparator="Equals" value="3">
         <selection name="Paladin Level 4">
             <bonus type="Paladin Level" value="1" />
-            <bonus type="Hit Points" value="10" />
-            <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-            <bonus type="Base Attack" value="1" />
-            <bonus type="Fortitude" value="1" />
-            <bonus type="Will" value="1" />
-            <bonus type="Paladin Caster Level" value="1" />
+            <bonus type="Paladin Caster Level" value="[Paladin Level]" />
+            <bonus type="Paladin Spell Levels" value="[Paladin Level]" />
         </selection>
     </prerequisite>
     <prerequisite type="Paladin Level" comparator="Equals" value="4">
         <selection name="Paladin Level 5">
             <bonus type="Paladin Level" value="1" />
-            <bonus type="Hit Points" value="10" />
-            <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-            <bonus type="Base Attack" value="1" />
-            <bonus type="Paladin Caster Level" value="1" />
         </selection>
     </prerequisite>
     <prerequisite type="Paladin Level" comparator="Equals" value="5">
         <selection name="Paladin Level 6">
             <bonus type="Paladin Level" value="1" />
-            <bonus type="Hit Points" value="10" />
-            <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-            <bonus type="Base Attack" value="1" />
-            <bonus type="Fortitude" value="1" />
-            <bonus type="Reflex" value="1" />
-            <bonus type="Will" value="1" />
-            <bonus type="Paladin Caster Level" value="1" />
         </selection>
     </prerequisite>
     <prerequisite type="Paladin Level" comparator="Equals" value="6">
         <selection name="Paladin Level 7">
             <bonus type="Paladin Level" value="1" />
-            <bonus type="Hit Points" value="10" />
-            <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-            <bonus type="Base Attack" value="1" />
-            <bonus type="Paladin Caster Level" value="1" />
         </selection>
     </prerequisite>
     <prerequisite type="Paladin Level" comparator="Equals" value="7">
         <selection name="Paladin Level 8">
             <bonus type="Paladin Level" value="1" />
-            <bonus type="Hit Points" value="10" />
-            <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-            <bonus type="Base Attack" value="1" />
-            <bonus type="Fortitude" value="1" />
-            <bonus type="Will" value="1" />
-            <bonus type="Paladin Caster Level" value="1" />
         </selection>
     </prerequisite>
     <prerequisite type="Paladin Level" comparator="Equals" value="8">
         <selection name="Paladin Level 9">
             <bonus type="Paladin Level" value="1" />
-            <bonus type="Hit Points" value="10" />
-            <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-            <bonus type="Base Attack" value="1" />
-            <bonus type="Reflex" value="1" />
-            <bonus type="Paladin Caster Level" value="1" />
         </selection>
     </prerequisite>
     <prerequisite type="Paladin Level" comparator="Equals" value="9">
         <selection name="Paladin Level 10">
             <bonus type="Paladin Level" value="1" />
-            <bonus type="Hit Points" value="10" />
-            <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-            <bonus type="Base Attack" value="1" />
-            <bonus type="Fortitude" value="1" />
-            <bonus type="Will" value="1" />
-            <bonus type="Paladin Caster Level" value="1" />
         </selection>
     </prerequisite>
     <prerequisite type="Ranger Level" comparator="Equals" value="0">
      	<selection name="Ranger Lvl 1">
      	    <bonus type="Ranger Level" value="1" />
-     	    <bonus type="Skill Points" value="max( 1 , ( 6 + [Intelligence Modifier] ) )" />
-     	    <bonus type="Hit Points" value="10" />
-     	    <bonus type="Base Attack" value="1"/>
-     	    <bonus type="Fortitude" value="2" />
-     	    <bonus type="Reflex" value="2" />
+            <bonus type="Base Attack" value="[Ranger Level]" />
+     	    <bonus type="Skill Points" value="( max( 1 , ( 6 + [Intelligence Modifier] ) ) * [Ranger Level] )" />
+	        <bonus type="Hit Points" value="( [Ranger Level] * 10 * [HP Numerator] / [HP Denominator] )" />
+	        <bonus type="Hit Points" value="( 10 - ( 10 * [HP Numerator] / [HP Denominator] ) )" stackType="Max HP First Level" />
+     	    <bonus type="Fortitude,Reflex" value="2 + ( [Ranger Level] / 2 )" />
+     	    <bonus type="Will" value="( [Ranger Level] / 3 )" />
 	        <condition key="Proficiency" name="Light Armor,Medium Armor" />
 	        <condition key="Proficiency" name="Light Shield,Heavy Shield" />
 	        <condition key="Proficiency" name="Simple Weapon,Martial Weapon" />
@@ -889,96 +565,60 @@
     <prerequisite type="Ranger Level" comparator="Equals" value="1">
         <selection name="Ranger Lvl 2">
             <bonus type="Ranger Level" value="1" />
-            <bonus type="Skill Points" value="max( 1 , ( 6 + [Intelligence Modifier] ) )" />
-            <bonus type="Hit Points" value="10" />
-            <bonus type="Base Attack" value="1" />
-            <bonus type="Fortitude" value="1" />
-            <bonus type="Reflex" value="1" />
             <!-- TODO combat style feats --> />
     	</selection>
     </prerequisite>
     <prerequisite type="Ranger Level" comparator="Equals" value="2">
         <selection name="Ranger Lvl 3">
             <bonus type="Ranger Level" value="1" />
-            <bonus type="Skill Points" value="max( 1 , ( 6 + [Intelligence Modifier] ) )" />
-            <bonus type="Hit Points" value="10" />
-            <bonus type="Base Attack" value="1" />
-            <bonus type="Will" value="1" />
         </selection>
     </prerequisite>
     <prerequisite type="Ranger Level" comparator="Equals" value="3">
         <selection name="Ranger Lvl 4">
             <bonus type="Ranger Level" value="1" />
-            <bonus type="Skill Points" value="max( 1 , ( 6 + [Intelligence Modifier] ) )" />
-            <bonus type="Hit Points" value="10" />
-            <bonus type="Base Attack" value="1" />
-            <bonus type="Fortitude" value="1" />
-            <bonus type="Reflex" value="1" />
+            <bonus type="Ranger Caster Level" value="[Ranger Level]" />
+            <bonus type="Ranger Spell Levels" value="[Ranger Level]" />
         </selection>
     </prerequisite>
     <prerequisite type="Ranger Level" comparator="Equals" value="4">
         <selection name="Ranger Lvl 5">
             <bonus type="Ranger Level" value="1" />
-            <bonus type="Skill Points" value="max( 1 , ( 6 + [Intelligence Modifier] ) )" />
-            <bonus type="Hit Points" value="10" />
-            <bonus type="Base Attack" value="1" />
         </selection>
     </prerequisite>
     <prerequisite type="Ranger Level" comparator="Equals" value="5">
         <selection name="Ranger Lvl 6">
             <bonus type="Ranger Level" value="1" />
-            <bonus type="Skill Points" value="max( 1 , ( 6 + [Intelligence Modifier] ) )" />
-            <bonus type="Hit Points" value="10" />
-            <bonus type="Base Attack" value="1" />
-            <bonus type="Fortitude" value="1" />
-            <bonus type="Reflex" value="1" />
-            <bonus type="Will" value="1" />
         </selection>
     </prerequisite>
     <prerequisite type="Ranger Level" comparator="Equals" value="6">
         <selection name="Ranger Lvl 7">
             <bonus type="Ranger Level" value="1" />
-            <bonus type="Skill Points" value="max( 1 , ( 6 + [Intelligence Modifier] ) )" />
-            <bonus type="Hit Points" value="10" />
-            <bonus type="Base Attack" value="1" />
         </selection>
     </prerequisite>
     <prerequisite type="Ranger Level" comparator="Equals" value="7">
         <selection name="Ranger Lvl 8">
             <bonus type="Ranger Level" value="1" />
-            <bonus type="Skill Points" value="max( 1 , ( 6 + [Intelligence Modifier] ) )" />
-            <bonus type="Hit Points" value="10" />
-            <bonus type="Base Attack" value="1" />
-            <bonus type="Fortitude" value="1" />
-            <bonus type="Reflex" value="1" />
         </selection>
     </prerequisite>
     <prerequisite type="Ranger Level" comparator="Equals" value="8">
         <selection name="Ranger Lvl 9">
             <bonus type="Ranger Level" value="1" />
-            <bonus type="Skill Points" value="max( 1 , ( 6 + [Intelligence Modifier] ) )" />
-            <bonus type="Hit Points" value="10" />
-            <bonus type="Base Attack" value="1" />
-            <bonus type="Will" value="1" />
         </selection>
     </prerequisite>
     <prerequisite type="Ranger Level" comparator="Equals" value="9">
         <selection name="Ranger Lvl 10">
             <bonus type="Ranger Level" value="1" />
-            <bonus type="Skill Points" value="max( 1 , ( 6 + [Intelligence Modifier] ) )" />
-            <bonus type="Hit Points" value="10" />
-            <bonus type="Base Attack" value="1" />
-            <bonus type="Fortitude" value="1" />
-            <bonus type="Reflex" value="1" />
         </selection>
     </prerequisite>
     <prerequisite type="Rogue Level" comparator="Equals" value="0">
     <selection name="Rogue Level 1">
         <bonus type="Rogue Level" value="1" />
-        <bonus type="Skill Points" value="max( 1 , ( 8 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="8" />
-        <bonus type="Base Attack" value="0" />
-		<bonus type="Reflex" value="2" />
+        <bonus type="Base Attack" value="( [Rogue Level] * 3 / 4 )" />
+        <bonus type="Skill Points" value="( max( 1 , ( 8 + [Intelligence Modifier] ) ) * [Rogue Level] )" />
+        <bonus type="Hit Points" value="( [Rogue Level] * 8 * [HP Numerator] / [HP Denominator] )" />
+        <bonus type="Hit Points" value="( 8 - ( 8 * [HP Numerator] / [HP Denominator] ) )" stackType="Max HP First Level" />
+		<bonus type="Reflex" value="2 + ( [Rogue Level] / 2 )" />
+		<bonus type="Fortitude,Will" value="( [Rogue Level] / 3 )" />
         <condition key="Proficiency" name="Simple Weapon" value="All" />
         <condition key="Proficiency" name="Martial Weapon" value="Rapier,Sap,Shortbow,Short Sword" />
         <condition key="Proficiency" name="Exotic Weapon" value="Hand Crossbow" />
@@ -993,10 +633,6 @@
     <prerequisite type="Rogue Level" comparator="Equals" value="1">
     <selection name="Rogue Level 2">
         <bonus type="Rogue Level" value="1" />        
-        <bonus type="Skill Points" value="max( 1 , ( 8 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="8" />
-        <bonus type="Base Attack" value="1" />
-        <bonus type="Reflex" value="1" />
         <!-- TODO: Evasion -->
         <choice groupName="Rogue Talent" />
         <!-- TODO: Talent Descriptions -->
@@ -1005,86 +641,58 @@
     <prerequisite type="Rogue Level" comparator="Equals" value="2">
     <selection name="Rogue Level 3">
         <bonus type="Rogue Level" value="1" />        
-        <bonus type="Skill Points" value="max( 1 , ( 8 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="8" />
-        <bonus type="Base Attack" value="1" />
-        <bonus type="Fortitude" value="1" />
-        <bonus type="Will" value="1" />
     </selection>
     </prerequisite>
     <prerequisite type="Rogue Level" comparator="Equals" value="3">
     <selection name="Rogue Level 4">
         <bonus type="Rogue Level" value="1" />        
-        <bonus type="Skill Points" value="max( 1 , ( 8 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="8" />
-        <bonus type="Base Attack" value="1" />
-        <bonus type="Reflex" value="1" />
         <choice groupName="Rogue Talent" />
     </selection>
     </prerequisite>
     <prerequisite type="Rogue Level" comparator="Equals" value="4">
     <selection name="Rogue Level 5">
         <bonus type="Rogue Level" value="1" />        
-        <bonus type="Skill Points" value="max( 1 , ( 8 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="8" />
     </selection>
     </prerequisite>
     <prerequisite type="Rogue Level" comparator="Equals" value="5">
     <selection name="Rogue Level 6">
         <bonus type="Rogue Level" value="1" />        
-        <bonus type="Skill Points" value="max( 1 , ( 8 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="8" />
-        <bonus type="Base Attack" value="1" />
-        <bonus type="Fortitude" value="1" />
-        <bonus type="Reflex" value="1" />
-        <bonus type="Will" value="1" />
         <choice groupName="Rogue Talent" />
     </selection>
     </prerequisite>
     <prerequisite type="Rogue Level" comparator="Equals" value="6">
     <selection name="Rogue Level 7">
         <bonus type="Rogue Level" value="1" />        
-        <bonus type="Skill Points" value="max( 1 , ( 8 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="8" />
-        <bonus type="Base Attack" value="1" />
     </selection>
     </prerequisite>
     <prerequisite type="Rogue Level" comparator="Equals" value="7">
     <selection name="Rogue Level 8">
         <bonus type="Rogue Level" value="1" />        
-        <bonus type="Skill Points" value="max( 1 , ( 8 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="8" />
-        <bonus type="Base Attack" value="1" />
-        <bonus type="Reflex" value="1" />
         <choice groupName="Rogue Talent" />
     </selection>
     </prerequisite>
     <prerequisite type="Rogue Level" comparator="Equals" value="8">
     <selection name="Rogue Level 9">
         <bonus type="Rogue Level" value="1" />        
-        <bonus type="Skill Points" value="max( 1 , ( 8 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="8" />
-        <bonus type="Fortitude" value="1" />
-        <bonus type="Will" value="1" />
     </selection>
     </prerequisite>
     <prerequisite type="Rogue Level" comparator="Equals" value="9">
     <selection name="Rogue Level 10">
         <bonus type="Rogue Level" value="1" />        
-        <bonus type="Skill Points" value="max( 1 , ( 8 + [Intelligence Modifier] ) )" />
-        <bonus type="Hit Points" value="8" />
-        <bonus type="Base Attack" value="1" />
-        <bonus type="Reflex" value="1" />
         <choice groupName="Rogue Talent" />
     </selection>
     </prerequisite>
     <prerequisite type="Sorcerer Level" comparator="Equals" value="0">
         <selection name="Sorcerer Level 1">
             <bonus type="Sorcerer Level" value="1" />
-            <bonus type="Sorcerer Caster Level" value="1" />
-            <bonus type="Hit Points" value="6" />
-            <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-            <bonus type="Will" value="2" />
+            <bonus type="Base Attack" value="( [Sorcerer Level] / 2 )" />
+            <bonus type="Sorcerer Caster Level" value="[Sorcerer Level]" />
+            <bonus type="Sorcerer Spell Levels" value="[Sorcerer Level]" />
+	        <bonus type="Hit Points" value="( [Sorcerer Level] * 6 * [HP Numerator] / [HP Denominator] )" />
+	        <bonus type="Hit Points" value="( 6 - ( 6 * [HP Numerator] / [HP Denominator] ) )" stackType="Max HP First Level" />
+            <bonus type="Skill Points" value="( max( 1 , ( 2 + [Intelligence Modifier] ) ) * [Sorcerer Level] )" />
+            <bonus type="Will" value="2 + ( [Sorcerer Level] / 2 )" />
+            <bonus type="Fortitude,Reflex" value="( [Sorcerer Level] / 3 )" />
 	        <condition key="Proficiency" name="Simple Weapon" />
 	        <bonus type="Appraise,Bluff,Craft,Fly,Intimidate,Arcana,Profession,Spellcraft,Use Magic Device" stackType="Class Skill" value="3" />
         </selection>
@@ -1092,98 +700,59 @@
     <prerequisite type="Sorcerer Level" comparator="Equals" value="1">
         <selection name="Sorcerer Level 2">
             <bonus type="Sorcerer Level" value="1" />
-            <bonus type="Sorcerer Caster Level" value="1" />
-            <bonus type="Hit Points" value="6" />
-            <bonus type="Base Attack" value="1" />
-            <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-            <bonus type="Will" value="1" />
         </selection>
     </prerequisite>
     <prerequisite type="Sorcerer Level" comparator="Equals" value="2">
         <selection name="Sorcerer Level 3">
             <bonus type="Sorcerer Level" value="1" />
-            <bonus type="Sorcerer Caster Level" value="1" />
-            <bonus type="Hit Points" value="6" />
-            <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-            <bonus type="Fortitude" value="1" />
-            <bonus type="Reflex" value="1" />
         </selection>
     </prerequisite>
     <prerequisite type="Sorcerer Level" comparator="Equals" value="3">
         <selection name="Sorcerer Level 4">
             <bonus type="Sorcerer Level" value="1" />
-            <bonus type="Sorcerer Caster Level" value="1" />
-            <bonus type="Hit Points" value="6" />
-            <bonus type="Base Attack" value="1" />
-            <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-            <bonus type="Will" value="1" />
         </selection>
     </prerequisite>
     <prerequisite type="Sorcerer Level" comparator="Equals" value="4">
         <selection name="Sorcerer Level 5">
             <bonus type="Sorcerer Level" value="1" />
-            <bonus type="Sorcerer Caster Level" value="1" />
-            <bonus type="Hit Points" value="6" />
-            <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
         </selection>
     </prerequisite>
     <prerequisite type="Sorcerer Level" comparator="Equals" value="5">
         <selection name="Sorcerer Level 6">
             <bonus type="Sorcerer Level" value="1" />
-            <bonus type="Sorcerer Caster Level" value="1" />
-            <bonus type="Hit Points" value="6" />
-            <bonus type="Base Attack" value="1" />
-            <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-            <bonus type="Fortitude" value="1" />
-            <bonus type="Reflex" value="1" />
-            <bonus type="Will" value="1" />
         </selection>
     </prerequisite>
     <prerequisite type="Sorcerer Level" comparator="Equals" value="6">
         <selection name="Sorcerer Level 7">
             <bonus type="Sorcerer Level" value="1" />
-            <bonus type="Sorcerer Caster Level" value="1" />
-            <bonus type="Hit Points" value="6" />
-            <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
         </selection>
     </prerequisite>
     <prerequisite type="Sorcerer Level" comparator="Equals" value="7">
         <selection name="Sorcerer Level 8">
             <bonus type="Sorcerer Level" value="1" />
-            <bonus type="Sorcerer Caster Level" value="1" />
-            <bonus type="Hit Points" value="6" />
-            <bonus type="Base Attack" value="1" />
-            <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-            <bonus type="Will" value="1" />
         </selection>
     </prerequisite>
     <prerequisite type="Sorcerer Level" comparator="Equals" value="8">
         <selection name="Sorcerer Level 9">
             <bonus type="Sorcerer Level" value="1" />
-            <bonus type="Sorcerer Caster Level" value="1" />
-            <bonus type="Hit Points" value="6" />
-            <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-            <bonus type="Fortitude" value="1" />
-            <bonus type="Reflex" value="1" />
         </selection>
     </prerequisite>
     <prerequisite type="Sorcerer Level" comparator="Equals" value="9">
         <selection name="Sorcerer Level 10">
             <bonus type="Sorcerer Level" value="1" />
-            <bonus type="Sorcerer Caster Level" value="1" />
-            <bonus type="Hit Points" value="6" />
-            <bonus type="Base Attack" value="1" />
-            <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-            <bonus type="Will" value="1" />
         </selection>
     </prerequisite>
     <prerequisite type="Wizard Level" comparator="Equals" value="0">
         <selection name="Wizard Level 1">
             <bonus type="Wizard Level" value="1" />
-            <bonus type="Wizard Caster Level" value="1" />
-            <bonus type="Hit Points" value="6" />
-            <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-            <bonus type="Will" value="2" />
+            <bonus type="Wizard Caster Level" value="[Wizard Level]" />
+            <bonus type="Wizard Spell Levels" value="[Wizard Level]" />
+            <bonus type="Base Attack" value="( [Wizard Level] / 2 )" />
+	        <bonus type="Hit Points" value="( [Wizard Level] * 8 * [HP Numerator] / [HP Denominator] )" />
+	        <bonus type="Hit Points" value="( 8 - ( 8 * [HP Numerator] / [HP Denominator] ) )" stackType="Max HP First Level" />
+            <bonus type="Skill Points" value="( max( 1 , ( 2 + [Intelligence Modifier] ) ) * [Wizard Level] )" />
+            <bonus type="Will" value="2 + ( [Wizard Level] / 2 )" />
+            <bonus type="Fortitude,Reflex" value="( [Wizard Level] / 3 )" />
 	        <condition key="Proficiency" name="Club,Dagger,Heavy Crossbow,Light Crossbow,Quarterstaff" />
 	        <bonus type="Appraise,Craft,Fly,Linguistics,Profession,Spellcraft" stackType="Class Skill" value="3" />
         	<bonus type="Arcana,Dungeoneering,Engineering,Geography,History,Local,Nature,Nobility,Planes,Religion" stackType="Class Skill" value="3" />
@@ -1192,89 +761,46 @@
     <prerequisite type="Wizard Level" comparator="Equals" value="1">
         <selection name="Wizard Level 2">
             <bonus type="Wizard Level" value="1" />
-            <bonus type="Wizard Caster Level" value="1" />
-            <bonus type="Hit Points" value="6" />
-            <bonus type="Base Attack" value="1" />
-            <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-            <bonus type="Will" value="1" />
         </selection>
     </prerequisite>
     <prerequisite type="Wizard Level" comparator="Equals" value="2">
         <selection name="Wizard Level 3">
             <bonus type="Wizard Level" value="1" />
-            <bonus type="Wizard Caster Level" value="1" />
-            <bonus type="Hit Points" value="6" />
-            <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-            <bonus type="Fortitude" value="1" />
-            <bonus type="Reflex" value="1" />
         </selection>
     </prerequisite>
     <prerequisite type="Wizard Level" comparator="Equals" value="3">
         <selection name="Wizard Level 4">
             <bonus type="Wizard Level" value="1" />
-            <bonus type="Wizard Caster Level" value="1" />
-            <bonus type="Hit Points" value="6" />
-            <bonus type="Base Attack" value="1" />
-            <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-            <bonus type="Will" value="1" />
         </selection>
     </prerequisite>
     <prerequisite type="Wizard Level" comparator="Equals" value="4">
         <selection name="Wizard Level 5">
             <bonus type="Wizard Level" value="1" />
-            <bonus type="Wizard Caster Level" value="1" />
-            <bonus type="Hit Points" value="6" />
-            <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
         </selection>
     </prerequisite>
     <prerequisite type="Wizard Level" comparator="Equals" value="5">
         <selection name="Wizard Level 6">
             <bonus type="Wizard Level" value="1" />
-            <bonus type="Wizard Caster Level" value="1" />
-            <bonus type="Hit Points" value="6" />
-            <bonus type="Base Attack" value="1" />
-            <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-            <bonus type="Fortitude" value="1" />
-            <bonus type="Reflex" value="1" />
-            <bonus type="Will" value="1" />
         </selection>
     </prerequisite>
     <prerequisite type="Wizard Level" comparator="Equals" value="6">
         <selection name="Wizard Level 7">
             <bonus type="Wizard Level" value="1" />
-            <bonus type="Wizard Caster Level" value="1" />
-            <bonus type="Hit Points" value="6" />
-            <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
         </selection>
     </prerequisite>
     <prerequisite type="Wizard Level" comparator="Equals" value="7">
         <selection name="Wizard Level 8">
             <bonus type="Wizard Level" value="1" />
-            <bonus type="Wizard Caster Level" value="1" />
-            <bonus type="Hit Points" value="6" />
-            <bonus type="Base Attack" value="1" />
-            <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-            <bonus type="Will" value="1" />
         </selection>
     </prerequisite>
     <prerequisite type="Wizard Level" comparator="Equals" value="8">
         <selection name="Wizard Level 9">
             <bonus type="Wizard Level" value="1" />
-            <bonus type="Wizard Caster Level" value="1" />
-            <bonus type="Hit Points" value="6" />
-            <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-            <bonus type="Fortitude" value="1" />
-            <bonus type="Reflex" value="1" />
         </selection>
     </prerequisite>
     <prerequisite type="Wizard Level" comparator="Equals" value="9">
         <selection name="Wizard Level 10">
             <bonus type="Wizard Level" value="1" />
-            <bonus type="Wizard Caster Level" value="1" />
-            <bonus type="Hit Points" value="6" />
-            <bonus type="Base Attack" value="1" />
-            <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) )" />
-            <bonus type="Will" value="1" />
         </selection>
     </prerequisite>
 </bonusGroup>

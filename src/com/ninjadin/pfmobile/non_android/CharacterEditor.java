@@ -86,15 +86,6 @@ public class CharacterEditor {
 		}
 	}
 	
-	public void equipItem(String itemData, String slot) throws IOException {
-		File copyFrom = charFile;
-		File copyTo = tempFile;
-		String name = equipment.get(slot);
-		String parentAttrs = XmlConst.NAME_ATTR + "=\"" + name;
-		XmlEditor.replaceParent(copyFrom, copyTo, XmlConst.ITEM_TAG, parentAttrs, itemData);
-		copyTo.renameTo(charFile);
-	}
-
 	public void readEquipment(XmlPullParser parser) throws XmlPullParserException, IOException {
 		equipment = new HashMap<String, String> ();
 		String[] tag_names = new String[] { XmlConst.ITEM_TAG };

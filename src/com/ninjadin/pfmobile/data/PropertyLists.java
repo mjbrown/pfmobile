@@ -6,15 +6,27 @@ import java.util.List;
 import java.util.Map;
 
 public class PropertyLists {
-	final public static String all = "All";
+	final public static int[] bard_per_day =     { 1,2,3,3,4,4,4,4,5,5,5,5,5,5,5,5,5,5,5,5 };
+	final public static int[] bard_known =       { 2,3,4,4,4,4,5,5,5,5,5,5,5,5,5,5,5,5,5,5 };
 
+	final public static int[] cleric_per_day =   { 1,2,2,3,3,3,4,4,4,4,4,4,4,4,4,4,4,4,4,4 };
+
+	final public static int[] paladin_per_day =  { 0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4 };
+
+	final public static int[] sorcerer_per_day = { 3,4,5,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6 };
+	final public static int[] sorcerer_known =   { 1,2,2,3,3,4,4,5,5,5,5,5,5,5,5,5,5,5,5,5 };
+
+	final public static String manual = "Manual";
+	
+	final public static String all = "All";
 	final public static String actionCosts[] = { "Full Round", "Standard",
 		"Move", "Swift", "Immediate", "Free" };
 
 	final public static String statisticPrereq = "Statistic";
 	final public static String prerequisite = "Prerequisite";
 	final public static String activated = "Activated";
-	final public static String keyNames[] = new String[] { "Statistic", "Uses", "Status", prerequisite, "Equipment", 
+	final public static String equipment = "Equipment";
+	final public static String keyNames[] = new String[] { "Statistic", "Status", prerequisite, "Equipment", 
 		"Proficiency", "Attack Source", "Attack Target", "Damage Source", "Damage Target", "Activated", };
 	
 	final public static String statusNames[] = new String[] { "Unarmored", "Light Armor", "Medium Armor",
@@ -29,7 +41,7 @@ public class PropertyLists {
 	"Dodge", "Class", "Inherent", ranks};
 
 	final public static String class_skill = "Class Skill";
-	final public static String notStackableTypes[] = new String[] { "Unnamed", "Aid Another", 
+	final public static String notStackableTypes[] = new String[] { "Max HP First Level", "Unnamed", "Aid Another", 
 	"Flank", "Circumstance", "Divine", "Profane", "Alchemical", "Enhancement", class_skill,
 	"Competence", "Ability", "Morale", "Armor", "Deflection", "Luck", "Armor Enhancement",
 	"Morale", "Natural Armor", "Size", "Range", "High Ground", "Shield", "Shield Enhancement", };
@@ -76,8 +88,10 @@ public class PropertyLists {
 	final public static String otherStatisticNames[] = new String[] { "Skill Points",	
 		"Spell Resistance", "Initiative", "Spell Penetration", "Sneak Attack Dice" };
 
+	final static public String inventory = "Inventory";
 	final static public String[] slotNames = new String[] { "Head", "Headband", "Wrists", "Feet",
-		"Eyes", "Neck", "Shoulders", "Chest", "Body", "Armor", "Hands", "Ring 1", "Ring 2", "Belt", "Main Hand", "Off Hand", "One Hand", "Two Hand" };
+		"Eyes", "Neck", "Shoulders", "Chest", "Body", "Armor", "Hands", "Ring 1", "Ring 2", "Belt", 
+		inventory };
 
 	// Weapon specific attributes
 	final static public String to_hit = "To Hit";
@@ -89,12 +103,12 @@ public class PropertyLists {
 	final static public String[] criticalRangeStrings = new String[] { "20", "19-20", "18-20", 
 		"17-20", "16-20", "15-20", "14-20", "13-20", "12-20", "11-20", "10-20", };
 	
-	// Damage properties
+	final static public String[] die = {"d2", "d3", "d4", "d6", "d8", "d10", "d12", "d20" };
 	final static public String damage = "Damage";
-	final static public String damage_dice = "Damage Dice";
+
 	final static public String crit_multiplier = "Critical Multiplier";
-	final static public String[] damageProperties = new String[] { damage, damage_dice, "Condition",
-		crit_multiplier, "Duration", "Number Of Uses", };
+	final static public String[] damageProperties = new String[] { 
+		"Condition", crit_multiplier, "Duration", "Number Of Uses", };
 	
 	// Weapon damage sources
 	final static public String[] damageSources = new String[] { "Piercing", "Slashing", "Bludgeoning", 
@@ -161,5 +175,13 @@ public class PropertyLists {
 		for (String item: damageProperties)
 			stat_names.add(item);
 		return stat_names;
+	}
+	
+	final static public List<String> damageDie() {
+		List<String> damage_die = new ArrayList<String>();
+		for (String dice: die) {
+			damage_die.add(damage + " " + dice);
+		}
+		return damage_die;
 	}
 }

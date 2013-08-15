@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,8 +26,9 @@ import android.widget.ExpandableListView;
 import android.widget.Toast;
 
 import com.ninjadin.pfmobile.R;
+import com.ninjadin.pfmobile.data.PropertyLists;
 import com.ninjadin.pfmobile.data.XmlConst;
-import com.ninjadin.pfmobile.fragments.AttackFragment;
+import com.ninjadin.pfmobile.fragments.ActionFragment;
 import com.ninjadin.pfmobile.fragments.CharacterSheetFragment;
 import com.ninjadin.pfmobile.fragments.ChoiceSelectFragment;
 import com.ninjadin.pfmobile.fragments.GeneratorMenuFragment;
@@ -35,6 +37,8 @@ import com.ninjadin.pfmobile.fragments.ItemEditDialogFragment;
 import com.ninjadin.pfmobile.fragments.ItemEditDialogFragment.ItemEditDialogListener;
 import com.ninjadin.pfmobile.fragments.ItemEditFragment;
 import com.ninjadin.pfmobile.fragments.LevelsFragment;
+import com.ninjadin.pfmobile.fragments.ModifierDialogFragment;
+import com.ninjadin.pfmobile.fragments.ModifierDialogFragment.ModifierDialogListener;
 import com.ninjadin.pfmobile.fragments.ShowXMLFragment;
 import com.ninjadin.pfmobile.fragments.TemplateSelectFragment;
 import com.ninjadin.pfmobile.non_android.AttackGroup;
@@ -45,7 +49,7 @@ import com.ninjadin.pfmobile.non_android.ItemEditor;
 import com.ninjadin.pfmobile.non_android.OnHitCondition;
 import com.ninjadin.pfmobile.non_android.StatisticManager;
 
-public class GeneratorActivity extends FragmentActivity implements ItemEditDialogListener {
+public class GeneratorActivity extends FragmentActivity implements ItemEditDialogListener, ModifierDialogListener {
 	public StatisticManager dependencyManager;
 	public CharacterEditor characterEditor;
 	public InventoryEditor inventoryEditor;
@@ -59,6 +63,7 @@ public class GeneratorActivity extends FragmentActivity implements ItemEditDialo
 	public File inventoryFile;
 	public File effectFile;
 	public File tempFile;
+	public Boolean dirtyFiles = true;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +80,7 @@ public class GeneratorActivity extends FragmentActivity implements ItemEditDialo
 		}
 		// Show the Up button in the action bar.
 		setupActionBar();
+		refreshCharData();
 	}
 
 	/**
@@ -114,36 +120,42 @@ public class GeneratorActivity extends FragmentActivity implements ItemEditDialo
 	@Override
 	public void onResume() {
 		super .onResume();
-		refreshCharData();  // Fragments rely upon this data being initialised.
+		refreshCharData();
 	}
 	
 	public void refreshCharData() {
-		Intent intent = getIntent();
+		if (dirtyFiles == false)
+			return;
+		dirtyFiles = false;
+		final GeneratorActivity context = this;
+		Intent intent = context.getIntent();
 		masterCharFilename = intent.getStringExtra(LoginLoadActivity.CHARFILE_MESSAGE);
 		inventoryFilename = intent.getStringExtra(LoginLoadActivity.INVFILE_MESSAGE);
 		effectFilename = intent.getStringExtra(LoginLoadActivity.EFFECTFILE_MESSAGE);
 		tempFilename = masterCharFilename.concat(".temp");
-		charFile = new File(this.getFilesDir(), masterCharFilename);
-		tempFile = new File(this.getFilesDir(), tempFilename);
-		effectFile = new File(this.getFilesDir(), effectFilename);
-		inventoryFile = new File(this.getFilesDir(), inventoryFilename);
+		charFile = new File(context.getFilesDir(), masterCharFilename);
+		tempFile = new File(context.getFilesDir(), tempFilename);
+		effectFile = new File(context.getFilesDir(), effectFilename);
+		inventoryFile = new File(context.getFilesDir(), inventoryFilename);
 		dependencyManager = new StatisticManager();
 		try {
 			characterEditor = new CharacterEditor(charFile, tempFile);
 			inventoryEditor = new InventoryEditor(inventoryFile);
 			effectEditor = new EffectEditor(effectFile);
-			InputStream inStream = new FileInputStream(charFile);
-			dependencyManager.readXMLBonuses(inStream);
-			inStream.close();
-			inStream = (InputStream) getResources().openRawResource(R.raw.dependencies);
-			dependencyManager.readXMLBonuses(inStream);
-			inStream.close();
-			inStream = new FileInputStream(inventoryFile);
+
+			InputStream inStream = (InputStream) getResources().openRawResource(R.raw.dependencies);
 			dependencyManager.readXMLBonuses(inStream);
 			inStream.close();
 			inStream = new FileInputStream(effectFile);
 			dependencyManager.readXMLBonuses(inStream);
 			inStream.close();
+			inStream = new FileInputStream(inventoryFile);
+			dependencyManager.readXMLBonuses(inStream);
+			inStream.close();
+			inStream = new FileInputStream(charFile);
+			dependencyManager.readXMLBonuses(inStream);
+			inStream.close();
+			dependencyManager.updateConditionalBonuses(10);
 		} catch (XmlPullParserException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -195,7 +207,7 @@ public class GeneratorActivity extends FragmentActivity implements ItemEditDialo
 	
 	public void launchAttacks(View view) {
 		refreshCharData();
-		AttackFragment newFragment = new AttackFragment();
+		ActionFragment newFragment = new ActionFragment();
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.fragment_container, newFragment);
 		transaction.addToBackStack(null);
@@ -257,6 +269,7 @@ public class GeneratorActivity extends FragmentActivity implements ItemEditDialo
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		dirtyFiles = true;
 		startMenu(selectionName + " selected.");
 	}
 	
@@ -358,12 +371,32 @@ public class GeneratorActivity extends FragmentActivity implements ItemEditDialo
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		dirtyFiles = true;
 		startMenu(templateName + " added.");
 	}
 	
 	public void equipItem(String slotName, String itemName) {
-		if (effectEditor != null)
-				effectEditor.activateEffect(itemName, slotName);
+		if (!(slotName.equals(PropertyLists.inventory))) {
+			effectEditor.deactivateEffect(slotName, PropertyLists.equipment);
+			Map<String,String> slot_activate = new HashMap<String,String>();
+			slot_activate.put(XmlConst.NAME_ATTR, slotName);
+			slot_activate.put(XmlConst.REMOVE_ATTR, itemName);
+			slot_activate.put(XmlConst.KEY_ATTR, PropertyLists.equipment);
+			effectEditor.activateEffect(slot_activate);
+		}
+
+		Map<String,String> item_activate = new HashMap<String,String>();
+		item_activate.put(XmlConst.NAME_ATTR, itemName);
+		item_activate.put(XmlConst.KEY_ATTR, PropertyLists.equipment);
+		effectEditor.activateEffect(item_activate);
+
+		try {
+			effectEditor.saveEffects(effectFile);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		dirtyFiles = true;
 		startMenu(itemName + " equipped to " + slotName + ".");
 	}
 	
@@ -373,18 +406,62 @@ public class GeneratorActivity extends FragmentActivity implements ItemEditDialo
 			if (attack.getTarget().equals("Self")) {
 				List<OnHitCondition> conds = attack.getOnHitConditions();
 				for (OnHitCondition cond: conds) {
-					Map<String,String> condition = cond.getConditionMap();
-					effectEditor.activateEffect(condition.get(XmlConst.NAME_ATTR), condition.get(XmlConst.UNIQUE_ATTR));
+					for (Map<String,String> add: cond.getAddedConditions())
+						effectEditor.activateEffect(add);
+					for (Map<String,String> remove: cond.getRemovedConditions())
+						effectEditor.deactivateEffect(remove);
 				}
 			}
 		}
+		try {
+			effectEditor.saveEffects(effectFile);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		dirtyFiles = true;
 		startMenu(action_name + " action taken.");
+	}
+	
+	public void activateEffect(String key, String name) {
+		Map<String,String> map = new HashMap<String,String>();
+		map.put(XmlConst.KEY_ATTR, key);
+		map.put(XmlConst.NAME_ATTR, name);
+		effectEditor.activateEffect(map);
+		dependencyManager.activateCondition(key, name);
+		try {
+			effectEditor.saveEffects(effectFile);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		dirtyFiles = true;
+	}
+	
+	public void deactivateEffect(String key, String name) {
+		Map<String,String> map = new HashMap<String,String>();
+		map.put(XmlConst.KEY_ATTR, key);
+		map.put(XmlConst.NAME_ATTR, name);
+		effectEditor.deactivateEffect(map);
+		dependencyManager.deactivateCondition(key, name);
+		try {
+			effectEditor.saveEffects(effectFile);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		dirtyFiles = true;
 	}
 	
 	public void showItemEditDialog(int groupPosition, int childPosition) {
 		DialogFragment dialog = new ItemEditDialogFragment();
 		itemEditor.setPosition(groupPosition, childPosition);
 		dialog.show(getSupportFragmentManager(), "ItemEditDialogFragment");
+	}
+	
+	public void showModifierDialog() {
+		DialogFragment dialog = new ModifierDialogFragment();
+		dialog.show(getSupportFragmentManager(), "ModifierDialogFragment");
 	}
 	
 	@Override
@@ -401,10 +478,23 @@ public class GeneratorActivity extends FragmentActivity implements ItemEditDialo
 		}
 		ExpandableListView expList = (ExpandableListView) findViewById(R.id.expandableListView1);
 		expList.invalidateViews();
+		dirtyFiles = true;
 	}
 	
 	@Override
 	public void onItemEditNegativeClick(ItemEditDialogFragment dialog) {
+		
+	}
+	
+	@Override
+	public void onModifierPosClick(ModifierDialogFragment dialog) {
+		ActionFragment fragment = (ActionFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+		refreshCharData();
+		fragment.reloadActionData();
+	}
+	
+	@Override
+	public void onModifierNegClick(ModifierDialogFragment dialog) {
 		
 	}
 }

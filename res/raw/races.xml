@@ -49,6 +49,9 @@
 	    <bonus type="Diplomacy" value="2" />
 	    <bonus type="Sense Motive" value="2" />
 	    <bonus type="Acid Resistance,Fire Resistance,Cold Resistance,Electricity Resistance" value="5" />
-	    
+	    <onHitEffect name="Unarmed Damage">
+	        <bonus type="Damage d3" value="1" />
+	    </onHitEffect>
+	    <!-- TODO Elemental Assault -->
 	</selection>
 </bonusGroup>

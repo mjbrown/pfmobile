@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <basicDependencies>
-    <bonus type="Strength Modifier" value="[Strength] / 2 - 5" />
-    <bonus type="Dexterity Modifier" value="[Dexterity] / 2 - 5" />
-    <bonus type="Constitution Modifier" value="[Constitution] / 2 - 5" />
-    <bonus type="Intelligence Modifier" value="[Intelligence] / 2 - 5" />
-    <bonus type="Wisdom Modifier" value="[Wisdom] / 2 - 5" />
-    <bonus type="Charisma Modifier" value="[Charisma] / 2 - 5" />
+    <bonus type="Strength Modifier" value="( [Strength] / 2 - 5 )" />
+    <bonus type="Dexterity Modifier" value="( [Dexterity] / 2 - 5 )" />
+    <bonus type="Constitution Modifier" value="( [Constitution] / 2 - 5 )" />
+    <bonus type="Intelligence Modifier" value="( [Intelligence] / 2 - 5 )" />
+    <bonus type="Wisdom Modifier" value="( [Wisdom] / 2 - 5 )" />
+    <bonus type="Charisma Modifier" value="( [Charisma] / 2 - 5 )" />
 
-    <bonus type="Hit Points" value="[Constitution Modifier] * [Character Level]" />
-	<bonus type="To Hit" value="[Base Attack]" />
-	
-    <bonus type="Climb Speed" value="[Speed] / 4" />
-    <bonus type="Swim Speed" value="[Speed] / 4" />
-    <bonus type="Stealth Speed" value="[Speed] / 2" />
+    <bonus type="Hit Points" value="( [Constitution Modifier] * [Character Level] )" />
+	<bonus type="HP Numerator" value="3" />
+	<bonus type="HP Denominator" value="4" />
+    
+    <bonus type="Climb Speed" value="( [Speed] / 4 )" />
+    <bonus type="Swim Speed" value="( [Speed] / 4 )" />
+    <bonus type="Stealth Speed" value="( [Speed] / 2 )" />
     <bonus type="Crawl Speed" value="5" />
     
     <bonus type="Armor Class,Flat Footed Armor Class,Touch Armor Class,Combat Maneuver Defense" value="10" />
@@ -71,20 +72,29 @@
     <bonus type="Survival" value="[Wisdom Modifier]" />
     <bonus type="Swim" value="[Strength Modifier]" />
     <bonus type="Use Magic Device" value="[Charisma Modifier]" />
-
-    <onHitEffect type="Hit Points" name="Main Hand Melee Weapon Damage" source="Natural" >
+    <onHitEffect type="Hit Points" name="Melee Damage" source="Natural">
+	    <bonus type="Critical Multiplier" value="2" />
+    </onHitEffect>
+	<onHitEffect name="Unarmed Damage" parent="Melee Damage" >
+	    <bonus type="Damage" value="[Strength Modifier]" />
+	</onHitEffect>
+    <onHitEffect name="Main Hand Melee Weapon Damage" parent="Melee Damage" >
         <bonus type="Damage" value="[Strength Modifier]"/>
-        <bonus type="Critical Multiplier" value="2" />
-        <conditional key="Activated" name="Two Hand">
-            <bonus type="Damage" value="[Strength Modifier] / 2" />
+        <conditional key="Equipment" name="Two Hand">
+            <bonus type="Damage" value="( [Strength Modifier] / 2 )" />
         </conditional>
     </onHitEffect>
-    <onHitEffect type="Hit Points" name="Off Hand Melee Weapon Damage" source="Natural" >
-        <bonus type="Damage" value="[Strength Modifier] / 2" />
+    <onHitEffect name="Off Hand Melee Weapon Damage" parent="Melee Damage" >
+        <bonus type="Damage" value="( [Strength Modifier] / 2 )" />
         <bonus type="Critical Multiplier" value="2" />
     </onHitEffect>
 	<attack name="Melee Attack" versus="Armor Class">
 	    <bonus type="To Hit" value="[Strength Modifier]" />
+	    <bonus type="To Hit" value="[Base Attack]" />
+	</attack>
+	<attack name="Melee Touch Attack" versus="Touch Armor Class">
+	    <bonus type="To Hit" value="[Strength Modifier]" />
+	    <bonus type="To Hit" value="[Base Attack]" />
 	</attack>
 	<attack name="Main Hand Melee Attack" parent="Melee Attack">
 	    <onHitEffect parent="Main Hand Melee Weapon Damage" />
@@ -92,20 +102,74 @@
 	<attack name="Off Hand Melee Attack" parent="Melee Attack">
 	    <onHitEffect parent="Off Hand Melee Weapon Damage" />
 	</attack>
-    <action name="Melee Full Attack" cost="Full Round" >
-        <attack parent="Main Hand Melee Attack" />
+	<attack name="Unarmed Attack" parent="Melee Attack">
+	    <onHitEffect parent="Unarmed Damage" />
+	</attack>
+	<conditional key="Equipment" name="Two Hand,Main Hand" >
+	    <action name="Melee Full Attack" cost="Full Round" >
+	        <attack name="First Main Hand Attack" parent="Main Hand Melee Attack" />
+	        <conditional key="Statistic" type="Base Attack" value="6">
+	            <attack name="Second Main Hand Attack" parent="Main Hand Melee Attack" >
+	                <bonus type="To Hit" value="-5"/>
+	            </attack>
+	        </conditional>
+	        <conditional key="Statistic" type="Base Attack" value="11">
+	            <attack name="Third Main Hand Attack" parent="Main Hand Melee Attack" >
+	                <bonus type="To Hit" value="-10"/>
+	            </attack>
+	        </conditional>
+	        <conditional key="Statistic" type="Base Attack" value="16">
+	            <attack name="Fourth Main Hand Attack" parent="Main Hand Melee Attack" >
+	                <bonus type="To Hit" value="-15"/>
+	            </attack>
+	        </conditional>
+	    </action>
+    </conditional>
+    <conditional key="Activated" activate="Manual" name="Two Weapon Fighting">
+        <attack name="Main Hand Melee Attack">
+            <bonus type="To Hit" value="-6" />
+        </attack>
+        <attack name="Off Hand Melee Attack">
+            <bonus type="To Hit" value="-10" />
+        </attack>
+        <conditional key="Equipment" name="Light Off Hand">
+	        <attack name="Main Hand Melee Attack">
+	            <bonus type="To Hit" value="2" />
+	        </attack>
+	        <attack name="Off Hand Melee Attack">
+	            <bonus type="To Hit" value="2" />
+	        </attack>
+        </conditional>
+        <action name="Melee Full Attack">
+            <attack name="First Off Hand Attack" parent="Off Hand Melee Attack" >
+                
+            </attack>
+            <conditional key="Prerequisite" name="Improved Two-Weapon Fighting">
+                <attack name="Second Off Hand Attack" parent="Off Hand Melee Attack" >
+                    <bonus type="To Hit" value="-5" />
+                </attack>
+            </conditional>
+            <conditional key="Prerequisite" name="Greater Two-Weapon Fighting">
+                <attack name="Third Off Hand Attack" parent="Off Hand Melee Attack" >
+                    <bonus type="To Hit" value="-10" />
+                </attack>
+            </conditional>
+        </action>
+    </conditional>
+    <action name="Unarmed Full Attack" cost="Full Round" >
+        <attack parent="Unarmed Attack" />
         <conditional key="Statistic" type="Base Attack" value="6">
-            <attack parent="Main Hand Melee Attack" >
+            <attack parent="Unarmed Attack" >
                 <bonus type="To Hit" value="-5"/>
             </attack>
         </conditional>
         <conditional key="Statistic" type="Base Attack" value="11">
-            <attack parent="Main Hand Melee Attack" >
+            <attack parent="Unarmed Attack" >
                 <bonus type="To Hit" value="-10"/>
             </attack>
         </conditional>
         <conditional key="Statistic" type="Base Attack" value="16">
-            <attack parent="Main Hand Melee Attack" >
+            <attack parent="Unarmed Attack" >
                 <bonus type="To Hit" value="-15"/>
             </attack>
         </conditional>
@@ -113,27 +177,34 @@
     <action name="Equip Main Hand Weapon" cost="Move" visible="No" >
         
     </action>
-    <action name="Store Main Hand Weapon" cost="Move" visible="No" >
-        <attack target="Self">
-	        <onHitCondition key="Activated" name="Unarmed" unique="Main Hand" />
-        </attack>
-    </action>
+    <conditional key="Equipment" name="Main Hand">
+	    <action name="Store Main Hand Weapon" cost="Move" visible="Yes" >
+	        <attack target="Self">
+		        <onHitCondition key="Equipment" remove="Main Hand" />
+	        </attack>
+	    </action>
+    </conditional>
+    <conditional key="Equipment" name="Two Hand">
+	    <action name="Store Two Hand Weapon" cost="Move" visible="Yes" >
+	        <attack target="Self">
+		        <onHitCondition key="Equipment" remove="Two Hand" />
+	        </attack>
+	    </action>
+    </conditional>
+    <conditional key="Equipment" name="Off Hand">
+	    <action name="Store Off Hand Weapon" cost="Move" visible="Yes" >
+	        <attack target="Self">
+		        <onHitCondition key="Equipment" remove="Off Hand" />
+	        </attack>
+	    </action>
+    </conditional>
     <action name="Equip Off Hand Weapon" cost="Move" visible="No" >
         
     </action>
-    <action name="Store Off Hand Weapon" cost="Move" visible="No" >
-        <attack target="Self">
-	        <onHitCondition key="Activated" name="Unarmed" unique="Off Hand" />
+    <conditional key="Status" activate="Manual" name="Shaken">
+        <bonus type="Fortitude,Reflex,Will" value="-2" />
+        <attack name="Melee Attack">
+            <bonus type="To Hit" value="-2" />
         </attack>
-    </action>
-    <action name="Drop Main Hand" cost="Free" visible="Yes" >
-        <attack target="Self">
-	        <onHitCondition key="Activated" name="Unarmed" unique="Main Hand" />
-        </attack>
-	</action>
-    <action name="Drop Off Hand" cost="Free" visible="Yes" >
-        <attack target="Self">
-	        <onHitCondition key="Activated" name="Unarmed" unique="Off Hand" />
-        </attack>
-    </action>
+    </conditional>
 </basicDependencies>

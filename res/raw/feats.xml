@@ -39,5 +39,48 @@
 	    <selection name="Deflect Arrows">
 	        <!-- TODO Save vs. Ranged attacks -->
 	    </selection>
+	    <prerequisite type="Dexterity" value="15" >
+	        <selection name="Two-Weapon Fighting">
+	            <conditional key="Activated" name="Two Weapon Fighting">
+			        <attack name="Main Hand Melee Attack">
+			            <bonus type="To Hit" value="2" />
+			        </attack>
+			        <attack name="Off Hand Melee Attack">
+			            <bonus type="To Hit" value="6" />
+			        </attack>
+	            </conditional>
+	        </selection>
+	    </prerequisite>
+	    <prerequisite type="Strength" value="13">
+	        <prerequisite type="Base Attack" value="1">
+		        <selection name="Power Attack">
+		            <conditional key="Activated" activate="Manual" name="Power Attack">
+	                    <attack name="Melee Attack">
+	                        <bonus type="To Hit" value="- ( [Base Attack] / 4 + 1 )" />
+	                    </attack>
+	                    <onHitEffect name="Main Hand Melee Weapon Damage">
+	                        <bonus type="Damage" value="( ( [Base Attack] / 4 + 1 ) * 2 )" />
+	                        <conditional key="Equipment" name="Two Hand" >
+	                            <bonus type="Damage" value="( [Base Attack] / 4 + 1 )" />
+	                        </conditional>
+	                    </onHitEffect>
+	                    <onHitEffect name="Off Hand Melee Weapon Damage">
+	                        <bonus type="Damage" value="( [Base Attack] / 4 + 1 )" />
+	                    </onHitEffect>
+		            </conditional>
+		        </selection>
+		        <prerequisite key="Prerequisite" name="Power Attack">
+		            <selection name="Furious Focus">
+		                <conditional key="Activated" name="Power Attack">
+		                    <conditional key="Equipment" name="Two Hand">
+		                        <attack name="First Main Hand Attack">
+			                        <bonus type="To Hit" value="( [Base Attack] / 4 + 1 )" />
+		                        </attack>
+		                    </conditional>
+		                </conditional>
+		            </selection>
+		        </prerequisite>
+	        </prerequisite>
+	    </prerequisite>
     </subGroup>
 </bonusGroup>

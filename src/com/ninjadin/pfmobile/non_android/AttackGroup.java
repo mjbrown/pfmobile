@@ -18,7 +18,7 @@ public class AttackGroup extends ActionGroup {
 	}
 	
 	public String getTarget() {
-		if (inherited_action != null) {
+		if (inherited != null) {
 			return inherited_attack.getTarget();
 		} else {
 			return target;

@@ -1,21 +1,12 @@
 package com.ninjadin.pfmobile.non_android;
 
 
-public class ConditionalBonus {
-	private String value;
-	private String stackType;
-	private String source;
+public class Conditional {
 	private boolean meetsConditions = true;
 	private boolean isActivated = true;
 	ConditionList condition_list = null;
 	
-	public ConditionalBonus(String stack, String src, String val) {
-		this.stackType = stack;
-		this.source = src;
-		this.value = val;
-	}
-	
-	public ConditionalBonus() {
+	public Conditional() {
 		this.meetsConditions = true;
 	}
 	
@@ -31,20 +22,6 @@ public class ConditionalBonus {
 		this.meetsConditions = false;
 	}
 	
-	public String getSource() {
-		return source;
-	}
-	
-	public String getStackType() {
-		return stackType;
-	}
-
-	public String getStringValue() {
-		if (meetsConditions == false)
-			return "0";
-		return this.value;
-	}
-	
 	public ConditionList getConditions() {
 		return condition_list;
 	}
@@ -53,4 +30,5 @@ public class ConditionalBonus {
 		condition_list = new ConditionList(bonus_conditions);
 		this.meetsConditions = false;
 	}
+	
 }
