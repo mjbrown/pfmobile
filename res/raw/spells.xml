@@ -1,54 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <spells>
-    <spell name="Chill Touch" class="Sorcerer,Wizard" level="1,1" school="Necromancy" cost="Standard" components="Verbal,Somatic" duration="Instantaneous" range="Self" >
-        <bonus type="Chill Touch Uses" value="[Caster Level]" />
-        <onHitEffect name="Chill Touch" uses="[Chill Touch Uses]" >
-            <attack parent="Spell Resistance">
-                <conditional key="Attack Target" name="Undead" comparator="Not">
-	                <onHitEffect>
-	                    <bonus type="Damage d6" value="1" source="Negative Energy" />
-	                    <attack versus="Fortitude">
-	                        <onHitEffect type="Strength">
-	                            <bonus type="Damage" value="1" />
-	                        </onHitEffect>
+    <spell name="Chill Touch" cost="Standard" components="Verbal,Somatic" school="Necromancy" >
+        <selfEffect>
+	        <bonus type="Chill Touch Effect Uses" value="[Caster Level]" />
+	        <onHitEffect name="Chill Touch" uses="[Chill Touch Effect Uses]" source="Necromancy" >
+	            <attack parent="Spell Resistance">
+	                <conditional key="Attack Target" name="Undead" comparator="Not">
+		                <onHitEffect>
+		                    <bonus type="Damage d6" value="1" source="Negative Energy" />
+		                    <attack versus="Fortitude">
+		                        <onHitEffect type="Strength">
+		                            <bonus type="Damage" value="1" />
+		                        </onHitEffect>
+		                    </attack>
+		                </onHitEffect>
+	                </conditional>
+	                <conditional key="Attack Target" name="Undead">
+	                    <attack versus="Will">
+		                    <onHitCondition key="Status" add="Panicked">
+		                        <bonus type="Duration d4" value="1" />
+		                        <bonus type="Duration" value="[Caster Level]" />
+		                    </onHitCondition>
 	                    </attack>
-	                </onHitEffect>
-                </conditional>
-                <conditional key="Attack Target" name="Undead">
-                    <attack versus="Will">
-	                    <onHitCondition key="Status" add="Panicked">
-	                        <bonus type="Duration d4" value="1" />
-	                        <bonus type="Duration" value="[Caster Level]" />
-	                    </onHitCondition>
-                    </attack>
-                </conditional>
-            </attack>
-        </onHitEffect>
-        <attack name="Melee Touch Attack">
-            <onHitEffect parent="Chill Touch" />
-        </attack>
-        <attack name="Unarmed Attack">
-            <onHitEffect parent="Chill Touch" />
-        </attack>
+	                </conditional>
+	            </attack>
+	        </onHitEffect>
+	        <attack name="Melee Touch Attack">
+	            <onHitEffect parent="Chill Touch" />
+	        </attack>
+	        <attack name="Unarmed Attack">
+	            <onHitEffect parent="Chill Touch" />
+	        </attack>
+        </selfEffect>
     </spell>
-    <spell name="Produce Flame" class="Druid" level="1" school="Evocation,Fire" cost="Standard" components="Verbal,Somatic" duration="( [Caster Level] * 10 )" range="Self" >
-        <bonus type="Produce Flame Uses" value="[Caster Level]" />
-        <onHitEffect name="Produce Flame" uses="[Produce Flame Uses]">
-            <attack parent="Spell Resistance">
-                <onHitEffect>
-                    <bonus type="Damage d6" value="1" source="Fire" />
-                    <bonus type="Damage" value="[Caster Level]" source="Fire" />
-                </onHitEffect>
-            </attack>
-        </onHitEffect>
-        <attack name="Throw Produce Flame">
-            <onHitEffect parent="Produce Flame" />
-        </attack>
-        <attack name="Melee Touch Attack">
-            <onHitEffect parent="Produce Flame" />
-        </attack>
-        <attack name="Unarmed Attack">
-            <onHitEffect parent="Produce Flame" />
-        </attack>
+    <spell name="Produce Flame" cost="Standard" components="Verbal,Somatic" range="Self" school="Evocation" >
+        <selfEffect>
+            <condition key="Duration" type="Produce Flame" value="[Caster Level] * 10" />
+	        <bonus type="Produce Flame Effect Uses" value="[Caster Level]" />
+	        <onHitEffect name="Produce Flame" source="Evocation,Fire" >
+	            <attack parent="Spell Resistance">
+	                <onHitEffect>
+	                    <bonus type="Damage d6" value="1" source="Fire" />
+	                    <bonus type="Damage" value="[Caster Level]" source="Fire" />
+	                </onHitEffect>
+	            </attack>
+	        </onHitEffect>
+	        <attack name="Throw Produce Flame" source="Evocation,Fire" uses="[Produce Flame Effect Uses]">
+	            <onHitEffect parent="Produce Flame" />
+	        </attack>
+	        <attack name="Melee Touch Attack">
+	            <onHitEffect parent="Produce Flame" uses="[Produce Flame Effect Uses]" />
+	        </attack>
+	        <attack name="Unarmed Attack">
+	            <onHitEffect parent="Produce Flame" uses="[Produce Flame Effect Uses]" />
+	        </attack>
+        </selfEffect>
+    </spell>
+    <spell name="True Strike" school="Divination" cost="Standard" components="Verbal" duration="1" range="Self">
+        <selfEffect>
+	        <bonus type="True Strike Effect Uses" value="1" />
+	        <attack name="Basic Attack" uses="[True Strike Effect Uses]" >
+	            <bonus type="To Hit" value="20" />
+	        </attack>
+        </selfEffect>
     </spell>
 </spells>

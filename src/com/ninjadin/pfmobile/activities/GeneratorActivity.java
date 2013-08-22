@@ -40,6 +40,7 @@ import com.ninjadin.pfmobile.fragments.LevelsFragment;
 import com.ninjadin.pfmobile.fragments.ModifierDialogFragment;
 import com.ninjadin.pfmobile.fragments.ModifierDialogFragment.ModifierDialogListener;
 import com.ninjadin.pfmobile.fragments.ShowXMLFragment;
+import com.ninjadin.pfmobile.fragments.SpellbookFragment;
 import com.ninjadin.pfmobile.fragments.TemplateSelectFragment;
 import com.ninjadin.pfmobile.non_android.AttackGroup;
 import com.ninjadin.pfmobile.non_android.CharacterEditor;
@@ -282,6 +283,14 @@ public class GeneratorActivity extends FragmentActivity implements ItemEditDialo
 		Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
 	}
 	
+	public void launchSpellbook(View view) {
+		SpellbookFragment firstFragment = new SpellbookFragment();
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+		transaction.replace(R.id.fragment_container, firstFragment);
+		transaction.addToBackStack(null);
+		transaction.commit();
+	}
+
 	public void launchCharXML(View view) {
 		Bundle passedData = new Bundle();
 		passedData.putString("filename", masterCharFilename);
@@ -314,7 +323,7 @@ public class GeneratorActivity extends FragmentActivity implements ItemEditDialo
 		transaction.addToBackStack(null);
 		transaction.commit();
 	}
-
+	
 	public void addFromTemplate(View view) {
 		Bundle passedData = new Bundle();
 		passedData.putString("selection type", XmlConst.ITEM_TAG);

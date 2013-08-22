@@ -82,5 +82,27 @@
 		        </prerequisite>
 	        </prerequisite>
 	    </prerequisite>
+	    <selection name="Weapon Finesse">
+	        <conditional key="Equipment" name="Off Hand Finesse">
+	        	<attack name="Off Hand Melee Attack">
+	                <bonus type="To Hit" value="- [Strength Modifier]" />
+	            	<bonus type="To Hit" value="max( [Strength Modifier] , [Dexterity Modifier] )" />
+	        	</attack>
+			</conditional>
+			<conditional key="Equipment" name="Main Hand Finesse">
+			    <attack name="Main Hand Melee Attack">
+			        <bonus type="To Hit" value="- [Strength Modifier]" />
+			        <bonus type="To Hit" value="max( [Strength Modifier] , [Dexterity Modifier] )" />
+			    </attack>
+			</conditional>
+			<attack name="Unarmed Attack">
+			    <bonus type="To Hit" value="- [Strength Modifier]" />
+			    <bonus type="To Hit" value="max( [Strength Modifier] , [Dexterity Modifier] )" />
+			</attack>
+			<attack name="Melee Touch Attack">
+			    <bonus type="To Hit" value="- [Strength Modifier]" />
+			    <bonus type="To Hit" value="max( [Strength Modifier] , [Dexterity Modifier] )" />
+			</attack>
+	    </selection>
     </subGroup>
 </bonusGroup>

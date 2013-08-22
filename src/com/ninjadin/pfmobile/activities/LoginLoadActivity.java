@@ -1,10 +1,12 @@
 package com.ninjadin.pfmobile.activities;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.channels.FileChannel;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -18,6 +20,7 @@ public class LoginLoadActivity extends Activity {
 	public final static String CHARFILE_MESSAGE = "com.ninjadin.pfmobile.CHARFILE";
 	public final static String INVFILE_MESSAGE = "com.ninjadin.pfmobile.INVFILE";
 	public final static String EFFECTFILE_MESSAGE = "com.ninjadin.pfmobile.EFFECTFILE";
+	public final static String SPELLSFILE_MESSAGE = "com.ninjadin.pfmobile.SPELLSFILE";
 
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,31 +46,21 @@ public class LoginLoadActivity extends Activity {
     	String newFilename = "Char0";
     	String invFilename = newFilename + "_inv.xml";
     	String effectFilename = newFilename + "_effects.xml";
+    	String spellsFilename = newFilename + "_spells.xml";
     	intent.putExtra(CHARFILE_MESSAGE, newFilename);
     	intent.putExtra(INVFILE_MESSAGE, invFilename);
     	intent.putExtra(EFFECTFILE_MESSAGE, effectFilename);
+    	intent.putExtra(SPELLSFILE_MESSAGE, spellsFilename);
     	// Create the new file from the blank template
-    	File newFile = new File(this.getFilesDir(), newFilename);
+    	File charFile = new File(this.getFilesDir(), newFilename);
     	File inventoryFile = new File(this.getFilesDir(), invFilename);
     	File effectFile = new File(this.getFilesDir(), effectFilename);
+    	File spellsFile = new File(this.getFilesDir(), spellsFilename);
     	try {
-			FileOutputStream out = new FileOutputStream(newFile);
-			InputStream in = getResources().openRawResource(R.raw.template);
-			byte[] buf = new byte[1024];
-			int len;
-			while ((len = in.read(buf)) > 0) {
-				out.write(buf, 0, len);
-			}
-			in.close();
-			out.close();
-			FileOutputStream oStream = new FileOutputStream(inventoryFile);
-			oStream.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n".getBytes());
-			oStream.write("<inventory>\n<template name=\"Unarmored\">\n<item name=\"Unarmored\" slot=\"Armor\" >\n<enhancement name=\"Base Item\">\n<bonus type=\"Equipment Cost\" value=\"0\" />\n<bonus type=\"Encumbrance\" value=\"0\" />\"\n<condition name=\"Unarmored\" />\n</enhancement>\n</item>\n</template>\n</inventory>\n".getBytes());
-    		oStream.close();
-    		oStream = new FileOutputStream(effectFile);
-			oStream.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n".getBytes());
-			oStream.write("<effects>\n</effects>\n".getBytes());
-			oStream.close();
+    		copyFile(this.getResources().openRawResource(R.raw.template_charfile), charFile);
+    		copyFile(this.getResources().openRawResource(R.raw.template_inventory), inventoryFile);
+    		copyFile(this.getResources().openRawResource(R.raw.template_effects), effectFile);
+    		copyFile(this.getResources().openRawResource(R.raw.template_spellbook), spellsFile);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -91,4 +84,28 @@ public class LoginLoadActivity extends Activity {
         startActivity(intent);
     }
     
+    public static void copyFile(InputStream source, File destFile) throws IOException {
+        if(!destFile.exists()) {
+            destFile.createNewFile();
+        }
+
+        FileOutputStream destination = null;
+
+        try {
+            destination = new FileOutputStream(destFile);
+            Integer data = source.read();
+            while (data != -1) {
+            	destination.write(data);
+            	data = source.read();
+            }
+        }
+        finally {
+            if(source != null) {
+                source.close();
+            }
+            if(destination != null) {
+                destination.close();
+            }
+        }
+    }
 }

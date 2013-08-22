@@ -31,7 +31,7 @@
          <bonus type="Stealth Speed" value="[Speed] / 2" /> 
     </selection>
     <selection name="Finesse Rogue">
-        <!-- TODO -->
+        <choice groupName="Feat" specific="Weapon Finesse" />
     </selection>
     <selection name="Ledge Walker">
         <!-- TODO -->
@@ -92,36 +92,40 @@
 </bonusGroup>
 <bonusGroup groupName="Favored Class">
     <selection name="Favored Class Barbarian">
+        <bonus type="Favored Class Points" value="[Barbarian Level]" />
     </selection>
     <selection name="Favored Class Bard">
+        <bonus type="Favored Class Points" value="[Bard Level]" />
     </selection>
     <selection name="Favored Class Cleric">
+        <bonus type="Favored Class Points" value="[Cleric Level]" />
     </selection>
     <selection name="Favored Class Druid">
+        <bonus type="Favored Class Points" value="[Druid Level]" />
     </selection>
     <selection name="Favored Class Fighter">
+        <bonus type="Favored Class Points" value="[Fighter Level]" />
     </selection>
     <selection name="Favored Class Monk">
+        <bonus type="Favored Class Points" value="[Monk Level]" />
     </selection>
     <selection name="Favored Class Paladin">
+        <bonus type="Favored Class Points" value="[Paladin Level]" />
     </selection>
     <selection name="Favored Class Ranger">
+        <bonus type="Favored Class Points" value="[Ranger Level]" />
     </selection>
     <selection name="Favored Class Rogue">
+        <bonus type="Favored Class Points" value="[Rogue Level]" />
     </selection>
     <selection name="Favored Class Sorcerer">
+        <bonus type="Favored Class Points" value="[Sorcerer Level]" />
     </selection>
     <selection name="Favored Class Wizard">
+        <bonus type="Favored Class Points" value="[Wizard Level]" />
     </selection>
     <selection name="Favored Class Oracle">
-    </selection>
-</bonusGroup>
-<bonusGroup groupName="Favored Class Point">
-    <selection name="Hit Point">
-        <bonus type="Hit Points" value="1" />
-    </selection>
-    <selection name="Skill Point">
-        <bonus type="Skill Points" value="1" />
+        <bonus type="Favored Class Points" value="[Oracle Level]" />
     </selection>
 </bonusGroup>
 <bonusGroup groupName="Oracle Curse">

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<content>
+    <spellBook class="Sorcerer">
+        <spellLevel value="0">
+            <entry name="Resistance" />
+            <entry name="Acid Splash" />
+            <entry name="Detect Magic" />
+            <entry name="Detect Poison" />
+            <entry name="Read Magic" />
+            <entry name="Daze" />
+            <entry name="Dancing Lights" />
+            <entry name="Flare" />
+            <entry name="Light" />
+            <entry name="Ray of Frost" />
+            <entry name="Ghost Sound" />
+            <entry name="Bleed" />
+            <entry name="Disrupt Undead" />
+            <entry name="Touch of Fatigue" />
+            <entry name="Mage Hand" />
+            <entry name="Mending" />
+            <entry name="Message" />
+            <entry name="Open/Close" />
+            <entry name="Arcane Mark" />
+            <entry name="Prestidigitation" />
+        </spellLevel>
+        <spellLevel value="1">
+            <entry name="Alarm" />
+            <entry name="Endure Elements" />
+            <entry name="Hold Portal" />
+            <entry name="Protection from Evil" />
+            <entry name="Protection from Chaos" />
+            <entry name="Protection from Good" />
+            <entry name="Protection from Law" />
+            <entry name="Shield" />
+            <entry name="Grease" />
+            <entry name="Mage Armor" />
+            <entry name="Mount" />
+            <entry name="Obscuring Mist" />
+            <entry name="Summon Monster I" />
+            <entry name="Unseen Servant" />
+            <entry name="Comprehend Languages" />
+            <entry name="Detect Secret Doors" />
+            <entry name="Detect Undead" />
+            <entry name="Identify" />
+            <entry name="True Strike" />
+            <entry name="Charm Person" />
+            <entry name="Hypnotism" />
+            <entry name="Sleep" />
+        </spellLevel>
+        <spellLevel value="2">
+            <entry name="Arcane Lock" />
+            <entry name="Obscure Object" />
+            <entry name="Protection from Arrows" />
+            <entry name="Resist Energy, Fire" />
+            <entry name="Acid Arrow" />
+            <entry name="Fog Cloud" />
+            <entry name="Glitterdust" />
+            <entry name="Summon Monster II" />
+            <entry name="Summon Swarm" />
+            <entry name="Web" />
+            <entry name="Detect Thoughts" />
+            <entry name="Locate Object" />
+            <entry name="See Invisibility" />
+            
+        </spellLevel>
+        <spellLevel value="3">
+            <entry name="Cloak of Winds" />
+            <entry name="Dispel Magic" />
+            <entry name="Explosive Runes" />
+            <entry name="Magic Circle Against Chaos" />
+            
+        </spellLevel>
+        <spellLevel value="4">
+            <entry name="Dimensional Anchor" />
+            <entry name="Fire Trap" />
+            <entry name="Lesser Globe Of Invulnerability" />
+            <entry name="Remove Curse" />
+            
+        </spellLevel>
+        <spellLevel value="5">
+            <entry name="Break Enchantment" />
+            <entry name="Dismissal" />
+            <entry name="Life Bubble" />
+            <entry name="Mage's Private Sanctum" />
+            
+        </spellLevel>
+        <spellLevel value="6">
+            <entry name="Antimagic Field" />
+            <entry name="Greater Dispel Magic" />
+            <entry name="Globe of Invulnerability" />
+            <entry name="Guards And Wards" />
+            
+        </spellLevel>
+        <spellLevel value="7">
+            <entry name="Banishment" />
+            <entry name="Expend" />
+            <entry name="Sequester" />
+            <entry name="Spell Turning" />
+            
+        </spellLevel>
+        <spellLevel value="8">
+            <entry name="Dimensional Lock" />
+            <entry name="Mind Blank" />
+            <entry name="Prismatic Wall" />
+            <entry name="Protection From Spells" />
+            
+        </spellLevel>
+        <spellLevel value="9">
+            <entry name="Freedom" />
+            <entry name="Imprisonment" />
+            <entry name="Mage's Disjunction" />
+        </spellLevel>
+        
+    </spellBook>
+</content>

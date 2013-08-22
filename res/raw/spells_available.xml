@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<content>
+    <spellsAvailable>
+	    <cast class="Wizard" name="Resistance">
+	    	<bonus type="Spell Level" value="0" />
+	        <bonus type="Caster Level" value="[Wizard Caster Level]" />
+	    	<bonus type="Spell Failure" value="[Wizard Spell Failure]" />
+	    	<bonus type="Uses" value="1" />
+	    </cast>
+	    <cast class="Sorcerer" name="Chill Touch">
+	        <bonus type="Spell Level" value="1" />
+	        <bonus type="Caster Level" value="[Sorcerer Caster Level]" />
+	        <bonus type="Spell Failure" value="[Sorcerer Spell Failure]" />
+	        <bonus type="Uses" value="[Sorcerer Level 1 Spells Per Day]" />
+	    </cast>
+    </spellsAvailable>
+</content>

@@ -56,13 +56,22 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/char_attacks_button"
-        android:text="Spellbook / Spells Known" />
+        android:text="Spellbook" 
+        android:onClick="launchSpellbook"/>
+
+    <Button
+        android:id="@+id/char_prepared_button"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/char_spells_button"
+        android:text="Spells Known/Prepared" />
     
     <Button 
         android:id="@+id/char_active_effects"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/char_spells_button"
+        android:layout_below="@+id/char_prepared_button"
         android:text="Active Effects" />
         
     <Button 

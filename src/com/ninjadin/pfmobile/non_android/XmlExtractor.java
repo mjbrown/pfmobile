@@ -57,7 +57,7 @@ public class XmlExtractor {
 		manager = statManager;
 	}
 	
-	public void findTagAttr(String tag, String attr, String value) throws XmlPullParserException, IOException {
+	public Boolean findTagAttr(String tag, String attr, String value) throws XmlPullParserException, IOException {
 		while (xmlParser.next() != XmlPullParser.END_DOCUMENT) {
 			if (xmlParser.getEventType() != XmlPullParser.START_TAG) {
 				continue;
@@ -68,11 +68,12 @@ public class XmlExtractor {
 					String attrValue = xmlParser.getAttributeValue(null, attr);
 					if (attrValue != null) {
 						if (attrValue.equals(value))
-							return;
+							return true;
 					}
 				}
 			}
 		}
+		return false;
 	}
 	
 	public String getAttribute(String attr) {

@@ -88,13 +88,14 @@
         <bonus type="Damage" value="( [Strength Modifier] / 2 )" />
         <bonus type="Critical Multiplier" value="2" />
     </onHitEffect>
-	<attack name="Melee Attack" versus="Armor Class">
-	    <bonus type="To Hit" value="[Strength Modifier]" />
+    <attack name="Basic Attack">
 	    <bonus type="To Hit" value="[Base Attack]" />
+    </attack>
+	<attack name="Melee Attack" parent="Basic Attack" versus="Armor Class">
+	    <bonus type="To Hit" value="[Strength Modifier]" />
 	</attack>
-	<attack name="Melee Touch Attack" versus="Touch Armor Class">
+	<attack name="Melee Touch Attack" parent="Basic Attack" versus="Touch Armor Class">
 	    <bonus type="To Hit" value="[Strength Modifier]" />
-	    <bonus type="To Hit" value="[Base Attack]" />
 	</attack>
 	<attack name="Main Hand Melee Attack" parent="Melee Attack">
 	    <onHitEffect parent="Main Hand Melee Weapon Damage" />

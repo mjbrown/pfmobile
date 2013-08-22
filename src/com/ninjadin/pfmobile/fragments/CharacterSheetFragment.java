@@ -103,6 +103,17 @@ public class CharacterSheetFragment extends Fragment {
 					else
 						points_left.setTextColor(Color.BLACK);
 					point_title.setText("Points Used:");
+				} else if (category.equals("Points")) {
+					int used = charEdit.favoredclass_points[0] + charEdit.favoredclass_points[1];
+					String points_used = Integer.toString(used);
+					int available = manager.getValue(PropertyLists.favored_points);
+					String points_available = Integer.toString(available);
+					points_left.setText(points_used + " / " + points_available);
+					if (used > available)
+						points_left.setTextColor(Color.RED);
+					else
+						points_left.setTextColor(Color.BLACK);
+					point_title.setText("Favored Class:");
 				} else {
 					points_left.setText("");
 					point_title.setText("");
@@ -114,21 +125,14 @@ public class CharacterSheetFragment extends Fragment {
 			String category = groupData.get(groupPosition).get(XmlConst.NAME_ATTR);
 			String name = itemData.get(groupPosition).get(childPosition).get(XmlConst.NAME_ATTR);
 			LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			if ((category.equals("Ability Scores")) || (category.equals("Skills"))) {
+			if ((category.equals("Ability Scores")) || (category.equals("Skills")) || (category.equals("Points"))) {
 				convertView = inflater.inflate(R.layout.subrow_skills_scores, null);
 				if (category.equals("Ability Scores")) {
 					updateAbilityScoreSubrow(convertView, childPosition);
 				} else if (category.equals("Skills")) {
 					updateSkillSubrow(convertView, childPosition);
-				}
-			} else if (category.equals("Equipment")) {
-				convertView = inflater.inflate(R.layout.subrow_charsheet, null);
-				TextView tx_modifier = (TextView) convertView.findViewById(R.id.score_modifier);
-				String item = charEdit.equipment.get(name);
-				if (item != null) {
-					tx_modifier.setText(item);
-				} else {
-					tx_modifier.setText("None");
+				} else if (category.equals("Points")) {
+					updatePointSubrow(convertView, childPosition);
 				}
 			} else {
 				convertView = inflater.inflate( R.layout.subrow_charsheet, null);
@@ -141,6 +145,31 @@ public class CharacterSheetFragment extends Fragment {
 			return convertView;
 		}
 
+		private void updatePointSubrow(View parent, int childPosition) {
+			TextView base_score = (TextView) parent.findViewById(R.id.score);
+			if (base_score != null) {
+				base_score.setText(Integer.toString(charEdit.favoredclass_points[childPosition]));
+			}
+			String abilityName = PropertyLists.pointsNames[childPosition];
+			TextView final_score = (TextView) parent.findViewById(R.id.final_score);
+			if (final_score != null) {
+				final_score.setText(Integer.toString(manager.getValue(abilityName)));
+			}
+			TextView tx_modifier = (TextView) parent.findViewById(R.id.score_modifier);
+			tx_modifier.setText("");
+			Button minus = (Button) parent.findViewById(R.id.minus);
+			if (minus != null) {
+				minus.setOnClickListener(pointListener);
+				minus.setEnabled(charEdit.favoredclass_points[childPosition] > 0);
+			}
+			Button plus = (Button) parent.findViewById(R.id.plus);
+			if (plus != null) {
+				plus.setOnClickListener(pointListener);
+				int available = manager.getValue(PropertyLists.favored_points);
+				plus.setEnabled(available > (charEdit.favoredclass_points[0] + charEdit.favoredclass_points[1]));
+			}
+		}
+		
 		private void updateAbilityScoreSubrow(View parent, int childPosition) {
 			TextView base_score = (TextView) parent.findViewById(R.id.score);
 			if (base_score != null) {
@@ -233,6 +262,25 @@ public class CharacterSheetFragment extends Fragment {
 				expList.invalidateViews();
 			}
 		};
+		
+		private OnClickListener pointListener = new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				View parent = (View) v.getParent();
+				int position = expList.getPositionForView(parent);
+				int childPosition = ExpandableListView.getPackedPositionChild(expList.getAdapter().getItemId(position));
+				if (v.getId() == R.id.plus) {
+					charEdit.favoredclass_points[childPosition] += 1;
+					manager.newBonus(PropertyLists.pointsNames[childPosition], "Ranks", "Natural", "1");
+				} else {
+					charEdit.favoredclass_points[childPosition] -= 1;
+					manager.newBonus(PropertyLists.pointsNames[childPosition], "Ranks", "Natural", "-1");
+				}
+				expList.invalidateViews();
+			}
+		};
+		
+
 	}
 	
 	

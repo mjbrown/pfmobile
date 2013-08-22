@@ -27,13 +27,14 @@ public class CharacterEditor {
 	public int charLevel = 0;
 
 	public List<Map<String,String>> levelData = new ArrayList<Map<String,String>>();
-	public Map<String, String> equipment;  // <SLOT, NAME>
 	
 	private File charFile;
 	private File tempFile;
 
 	public int[] skillRanks = new int[PropertyLists.skillNames.length];
 	public int pointBuyRemaining = 20;
+	public int[] favoredclass_points = { 0, 0 };
+	
 	private int base_stats[] = { 10, 10, 10, 10, 10, 10 };
 	
 	public CharacterEditor(File originalFile, File temporaryFile) throws XmlPullParserException, IOException {
@@ -58,12 +59,11 @@ public class CharacterEditor {
 	}
 	
 	private void readCharacterData(XmlPullParser parser) throws XmlPullParserException, IOException {
-		parser.require(XmlPullParser.START_TAG, null, XmlConst.CHARTEMPLATE_TAG);
 		while (parser.next() != XmlPullParser.END_DOCUMENT) {
 			// Run until the end of characterTemplate or END_DOCUMENT
 			if (parser.getEventType() == XmlPullParser.END_TAG) {
 				if (parser.getName() != null)
-					if (parser.getName().equals(XmlConst.CHARTEMPLATE_TAG))
+					if (parser.getName().equals(XmlConst.CONTENT_TAG))
 						break;
 			} 
 			if (parser.getEventType() != XmlPullParser.START_TAG)
@@ -77,8 +77,6 @@ public class CharacterEditor {
 					readLevels(parser, choice_id);
 				} else if (name.equals(XmlConst.SKILLS_TAG)) {
 					readSkills(parser);
-				} else if (name.equals(XmlConst.EQUIP_TAG)) {
-					readEquipment(parser);
 				}
 			}
 			if (parser.getEventType() == XmlPullParser.END_DOCUMENT)
@@ -86,19 +84,6 @@ public class CharacterEditor {
 		}
 	}
 	
-	public void readEquipment(XmlPullParser parser) throws XmlPullParserException, IOException {
-		equipment = new HashMap<String, String> ();
-		String[] tag_names = new String[] { XmlConst.ITEM_TAG };
-		String[] tag_attrs = new String[] { XmlConst.SLOT_ATTR, XmlConst.NAME_ATTR };
-		XmlExtractor equipItems = new XmlExtractor(parser);
-		equipItems.getData(XmlConst.EQUIP_TAG, tag_names, tag_attrs, null, null);
-		for (Map<String,String> item: equipItems.groupData) {
-			String slot = item.get(XmlConst.SLOT_ATTR);
-			String name = item.get(XmlConst.NAME_ATTR);
-			if ((slot != null) && (name != null))
-				equipment.put(slot, name);
-		}
-	}
 	// Populate level names and the choices associated with each character level
 	public void readLevels(XmlPullParser parser, int choice_id) throws XmlPullParserException, IOException{
 		Stack<String> lastParents = new Stack<String>();
@@ -157,7 +142,7 @@ public class CharacterEditor {
 	}
 	
 	public void writeCharacterData(File temp) throws IOException {
-		String header = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<" + XmlConst.CHARTEMPLATE_TAG + ">\n";
+		String header = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<" + XmlConst.CONTENT_TAG + ">\n";
 // Create a temporary file with fresh Info/Stats
 		FileOutputStream outStream;
 		outStream = new FileOutputStream(temp);
@@ -168,10 +153,8 @@ public class CharacterEditor {
 		writeSkills(outStream);
 		outStream.write((endTag(XmlConst.SKILLS_TAG) + startTag(XmlConst.LEVELS_TAG)).getBytes());
 		// Equip must follow levels, see copyLevelData
-		outStream.write((endTag(XmlConst.LEVELS_TAG) + startTag(XmlConst.EQUIP_TAG)).getBytes());
-		outStream.write((endTag(XmlConst.EQUIP_TAG) + startTag(XmlConst.SPELLS_TAG)).getBytes());
-		outStream.write((endTag(XmlConst.SPELLS_TAG)).getBytes());
-		outStream.write(("</" + XmlConst.CHARTEMPLATE_TAG + ">\n").getBytes());
+		outStream.write(endTag(XmlConst.LEVELS_TAG).getBytes());
+		outStream.write(("</" + XmlConst.CONTENT_TAG + ">\n").getBytes());
 		outStream.close();
 // Copy level data from charFile to tempFile
 		copyChoiceData(temp, tempFile, charFile);
@@ -252,7 +235,7 @@ public class CharacterEditor {
 	
 	private void copyChoiceData(File sourceChar, File destChar, File levelData) throws IOException {
 		String startData = "<" + XmlConst.LEVELS_TAG + ">";
-		String endData = "</" + XmlConst.EQUIP_TAG + ">";
+		String endData = "</" + XmlConst.CONTENT_TAG + ">";
 		String insertBefore = startData;
 		String continueOn = "<" + XmlConst.SPELLS_TAG + ">";
 		InputStream fromStream = new FileInputStream(levelData);
@@ -350,6 +333,9 @@ public class CharacterEditor {
 		for (int i = 0; i < PropertyLists.abilityScoreNames.length; i++) {
 			fpOut.write((tagHeader + PropertyLists.abilityScoreNames[i] + stackType + value + Integer.toString(base_stats[i]) + tagFooter).getBytes());
 		}
+		for (int i = 0; i < PropertyLists.pointsNames.length; i++) {
+			fpOut.write((tagHeader + PropertyLists.pointsNames[i] + stackType + value + Integer.toString(favoredclass_points[i]) + tagFooter).getBytes());
+		}
 		fpOut.write((tagHeader + "points" + "\"" + value + Integer.toString(pointBuyRemaining) + tagFooter).getBytes());
 	}
 	
@@ -378,6 +364,10 @@ public class CharacterEditor {
 						}
 						if (stat_name.equals("points")) {
 							pointBuyRemaining = Integer.parseInt(value_str);
+						} else if (stat_name.equals(PropertyLists.hit_points)) {
+							favoredclass_points[0] = Integer.parseInt(value_str);
+						} else if (stat_name.equals(PropertyLists.skill_points)) {
+							favoredclass_points[1] = Integer.parseInt(value_str);
 						}
 					}
 				}

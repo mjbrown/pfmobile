@@ -6,14 +6,13 @@ public class XmlConst {
 	final public static String SUBGRP = "subGroup";
 	
 	// Used as TAG in character file
-	final public static String CHARTEMPLATE_TAG = "characterTemplate";
+	final public static String CONTENT_TAG = "content";
 	final public static String TEMPLATE_TAG = "template";
 	final public static String LEVEL_TAG = "characterLevel";
 	final public static String SELECTION_TAG = "selection";
 	final public static String CHOICE_TAG = "choice";
 	final public static String CHOSEN_TAG = "chosen";
 	final public static String POINTBUY_TAG = "pointBuy";
-	final public static String INFO_TAG = "info";
 	final public static String LEVELS_TAG = "levels";
 	final public static String SKILLS_TAG = "skills";
 	final public static String EQUIP_TAG = "equipment";
@@ -28,9 +27,12 @@ public class XmlConst {
 	final public static String ACTION_TAG = "action";
 	final public static String ATTACK_TAG = "attack";
 	final public static String ONHIT_TAG = "onHitEffect";
-	final public static String ACTIVATEDEFFECT_TAG = "activatedEffect";
-	final public static String EQUIPPEDEFFECT_TAG = "equippedEffect";
 	final public static String APPLYCOND_TAG = "onHitCondition";
+
+	// TAGs from spell book and spell lists
+	final public static String SPELLLIST_TAG = "spellList";
+	final public static String SPELLLEVEL_TAG = "spellLevel";
+	final public static String ENTRY_TAG = "entry";
 	
 	// Used as TAG in inventory files
 	final public static String ITEM_TAG = "item";
@@ -59,6 +61,7 @@ public class XmlConst {
 	final public static String ADD_ATTR = "add";
 	final public static String REMOVE_ATTR = "remove";
 	final public static String ACTIVATE_ATTR = "activate";
+	final public static String CLASS_ATTR = "class";
 	
 	// Used as ATTRIBUTE in data files
 	final public static String COMPARE_ATTR = "comparator";

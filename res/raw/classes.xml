@@ -324,10 +324,62 @@
             <bonus type="Magus Level" value="1" />
 	        <bonus type="Hit Points" value="( [Magus Level] * 8 * [HP Numerator] / [HP Denominator] )" />
 	        <bonus type="Hit Points" value="( 8 - ( 8 * [HP Numerator] / [HP Denominator] ) )" stackType="Max HP First Level" />
+	        <bonus type="Skill Points" value="min( 1 , ( 2 + [Intelligence Modifier] ) * [Magus Level] )" />
             <bonus type="Fortitude,Will" value="2 + ( [Magus Level] / 2 )" />
             <bonus type="Reflex" value="( [Magus Level] / 3 )" />
             <bonus type="Base Attack" value="( [Magus Level] * 3 / 4 )" />
+	        <bonus type="Climb,Craft,Fly,Intimidate,Arcana,Dungeoneering,Planes,Profession,Ride,Spellcraft,Swim,Use Magic Device" stackType="Class Skill" value="3" />
         </selection>
+    </prerequisite>
+    <prerequisite type="Magus Level" comparator="Equals" value="1">
+		<selection name="Magus Level 2">
+		    <bonus type="Magus Level" value="1" />
+	    </selection>
+    </prerequisite>
+    <prerequisite type="Magus Level" comparator="Equals" value="2">
+		<selection name="Magus Level 3">
+		    <bonus type="Magus Level" value="1" />
+	    </selection>
+    </prerequisite>
+    <prerequisite type="Magus Level" comparator="Equals" value="3">
+		<selection name="Magus Level 4">
+		    <bonus type="Magus Level" value="1" />
+	    </selection>
+    </prerequisite>
+    <prerequisite type="Magus Level" comparator="Equals" value="4">
+		<selection name="Magus Level 5">
+		    <bonus type="Magus Level" value="1" />
+	    </selection>
+    </prerequisite>
+    <prerequisite type="Magus Level" comparator="Equals" value="5">
+		<selection name="Magus Level 6">
+		    <bonus type="Magus Level" value="1" />
+	    </selection>
+    </prerequisite>
+    <prerequisite type="Magus Level" comparator="Equals" value="6">
+		<selection name="Magus Level 7">
+		    <bonus type="Magus Level" value="1" />
+	    </selection>
+    </prerequisite>
+    <prerequisite type="Magus Level" comparator="Equals" value="7">
+		<selection name="Magus Level 8">
+		    <bonus type="Magus Level" value="1" />
+	    </selection>
+    </prerequisite>
+    <prerequisite type="Magus Level" comparator="Equals" value="8">
+		<selection name="Magus Level 9">
+		    <bonus type="Magus Level" value="1" />
+	    </selection>
+    </prerequisite>
+    <prerequisite type="Magus Level" comparator="Equals" value="9">
+		<selection name="Magus Level 10">
+		    <bonus type="Magus Level" value="1" />
+	    </selection>
+    </prerequisite>
+    <prerequisite type="Magus Level" comparator="Equals" value="10">
+		<selection name="Magus Level 2">
+		    <bonus type="Magus Level" value="1" />
+	    </selection>
     </prerequisite>
     <prerequisite type="Monk Level" comparator="Equals" value="0">
         <selection name="Monk Level 1">
@@ -756,7 +808,7 @@
 	        <condition key="Proficiency" name="Club,Dagger,Heavy Crossbow,Light Crossbow,Quarterstaff" />
 	        <bonus type="Appraise,Craft,Fly,Linguistics,Profession,Spellcraft" stackType="Class Skill" value="3" />
         	<bonus type="Arcana,Dungeoneering,Engineering,Geography,History,Local,Nature,Nobility,Planes,Religion" stackType="Class Skill" value="3" />
-	    </selection>
+        </selection>
     </prerequisite>
     <prerequisite type="Wizard Level" comparator="Equals" value="1">
         <selection name="Wizard Level 2">

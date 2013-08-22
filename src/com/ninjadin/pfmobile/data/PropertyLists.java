@@ -16,6 +16,10 @@ public class PropertyLists {
 	final public static int[] sorcerer_per_day = { 3,4,5,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6 };
 	final public static int[] sorcerer_known =   { 1,2,2,3,3,4,4,5,5,5,5,5,5,5,5,5,5,5,5,5 };
 
+	final public static String spellbook_classes[] = { "Alchemist", "Wizard", "Magus", "Witch" };
+	final public static String spelllist_classes[] = { "Bard", "Cleric", "Druid", "Inquisitor", "Oracle",
+		"Paladin", "Ranger", "Summoner", "Sorcerer" };
+	
 	final public static String manual = "Manual";
 	
 	final public static String all = "All";
@@ -63,8 +67,12 @@ public class PropertyLists {
 	final public static String abilityModifierNames[] = new String[] {"Strength Modifier", "Dexterity Modifier",
 	"Constitution Modifier", "Intelligence Modifier", "Wisdom Modifier", "Charisma Modifier" };
 
-	final public static String basicStatsNames[] = new String[] {  "Character Level", "Base Attack", 
-		 "Combat Maneuver Bonus", "Hit Points", "Fortitude", "Reflex", "Will", "Armor Class", "Touch Armor Class", 
+	final public static String favored_points = "Favored Class Points";
+	final public static String hit_points = "Hit Points";
+	final public static String skill_points = "Skill Points";
+	final public static String pointsNames[] = { hit_points, skill_points };
+	final public static String basicStatsNames[] = new String[] {  "Base Attack", 
+		 "Combat Maneuver Bonus", "Fortitude", "Reflex", "Will", "Armor Class", "Touch Armor Class", 
 		 "Flat Footed Armor Class", "Combat Maneuver Defense", };
 
 	final public static String reductionNames[] = new String[] { "Acid Resistance", "Electricity Resistance", 
@@ -116,8 +124,8 @@ public class PropertyLists {
 		"Adamantine", "Cold Iron", "Silver", "Poison" };
 
 	// If this is changed, you must change statisticData() below
-	final public static String categories[] = new String[] { "Ability Scores", "Basic Stats", "Skills", "Class Levels",
-		"Damage Reduction", "Speed", "Caster Levels", "Equipment", "Equipment Related", "Other"};
+	final public static String categories[] = new String[] { "Ability Scores", "Basic Stats", "Points", "Skills", "Class Levels",
+		"Damage Reduction", "Speed", "Caster Levels", "Equipment Related", "Other"};
 
 	final static public List<Map<String,String>> categoryData() {
 		return toListMap(categories);
@@ -127,12 +135,12 @@ public class PropertyLists {
 		List<List<Map<String,String>>> itemData = new ArrayList<List<Map<String,String>>>();
 		itemData.add(toListMap(abilityScoreNames));
 		itemData.add(toListMap(basicStatsNames));
+		itemData.add(toListMap(pointsNames));
 		itemData.add(toListMap(skillNames));
 		itemData.add(toListMap(classLevelNames));
 		itemData.add(toListMap(reductionNames));
 		itemData.add(toListMap(speedNames));
 		itemData.add(toListMap(casterLevelNames));
-		itemData.add(toListMap(slotNames));
 		itemData.add(toListMap(equipRelatedNames));
 		itemData.add(toListMap(otherStatisticNames));
 		return itemData;

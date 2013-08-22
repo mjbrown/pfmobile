@@ -80,7 +80,7 @@ public class StatisticManager {
 			if (parser.getEventType() == XmlPullParser.END_TAG) {
 				String name = parser.getName();
 				if (name != null) {
-					if ((name.equals(XmlConst.CONDITIONAL_TAG)) || (name.equals(XmlConst.ACTIVATEDEFFECT_TAG))) {
+					if (name.equals(XmlConst.CONDITIONAL_TAG)) {
 						currentConditions.endConditional();
 					} else if (name.equals(XmlConst.ITEM_TAG)) {
 						currentConditions.endConditional();
