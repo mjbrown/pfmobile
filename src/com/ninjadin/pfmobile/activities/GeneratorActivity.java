@@ -59,10 +59,12 @@ public class GeneratorActivity extends FragmentActivity implements ItemEditDialo
 	public String masterCharFilename;
 	public String inventoryFilename;
 	public String effectFilename;
+	public String spellsFilename;
 	public String tempFilename;
 	public File charFile;
 	public File inventoryFile;
 	public File effectFile;
+	public File spellsFile;
 	public File tempFile;
 	public Boolean dirtyFiles = true;
 	
@@ -133,11 +135,13 @@ public class GeneratorActivity extends FragmentActivity implements ItemEditDialo
 		masterCharFilename = intent.getStringExtra(LoginLoadActivity.CHARFILE_MESSAGE);
 		inventoryFilename = intent.getStringExtra(LoginLoadActivity.INVFILE_MESSAGE);
 		effectFilename = intent.getStringExtra(LoginLoadActivity.EFFECTFILE_MESSAGE);
+		spellsFilename = intent.getStringExtra(LoginLoadActivity.SPELLSFILE_MESSAGE);
 		tempFilename = masterCharFilename.concat(".temp");
 		charFile = new File(context.getFilesDir(), masterCharFilename);
 		tempFile = new File(context.getFilesDir(), tempFilename);
 		effectFile = new File(context.getFilesDir(), effectFilename);
 		inventoryFile = new File(context.getFilesDir(), inventoryFilename);
+		spellsFile = new File(context.getFilesDir(), spellsFilename);
 		dependencyManager = new StatisticManager();
 		try {
 			characterEditor = new CharacterEditor(charFile, tempFile);
@@ -156,6 +160,8 @@ public class GeneratorActivity extends FragmentActivity implements ItemEditDialo
 			inStream = new FileInputStream(charFile);
 			dependencyManager.readXMLBonuses(inStream);
 			inStream.close();
+			inStream = new FileInputStream(spellsFile);
+			dependencyManager.readXMLBonuses(inStream);
 			dependencyManager.updateConditionalBonuses(10);
 		} catch (XmlPullParserException e) {
 			// TODO Auto-generated catch block

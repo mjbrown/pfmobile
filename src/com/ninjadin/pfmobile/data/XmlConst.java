@@ -17,7 +17,6 @@ public class XmlConst {
 	final public static String SKILLS_TAG = "skills";
 	final public static String EQUIP_TAG = "equipment";
 	final public static String ENHANCE_TAG = "enhancement";
-	final public static String SPELLS_TAG = "spells";
 	final public static String BONUS_TAG = "bonus";
 	final public static String PROFICIENCY_TAG = "proficiency";
 	final public static String WEAPON_TAG = "weapon";
@@ -28,6 +27,7 @@ public class XmlConst {
 	final public static String ATTACK_TAG = "attack";
 	final public static String ONHIT_TAG = "onHitEffect";
 	final public static String APPLYCOND_TAG = "onHitCondition";
+	final public static String SPELL_TAG = "spell";
 
 	// TAGs from spell book and spell lists
 	final public static String SPELLLIST_TAG = "spellList";
@@ -61,7 +61,7 @@ public class XmlConst {
 	final public static String ADD_ATTR = "add";
 	final public static String REMOVE_ATTR = "remove";
 	final public static String ACTIVATE_ATTR = "activate";
-	final public static String CLASS_ATTR = "class";
+	final public static String SCHOOL_ATTR = "school";
 	
 	// Used as ATTRIBUTE in data files
 	final public static String COMPARE_ATTR = "comparator";

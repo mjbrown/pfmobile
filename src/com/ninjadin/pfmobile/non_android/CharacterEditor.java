@@ -235,9 +235,9 @@ public class CharacterEditor {
 	
 	private void copyChoiceData(File sourceChar, File destChar, File levelData) throws IOException {
 		String startData = "<" + XmlConst.LEVELS_TAG + ">";
-		String endData = "</" + XmlConst.CONTENT_TAG + ">";
+		String endData = "</" + XmlConst.LEVELS_TAG + ">";
 		String insertBefore = startData;
-		String continueOn = "<" + XmlConst.SPELLS_TAG + ">";
+		String continueOn = "</" + XmlConst.CONTENT_TAG + ">";
 		InputStream fromStream = new FileInputStream(levelData);
 		XmlEditor.copyReplace(sourceChar, destChar, fromStream, startData, endData, insertBefore, continueOn, null, null);
 		fromStream.close();

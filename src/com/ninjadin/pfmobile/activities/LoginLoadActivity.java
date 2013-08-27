@@ -60,7 +60,7 @@ public class LoginLoadActivity extends Activity {
     		copyFile(this.getResources().openRawResource(R.raw.template_charfile), charFile);
     		copyFile(this.getResources().openRawResource(R.raw.template_inventory), inventoryFile);
     		copyFile(this.getResources().openRawResource(R.raw.template_effects), effectFile);
-    		copyFile(this.getResources().openRawResource(R.raw.template_spellbook), spellsFile);
+    		copyFile(this.getResources().openRawResource(R.raw.template_prepared), spellsFile);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -77,10 +77,12 @@ public class LoginLoadActivity extends Activity {
     	String charFilename = "Char0";
     	String invFilename = charFilename + "_inv.xml";
     	String effectFilename = charFilename + "_effects.xml";
+    	String spellsFilename = charFilename + "_spells.xml";
     	Intent intent = new Intent(this, GeneratorActivity.class);
     	intent.putExtra(INVFILE_MESSAGE, invFilename);
        	intent.putExtra(CHARFILE_MESSAGE, charFilename);
        	intent.putExtra(EFFECTFILE_MESSAGE, effectFilename);
+       	intent.putExtra(SPELLSFILE_MESSAGE, spellsFilename);
         startActivity(intent);
     }
     

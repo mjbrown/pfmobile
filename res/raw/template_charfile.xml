@@ -12,9 +12,9 @@
 	<skills>
 	</skills>
 	<levels>
-	<characterLevel number="0">
-		<choice groupName="Race" />
-		<choice groupName="Favored Class" />
-	</characterLevel>
+		<characterLevel number="0">
+			<choice groupName="Race" />
+			<choice groupName="Favored Class" />
+		</characterLevel>
 	</levels>
 </content>

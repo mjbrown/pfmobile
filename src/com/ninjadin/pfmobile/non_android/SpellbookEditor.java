@@ -1,4 +1,4 @@
-package com.ninjadin.pfmobile.fragments;
+package com.ninjadin.pfmobile.non_android;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,7 +10,6 @@ import java.util.Map;
 import org.xmlpull.v1.XmlPullParserException;
 
 import com.ninjadin.pfmobile.data.XmlConst;
-import com.ninjadin.pfmobile.non_android.XmlExtractor;
 
 public class SpellbookEditor {
 	Map<String, XmlExtractor> spell_lists = new HashMap<String, XmlExtractor>();
@@ -22,16 +21,16 @@ public class SpellbookEditor {
 		dynamic_books = books;
 	}
 	
-	private XmlExtractor getSpellbook(String class_name) throws XmlPullParserException, IOException {
+	private XmlExtractor getSpellList(String class_name) throws XmlPullParserException, IOException {
 		FileInputStream stc_stream = new FileInputStream(static_lists);
 		XmlExtractor book_data = new XmlExtractor(stc_stream);
-		if (book_data.findTagAttr(XmlConst.SPELLLIST_TAG, XmlConst.CLASS_ATTR, class_name)) {
+		if (book_data.findTagAttr(XmlConst.SPELLLIST_TAG, XmlConst.SOURCE_ATTR, class_name)) {
 			
 		} else {
 			stc_stream.close();
 			stc_stream = new FileInputStream(dynamic_books);
 			book_data = new XmlExtractor(stc_stream);
-			book_data.findTagAttr(XmlConst.SPELLLIST_TAG, XmlConst.CLASS_ATTR, class_name);
+			book_data.findTagAttr(XmlConst.SPELLLIST_TAG, XmlConst.SOURCE_ATTR, class_name);
 		}
 		String tags[] = { XmlConst.SPELLLEVEL_TAG };
 		String tag_attrs[] = { XmlConst.VALUE_ATTR };

@@ -39,6 +39,9 @@ public class StatisticManager {
 	// A list of modifiers which can be turned on or off on a whim
 	List<ActivatedCondition> modifiers = new ArrayList<ActivatedCondition>();
 	
+	// A list of spells available for memorization/casting
+	List<SpellGroup> spells = new ArrayList<SpellGroup>();
+	
 	public StatisticManager() {
 		for (String key: PropertyLists.keyNames) {
 			Map<String,Conditional> condition_map = new HashMap<String,Conditional>();
@@ -85,7 +88,7 @@ public class StatisticManager {
 					} else if (name.equals(XmlConst.ITEM_TAG)) {
 						currentConditions.endConditional();
 						last_item_name = null;
-					}else if (name.equals(XmlConst.ACTION_TAG) || name.equals(XmlConst.ATTACK_TAG) || name.equals(XmlConst.ONHIT_TAG)) {
+					}else if (name.equals(XmlConst.ACTION_TAG) || name.equals(XmlConst.ATTACK_TAG) || name.equals(XmlConst.ONHIT_TAG) || name.equals(XmlConst.SPELL_TAG)) {
 						lastObject.pop();
 					}
 				}
@@ -265,6 +268,16 @@ public class StatisticManager {
 					} else {
 						//Log.d("APPLYCOND", "Parent of applycond isn't action! " + names);
 					}
+				} else if (tag.equals(XmlConst.SPELL_TAG)) {
+					String source = parser.getAttributeValue(null, XmlConst.SOURCE_ATTR);
+					String school = parser.getAttributeValue(null, XmlConst.SCHOOL_ATTR);
+					SpellGroup spell = new SpellGroup(names, source, school, master_stats);
+					spells.add(spell);
+					if (currentConditions.hasConditions()) {
+						spell.setConditions(currentConditions);
+						conditional_bonuses.add(spell);
+					}
+					lastObject.push(spell);
 				}
 			}
 		}
@@ -416,6 +429,15 @@ public class StatisticManager {
 	
 	public List<AttackGroup> getAttacks(String action_name) {
 		return combatActions.get(action_name).getAttacks();
+	}
+	
+	public List<SpellGroup> getSpells() {
+		List<SpellGroup> available_spells = new ArrayList<SpellGroup>();
+		for (SpellGroup spell: spells) {
+			if (spell.isActive())
+				available_spells.add(spell);
+		}
+		return available_spells;
 	}
 
 	public ExpListData getActivatableConditions() {

@@ -25,10 +25,21 @@
 		        android:id="@+id/name_text"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:textSize="20sp"
+		        android:textSize="22sp"
 		        android:textStyle="bold"
 		        android:textColor="#AA0000"
-		        android:text="Two Handed Greatsword" />
+		        android:text="Chill Touch" />
+		    <TextView 
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:textSize="12sp"
+		        android:text="School:" />
+		    <TextView 
+		        android:id="@+id/school_text"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:textSize="16sp"
+		        android:text="Necromancy" />
 	    </LinearLayout>
 	
 	    <LinearLayout
@@ -41,28 +52,28 @@
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:textSize="12sp"
-		        android:text="To Hit:" />
+		        android:text="Uses:" />
 		    <TextView 
-		        android:id="@+id/tohit_text"
+		        android:id="@+id/uses_text"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:textSize="20sp"
 		        android:textStyle="bold"
 		        android:singleLine="true"
-		        android:text="+11/+6/+1"/>
+		        android:text="1"/>
 		    <TextView 
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:textSize="12sp"
-		        android:text="Damage:" />
+		        android:text="Save DC:" />
 		    <TextView 
-		        android:id="@+id/damage_text"
+		        android:id="@+id/savedc_text"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:textSize="20sp"
 		        android:textStyle="bold"
 		        android:singleLine="true"
-		        android:text="2d6+15"/>
+		        android:text="15"/>
 		    </LinearLayout>
     </LinearLayout>
     
@@ -81,16 +92,35 @@
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:textSize="12sp"
-		        android:text="Critical:" />
+		        android:text="Caster Level:" />
 		    <TextView 
-		        android:id="@+id/critical_text"
+		        android:id="@+id/caster_text"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:textSize="20sp"
 		        android:textStyle="bold"
-		        android:text="19-20/x2"/>
+		        android:text="10"/>
 	    </LinearLayout>
 	    
+	    <LinearLayout
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical" 
+	        android:layout_weight="1">
+		    <TextView 
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:textSize="12sp"
+		        android:text="Spell Failure:" />
+		    <TextView 
+		        android:id="@+id/spell_fail_text"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:textSize="20sp"
+		        android:textStyle="bold"
+		        android:text="10%"/>
+	    </LinearLayout>
+	    	    
 	    <LinearLayout
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
@@ -101,14 +131,14 @@
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:textSize="12sp"
-		        android:text="Damage Type:" />
+		        android:text="Metamagic:" />
 		    <TextView 
-		        android:id="@+id/damagetype_text"
+		        android:id="@+id/metamagic_text"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:textSize="20sp"
+		        android:textSize="18sp"
 		        android:textStyle="bold"
-		        android:text="Piercing,Magic"/>
+		        android:text="None."/>
 		    
 	    </LinearLayout>
 	</LinearLayout>

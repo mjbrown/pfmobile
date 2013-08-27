@@ -108,6 +108,13 @@ public class PropertyLists {
 	final static public String[] attackProperties = new String[] { to_hit, "Range",
 		crit_range, "Save DC", "Number Of Uses",};
 
+	final static public String spell_level = "Spell Level";
+	final static public String spell_failure = "Spell Failure";
+	final static public String uses = "Uses";
+	final static public String save_dc = "Save DC";
+	final static public String caster_level = "Caster Level";
+	final static public String[] spellStrings = { spell_level };
+	
 	final static public String[] criticalRangeStrings = new String[] { "20", "19-20", "18-20", 
 		"17-20", "16-20", "15-20", "14-20", "13-20", "12-20", "11-20", "10-20", };
 	
