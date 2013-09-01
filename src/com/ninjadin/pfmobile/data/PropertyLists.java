@@ -6,19 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 public class PropertyLists {
-	final public static int[] bard_per_day =     { 1,2,3,3,4,4,4,4,5,5,5,5,5,5,5,5,5,5,5,5 };
-	final public static int[] bard_known =       { 2,3,4,4,4,4,5,5,5,5,5,5,5,5,5,5,5,5,5,5 };
-
-	final public static int[] cleric_per_day =   { 1,2,2,3,3,3,4,4,4,4,4,4,4,4,4,4,4,4,4,4 };
-
-	final public static int[] paladin_per_day =  { 0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4 };
-
-	final public static int[] sorcerer_per_day = { 3,4,5,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6 };
-	final public static int[] sorcerer_known =   { 1,2,2,3,3,4,4,5,5,5,5,5,5,5,5,5,5,5,5,5 };
-
-	final public static String spellbook_classes[] = { "Alchemist", "Wizard", "Magus", "Witch" };
-	final public static String spelllist_classes[] = { "Bard", "Cleric", "Druid", "Inquisitor", "Oracle",
-		"Paladin", "Ranger", "Summoner", "Sorcerer" };
+	final public static String intelligenceCasters[] = { "Alchemist", "Wizard", "Magus", "Witch",	};
+	final public static String wisdomCasters[] = { "Cleric", "Druid", "Inquisitor", "Paladin", "Ranger", };
+	final public static String charismaCasters[] = { "Bard", "Oracle", "Summoner", "Sorcerer" };
 	
 	final public static String manual = "Manual";
 	
@@ -33,12 +23,7 @@ public class PropertyLists {
 	final public static String keyNames[] = new String[] { "Statistic", "Status", prerequisite, "Equipment", 
 		"Proficiency", "Attack Source", "Attack Target", "Damage Source", "Damage Target", "Activated", };
 	
-	final public static String statusNames[] = new String[] { "Unarmored", "Light Armor", "Medium Armor",
-		"Heavy Armor", "No Off Hand", "Light Off Hand", "One-handed Off Hand", "No Main Hand", "Light Main Hand",
-		"One-handed Main Hand", "Two-handed", };
-	
-	final public static String bonusSources[] = new String[] { "Natural", "Supernatural", 
-		"Magical", };
+	final public static String bonusSources[] = new String[] { "Natural", "Supernatural", "Magical", };
 	
 	final public static String ranks = "Ranks";
 	final public static String stackableTypes[] = new String[] { "Base", "Racial", "Trait", "Feat",
@@ -124,6 +109,9 @@ public class PropertyLists {
 	final static public String crit_multiplier = "Critical Multiplier";
 	final static public String[] damageProperties = new String[] { 
 		"Condition", crit_multiplier, "Duration", "Number Of Uses", };
+	
+	final static public String[] weaponProperties = new String[] { "Finesse",
+		"Light", "Brace", "Double", "Monk", "Nonlethal", "Reach", "Trip", };
 	
 	// Weapon damage sources
 	final static public String[] damageSources = new String[] { "Piercing", "Slashing", "Bludgeoning", 

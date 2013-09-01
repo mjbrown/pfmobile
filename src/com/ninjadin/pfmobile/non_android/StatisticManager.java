@@ -489,4 +489,18 @@ public class StatisticManager {
 		}
 	}
 	
+	public List<String> castingClasses() {
+		List<String> names = new ArrayList<String>();
+		for (String name: PropertyLists.intelligenceCasters)
+			if (master_stats.getValue(name + " Spell Levels") > 0)
+				names.add(name);
+		for (String name: PropertyLists.wisdomCasters)
+			if (master_stats.getValue(name + " Spell Levels") > 0)
+				names.add(name);
+		for (String name: PropertyLists.charismaCasters)
+			if (master_stats.getValue(name + " Spell Levels") > 0)
+				names.add(name);
+		return names;
+	}
+	
 }

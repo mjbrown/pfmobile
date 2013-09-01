@@ -10,7 +10,7 @@
         android:orientation="horizontal"
         android:layout_marginTop="10dp">
         <Button 
-            android:id="@+id/button_modifiers"
+            android:id="@+id/button_add_spell"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"

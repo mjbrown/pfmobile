@@ -100,6 +100,15 @@
         android:layout_below="@+id/inv_show_xml"
         android:text="Show Effect XML"
         android:onClick="launchEffectXML" />
+
+    <Button 
+        android:id="@+id/spells_show_xml" 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/eff_show_xml"
+        android:text="Show Spells XML"
+        android:onClick="launchSpellbookXML" />
     
 </RelativeLayout>
 </ScrollView>

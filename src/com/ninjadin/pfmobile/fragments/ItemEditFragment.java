@@ -120,9 +120,9 @@ public class ItemEditFragment extends Fragment {
 		}
 		
 		public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-//			if (convertView == null) {
+			if (convertView == null) {
 				convertView = View.inflate(mContext, R.layout.titlerow_filterselect, null);
-//			}
+			}
 			Button addButton = (Button)convertView.findViewById(R.id.filtertitle_add);
 			if (addButton != null)
 				addButton.setText("Delete");
@@ -139,9 +139,10 @@ public class ItemEditFragment extends Fragment {
 		}
 		
 		public View getChildView(int groupPosition, int childPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-//			if (convertView == null) {
+			if (convertView == null) {
+				
 				convertView = View.inflate(mContext, R.layout.subrow_itemedit, null);
-//			}
+			}
 			TextView value = (TextView) convertView.findViewById(R.id.item_value);
 			value.setText(itemData.get(groupPosition).get(childPosition).get(XmlConst.VALUE_ATTR));
 			TextView textView = (TextView) convertView.findViewById(R.id.item_type);

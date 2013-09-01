@@ -1,17 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
 <content>
-    <spell source="Wizard" school="Abjuration" name="Resistance">
-    	<bonus type="Spell Level" value="0" />
-        <bonus type="Caster Level" value="[Wizard Caster Level]" />
-    	<bonus type="Spell Failure" value="[Wizard Spell Failure]" />
-    	<bonus type="Uses" value="1" />
-    	<bonus type="Save DC" value="10 + [Intelligence Modifier] + [Spell Level]" />
-    </spell>
-    <spell source="Sorcerer" school="Necromancy" name="Chill Touch">
-        <bonus type="Spell Level" value="1" />
-        <bonus type="Caster Level" value="[Sorcerer Caster Level]" />
-        <bonus type="Spell Failure" value="[Sorcerer Spell Failure]" />
-        <bonus type="Uses" value="[Sorcerer Level 1 Spells Per Day]" />
-        <bonus type="Save DC" value="10 + [Charisma Modifier] + [Spell Level]" />
-    </spell>
 </content>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <content>
-    <spellBook class="Sorcerer">
+    <spellList source="Sorcerer">
+    <spellList source="Wizard">
         <spellLevel value="0">
             <entry name="Resistance" />
             <entry name="Acid Splash" />
@@ -111,5 +112,40 @@
             <entry name="Mage's Disjunction" />
         </spellLevel>
         
-    </spellBook>
+    </spellList>
+    </spellList>
+    <spellList source="Bard">
+        <spellLevel value="0">
+            <entry name="Resistance" />
+            <entry name="Acid Splash" />
+            <entry name="Detect Magic" />
+            <entry name="Detect Poison" />
+            <entry name="Read Magic" />
+            <entry name="Daze" />
+            <entry name="Dancing Lights" />
+            <entry name="Flare" />
+            <entry name="Light" />
+            <entry name="Ray of Frost" />
+            <entry name="Ghost Sound" />
+            <entry name="Bleed" />
+            <entry name="Disrupt Undead" />
+            <entry name="Touch of Fatigue" />
+            <entry name="Mage Hand" />
+            <entry name="Mending" />
+            <entry name="Message" />
+            <entry name="Open/Close" />
+            <entry name="Arcane Mark" />
+            <entry name="Prestidigitation" />
+        </spellLevel>
+    </spellList>
+	<spellList source="Oracle">
+    <spellList source="Cleric">
+        <spellLevel value="0">
+            <entry name="Light" />
+        </spellLevel>
+        <spellLevel value="1">
+            <entry name="Cure Light Wounds" />
+        </spellLevel>
+    </spellList>
+    </spellList>
 </content>

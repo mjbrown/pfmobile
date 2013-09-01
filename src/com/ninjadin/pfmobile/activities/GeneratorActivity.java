@@ -13,6 +13,7 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.res.Resources.NotFoundException;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -48,7 +49,9 @@ import com.ninjadin.pfmobile.non_android.EffectEditor;
 import com.ninjadin.pfmobile.non_android.InventoryEditor;
 import com.ninjadin.pfmobile.non_android.ItemEditor;
 import com.ninjadin.pfmobile.non_android.OnHitCondition;
+import com.ninjadin.pfmobile.non_android.SpellbookEditor;
 import com.ninjadin.pfmobile.non_android.StatisticManager;
+import com.ninjadin.pfmobile.non_android.XmlEditor;
 
 public class GeneratorActivity extends FragmentActivity implements ItemEditDialogListener, ModifierDialogListener {
 	public StatisticManager dependencyManager;
@@ -290,6 +293,7 @@ public class GeneratorActivity extends FragmentActivity implements ItemEditDialo
 	}
 	
 	public void launchSpellbook(View view) {
+		refreshCharData();
 		SpellbookFragment firstFragment = new SpellbookFragment();
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.fragment_container, firstFragment);
@@ -322,6 +326,17 @@ public class GeneratorActivity extends FragmentActivity implements ItemEditDialo
 	public void launchEffectXML(View view) {
 		Bundle passedData = new Bundle();
 		passedData.putString("filename", effectFilename);
+		ShowXMLFragment newFragment = new ShowXMLFragment();
+		newFragment.setArguments(passedData);
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+		transaction.replace(R.id.fragment_container, newFragment);
+		transaction.addToBackStack(null);
+		transaction.commit();
+	}
+	
+	public void launchSpellbookXML(View view) {
+		Bundle passedData = new Bundle();
+		passedData.putString("filename", spellsFilename);
 		ShowXMLFragment newFragment = new ShowXMLFragment();
 		newFragment.setArguments(passedData);
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -461,6 +476,24 @@ public class GeneratorActivity extends FragmentActivity implements ItemEditDialo
 		dependencyManager.deactivateCondition(key, name);
 		try {
 			effectEditor.saveEffects(effectFile);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		dirtyFiles = true;
+	}
+	
+	public void addSpell(String class_name, String spell_name, String spell_level) {
+		try {
+			String entry = SpellbookEditor.createEntry(class_name, spell_name, spell_level, getResources().openRawResource(R.raw.spells));
+			XmlEditor.addToParent(spellsFile, tempFile, XmlConst.CONTENT_TAG, null, entry);
+			refreshCharData();
+		} catch (NotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (XmlPullParserException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

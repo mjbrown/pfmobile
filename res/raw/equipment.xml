@@ -22,7 +22,6 @@
     <template name="Light Armor">
         <item name="Steel Chain Shirt" slot="Armor" >
             <enhancement name="Base Item">
-	            <itemProperty type="Proficiency" value="Light Armor" />
 	            <bonus type="Flat Footed Armor Class" stackType="Armor" value="4" />
 	            <bonus type="Armor Class" stackType="Armor" value="4" />
 	            <bonus type="Maximum Dexterity Bonus" value="4" />
@@ -30,8 +29,8 @@
 		        <bonus type="Light Armor Spell Failure" value="20" />
 		        <bonus type="Equipment Cost" value="100" />
 		        <bonus type="Encumbrance" value="25" />"
-		        <itemProperty type="Hardness" value="2" />
-		        <itemProperty type="Hit Points" value="15" />
+		        <bonus type="[Item Name] Hardness" value="2" />
+		        <bonus type="[Item Name] Hit Points" value="15" />
 	            <condition key="Equipment" name="Light Armor" />
 		    </enhancement>
         </item>
@@ -39,7 +38,6 @@
     <template name="Medium Armor">
         <item name="Steel Breastplate" slot="Armor" >
             <enhancement name="Base Item">
-	            <itemProperty type="Proficiency" value="Medium Armor" />
 	            <bonus type="Flat Footed Armor Class" stackType="Armor" value="6" />
 	            <bonus type="Armor Class" stackType="Armor" value="6" />
 		        <bonus type="Maximum Dexterity Bonus" value="3" />
@@ -56,7 +54,6 @@
     <template name="Heavy Armor">
         <item name="Steel Half-plate" slot="Armor">
             <enhancement name="Base Item">
-	            <itemProperty type="Proficiency" value="Heavy Armor" />
 	            <bonus type="Flat Footed Armor Class" stackType="Armor" value="8" />
 	            <bonus type="Armor Class" stackType="Armor" value="8" />
 	            <bonus type="Maximum Dexterity Bonus" value="0" />
@@ -73,10 +70,16 @@
     <template name="Light Weapon">
         <item name="Shortsword" slot="Inventory" >
             <enhancement name="Base Item">
-                <itemProperty type="Proficiency" value="Martial Weapon,Shortsword" />
                 <bonus type="Equipment Cost" value="60" />
                 <bonus type="Encumbrance" value="8" />
             </enhancement>
+            <enhancement name="Weapon">
+                <property name="Light" />
+                <property name="One Hand" />
+                <property name="Two Hand" />
+                <property name="Finesse" />
+            </enhancement>
+            <enhancement name="Generated">
             <conditional key="Equipment" name="Main Hand [Item Name]">
 	            <attack name="Main Hand Melee Attack">
 	                <bonus type="Critical Range" value="2" />
@@ -154,23 +157,41 @@
 		            </conditional>
 		        </conditional>
             </conditional>
+            </enhancement>
         </item>
     </template>
     <template name="One-handed Weapon">
         <item name="Scimitar" slot="Inventory" >
             <enhancement name="Base Item">
-                <itemProperty type="Proficiency" value="Martial Weapon,Shortsword" />
                 <bonus type="Equipment Cost" value="60" />
                 <bonus type="Encumbrance" value="8" />
             </enhancement>
+            <enhancement name="Weapon">
+                <bonus type="[Item Name] Damage d20" value="0" />
+                <bonus type="[Item Name] Damage d12" value="0" />
+                <bonus type="[Item Name] Damage d10" value="0" />
+                <bonus type="[Item Name] Damage d8" value="0" />
+                <bonus type="[Item Name] Damage d6" value="1" />
+                <bonus type="[Item Name] Damage d4" value="0" />
+                <bonus type="[Item Name] Damage d3" value="0" />
+                <bonus type="[Item Name] Damage d2" value="0" />
+                <bonus type="[Item Name] Damage" value="1" />
+                <bonus type="[Item Name] Critical Range" value="2" />
+                <bonus type="[Item Name] To Hit" value="1" />
+                <property name="Light" />
+                <property name="One Hand" />
+                <property name="Two Hand" />
+                <property name="Finesse" />
+            </enhancement>
+            <enhancement name="Generated">
             <conditional key="Equipment" name="Main Hand [Item Name]">
 	            <attack name="Main Hand Melee Attack">
-	                <bonus type="Critical Range" value="2" />
-	                <bonus type="To Hit" value="1" />
+	                <bonus type="Critical Range" value="[Item Name] Critical Range" />
+	                <bonus type="To Hit" value="[Item Name] To Hit" />
 	            </attack>
 	            <onHitEffect name="Main Hand Melee Weapon Damage" source="Piercing">
-	            	<bonus type="Damage d6" value="1" />
-	            	<bonus type="Damage" value="1" />
+	            	<bonus type="Damage d6" value="[Item Name] Damage d6" />
+	            	<bonus type="Damage" value="[Item Name] Damage" />
 	            </onHitEffect>
 	            <action name="Drop Main Hand [Item Name]" cost="Free">
 	                <attack target="Self">
@@ -240,12 +261,12 @@
 		            </conditional>
 		        </conditional>
             </conditional>
+            </enhancement>
         </item>
     </template>
     <template name="Two-handed Weapon">
         <item name="Keen Nodachi" slot="Inventory" >
             <enhancement name="Base Item">
-                <itemProperty type="Proficiency" value="Martial Weapon,Nodachi" />
                 <bonus type="Equipment Cost" value="60" />
                 <bonus type="Encumbrance" value="8" />
             </enhancement>

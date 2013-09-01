@@ -8,12 +8,15 @@ import java.util.Map;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.Spinner;
@@ -27,6 +30,7 @@ import com.ninjadin.pfmobile.data.XmlConst;
 import com.ninjadin.pfmobile.non_android.SpellGroup;
 
 public class SpellbookFragment extends Fragment {
+	Button add_spell;
 	Spinner class_spinner;
 	GeneratorActivity activity;
 	ExpandableListView expListView;
@@ -42,7 +46,21 @@ public class SpellbookFragment extends Fragment {
 			selected_class = savedInstanceState.getString("class_spinner");
 		activity = (GeneratorActivity) getActivity();
 		class_spinner = (Spinner) view.findViewById(R.id.class_spinner);
-		expListView = (ExpandableListView) view.findViewById(R.id.spellBook_expListView); 
+		expListView = (ExpandableListView) view.findViewById(R.id.spellBook_expListView);
+		add_spell = (Button) view.findViewById(R.id.button_add_spell);
+		add_spell.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				SpellListFragment newFragment = new SpellListFragment();
+				FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
+				transaction.replace(R.id.fragment_container, newFragment);
+				transaction.addToBackStack(null);
+				transaction.commit();
+			}
+			
+		});
 		return view;
 	}
 	
@@ -174,7 +192,8 @@ public class SpellbookFragment extends Fragment {
 			String caster_level = child_map.get(PropertyLists.caster_level);
 			((TextView) convertView.findViewById(R.id.caster_text)).setText(caster_level);
 			String school = child_map.get(XmlConst.SCHOOL_ATTR);
-			((TextView) convertView.findViewById(R.id.school_text)).setText(school);
+			if (school != null)
+				((TextView) convertView.findViewById(R.id.school_text)).setText(school);
 			return convertView;
 		}
 	}

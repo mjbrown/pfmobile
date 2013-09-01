@@ -3,6 +3,7 @@ package com.ninjadin.pfmobile.non_android;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -33,12 +34,23 @@ public class ItemEditor {
 		new_slot = slot;
 		String[] tags = new String[] { XmlConst.ENHANCE_TAG, XmlConst.WEAPON_TAG };
 		String[] tag_attrs = new String[] { XmlConst.NAME_ATTR , XmlConst.TYPE_ATTR };
-		String[] subtags = new String[] { XmlConst.ITEMPROPERTY_TAG, XmlConst.DAMAGE_TAG,
-				XmlConst.BONUS_TAG, XmlConst.CONDITION_TAG, XmlConst.ATTACKBONUS_TAG };
+		String[] subtags = new String[] { XmlConst.BONUS_TAG, XmlConst.CONDITION_TAG, };
 		String[] subtag_attrs = new String[] { XmlConst.TYPE_ATTR, XmlConst.STACKTYPE_ATTR,
 				XmlConst.SOURCE_ATTR, XmlConst.VALUE_ATTR, XmlConst.NAME_ATTR, XmlConst.KEY_ATTR };
 		item.getData(XmlConst.ITEM_TAG, tags, tag_attrs, subtags, subtag_attrs);
 		inStream.close();
+	}
+	
+	private List<Map<String,String>> getGroup(String group_name) {
+		List<Map<String,String>> properties = new ArrayList<Map<String,String>>();
+		int group_pos = 0;
+		for (Map<String,String> group: item.groupData) {
+			String name = group.get(XmlConst.NAME_ATTR);
+			if (name.equals(group_name))
+				return item.itemData.get(group_pos);
+			group_pos += 1;
+		}
+		return properties;
 	}
 	
 	public void setPosition(int groupPos, int childPos) {
