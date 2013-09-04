@@ -1,7 +1,6 @@
 package com.ninjadin.pfmobile.activities;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,7 +22,6 @@ import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ExpandableListView;
 import android.widget.Toast;
 
 import com.ninjadin.pfmobile.R;
@@ -31,33 +29,35 @@ import com.ninjadin.pfmobile.data.PropertyLists;
 import com.ninjadin.pfmobile.data.XmlConst;
 import com.ninjadin.pfmobile.fragments.ActionFragment;
 import com.ninjadin.pfmobile.fragments.CharacterSheetFragment;
+import com.ninjadin.pfmobile.fragments.CharacterSheetFragment.CharacterSheetFragmentListener;
 import com.ninjadin.pfmobile.fragments.ChoiceSelectFragment;
+import com.ninjadin.pfmobile.fragments.ChoiceSelectFragment.ChoiceSelectFragmentListener;
 import com.ninjadin.pfmobile.fragments.GeneratorMenuFragment;
 import com.ninjadin.pfmobile.fragments.InventoryFragment;
 import com.ninjadin.pfmobile.fragments.ItemEditDialogFragment;
 import com.ninjadin.pfmobile.fragments.ItemEditDialogFragment.ItemEditDialogListener;
-import com.ninjadin.pfmobile.fragments.ItemEditFragment;
 import com.ninjadin.pfmobile.fragments.LevelsFragment;
+import com.ninjadin.pfmobile.fragments.LevelsFragment.LevelsFragmentListener;
 import com.ninjadin.pfmobile.fragments.ModifierDialogFragment;
 import com.ninjadin.pfmobile.fragments.ModifierDialogFragment.ModifierDialogListener;
 import com.ninjadin.pfmobile.fragments.ShowXMLFragment;
 import com.ninjadin.pfmobile.fragments.SpellbookFragment;
 import com.ninjadin.pfmobile.fragments.TemplateSelectFragment;
 import com.ninjadin.pfmobile.non_android.AttackGroup;
-import com.ninjadin.pfmobile.non_android.CharacterEditor;
+import com.ninjadin.pfmobile.non_android.CharacterXmlObject;
 import com.ninjadin.pfmobile.non_android.EffectEditor;
 import com.ninjadin.pfmobile.non_android.InventoryEditor;
-import com.ninjadin.pfmobile.non_android.ItemEditor;
 import com.ninjadin.pfmobile.non_android.OnHitCondition;
 import com.ninjadin.pfmobile.non_android.SpellbookEditor;
 import com.ninjadin.pfmobile.non_android.StatisticManager;
 import com.ninjadin.pfmobile.non_android.XmlEditor;
+import com.ninjadin.pfmobile.non_android.XmlObjectModel;
 
-public class GeneratorActivity extends FragmentActivity implements ItemEditDialogListener, ModifierDialogListener {
+public class GeneratorActivity extends FragmentActivity implements 
+	ItemEditDialogListener, ModifierDialogListener, LevelsFragmentListener, 
+	CharacterSheetFragmentListener, ChoiceSelectFragmentListener {
 	public StatisticManager dependencyManager;
-	public CharacterEditor characterEditor;
 	public InventoryEditor inventoryEditor;
-	public ItemEditor itemEditor;
 	public EffectEditor effectEditor;
 	public String masterCharFilename;
 	public String inventoryFilename;
@@ -69,6 +69,11 @@ public class GeneratorActivity extends FragmentActivity implements ItemEditDialo
 	public File effectFile;
 	public File spellsFile;
 	public File tempFile;
+	CharacterXmlObject character;
+	XmlObjectModel dependencies, inventory, effects, spells;
+	final static public int CHARACTER_MODEL = 0;
+	final static public int DEPENDENCIES_MODEL = 1;
+	
 	public Boolean dirtyFiles = true;
 	
 	@Override
@@ -142,37 +147,28 @@ public class GeneratorActivity extends FragmentActivity implements ItemEditDialo
 		tempFilename = masterCharFilename.concat(".temp");
 		charFile = new File(context.getFilesDir(), masterCharFilename);
 		tempFile = new File(context.getFilesDir(), tempFilename);
+		character = new CharacterXmlObject(charFile, tempFile, this.getResources().openRawResource(R.raw.base_levels));
 		effectFile = new File(context.getFilesDir(), effectFilename);
+		effects = new XmlObjectModel(effectFile, tempFile);
 		inventoryFile = new File(context.getFilesDir(), inventoryFilename);
+		inventory = new XmlObjectModel(inventoryFile, tempFile);
 		spellsFile = new File(context.getFilesDir(), spellsFilename);
+		spells = new XmlObjectModel(spellsFile, tempFile);
+		dependencies = new XmlObjectModel(getResources().openRawResource(R.raw.dependencies));;
+		refreshManager();
+		
+		inventoryEditor = new InventoryEditor(inventoryFile);
+		effectEditor = new EffectEditor(effectFile);
+	}
+	
+	private void refreshManager() {
 		dependencyManager = new StatisticManager();
-		try {
-			characterEditor = new CharacterEditor(charFile, tempFile);
-			inventoryEditor = new InventoryEditor(inventoryFile);
-			effectEditor = new EffectEditor(effectFile);
-
-			InputStream inStream = (InputStream) getResources().openRawResource(R.raw.dependencies);
-			dependencyManager.readXMLBonuses(inStream);
-			inStream.close();
-			inStream = new FileInputStream(effectFile);
-			dependencyManager.readXMLBonuses(inStream);
-			inStream.close();
-			inStream = new FileInputStream(inventoryFile);
-			dependencyManager.readXMLBonuses(inStream);
-			inStream.close();
-			inStream = new FileInputStream(charFile);
-			dependencyManager.readXMLBonuses(inStream);
-			inStream.close();
-			inStream = new FileInputStream(spellsFile);
-			dependencyManager.readXMLBonuses(inStream);
-			dependencyManager.updateConditionalBonuses(10);
-		} catch (XmlPullParserException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		dependencyManager.readModel(dependencies);
+		dependencyManager.readModel(character);
+		dependencyManager.readModel(effects);
+		dependencyManager.readModel(inventory);
+		dependencyManager.readModel(spells);
+		dependencyManager.updateConditionalBonuses(10);
 	}
 	
 	@Override
@@ -182,9 +178,10 @@ public class GeneratorActivity extends FragmentActivity implements ItemEditDialo
 	}
 	public void saveCharacterState() {
 		try {
-			File newTemp = new File(this.getCacheDir(), "temp");
-			characterEditor.writeCharacterData(newTemp);
-			newTemp.delete();
+			character.saveChanges();
+			//File newTemp = new File(this.getCacheDir(), "temp");
+			//characterEditor.writeCharacterData(newTemp);
+			//newTemp.delete();
 			effectEditor.saveEffects(effectFile);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -257,30 +254,6 @@ public class GeneratorActivity extends FragmentActivity implements ItemEditDialo
 		transaction.replace(R.id.fragment_container, newFragment);
 		transaction.addToBackStack(null);
 		transaction.commit();
-	}
-	
-	public void addSelection(int choiceId, String groupName, String subGroup, String specificNames, String selectionName) {
-		InputStream dataFile;
-		if (groupName.equals("Race")) {
-			dataFile = getResources().openRawResource(R.raw.races);
-		} else if (groupName.equals("Class Level")) {
-			dataFile = getResources().openRawResource(R.raw.classes);
-		} else if (groupName.equals("Feat")) {
-			dataFile = getResources().openRawResource(R.raw.feats);
-		} else if (groupName.equals("Equipment")) {
-			dataFile = getResources().openRawResource(R.raw.equipment);
-		} else {
-			dataFile = getResources().openRawResource(R.raw.other);
-		}
-		try {
-			characterEditor.insertChoice(dataFile, choiceId, groupName, subGroup, specificNames, selectionName);
-			dataFile.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		dirtyFiles = true;
-		startMenu(selectionName + " selected.");
 	}
 	
 	public void startMenu(String message) {
@@ -368,17 +341,6 @@ public class GeneratorActivity extends FragmentActivity implements ItemEditDialo
 		transaction.commit();
 	}
 	
-	public void editItem(String itemName) {
-		Bundle passedData = new Bundle();
-		passedData.putString(XmlConst.NAME_ATTR, itemName);
-		ItemEditFragment newFragment = new ItemEditFragment();
-		newFragment.setArguments(passedData);
-		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-		transaction.replace(R.id.fragment_container, newFragment);
-		transaction.addToBackStack(null);
-		transaction.commit();
-	}
-
 	public void addTemplate(String templateName, String templateType, String itemName) {
 		File tempFile = new File(this.getFilesDir(), "temp_file.xml");
 		InputStream templateFileStream;
@@ -503,7 +465,6 @@ public class GeneratorActivity extends FragmentActivity implements ItemEditDialo
 	
 	public void showItemEditDialog(int groupPosition, int childPosition) {
 		DialogFragment dialog = new ItemEditDialogFragment();
-		itemEditor.setPosition(groupPosition, childPosition);
 		dialog.show(getSupportFragmentManager(), "ItemEditDialogFragment");
 	}
 	
@@ -514,19 +475,7 @@ public class GeneratorActivity extends FragmentActivity implements ItemEditDialo
 	
 	@Override
 	public void onItemEditPositiveClick(ItemEditDialogFragment dialog) {
-		itemEditor.setBonusType(dialog.bonus_spinner.getSelectedItem().toString());
-		itemEditor.setStackType(dialog.stack_spinner.getSelectedItem().toString());
-		itemEditor.setSourceType(dialog.source_spinner.getSelectedItem().toString());
-		itemEditor.setValue(dialog.valueEdit.getText().toString());
-		try {
-			itemEditor.saveToInventory(tempFile);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		ExpandableListView expList = (ExpandableListView) findViewById(R.id.expandableListView1);
-		expList.invalidateViews();
-		dirtyFiles = true;
+
 	}
 	
 	@Override
@@ -544,5 +493,56 @@ public class GeneratorActivity extends FragmentActivity implements ItemEditDialo
 	@Override
 	public void onModifierNegClick(ModifierDialogFragment dialog) {
 		
+	}
+	
+	@Override
+	public void characterLevelUp(LevelsFragment fragment) {
+		character.addLevel();
+	}
+	
+	@Override
+	public void characterLevelDown(LevelsFragment fragment) {
+		character.removeLevel();
+	}
+	
+	@Override
+	public int currentCharacterLevel() {
+		return character.currentLevel();
+	}
+	
+	@Override
+	public String characterAttributeRanks(String skill_name) {
+		return character.attributeRanks(skill_name);
+	}
+	
+	@Override
+	public void characterAttributeIncrement(String skill_name) {
+		character.incrementRanksAttribute(skill_name);
+	}
+	
+	@Override
+	public void characterAttributeDecrement(String skill_name) {
+		character.decrementAttribute(skill_name);
+	}
+	
+	@Override
+	public List<XmlObjectModel> characterChoiceList() {
+		return character.getChoiceList();
+	}
+	
+	@Override
+	public XmlObjectModel getXmlModel(int enum_model) {
+		if (enum_model == CHARACTER_MODEL)
+			return character;
+		if (enum_model == DEPENDENCIES_MODEL)
+			return dependencies;
+		return null;
+	}
+	
+	@Override
+	public void insertCharacterSelection(XmlObjectModel selection, int choice_number) {
+		character.addChoice(selection, choice_number);
+		refreshManager();
+		startMenu(selection.getAttribute(XmlConst.NAME_ATTR) + " selected.");
 	}
 }

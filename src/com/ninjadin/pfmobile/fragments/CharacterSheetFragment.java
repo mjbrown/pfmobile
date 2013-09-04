@@ -3,6 +3,7 @@ package com.ninjadin.pfmobile.fragments;
 import java.util.List;
 import java.util.Map;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -21,15 +22,23 @@ import com.ninjadin.pfmobile.R;
 import com.ninjadin.pfmobile.activities.GeneratorActivity;
 import com.ninjadin.pfmobile.data.PropertyLists;
 import com.ninjadin.pfmobile.data.XmlConst;
-import com.ninjadin.pfmobile.non_android.CharacterEditor;
+import com.ninjadin.pfmobile.non_android.OldCharacterEditor;
 import com.ninjadin.pfmobile.non_android.StatisticManager;
 
 public class CharacterSheetFragment extends Fragment {
 	ExpandableListView expList;
 	StatisticManager manager;
-	CharacterEditor charEdit;
+	OldCharacterEditor charEdit;
 	List<Map<String,String>> groupData;
 	List<List<Map<String,String>>> itemData;
+	
+	public interface CharacterSheetFragmentListener {
+		public String characterAttributeRanks(String skill_name);
+		public void characterAttributeIncrement(String skill_name);
+		public void characterAttributeDecrement(String skill_name);
+	}
+	
+	CharacterSheetFragmentListener mListener;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,11 +47,19 @@ public class CharacterSheetFragment extends Fragment {
 	}
 	
 	@Override
+	public void onAttach(Activity activity) {
+		super .onAttach(activity);
+		try {
+			mListener = (CharacterSheetFragmentListener) activity;
+		} catch (ClassCastException e) {
+			throw new ClassCastException(activity.toString() + "must implement CharacterSheetFragmentListener");
+		}
+	}
+	@Override
 	public void onResume() {
 		super .onResume();
 		GeneratorActivity activity = (GeneratorActivity) getActivity();
 		manager = activity.dependencyManager;
-		charEdit = activity.characterEditor;
 		groupData = PropertyLists.categoryData();
 		itemData = PropertyLists.statisticData();
 		expList = (ExpandableListView) activity.findViewById(R.id.expandableListView1);
@@ -91,25 +108,24 @@ public class CharacterSheetFragment extends Fragment {
 			TextView points_left = (TextView) convertView.findViewById(R.id.number_points_left);
 			if (points_left != null) {
 				if (category.equals("Ability Scores")) { 
-					points_left.setText(Integer.toString(charEdit.pointBuyRemaining) + " out of 20");
+					points_left.setText(mListener.characterAttributeRanks(PropertyLists.point_buy_cost));
 					points_left.setTextColor(Color.BLACK);
-					point_title.setText("Points Remaining:");
+					point_title.setText("Points Used:");
 				} else if (category.equals("Skills")) {
-					String ranks_used = Integer.toString(charEdit.totalSkillRanks());
+					String ranks_used = mListener.characterAttributeRanks(PropertyLists.skill_ranks_used);
 					String ranks_available = Integer.toString(manager.getValue("Skill Points"));
 					points_left.setText(ranks_used + " / " + ranks_available);
-					if (charEdit.totalSkillRanks() > manager.getValue("Skill Points"))
+					if (Integer.parseInt(ranks_used) > manager.getValue("Skill Points"))
 						points_left.setTextColor(Color.RED);
 					else
 						points_left.setTextColor(Color.BLACK);
 					point_title.setText("Points Used:");
 				} else if (category.equals("Points")) {
-					int used = charEdit.favoredclass_points[0] + charEdit.favoredclass_points[1];
-					String points_used = Integer.toString(used);
+					String points_used = mListener.characterAttributeRanks(PropertyLists.favored_points_used);
 					int available = manager.getValue(PropertyLists.favored_points);
 					String points_available = Integer.toString(available);
 					points_left.setText(points_used + " / " + points_available);
-					if (used > available)
+					if (Integer.parseInt(points_used) > available)
 						points_left.setTextColor(Color.RED);
 					else
 						points_left.setTextColor(Color.BLACK);
@@ -147,10 +163,10 @@ public class CharacterSheetFragment extends Fragment {
 
 		private void updatePointSubrow(View parent, int childPosition) {
 			TextView base_score = (TextView) parent.findViewById(R.id.score);
-			if (base_score != null) {
-				base_score.setText(Integer.toString(charEdit.favoredclass_points[childPosition]));
-			}
 			String abilityName = PropertyLists.pointsNames[childPosition];
+			if (base_score != null) {
+				base_score.setText(mListener.characterAttributeRanks(abilityName));
+			}
 			TextView final_score = (TextView) parent.findViewById(R.id.final_score);
 			if (final_score != null) {
 				final_score.setText(Integer.toString(manager.getValue(abilityName)));
@@ -160,22 +176,19 @@ public class CharacterSheetFragment extends Fragment {
 			Button minus = (Button) parent.findViewById(R.id.minus);
 			if (minus != null) {
 				minus.setOnClickListener(pointListener);
-				minus.setEnabled(charEdit.favoredclass_points[childPosition] > 0);
 			}
 			Button plus = (Button) parent.findViewById(R.id.plus);
 			if (plus != null) {
 				plus.setOnClickListener(pointListener);
-				int available = manager.getValue(PropertyLists.favored_points);
-				plus.setEnabled(available > (charEdit.favoredclass_points[0] + charEdit.favoredclass_points[1]));
 			}
 		}
 		
 		private void updateAbilityScoreSubrow(View parent, int childPosition) {
+			String abilityName = PropertyLists.abilityScoreNames[childPosition];
 			TextView base_score = (TextView) parent.findViewById(R.id.score);
 			if (base_score != null) {
-				base_score.setText(Integer.toString(charEdit.getAbilityScore(childPosition)));
+				base_score.setText(mListener.characterAttributeRanks(abilityName));
 			}
-			String abilityName = PropertyLists.abilityScoreNames[childPosition];
 			TextView final_score = (TextView) parent.findViewById(R.id.final_score);
 			if (final_score != null) {
 				final_score.setText(Integer.toString(manager.getValue(abilityName)));
@@ -190,12 +203,10 @@ public class CharacterSheetFragment extends Fragment {
 			Button minus = (Button) parent.findViewById(R.id.minus);
 			if (minus != null) {
 				minus.setOnClickListener(abilityScoreListener);
-				minus.setEnabled(charEdit.canDecrementAbilityScore(childPosition));
 			}
 			Button plus = (Button) parent.findViewById(R.id.plus);
 			if (plus != null) {
 				plus.setOnClickListener(abilityScoreListener);
-				plus.setEnabled(charEdit.canIncrementAbilityScore(childPosition));
 			}
 		}
 		private void updateSkillSubrow(View parent, int childPosition) {
@@ -205,20 +216,18 @@ public class CharacterSheetFragment extends Fragment {
 			TextView tx_final_label = (TextView) parent.findViewById(R.id.final_label);
 			if (tx_final_label != null)
 				tx_final_label.setText("");
-			String ranks = Integer.toString(charEdit.skillRanks[childPosition]);
 			String skill_name = PropertyLists.skillNames[childPosition];
+			String ranks = mListener.characterAttributeRanks(skill_name);
 			TextView tx_value = (TextView) parent.findViewById(R.id.score);
 			if (tx_value != null)
 				tx_value.setText(ranks);
 			Button minus = (Button) parent.findViewById(R.id.minus);
 			if (minus != null) {
 				minus.setOnClickListener(skillListener);
-				minus.setEnabled(charEdit.canSkillDown(childPosition));
 			}
 			Button plus = (Button) parent.findViewById(R.id.plus);
 			if (plus != null) {
 				plus.setOnClickListener(skillListener);
-				plus.setEnabled(charEdit.canSkillUp(childPosition));
 			}
 			TextView tx_modifier = (TextView) parent.findViewById(R.id.score_modifier);
 			Integer modifier = manager.getValue(skill_name);
@@ -236,10 +245,10 @@ public class CharacterSheetFragment extends Fragment {
 				int position = expList.getPositionForView(parent);
 				int childPosition = ExpandableListView.getPackedPositionChild(expList.getAdapter().getItemId(position));
 				if (v.getId() == R.id.minus) {
-					charEdit.decrementAbilityScore(childPosition);
+					mListener.characterAttributeDecrement(PropertyLists.abilityScoreNames[childPosition]);
 					manager.newBonus(PropertyLists.abilityScoreNames[childPosition], "Base", "Natural", "-1");
 				} else {
-					charEdit.incrementAbilityScore(childPosition);
+					mListener.characterAttributeIncrement(PropertyLists.abilityScoreNames[childPosition]);
 					manager.newBonus(PropertyLists.abilityScoreNames[childPosition], "Base", "Natural", "1");
 				}
 				expList.invalidateViews();
@@ -253,10 +262,10 @@ public class CharacterSheetFragment extends Fragment {
 				int position = expList.getPositionForView(parent);
 				int childPosition = ExpandableListView.getPackedPositionChild(expList.getAdapter().getItemId(position));
 				if (v.getId() == R.id.plus) {
-					charEdit.skillRanks[childPosition] += 1;
+					mListener.characterAttributeIncrement(PropertyLists.skillNames[childPosition]);
 					manager.newBonus(PropertyLists.skillNames[childPosition], "Ranks", "Natural", "1");
 				} else {
-					charEdit.skillRanks[childPosition] -= 1;
+					mListener.characterAttributeDecrement(PropertyLists.skillNames[childPosition]);
 					manager.newBonus(PropertyLists.skillNames[childPosition], "Ranks", "Natural", "-1");
 				}
 				expList.invalidateViews();
@@ -270,18 +279,15 @@ public class CharacterSheetFragment extends Fragment {
 				int position = expList.getPositionForView(parent);
 				int childPosition = ExpandableListView.getPackedPositionChild(expList.getAdapter().getItemId(position));
 				if (v.getId() == R.id.plus) {
-					charEdit.favoredclass_points[childPosition] += 1;
+					mListener.characterAttributeIncrement(PropertyLists.pointsNames[childPosition]);
 					manager.newBonus(PropertyLists.pointsNames[childPosition], "Ranks", "Natural", "1");
 				} else {
-					charEdit.favoredclass_points[childPosition] -= 1;
+					mListener.characterAttributeDecrement(PropertyLists.pointsNames[childPosition]);
 					manager.newBonus(PropertyLists.pointsNames[childPosition], "Ranks", "Natural", "-1");
 				}
 				expList.invalidateViews();
 			}
 		};
-		
-
 	}
-	
 	
 }

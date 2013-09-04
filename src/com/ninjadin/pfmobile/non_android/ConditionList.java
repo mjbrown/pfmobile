@@ -9,6 +9,7 @@ import java.util.Stack;
 import android.util.Log;
 
 import com.ninjadin.pfmobile.data.PropertyLists;
+import com.ninjadin.pfmobile.data.XmlConst;
 
 public class ConditionList {
 	Stack<String> last_conditional = new Stack<String>();
@@ -41,6 +42,15 @@ public class ConditionList {
 	
 	public boolean hasConditions() {
 		return !last_conditional.peek().equals("None.");
+	}
+	
+	public void startConditional(XmlObjectModel condition) {
+		String key = condition.getAttribute(XmlConst.KEY_ATTR);
+		String name = condition.getAttribute(XmlConst.NAME_ATTR);
+		String type = condition.getAttribute(XmlConst.TYPE_ATTR);
+		String value = condition.getAttribute(XmlConst.VALUE_ATTR);
+		String comp = condition.getAttribute(XmlConst.COMPARE_ATTR);
+		startConditional(key, name, type, value, comp);
 	}
 	
 	public void startConditional(String key, String name, String type, String value, String comparator) {

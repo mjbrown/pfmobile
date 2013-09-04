@@ -75,7 +75,8 @@ public class ItemEditDialogFragment extends DialogFragment {
 		bonus_adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
 		if (bonus_spinner != null) {
 			bonus_spinner.setAdapter(bonus_adapter);
-			String bonusType = activity.itemEditor.getBonusType();
+//			String bonusType = activity.itemEditor.getBonusType();
+			String bonusType = "";
 			for (int position = 0; position < stat_list.size(); position++) {
 				if (stat_list.get(position).equals(bonusType)) {
 					bonus_spinner.setSelection(position);
@@ -94,7 +95,8 @@ public class ItemEditDialogFragment extends DialogFragment {
 		stack_adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
 		if (stack_spinner != null)  {
 			stack_spinner.setAdapter(stack_adapter);
-			String stackType = activity.itemEditor.getStackType();
+//			String stackType = activity.itemEditor.getStackType();
+			String stackType = "";
 			for (int position = 0; position < stack_types.size(); position++) {
 				if (stack_types.get(position).equals(stackType)) {
 					stack_spinner.setSelection(position);
@@ -108,7 +110,8 @@ public class ItemEditDialogFragment extends DialogFragment {
 		source_adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
 		if (source_spinner != null) {
 			source_spinner.setAdapter(source_adapter);
-			String sourceType = activity.itemEditor.getSourceType();
+//			String sourceType = activity.itemEditor.getSourceType();
+			String sourceType = "";
 			for (int position = 0; position < PropertyLists.bonusSources.length; position++) {
 				if (PropertyLists.bonusSources.equals(sourceType)) {
 					source_spinner.setSelection(position);
@@ -120,7 +123,7 @@ public class ItemEditDialogFragment extends DialogFragment {
 		valueEdit = (EditText) dialog.findViewById(R.id.itemedit_value);
 		if (valueEdit != null) {
 			valueEdit.setText("");
-			valueEdit.setHint(activity.itemEditor.getValue());
+	//		valueEdit.setHint(activity.itemEditor.getValue());
 		}
 	}
 	

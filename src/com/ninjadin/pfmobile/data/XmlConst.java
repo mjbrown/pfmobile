@@ -1,6 +1,8 @@
 package com.ninjadin.pfmobile.data;
 
 public class XmlConst {
+	final public static String TAG = "tag";
+	
 	// Used as both TAG and ATTR
 	final public static String BONUSGRP = "bonusGroup";
 	final public static String SUBGRP = "subGroup";
@@ -13,6 +15,7 @@ public class XmlConst {
 	final public static String CHOICE_TAG = "choice";
 	final public static String CHOSEN_TAG = "chosen";
 	final public static String POINTBUY_TAG = "pointBuy";
+	final public static String ATTRIBUTES_TAG = "attributes";
 	final public static String LEVELS_TAG = "levels";
 	final public static String SKILLS_TAG = "skills";
 	final public static String EQUIP_TAG = "equipment";
@@ -20,7 +23,6 @@ public class XmlConst {
 	final public static String BONUS_TAG = "bonus";
 	final public static String PROFICIENCY_TAG = "proficiency";
 	final public static String WEAPON_TAG = "weapon";
-	final public static String ATTACKBONUS_TAG = "attackBonus";
 	final public static String CONDITIONAL_TAG = "conditional";
 	final public static String CONDITION_TAG = "condition";
 	final public static String ACTION_TAG = "action";
@@ -36,7 +38,7 @@ public class XmlConst {
 	
 	// Used as TAG in inventory files
 	final public static String ITEM_TAG = "item";
-	final public static String ITEMPROPERTY_TAG = "itemProperty";
+	final public static String PROPERTY_TAG = "property";
 	final public static String DAMAGE_TAG = "damage";
 
 	// Used as TAG in data files
@@ -68,5 +70,7 @@ public class XmlConst {
 	// Used as ATTRIBUTE 
 	final public static String SLOT_ATTR = "slot";
 	final public static String STATISTIC_ATTR = "statistic";
+	
+	//final public static String 
 
 }

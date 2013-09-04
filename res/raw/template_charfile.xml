@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <content>
-	<pointBuy>
+	<attributes>
 	    <bonus type="Strength" stackType="Ranks" value="10" />
 	    <bonus type="Dexterity" stackType="Ranks" value="10" />
 	    <bonus type="Constitution" stackType="Ranks" value="10" />
@@ -8,9 +8,9 @@
 		<bonus type="Wisdom" stackType="Ranks" value="10" />
 	    <bonus type="Charisma" stackType="Ranks" value="10" />
 	    <bonus type="points" value="20" />
-	</pointBuy>
-	<skills>
-	</skills>
+	    <bonus type="Hit Points" value="0" />
+	    <bonus type="Skill Points" value="0" />
+	</attributes>
 	<levels>
 		<characterLevel number="0">
 			<choice groupName="Race" />

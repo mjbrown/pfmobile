@@ -165,7 +165,6 @@ public class InventoryFragment extends Fragment {
 					public void onClick(View view) {
 						int groupPos = expList.getPositionForView((View) view.getParent());
 						String itemName = grpData.get(groupPos).get(XmlConst.NAME_ATTR);
-						((GeneratorActivity) getActivity()).editItem(itemName);
 					}
 				});
 			Button equip_button = (Button) convertView.findViewById(R.id.inventory_equipitem);

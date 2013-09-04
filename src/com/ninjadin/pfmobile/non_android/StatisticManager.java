@@ -71,6 +71,211 @@ public class StatisticManager {
 		}
 	}
 	
+	public void readModel(XmlObjectModel model) {
+		ConditionList currentConditions = new ConditionList();
+		Stack<StatisticGroup> lastObject = new Stack<StatisticGroup>();
+		lastObject.push(master_stats);
+		String last_item_name = null;
+		recursiveReadModel(model, currentConditions, lastObject, last_item_name, null, null);
+	}
+	
+	public void readPartialModel(XmlObjectModel model, String quit_tag, Map<String,String> quit_attr) {
+		ConditionList currentConditions = new ConditionList();
+		Stack<StatisticGroup> lastObject = new Stack<StatisticGroup>();
+		lastObject.push(master_stats);
+		String last_item_name = null;
+		recursiveReadModel(model, currentConditions, lastObject, last_item_name, quit_tag, quit_attr);
+	}
+	
+	public Boolean recursiveReadModel(XmlObjectModel model, ConditionList currentConditions, 
+			Stack<StatisticGroup> lastObject, String last_item_name, String quit_tag, Map<String,String> quit_attr) {
+		String tag = model.getTag();
+		if (tag.equals(quit_tag)) {
+			Boolean quit = true;
+			for (Map.Entry<String, String> entry: quit_attr.entrySet()) {
+				String quit_key = entry.getKey();
+				String quit_value = entry.getValue();
+				if (!model.getAttribute(quit_key).equals(quit_value)) {
+					quit = false;
+					break;
+				}
+			}
+			if (quit)
+				return true;
+		}
+		if (tag.equals(XmlConst.CONDITIONAL_TAG)) {
+			String name = model.getAttribute(XmlConst.NAME_ATTR);
+			if ((last_item_name != null) && (name != null)) {
+				name = name.replace("[Item Name]", last_item_name);
+			}
+			String key = model.getAttribute(XmlConst.KEY_ATTR);
+			if (model.getAttribute(XmlConst.ACTIVATE_ATTR) != null) {
+				ActivatedCondition newBonus = new ActivatedCondition(key, name);
+				modifiers.add(newBonus);
+				if (currentConditions.hasConditions()) {
+					newBonus.setConditions(currentConditions);
+					conditional_bonuses.add(newBonus);
+				}
+			}
+			currentConditions.startConditional(model);
+		} else if (tag.equals(XmlConst.BONUS_TAG)) {
+			String type = model.getAttribute(XmlConst.TYPE_ATTR);
+			String value = model.getAttribute(XmlConst.VALUE_ATTR);
+			String source = model.getAttribute(XmlConst.SOURCE_ATTR);
+			String stack = model.getAttribute(XmlConst.STACKTYPE_ATTR);
+			if (stack == null)
+				stack = "Base";
+			if (source == null)
+				source = "Natural";
+			StatisticGroup stat_group = lastObject.peek();
+			for (String typ: type.split(",")) {
+				Bonus conditionalBonus = stat_group.addBonus(typ, stack, source, value);
+				if (currentConditions.hasConditions()) {
+					//Log.d("COND_BNS", "Adding conditional bonus: " + type + " " + values);
+					conditionalBonus.setConditions(currentConditions);
+					conditional_bonuses.add(conditionalBonus);
+					updateConditionalBonus(conditionalBonus);
+				}
+			}
+		} else if (tag.equals(XmlConst.CHOSEN_TAG)) {
+			String name = model.getAttribute(XmlConst.NAME_ATTR);
+			if (name != null)
+				activateCondition(PropertyLists.prerequisite, name);
+		} else if (tag.equals(XmlConst.ACTION_TAG)) {
+			String name = model.getAttribute(XmlConst.NAME_ATTR);
+			String cost = model.getAttribute(XmlConst.COST_ATTR);
+			String parent = model.getAttribute(XmlConst.PARENT_ATTR);
+			String visible = model.getAttribute(XmlConst.VISIBLE_ATTR);
+			String uses = model.getAttribute(XmlConst.USES_ATTR);
+			ActionGroup action = null;
+			if (name != null)
+				action = combatActions.get(name);
+			if (action == null) {
+				ActionGroup parent_action = combatActions.get(parent);
+				action = new ActionGroup(cost, uses, parent_action, master_stats);
+				if (visible != null) {
+					if (visible.equals("No"))
+						action.setVisibility(false);
+				}
+				if (currentConditions.hasConditions()) {
+					action.setConditions(currentConditions);
+					conditional_bonuses.add(action);
+				}
+				if (name != null)		// Named action means it is referenced elsewhere
+					combatActions.put(name, action);
+			}
+			lastObject.push(action);
+		} else if (tag.equals(XmlConst.ATTACK_TAG)) {
+			String name = model.getAttribute(XmlConst.NAME_ATTR);
+			String versus = model.getAttribute(XmlConst.VERSUS_ATTR);
+			String parent = model.getAttribute(XmlConst.PARENT_ATTR);
+			String target = model.getAttribute(XmlConst.TARGET_ATTR);
+			String uses = model.getAttribute(XmlConst.USES_ATTR);
+			AttackGroup inheritedAttack = null;
+			StatisticGroup parentGroup = null;
+			if (parent != null) 
+				inheritedAttack = attacks.get(parent);
+			if (!(lastObject.peek() == master_stats)) {
+				//Log.d("ATTACK", "Attack " + names + " has inherited " + parent);
+				parentGroup = lastObject.peek();
+			}
+			AttackGroup newAttack = null;
+			if (name != null)
+				newAttack = attacks.get(name);
+			if (newAttack == null) {
+				newAttack = new AttackGroup(versus, target, uses, inheritedAttack, parentGroup);
+				if (currentConditions.hasConditions()) {
+					newAttack.setConditions(currentConditions);
+					conditional_bonuses.add(newAttack);
+				}
+				if (name != null)		// Named attack means it is referenced elsewhere
+					attacks.put(name, newAttack);
+			}
+			if (lastObject.peek() instanceof ActionGroup) {
+				ActionGroup action_group = (ActionGroup) lastObject.peek();
+				action_group.addAttack(newAttack);
+			} else {
+				//Log.d("ATTACK", "Parent of attack isn't action! " + names);
+			}
+			lastObject.push(newAttack);
+		} else if (tag.equals(XmlConst.ONHIT_TAG)) {
+			String name = model.getAttribute(XmlConst.NAME_ATTR);
+			String type = model.getAttribute(XmlConst.TYPE_ATTR);
+			String uses = model.getAttribute(XmlConst.USES_ATTR);
+			String parent = model.getAttribute(XmlConst.PARENT_ATTR);
+			OnHitDamage inheritedOnHit = null;
+			StatisticGroup parentGroup = null;
+			if (parent != null)
+				inheritedOnHit = effects.get(parent);
+			if (!(lastObject.peek() == master_stats))
+				parentGroup = lastObject.peek();
+			OnHitDamage newOnHit = null;
+			if (name != null)
+				newOnHit = effects.get(name);
+			if (newOnHit == null) {
+				newOnHit = new OnHitDamage(type, uses, inheritedOnHit, parentGroup);
+				if (currentConditions.hasConditions()) {
+					newOnHit.setConditions(currentConditions);
+					conditional_bonuses.add(newOnHit);
+				}
+				if (name != null)
+					effects.put(name, newOnHit);
+			}
+			if (lastObject.peek() instanceof AttackGroup) {
+				AttackGroup parentAttack = (AttackGroup) lastObject.peek();
+				parentAttack.addOnHitDamage(newOnHit);
+			}
+			lastObject.push(newOnHit);
+		} else if (tag.equals(XmlConst.ITEM_TAG)) {
+			String name = model.getAttribute(XmlConst.NAME_ATTR);
+			currentConditions.startConditional(PropertyLists.equipment, name, null, null, null);
+			last_item_name = name;
+		} else if (tag.equals(XmlConst.APPLYCOND_TAG)) {
+			String add = model.getAttribute(XmlConst.ADD_ATTR);
+			String remove = model.getAttribute(XmlConst.REMOVE_ATTR);
+			String key = model.getAttribute(XmlConst.KEY_ATTR);
+			if ((last_item_name != null) && (add != null)) {
+				add = add.replace("[Item Name]", last_item_name);
+			}
+			if ((last_item_name != null) && (remove != null)) {
+				remove = remove.replace("[Item Name]", last_item_name);
+			}
+			OnHitCondition apply_cond = new OnHitCondition(key, add, remove); 
+			if (currentConditions.hasConditions()) {
+				apply_cond.setConditions(currentConditions);
+				conditional_bonuses.add(apply_cond);
+			}
+			if (lastObject.peek() instanceof ActionGroup) {
+				ActionGroup action_group = (ActionGroup) lastObject.peek();
+				action_group.addOnHitCondition(apply_cond);
+			}
+		} else if (tag.equals(XmlConst.SPELL_TAG)) {
+			String name = model.getAttribute(XmlConst.NAME_ATTR);
+			String source = model.getAttribute(XmlConst.SOURCE_ATTR);
+			String school = model.getAttribute(XmlConst.SCHOOL_ATTR);
+			SpellGroup spell = new SpellGroup(name, source, school, master_stats);
+			spells.add(spell);
+			if (currentConditions.hasConditions()) {
+				spell.setConditions(currentConditions);
+				conditional_bonuses.add(spell);
+			}
+			lastObject.push(spell);
+		}
+		for (XmlObjectModel child: model.getChildren()) {
+			if (recursiveReadModel(child, currentConditions, lastObject, last_item_name, quit_tag, quit_attr))
+				return true;
+		}
+		if (tag.equals(XmlConst.CONDITIONAL_TAG)) {
+			currentConditions.endConditional();
+		} else if (tag.equals(XmlConst.ITEM_TAG)) {
+			currentConditions.endConditional();
+			last_item_name = null;
+		} else if (tag.equals(XmlConst.ACTION_TAG) || tag.equals(XmlConst.ATTACK_TAG) || tag.equals(XmlConst.ONHIT_TAG) || tag.equals(XmlConst.SPELL_TAG)) {
+			lastObject.pop();
+		}
+		return false;
+	}
+	
 	public void readXMLBonuses(InputStream inStream) throws IOException, XmlPullParserException {
 		ConditionList currentConditions = new ConditionList();
 		Stack<StatisticGroup> lastObject = new Stack<StatisticGroup>();

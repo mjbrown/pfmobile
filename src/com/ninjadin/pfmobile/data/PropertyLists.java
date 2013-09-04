@@ -16,6 +16,8 @@ public class PropertyLists {
 	final public static String actionCosts[] = { "Full Round", "Standard",
 		"Move", "Swift", "Immediate", "Free" };
 
+	final public static String equals = "Equals";
+
 	final public static String statisticPrereq = "Statistic";
 	final public static String prerequisite = "Prerequisite";
 	final public static String activated = "Activated";
@@ -52,6 +54,9 @@ public class PropertyLists {
 	final public static String abilityModifierNames[] = new String[] {"Strength Modifier", "Dexterity Modifier",
 	"Constitution Modifier", "Intelligence Modifier", "Wisdom Modifier", "Charisma Modifier" };
 
+	final public static String point_buy_cost = "Point Buy Cost";
+	final public static String skill_ranks_used = "Skill Ranks Used";
+	final public static String favored_points_used = "Favored Class Points Used";
 	final public static String favored_points = "Favored Class Points";
 	final public static String hit_points = "Hit Points";
 	final public static String skill_points = "Skill Points";
@@ -122,6 +127,7 @@ public class PropertyLists {
 	final public static String categories[] = new String[] { "Ability Scores", "Basic Stats", "Points", "Skills", "Class Levels",
 		"Damage Reduction", "Speed", "Caster Levels", "Equipment Related", "Other"};
 
+	
 	final static public List<Map<String,String>> categoryData() {
 		return toListMap(categories);
 	}

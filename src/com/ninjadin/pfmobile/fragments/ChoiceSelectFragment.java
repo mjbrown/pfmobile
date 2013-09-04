@@ -2,15 +2,19 @@ package com.ninjadin.pfmobile.fragments;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.xmlpull.v1.XmlPullParserException;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources.NotFoundException;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,9 +28,12 @@ import android.widget.TextView;
 
 import com.ninjadin.pfmobile.R;
 import com.ninjadin.pfmobile.activities.GeneratorActivity;
+import com.ninjadin.pfmobile.data.ExpListData;
+import com.ninjadin.pfmobile.data.PropertyLists;
 import com.ninjadin.pfmobile.data.XmlConst;
 import com.ninjadin.pfmobile.non_android.StatisticManager;
 import com.ninjadin.pfmobile.non_android.XmlExtractor;
+import com.ninjadin.pfmobile.non_android.XmlObjectModel;
 
 public class ChoiceSelectFragment extends Fragment {
 	ExpandableListView expList;
@@ -34,8 +41,28 @@ public class ChoiceSelectFragment extends Fragment {
 	String groupName;
 	String subGroupName;
 	String specificNames;
-	XmlExtractor choices;
+	ExpListData choices;
 	StatisticManager manager;
+	List<XmlObjectModel> selection_list = new ArrayList<XmlObjectModel>();
+	
+	public interface ChoiceSelectFragmentListener {
+		public XmlObjectModel getXmlModel(int enum_model);
+		public void insertCharacterSelection(XmlObjectModel selection, int choice_number);
+	}
+	
+	ChoiceSelectFragmentListener mListener;
+	
+	@Override
+	public void onAttach(Activity activity) {
+		super .onAttach(activity);
+		try {
+			mListener = (ChoiceSelectFragmentListener) activity;
+		} catch (ClassCastException e) {
+			throw new ClassCastException(activity.toString() 
+					+ " must implement ChoiceSelectFragmentListener");
+		}
+
+	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -53,29 +80,29 @@ public class ChoiceSelectFragment extends Fragment {
 			subGroupName = args.getString(XmlConst.SUBGRP);
 			specificNames = args.getString(XmlConst.SPECIFIC_ATTR);
 			choiceId = Integer.parseInt(args.getString("choiceId"));
+			Log.d("ChoiceSelect", Integer.toString(choiceId));
+
 			InputStream dataFile = activity.getResources().openRawResource(args.getInt("rawDataInt"));
-			String[] tags = new String[] { XmlConst.SELECTION_TAG };
-			String[] tag_attrs = new String[] {XmlConst.NAME_ATTR };
-			String[] subtags = new String[] {XmlConst.BONUS_TAG, XmlConst.PROFICIENCY_TAG, 
-					XmlConst.CHOICE_TAG};
-			String[] subtag_attrs = new String[] { XmlConst.GRPNAME_ATTR, XmlConst.NAME_ATTR,
-					XmlConst.TYPE_ATTR, XmlConst.VALUE_ATTR };
-			manager = activity.dependencyManager;
-			choices = new XmlExtractor(dataFile, manager);
-			choices.findTagAttr(XmlConst.BONUSGRP, XmlConst.GRPNAME_ATTR, groupName);
+			XmlObjectModel model = new XmlObjectModel(dataFile);
+			Map<String,String> attributes = new HashMap<String,String>();
+			attributes.put(XmlConst.GRPNAME_ATTR, groupName);
+			XmlObjectModel group = model.findObject(XmlConst.BONUSGRP, attributes);
+			XmlObjectModel subGroup = group;
 			if (subGroupName != null) {
-				if (!subGroupName.equals("Any")) {
-					choices.findTagAttr(XmlConst.SUBGRP, XmlConst.GRPNAME_ATTR, subGroupName);
-					choices.getPrereqMetData(XmlConst.SUBGRP, tags, tag_attrs, subtags, subtag_attrs);
-				} else {
-					choices.getPrereqMetData(XmlConst.BONUSGRP, tags, tag_attrs, subtags, subtag_attrs);
-				}
-			} else if (specificNames != null) {
-				choices.getData(XmlConst.BONUSGRP, tags, tag_attrs, subtags, subtag_attrs);
-				choices.filterSpecific(specificNames);
-			} else {
-				choices.getPrereqMetData(XmlConst.BONUSGRP, tags, tag_attrs, subtags, subtag_attrs);
+				attributes.remove(XmlConst.GRPNAME_ATTR);
+				attributes.put(XmlConst.GRPNAME_ATTR, subGroupName);
+				subGroup = group.findObject(XmlConst.SUBGRP, attributes);
 			}
+			
+			manager = new StatisticManager();
+			manager.readModel(mListener.getXmlModel(GeneratorActivity.DEPENDENCIES_MODEL));
+			Map<String,String> quit_attr = new HashMap<String,String>();
+			quit_attr.put(XmlConst.NUM_ATTR, Integer.toString(choiceId));
+			manager.readPartialModel(mListener.getXmlModel(GeneratorActivity.CHARACTER_MODEL), XmlConst.CHOICE_TAG, quit_attr);
+			
+			filterPrerequisites(manager, subGroup);
+
+			choices = new ExpListData(selection_list);
 			expList = (ExpandableListView) activity.findViewById(R.id.expandableListView1);
 			ExpandableListAdapter baseAdapt = new FilterSelectSimpleExpandableListAdapter(
 					activity, 
@@ -96,12 +123,33 @@ public class ChoiceSelectFragment extends Fragment {
 		} catch (NotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (XmlPullParserException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		}
+	}
+	
+	private void filterPrerequisites(StatisticManager manager, XmlObjectModel model) {
+		for (XmlObjectModel child: model.getChildren()) {
+			String tag = child.getTag();
+			if (tag.equals(XmlConst.SELECTION_TAG)) {
+				selection_list.add(child);
+			} else if (tag.equals(XmlConst.PREREQ_TAG)) {
+				Boolean meets_prereq = false;
+				String key = child.getAttribute(XmlConst.KEY_ATTR);
+				String type = child.getAttribute(XmlConst.TYPE_ATTR);
+				if (key != null)
+					meets_prereq =  manager.hasProperty(key, child.getAttribute(XmlConst.NAME_ATTR));
+				if (type != null) {
+					int req_value = Integer.parseInt(child.getAttribute(XmlConst.VALUE_ATTR));
+					int value = manager.getValue(type);
+					if (child.getAttribute(XmlConst.COMPARE_ATTR).equals(PropertyLists.equals))
+						meets_prereq = (req_value == value);
+					else
+						meets_prereq = (value >= req_value);
+				}
+				if (meets_prereq)
+					filterPrerequisites(manager, child);
+			} else {
+				filterPrerequisites(manager, child);
+			}
 		}
 	}
 	
@@ -129,8 +177,9 @@ public class ChoiceSelectFragment extends Fragment {
 				@Override
 				public void onClick(View view) {
 					int groupPos = expList.getPositionForView((View) view.getParent());
-					String selectionName = choices.groupData.get(groupPos).get(XmlConst.NAME_ATTR);
-					((GeneratorActivity) getActivity()).addSelection(choiceId, groupName, subGroupName, specificNames, selectionName);
+					mListener.insertCharacterSelection(selection_list.get(groupPos), choiceId);
+					//String selectionName = choices.groupData.get(groupPos).get(XmlConst.NAME_ATTR);
+					//((GeneratorActivity) getActivity()).addSelection(choiceId, groupName, subGroupName, specificNames, selectionName);
 				}
 			});
 			TextView textView = (TextView)convertView.findViewById(R.id.filtertitle_text);

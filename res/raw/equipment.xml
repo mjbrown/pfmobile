@@ -162,11 +162,11 @@
     </template>
     <template name="One-handed Weapon">
         <item name="Scimitar" slot="Inventory" >
-            <enhancement name="Base Item">
+            <enhancement type="Manual" name="Base Item">
                 <bonus type="Equipment Cost" value="60" />
                 <bonus type="Encumbrance" value="8" />
             </enhancement>
-            <enhancement name="Weapon">
+            <enhancement type="Manual" name="Weapon">
                 <bonus type="[Item Name] Damage d20" value="0" />
                 <bonus type="[Item Name] Damage d12" value="0" />
                 <bonus type="[Item Name] Damage d10" value="0" />
@@ -178,89 +178,89 @@
                 <bonus type="[Item Name] Damage" value="1" />
                 <bonus type="[Item Name] Critical Range" value="2" />
                 <bonus type="[Item Name] To Hit" value="1" />
-                <property name="Light" />
-                <property name="One Hand" />
-                <property name="Two Hand" />
-                <property name="Finesse" />
+                <property type="Weapon Property" value="One Hand" />
+                <property type="Weapon Property" value="Two Hand" />
+                <property type="Weapon Special" value="Light" />
+                <property type="Weapon Special" value="Finesse" />
             </enhancement>
-            <enhancement name="Generated">
-            <conditional key="Equipment" name="Main Hand [Item Name]">
-	            <attack name="Main Hand Melee Attack">
-	                <bonus type="Critical Range" value="[Item Name] Critical Range" />
-	                <bonus type="To Hit" value="[Item Name] To Hit" />
-	            </attack>
-	            <onHitEffect name="Main Hand Melee Weapon Damage" source="Piercing">
-	            	<bonus type="Damage d6" value="[Item Name] Damage d6" />
-	            	<bonus type="Damage" value="[Item Name] Damage" />
-	            </onHitEffect>
-	            <action name="Drop Main Hand [Item Name]" cost="Free">
-	                <attack target="Self">
-	                    <onHitCondition key="Equipment" remove="[Item Name]" />
-	                    <onHitCondition key="Equipment" remove="Main Hand" />
-	                </attack>
-	            </action>
-            </conditional>
-            <conditional key="Equipment" name="Off Hand [Item Name]">
-	            <attack name="Off Hand Melee Attack">
-	                <bonus type="Critical Range" value="1" />
-	                <bonus type="To Hit" value="1" />
-	            </attack>
-	            <onHitEffect name="Off Hand Melee Weapon Damage" source="Piercing">
-	            	<bonus type="Damage d6" value="1" />
-	            	<bonus type="Damage" value="1" />
-	            </onHitEffect>
-	            <action name="Drop Off Hand [Item Name]" cost="Free">
-	                <attack target="Self">
-	                    <onHitCondition key="Equipment" remove="[Item Name]" />
-	                    <onHitCondition key="Equipment" remove="Off Hand" />
-	                </attack>
-	            </action>
-            </conditional>
-            <conditional key="Equipment" name="Two Hand [Item Name]">
-	            <attack name="Main Hand Melee Attack">
-	                <bonus type="Critical Range" value="1" />
-	                <bonus type="To Hit" value="1" />
-	            </attack>
-	            <onHitEffect name="Main Hand Melee Weapon Damage" source="Piercing">
-	            	<bonus type="Damage d6" value="1" />
-	            	<bonus type="Damage" value="1" />
-	            </onHitEffect>
-	            <action name="Drop Two Hand [Item Name]" cost="Free">
-	                <attack target="Self">
-	                    <onHitCondition key="Equipment" remove="[Item Name]" />
-	                    <onHitCondition key="Equipment" remove="Two Hand" />
-	                </attack>
-	            </action>
-            </conditional>
-            <conditional key="Equipment" name="Two Hand" comparator="Not">
-                <conditional key="Equipment" name="Main Hand" comparator="Not">
-                    <conditional key="Equipment" name="Off Hand" comparator="Not">
-			            <action name="Equip Two Hand [Item Name]" parent="Equip Main Hand Weapon" >
-			                <attack target="Self">
-			                    <onHitCondition key="Equipment" add="Two Hand" remove="Two Hand [Item Name]" />
-			                </attack>
-			            </action>
-		            </conditional>
-                </conditional>
-                <conditional key="Equipment" name="Main Hand [Item Name]" comparator="Not">
-	                <conditional key="Equipment" name="Off Hand [Item Name]" comparator="Not">
+            <enhancement type="Generated">
+	            <conditional key="Equipment" name="Main Hand [Item Name]">
+		            <attack name="Main Hand Melee Attack">
+		                <bonus type="Critical Range" value="[Item Name] Critical Range" />
+		                <bonus type="To Hit" value="[Item Name] To Hit" />
+		            </attack>
+		            <onHitEffect name="Main Hand Melee Weapon Damage" source="Piercing">
+		            	<bonus type="Damage d6" value="[Item Name] Damage d6" />
+		            	<bonus type="Damage" value="[Item Name] Damage" />
+		            </onHitEffect>
+		            <action name="Drop Main Hand [Item Name]" cost="Free">
+		                <attack target="Self">
+		                    <onHitCondition key="Equipment" remove="[Item Name]" />
+		                    <onHitCondition key="Equipment" remove="Main Hand" />
+		                </attack>
+		            </action>
+	            </conditional>
+	            <conditional key="Equipment" name="Off Hand [Item Name]">
+		            <attack name="Off Hand Melee Attack">
+		                <bonus type="Critical Range" value="1" />
+		                <bonus type="To Hit" value="1" />
+		            </attack>
+		            <onHitEffect name="Off Hand Melee Weapon Damage" source="Piercing">
+		            	<bonus type="Damage d6" value="1" />
+		            	<bonus type="Damage" value="1" />
+		            </onHitEffect>
+		            <action name="Drop Off Hand [Item Name]" cost="Free">
+		                <attack target="Self">
+		                    <onHitCondition key="Equipment" remove="[Item Name]" />
+		                    <onHitCondition key="Equipment" remove="Off Hand" />
+		                </attack>
+		            </action>
+	            </conditional>
+	            <conditional key="Equipment" name="Two Hand [Item Name]">
+		            <attack name="Main Hand Melee Attack">
+		                <bonus type="Critical Range" value="1" />
+		                <bonus type="To Hit" value="1" />
+		            </attack>
+		            <onHitEffect name="Main Hand Melee Weapon Damage" source="Piercing">
+		            	<bonus type="Damage d6" value="1" />
+		            	<bonus type="Damage" value="1" />
+		            </onHitEffect>
+		            <action name="Drop Two Hand [Item Name]" cost="Free">
+		                <attack target="Self">
+		                    <onHitCondition key="Equipment" remove="[Item Name]" />
+		                    <onHitCondition key="Equipment" remove="Two Hand" />
+		                </attack>
+		            </action>
+	            </conditional>
+	            <conditional key="Equipment" name="Two Hand" comparator="Not">
+	                <conditional key="Equipment" name="Main Hand" comparator="Not">
 	                    <conditional key="Equipment" name="Off Hand" comparator="Not">
-				            <action name="Equip Off Hand [Item Name]" parent="Equip Off Hand Weapon" >
+				            <action name="Equip Two Hand [Item Name]" parent="Equip Main Hand Weapon" >
 				                <attack target="Self">
-				                    <onHitCondition key="Equipment" add="Off Hand" remove="Off Hand [Item Name]" />
+				                    <onHitCondition key="Equipment" add="Two Hand" remove="Two Hand [Item Name]" />
 				                </attack>
 				            </action>
-		                </conditional>
-		                <conditional key="Equipment" name="Main Hand" comparator="Not">
-				            <action name="Equip Main Hand [Item Name]" parent="Equip Main Hand Weapon" >
-				                <attack target="Self">
-				                    <onHitCondition key="Equipment" add="Main Hand" remove="Main Hand [Item Name]" />
-				                </attack>
-				            </action>
-		                </conditional>
-		            </conditional>
-		        </conditional>
-            </conditional>
+			            </conditional>
+	                </conditional>
+	                <conditional key="Equipment" name="Main Hand [Item Name]" comparator="Not">
+		                <conditional key="Equipment" name="Off Hand [Item Name]" comparator="Not">
+		                    <conditional key="Equipment" name="Off Hand" comparator="Not">
+					            <action name="Equip Off Hand [Item Name]" parent="Equip Off Hand Weapon" >
+					                <attack target="Self">
+					                    <onHitCondition key="Equipment" add="Off Hand" remove="Off Hand [Item Name]" />
+					                </attack>
+					            </action>
+			                </conditional>
+			                <conditional key="Equipment" name="Main Hand" comparator="Not">
+					            <action name="Equip Main Hand [Item Name]" parent="Equip Main Hand Weapon" >
+					                <attack target="Self">
+					                    <onHitCondition key="Equipment" add="Main Hand" remove="Main Hand [Item Name]" />
+					                </attack>
+					            </action>
+			                </conditional>
+			            </conditional>
+			        </conditional>
+	            </conditional>
             </enhancement>
         </item>
     </template>

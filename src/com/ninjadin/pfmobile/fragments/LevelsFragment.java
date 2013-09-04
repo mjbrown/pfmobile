@@ -1,11 +1,11 @@
 package com.ninjadin.pfmobile.fragments;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -23,12 +23,31 @@ import android.widget.TextView;
 import com.ninjadin.pfmobile.R;
 import com.ninjadin.pfmobile.activities.GeneratorActivity;
 import com.ninjadin.pfmobile.data.XmlConst;
+import com.ninjadin.pfmobile.non_android.XmlObjectModel;
 
 public class LevelsFragment extends Fragment {
 	ListView listView;
 	LevelsAdapter levelsAdapter;
-	List<Map<String, String>> groupData;
+	List<XmlObjectModel> groupData;
 	GeneratorActivity activity;
+	
+	public interface LevelsFragmentListener {
+		public void characterLevelUp(LevelsFragment fragment);
+		public void characterLevelDown(LevelsFragment fragment);
+		public int currentCharacterLevel();
+		public List<XmlObjectModel> characterChoiceList();
+	}
+	
+	LevelsFragmentListener mListener;
+	
+	public void onAttach(Activity activity) {
+		super .onAttach(activity);
+		try {
+			mListener = (LevelsFragmentListener) activity;
+		} catch (ClassCastException e) {
+			throw new ClassCastException(activity.toString() + "must implement LevelsFragmentListener");
+		}
+	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,14 +63,12 @@ public class LevelsFragment extends Fragment {
 		refreshViews();
 		Button level_down = (Button) activity.findViewById(R.id.levelDown);
 		if (level_down != null) {
-			if (activity.characterEditor.charLevel == 0)
-				level_down.setEnabled(false);
-			else
-				level_down.setEnabled(true);
+			level_down.setEnabled(true);
 			level_down.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View view) {
-					activity.characterEditor.removeLevel();
+					mListener.characterLevelDown(null);
+					activity.saveCharacterState();
 					activity.dirtyFiles = true;
 					activity.refreshCharData();
 					refreshViews();
@@ -62,21 +79,12 @@ public class LevelsFragment extends Fragment {
 		}
 		Button level_up = (Button) activity.findViewById(R.id.levelUp);
 		if (level_up != null) {
-			if (activity.characterEditor.charLevel == 20)
-				level_up.setEnabled(false);
-			else
-				level_up.setEnabled(true);
+			level_up.setEnabled(true);
 			level_up.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View view) {
-					InputStream charLevelData = activity.getResources().openRawResource(R.raw.base_levels);
-					activity.characterEditor.addLevel(charLevelData);
-					try {
-						charLevelData.close();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					mListener.characterLevelUp(null);
+					activity.saveCharacterState();
 					activity.dirtyFiles = true;
 					activity.refreshCharData();
 					refreshViews();
@@ -88,34 +96,34 @@ public class LevelsFragment extends Fragment {
 	}
 	
 	private void refreshViews() {
-		groupData = reverse(activity.characterEditor.levelData);
+		groupData = mListener.characterChoiceList();
 		levelsAdapter = new LevelsAdapter(activity, R.layout.subrow_levels, R.id.group_text, groupData);
 		listView.setAdapter(levelsAdapter);
 		listView.setOnItemClickListener(new ListView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int groupPosition, long id) {
 				GeneratorActivity activity = ((GeneratorActivity) getActivity());
-				String groupName = groupData.get(groupPosition).get(XmlConst.GRPNAME_ATTR);
-				String choiceId = groupData.get(groupPosition).get(XmlConst.NUM_ATTR);
-				String subGroup = groupData.get(groupPosition).get(XmlConst.SUBGRP);
-				String specificNames = groupData.get(groupPosition).get(XmlConst.SPECIFIC_ATTR);
+				String groupName = groupData.get(groupPosition).getAttribute(XmlConst.GRPNAME_ATTR);
+				String choiceId = Integer.toString(groupPosition);
+				String subGroup = groupData.get(groupPosition).getAttribute(XmlConst.SUBGRP);
+				String specificNames = groupData.get(groupPosition).getAttribute(XmlConst.SPECIFIC_ATTR);
 				activity.launchFilterSelect(view, groupName, subGroup, specificNames, choiceId);
 			}
 		});
 		TextView level = (TextView) activity.findViewById(R.id.level_indicator);
 		if (level != null) {
-			level.setText("Level " + Integer.toString(activity.characterEditor.charLevel));
+			level.setText("Level " + Integer.toString(mListener.currentCharacterLevel()));
 		}
 	}
 	
-	private List<Map<String,String>> reverse(List<Map<String,String>> list) {
-		List<Map<String,String>> reverseList = new ArrayList<Map<String,String>>();
-		int size = list.size();
-		for (int i = size-1; i > -1; i--) {
-			Map<String,String> xfer = list.get(i);
-			reverseList.add(xfer);
+	private List<Map<String,String>> getListMap(List<XmlObjectModel> objects) {
+		List<Map<String,String>> list = new ArrayList<Map<String,String>>();
+		for (XmlObjectModel object: objects) {
+			Map<String,String> map = new HashMap<String,String>();
+			list.add(map);
+			map.put(XmlConst.NAME_ATTR, object.getAttribute(XmlConst.NAME_ATTR));
 		}
-		return reverseList;
+		return list;
 	}
 	
 	class LevelsAdapter extends ArrayAdapter<Map<String,String>> {
@@ -123,8 +131,8 @@ public class LevelsFragment extends Fragment {
 		int resource;
 		
 		public LevelsAdapter(Context context, int rowLayoutResId, int textViewResourceId,
-				List<Map<String, String>> objects) {
-			super(context, textViewResourceId, objects);
+				List<XmlObjectModel> objects) {
+			super(context, textViewResourceId, getListMap(objects));
 			// TODO Auto-generated constructor stub
 			mContext = context;
 			resource = rowLayoutResId;
@@ -140,11 +148,11 @@ public class LevelsFragment extends Fragment {
 			TextView source = (TextView) convertView.findViewById(R.id.source_text);
 			TextView name = (TextView) convertView.findViewById(R.id.name_text);
 			if ((group != null) && (subGroup != null) && (source != null) && (name != null)) {
-				Map<String,String> item = groupData.get(position);
-				String groupName = item.get(XmlConst.GRPNAME_ATTR);
-				String subGroupName = item.get(XmlConst.SUBGRP);
-				String sourceName = item.get(XmlConst.SOURCE_ATTR);
-				String selectionName = item.get(XmlConst.NAME_ATTR);
+				XmlObjectModel item = groupData.get(position);
+				String groupName = item.getAttribute(XmlConst.GRPNAME_ATTR);
+				String subGroupName = item.getAttribute(XmlConst.SUBGRP);
+				String sourceName = item.getAttribute(XmlConst.SOURCE_ATTR);
+				String selectionName = item.getAttribute(XmlConst.NAME_ATTR);
 				if (groupName != null) {
 					group.setText(groupName);
 					group.setTextColor(Color.BLUE);

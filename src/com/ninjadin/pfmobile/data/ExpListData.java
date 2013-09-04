@@ -9,20 +9,25 @@ import java.util.Map;
 import org.xmlpull.v1.XmlPullParserException;
 
 import com.ninjadin.pfmobile.non_android.XmlExtractor;
+import com.ninjadin.pfmobile.non_android.XmlObjectModel;
 
 public class ExpListData {
 	public List<Map<String,String>> groupData = new ArrayList<Map<String,String>>();
 	public List<List<Map<String,String>>> itemData = new ArrayList<List<Map<String,String>>>();
 	
-	public static XmlExtractor initLevels(InputStream character) throws XmlPullParserException, IOException {
-		String[] tag_names = new String[] { XmlConst.LEVEL_TAG, };
-		String[] tag_attrs = new String[] { XmlConst.NUM_ATTR, };
-		String[] subtag_names = new String[] { XmlConst.CHOICE_TAG, XmlConst.CHOSEN_TAG, };
-		String[] subtag_attrs = new String[] { XmlConst.NAME_ATTR, XmlConst.GRPNAME_ATTR, XmlConst.SUBGRP, };
-		XmlExtractor levels = new XmlExtractor(character);
-		levels.getData(XmlConst.LEVELS_TAG, tag_names, tag_attrs, subtag_names, subtag_attrs);
-		//charLevel = levels.groupData.size();
-		return levels;
+	public ExpListData() {
+		
+	}
+	
+	public ExpListData(List<XmlObjectModel> models) {
+		for (XmlObjectModel model: models) {
+			groupData.add(model.getAttributes());
+			List<Map<String,String>> child_data = new ArrayList<Map<String,String>>();
+			itemData.add(child_data);
+			for (XmlObjectModel child: model.getChildren()) {
+				child_data.add(child.getAttributes());
+			}
+		}
 	}
 	
 	public static XmlExtractor initInventory(InputStream inventoryStream) throws XmlPullParserException, IOException {
@@ -48,7 +53,7 @@ public class ExpListData {
 	public static XmlExtractor initEnchantTemplates(InputStream enchantsStream) throws XmlPullParserException, IOException {
 		String[] tags = new String[] { XmlConst.ENHANCE_TAG };
 		String[] tag_attrs = new String[] { XmlConst.NAME_ATTR, XmlConst.SLOT_ATTR };
-		String[] subtags = new String[] { XmlConst.ITEMPROPERTY_TAG, XmlConst.DAMAGE_TAG };
+		String[] subtags = new String[] { XmlConst.DAMAGE_TAG };
 		String[] subtag_attrs = new String[] { XmlConst.NAME_ATTR, XmlConst.TYPE_ATTR, 
 				XmlConst.VALUE_ATTR , XmlConst.STATISTIC_ATTR, XmlConst.SOURCE_ATTR, };
 		XmlExtractor enchantTemplates = new XmlExtractor(enchantsStream);
