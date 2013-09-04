@@ -139,46 +139,6 @@ public class XmlEditor {
 		
 	}
 	
-	final static public void replaceParent(File copyFrom, File copyTo, 
-			String parentTag, String parentAttrs, String newContent) throws IOException {
-		FileInputStream copyFromStream = new FileInputStream(copyFrom);
-		InputStreamReader copyFromSR = new InputStreamReader(copyFromStream);
-		BufferedReader sourceReader = new BufferedReader(copyFromSR);
-
-		FileOutputStream copyToStream = new FileOutputStream(copyTo);
-		OutputStreamWriter copyToSR = new OutputStreamWriter(copyToStream);
-		BufferedWriter destWriter = new BufferedWriter(copyToSR);
-
-		String sourceLine = " ";
-		while (sourceLine != null) {
-			sourceLine = sourceReader.readLine();
-			if (sourceLine.trim().startsWith("<" + parentTag + " " + parentAttrs)) {
-				break;
-			}
-			destWriter.write(sourceLine);
-			destWriter.newLine();
-		}
-		destWriter.write(newContent);
-		int depth = 0;
-		while (sourceLine != null) {
-			if (sourceLine.trim().startsWith("<" + parentTag + " "))
-				depth += 1;
-			if (sourceLine.trim().startsWith("</" + parentTag + ">")) {
-				depth -= 1;
-			if (depth == 0)
-				break;
-			}
-			sourceLine = sourceReader.readLine();
-		}
-		sourceLine = sourceReader.readLine();
-		while (sourceLine != null) {
-			destWriter.write(sourceLine);
-			destWriter.newLine();
-			sourceLine = sourceReader.readLine();
-		}
-		sourceReader.close();
-		destWriter.close();
-	}
 	// The only way to insert/replace is to copy the entire source file
 	// copies lines "startData -> endData" from dataFile, inclusive
 	// replaces lines "insertBefore -> continueOn" from sourceChar

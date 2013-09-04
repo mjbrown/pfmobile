@@ -18,7 +18,7 @@ public class CharacterXmlObject extends XmlObjectModel {
 	
 	XmlObjectModel level_models;
 	
-	List<XmlObjectModel> choice_list = new ArrayList<XmlObjectModel>();
+	List<XmlObjectModel> choice_list;
 	
 	public CharacterXmlObject(File char_file, File temp_file, InputStream level_xml) {
 		super (char_file, temp_file);
@@ -39,6 +39,7 @@ public class CharacterXmlObject extends XmlObjectModel {
 			String skill = model.getAttribute(XmlConst.TYPE_ATTR);
 			this.attributes.put(skill, model);
 		}
+		choice_list = new ArrayList<XmlObjectModel>();
 		recursiveChoiceFind(this, "None.");
 	}
 	
@@ -75,6 +76,8 @@ public class CharacterXmlObject extends XmlObjectModel {
 			XmlObjectModel level = level_models.getChildren().get(level_number);
 			levels.addChild(level);
 		}
+		choice_list = new ArrayList<XmlObjectModel>();
+		recursiveChoiceFind(this, "None.");
 	}
 	
 	public void removeLevel() {
@@ -82,6 +85,8 @@ public class CharacterXmlObject extends XmlObjectModel {
 		if (level_number > 1) {
 			levels.removeChild(level_number - 1);
 		}
+		choice_list = new ArrayList<XmlObjectModel>();
+		recursiveChoiceFind(this, "None.");
 	}
 	
 	public int currentLevel() {

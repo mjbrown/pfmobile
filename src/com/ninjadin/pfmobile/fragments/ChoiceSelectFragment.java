@@ -1,13 +1,10 @@
 package com.ninjadin.pfmobile.fragments;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.xmlpull.v1.XmlPullParserException;
 
 import android.app.Activity;
 import android.content.Context;
@@ -32,7 +29,6 @@ import com.ninjadin.pfmobile.data.ExpListData;
 import com.ninjadin.pfmobile.data.PropertyLists;
 import com.ninjadin.pfmobile.data.XmlConst;
 import com.ninjadin.pfmobile.non_android.StatisticManager;
-import com.ninjadin.pfmobile.non_android.XmlExtractor;
 import com.ninjadin.pfmobile.non_android.XmlObjectModel;
 
 public class ChoiceSelectFragment extends Fragment {
@@ -140,8 +136,10 @@ public class ChoiceSelectFragment extends Fragment {
 				if (type != null) {
 					int req_value = Integer.parseInt(child.getAttribute(XmlConst.VALUE_ATTR));
 					int value = manager.getValue(type);
-					if (child.getAttribute(XmlConst.COMPARE_ATTR).equals(PropertyLists.equals))
-						meets_prereq = (req_value == value);
+					String compare = child.getAttribute(XmlConst.COMPARE_ATTR);
+					if (compare != null)
+						if (child.getAttribute(XmlConst.COMPARE_ATTR).equals(PropertyLists.equals))
+							meets_prereq = (req_value == value);
 					else
 						meets_prereq = (value >= req_value);
 				}
@@ -178,8 +176,6 @@ public class ChoiceSelectFragment extends Fragment {
 				public void onClick(View view) {
 					int groupPos = expList.getPositionForView((View) view.getParent());
 					mListener.insertCharacterSelection(selection_list.get(groupPos), choiceId);
-					//String selectionName = choices.groupData.get(groupPos).get(XmlConst.NAME_ATTR);
-					//((GeneratorActivity) getActivity()).addSelection(choiceId, groupName, subGroupName, specificNames, selectionName);
 				}
 			});
 			TextView textView = (TextView)convertView.findViewById(R.id.filtertitle_text);
@@ -189,9 +185,7 @@ public class ChoiceSelectFragment extends Fragment {
 		}
 		
 		public View getChildView(int groupPosition, int childPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-//			if (convertView == null) {
-				convertView = View.inflate(getActivity(), R.layout.subrow_filterselect, null);
-//			}
+			convertView = View.inflate(getActivity(), R.layout.subrow_filterselect, null);
 			TextView text = (TextView) convertView.findViewById(R.id.filterselect_text);
 			TextView text2 = (TextView) convertView.findViewById(R.id.filterselect_text2);
 			String tag = itmData.get(groupPosition).get(childPosition).get("tag");

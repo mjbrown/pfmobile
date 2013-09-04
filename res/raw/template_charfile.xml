@@ -7,9 +7,6 @@
 	    <bonus type="Intelligence" stackType="Ranks" value="10" />
 		<bonus type="Wisdom" stackType="Ranks" value="10" />
 	    <bonus type="Charisma" stackType="Ranks" value="10" />
-	    <bonus type="points" value="20" />
-	    <bonus type="Hit Points" value="0" />
-	    <bonus type="Skill Points" value="0" />
 	</attributes>
 	<levels>
 		<characterLevel number="0">

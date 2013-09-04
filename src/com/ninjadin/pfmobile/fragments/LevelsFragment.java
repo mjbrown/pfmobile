@@ -68,11 +68,7 @@ public class LevelsFragment extends Fragment {
 				@Override
 				public void onClick(View view) {
 					mListener.characterLevelDown(null);
-					activity.saveCharacterState();
-					activity.dirtyFiles = true;
-					activity.refreshCharData();
 					refreshViews();
-					levelsAdapter.notifyDataSetChanged();
 					listView.invalidateViews();
 				}
 			});
@@ -84,11 +80,7 @@ public class LevelsFragment extends Fragment {
 				@Override
 				public void onClick(View view) {
 					mListener.characterLevelUp(null);
-					activity.saveCharacterState();
-					activity.dirtyFiles = true;
-					activity.refreshCharData();
 					refreshViews();
-					levelsAdapter.notifyDataSetChanged();
 					listView.invalidateViews();
 				}
 			});

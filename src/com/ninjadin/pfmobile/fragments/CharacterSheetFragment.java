@@ -22,13 +22,11 @@ import com.ninjadin.pfmobile.R;
 import com.ninjadin.pfmobile.activities.GeneratorActivity;
 import com.ninjadin.pfmobile.data.PropertyLists;
 import com.ninjadin.pfmobile.data.XmlConst;
-import com.ninjadin.pfmobile.non_android.OldCharacterEditor;
 import com.ninjadin.pfmobile.non_android.StatisticManager;
 
 public class CharacterSheetFragment extends Fragment {
 	ExpandableListView expList;
 	StatisticManager manager;
-	OldCharacterEditor charEdit;
 	List<Map<String,String>> groupData;
 	List<List<Map<String,String>>> itemData;
 	

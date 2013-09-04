@@ -498,11 +498,13 @@ public class GeneratorActivity extends FragmentActivity implements
 	@Override
 	public void characterLevelUp(LevelsFragment fragment) {
 		character.addLevel();
+		refreshManager();
 	}
 	
 	@Override
 	public void characterLevelDown(LevelsFragment fragment) {
 		character.removeLevel();
+		refreshManager();
 	}
 	
 	@Override
