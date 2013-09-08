@@ -11,58 +11,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
 public class XmlEditor {
-	final static public void addToParent(File copyFrom, File copyTo, String parentTag, String parentAttr, String data) throws IOException {
-		FileInputStream copyFromStream = new FileInputStream(copyFrom);
-		InputStreamReader copyFromSR = new InputStreamReader(copyFromStream);
-		BufferedReader sourceReader = new BufferedReader(copyFromSR);
-
-		FileOutputStream copyToStream = new FileOutputStream(copyTo);
-		OutputStreamWriter copyToSR = new OutputStreamWriter(copyToStream);
-		BufferedWriter destWriter = new BufferedWriter(copyToSR);
-		
-		//Find the parent in the source file
-		String sourceLine = sourceReader.readLine();
-		String searchLine = "<" + parentTag;
-		if (parentAttr != null)
-			searchLine += " " + parentAttr;
-		while (sourceLine != null) {
-			if (sourceLine.trim().startsWith(searchLine)) {
-				break;
-			}
-			destWriter.write(sourceLine);
-			destWriter.newLine();
-			sourceLine = sourceReader.readLine();
-		}
-		//Find the end of the parent in the source file
-		int depth = 0;
-		destWriter.write(sourceLine);
-		sourceLine = sourceReader.readLine();
-		while (sourceLine != null) {
-			if (sourceLine.trim().startsWith("<" + parentTag + " ")) {
-				depth += 1;
-			}
-			if (sourceLine.trim().startsWith("</" + parentTag + ">")) {
-				if (depth == 0)
-					break;
-				else
-					depth -= 1;
-			}
-			destWriter.write(sourceLine);
-			destWriter.newLine();
-			sourceLine = sourceReader.readLine();
-		}
-		// Write the data
-		destWriter.write(data);
-		// Copy the remainder of the source file
-		while (sourceLine != null) {
-			destWriter.write(sourceLine);
-			destWriter.newLine();
-			sourceLine = sourceReader.readLine();
-		}
-		destWriter.close();
-		sourceReader.close();
-		copyTo.renameTo(copyFrom);
-	}
 	// Add new data to parent tag, data is added just before the end tag
 	final static public void addToParent(File copyFrom, File copyTo, InputStream dataFile,
 			String startData, String endData, String parentTag, String parentAttr) throws IOException {

@@ -46,8 +46,8 @@ public class XmlObjectModel {
 	
 	public XmlObjectModel(XmlPullParser inherited) throws XmlPullParserException, IOException {
 		if (inherited.getEventType() != XmlPullParser.END_DOCUMENT) {
-			getAttributes(inherited);
-			getChildren(inherited);
+			parseAttributes(inherited);
+			parseChildren(inherited);
 		}
 	}
 	
@@ -57,8 +57,8 @@ public class XmlObjectModel {
 			parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
 			parser.setInput(inStream, null);
 			while (parser.next() != XmlPullParser.START_TAG);
-			getAttributes(parser);
-			getChildren(parser);
+			parseAttributes(parser);
+			parseChildren(parser);
 		} catch (XmlPullParserException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -88,7 +88,7 @@ public class XmlObjectModel {
 		return null;
 	}
 	
-	private void getAttributes(XmlPullParser parser) {
+	private void parseAttributes(XmlPullParser parser) {
 		int num_attr = parser.getAttributeCount();
 		tag = parser.getName();
 		for (int i = 0; i < num_attr; i++) {
@@ -98,14 +98,14 @@ public class XmlObjectModel {
 		}
 	}
 	
-	private void getChildren(XmlPullParser parser) throws XmlPullParserException, IOException {
+	private void parseChildren(XmlPullParser parser) throws XmlPullParserException, IOException {
 		parser.next();
 		int event_type = parser.getEventType();
 		if (event_type == XmlPullParser.START_TAG) {
 			children.add(new XmlObjectModel(parser));
-			getChildren(parser);
+			parseChildren(parser);
 		} else if (event_type == XmlPullParser.TEXT) {
-			getChildren(parser);
+			parseChildren(parser);
 		} else if (event_type == XmlPullParser.END_TAG) {
 			parser.next();
 		}

@@ -96,7 +96,10 @@ public class ChoiceSelectFragment extends Fragment {
 			quit_attr.put(XmlConst.NUM_ATTR, Integer.toString(choiceId));
 			manager.readPartialModel(mListener.getXmlModel(GeneratorActivity.CHARACTER_MODEL), XmlConst.CHOICE_TAG, quit_attr);
 			
-			filterPrerequisites(manager, subGroup);
+			if (specificNames != null)
+				filterSpecifics(specificNames, subGroup);
+			else
+				filterPrerequisites(manager, subGroup);
 
 			choices = new ExpListData(selection_list);
 			expList = (ExpandableListView) activity.findViewById(R.id.expandableListView1);
@@ -147,6 +150,21 @@ public class ChoiceSelectFragment extends Fragment {
 					filterPrerequisites(manager, child);
 			} else {
 				filterPrerequisites(manager, child);
+			}
+		}
+	}
+	
+	private void filterSpecifics(String specifics, XmlObjectModel model) {
+		for (XmlObjectModel child: model.getChildren()) {
+			String tag = child.getTag();
+			if (tag.equals(XmlConst.SELECTION_TAG)) {
+				String name = child.getAttribute(XmlConst.NAME_ATTR);
+				for (String selection_name: specifics.split(",")) {
+					if (name.equals(selection_name))
+						selection_list.add(child);
+				}
+			} else {
+				filterSpecifics(specifics, child);
 			}
 		}
 	}

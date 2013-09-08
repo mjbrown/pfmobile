@@ -27,7 +27,7 @@ public class CharacterXmlObject extends XmlObjectModel {
 	}
 	
 	private void initialize() {
-		for (XmlObjectModel model: super.getChildren()) {
+		for (XmlObjectModel model: getChildren()) {
 			if (model.getTag().equals(XmlConst.ATTRIBUTES_TAG)) {
 				attribute_ranks = model;
 			}
@@ -53,6 +53,8 @@ public class CharacterXmlObject extends XmlObjectModel {
 	}
 	
 	public List<XmlObjectModel> getChoiceList() {
+		choice_list = new ArrayList<XmlObjectModel>();
+		recursiveChoiceFind(this, "None.");
 		return choice_list;
 	}
 	
@@ -76,8 +78,6 @@ public class CharacterXmlObject extends XmlObjectModel {
 			XmlObjectModel level = level_models.getChildren().get(level_number);
 			levels.addChild(level);
 		}
-		choice_list = new ArrayList<XmlObjectModel>();
-		recursiveChoiceFind(this, "None.");
 	}
 	
 	public void removeLevel() {
@@ -85,8 +85,6 @@ public class CharacterXmlObject extends XmlObjectModel {
 		if (level_number > 1) {
 			levels.removeChild(level_number - 1);
 		}
-		choice_list = new ArrayList<XmlObjectModel>();
-		recursiveChoiceFind(this, "None.");
 	}
 	
 	public int currentLevel() {

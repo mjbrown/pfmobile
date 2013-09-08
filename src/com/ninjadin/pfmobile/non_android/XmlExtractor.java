@@ -22,23 +22,6 @@ public class XmlExtractor {
 	public int tagCount = 0;
 	public int subTagCount = 0;
 	XmlPullParser xmlParser;
-	StatisticManager manager;
-	
-	public XmlExtractor() {
-		
-	}
-	
-	public XmlExtractor(XmlPullParser parser, int tagCountStart, int subTagCountStart) throws XmlPullParserException, IOException {
-		tagCount = tagCountStart;
-		subTagCount = subTagCountStart;
-		xmlParser = parser;
-	}
-	
-	public XmlExtractor(XmlPullParser parser) throws XmlPullParserException, IOException {
-		tagCount = 0;
-		subTagCount = 0;
-		xmlParser = parser;
-	}
 	
 	public XmlExtractor(InputStream dataFile) throws XmlPullParserException {
 		tagCount = 0;
@@ -46,15 +29,6 @@ public class XmlExtractor {
 		xmlParser = Xml.newPullParser();
 		xmlParser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
 		xmlParser.setInput(dataFile, null);
-	}
-	
-	public XmlExtractor(InputStream dataFile, StatisticManager statManager) throws XmlPullParserException {
-		tagCount = 0;
-		subTagCount = 0;
-		xmlParser = Xml.newPullParser();
-		xmlParser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
-		xmlParser.setInput(dataFile, null);
-		manager = statManager;
 	}
 	
 	public Boolean findTagAttr(String tag, String attr, String value) throws XmlPullParserException, IOException {
@@ -81,21 +55,6 @@ public class XmlExtractor {
 		return value;
 	}
 
-	public void filterSpecific(String specificNames) {
-		List<Map<String,String>> newGroupData = new ArrayList<Map<String,String>>();
-		List<List<Map<String,String>>> newItemData = new ArrayList<List<Map<String,String>>>();
-		for (int i = 0; i < groupData.size(); i++) {
-			for (String name: specificNames.split(",")) {
-				if (groupData.get(i).get(XmlConst.NAME_ATTR).equals(name)) {
-					newGroupData.add(groupData.get(i));
-					newItemData.add(itemData.get(i));
-					break;
-				}
-			}
-		}
-		groupData = newGroupData;
-		itemData = newItemData;
-	}
 	public void getData(String endTag, String[] tags, String[] tag_attrs, String[] subtags, String[] subtag_attrs) throws XmlPullParserException, IOException {
 		while (xmlParser.next() != XmlPullParser.END_DOCUMENT) {
 			if (xmlParser.getEventType() == XmlPullParser.END_TAG) {
@@ -113,96 +72,6 @@ public class XmlExtractor {
 				getTagData(tag_attrs, tags, subtag_attrs, subtags, tag);
 			}
 		}
-	}
-	
-	public void getPrereqMetData(String endTag, String[] tags, String[] tag_attrs, String[] subtags, String[] subtag_attrs) throws XmlPullParserException, IOException {
-		Stack<String> lastPrereq = new Stack<String>();
-		Stack<Boolean> lastPrereqMet = new Stack<Boolean>();
-		lastPrereq.push("No Prerequisite.");
-		lastPrereqMet.push(true);
-		while (xmlParser.next() != XmlPullParser.END_DOCUMENT) {
-			if (xmlParser.getEventType() == XmlPullParser.END_TAG) {
-				if (xmlParser.getName() != null) {
-					if (xmlParser.getName().equals(endTag)) {
-						break;
-					}
-					if (xmlParser.getName().equals(XmlConst.PREREQ_TAG)) {
-						lastPrereq.pop();
-						lastPrereqMet.pop();
-					}
-				}
-			}
-			if (xmlParser.getEventType() != XmlPullParser.START_TAG) {
-				continue;
-			}
-			String tag = xmlParser.getName();
-			if (tag != null) {
-				if (tag.equals(XmlConst.PREREQ_TAG)) {
-					String types = xmlParser.getAttributeValue(null, XmlConst.TYPE_ATTR);
-					String names = xmlParser.getAttributeValue(null, XmlConst.NAME_ATTR);
-					String key = xmlParser.getAttributeValue(null, XmlConst.KEY_ATTR);
-					boolean meetsPrereq = false;
-					String lastPrereqReadable = "Invalid Prerequisite Definition";
-					if (types != null) {
-						String values = xmlParser.getAttributeValue(null, XmlConst.VALUE_ATTR);
-						String compares = xmlParser.getAttributeValue(null, XmlConst.COMPARE_ATTR);
-						if (values != null) {
-							String[] value = values.split(",");
-							String[] type = types.split(",");
-							if (value.length != type.length)
-								continue;
-							if (compares != null) {
-								String[] compare = compares.split(",");
-								if (value.length != compare.length)
-									continue;
-								for (int i=0; i < type.length; i++) {
-									lastPrereqReadable = type[i] + " " + compare[i] + " " + value[i];
-									if (checkPrereq(type[i], compare[i], value[i])) {
-										meetsPrereq = true;
-										break;
-									}
-								}
-							} else {
-								for (int i=0; i < type.length; i++) {
-									lastPrereqReadable = type[i] + " Is Greater Than Or Equal To " + value[i];
-									if (checkPrereq(type[i], "Is Greater Than Or Equal To", value[i])) {
-										meetsPrereq = true;
-										break;
-									}
-								}
-							}
-						}
-					}
-					if ((key != null) && (names != null)) {
-						for (String name: names.split(",")) {
-							lastPrereqReadable = name;
-							if (manager.hasProperty(key, name)) {
-								meetsPrereq = true;
-								break;
-							}
-						}
-					}
-					lastPrereq.push(lastPrereqReadable);
-					lastPrereqMet.push(meetsPrereq && lastPrereqMet.peek());
-					continue;
-				}
-				if (lastPrereqMet.peek())
-					getTagData(tag_attrs, tags, subtag_attrs, subtags, tag);
-			}
-		}
-	}
-	
-	private boolean checkPrereq(String type, String comparator, String value) {
-		boolean retVal = false;
-		Integer actual = manager.getValue(type);
-		if (comparator.equals("Equals")) {
-			if (actual == Integer.parseInt(value))
-				retVal = true;
-		} else {
-			if (actual >= Integer.parseInt(value))
-				retVal = true;
-		}
-		return retVal;
 	}
 	
 	private void getTagData(String[] tag_attrs, String[] tags, String[] subtag_attrs, String[] subtags, String tag) {

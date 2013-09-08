@@ -224,25 +224,6 @@ public class StatisticManager {
 			String name = model.getAttribute(XmlConst.NAME_ATTR);
 			currentConditions.startConditional(PropertyLists.equipment, name, null, null, null);
 			last_item_name = name;
-		} else if (tag.equals(XmlConst.APPLYCOND_TAG)) {
-			String add = model.getAttribute(XmlConst.ADD_ATTR);
-			String remove = model.getAttribute(XmlConst.REMOVE_ATTR);
-			String key = model.getAttribute(XmlConst.KEY_ATTR);
-			if ((last_item_name != null) && (add != null)) {
-				add = add.replace("[Item Name]", last_item_name);
-			}
-			if ((last_item_name != null) && (remove != null)) {
-				remove = remove.replace("[Item Name]", last_item_name);
-			}
-			OnHitCondition apply_cond = new OnHitCondition(key, add, remove); 
-			if (currentConditions.hasConditions()) {
-				apply_cond.setConditions(currentConditions);
-				conditional_bonuses.add(apply_cond);
-			}
-			if (lastObject.peek() instanceof ActionGroup) {
-				ActionGroup action_group = (ActionGroup) lastObject.peek();
-				action_group.addOnHitCondition(apply_cond);
-			}
 		} else if (tag.equals(XmlConst.SPELL_TAG)) {
 			String name = model.getAttribute(XmlConst.NAME_ATTR);
 			String source = model.getAttribute(XmlConst.SOURCE_ATTR);
@@ -254,6 +235,12 @@ public class StatisticManager {
 				conditional_bonuses.add(spell);
 			}
 			lastObject.push(spell);
+		} else if (tag.equals(XmlConst.EFFECT_TAG)) {
+			String activate = model.getAttribute(XmlConst.ACTIVATE_ATTR);
+			if (activate == null) {
+				((ActionGroup) lastObject.peek()).addEffect(model);
+				return false;
+			}
 		}
 		for (XmlObjectModel child: model.getChildren()) {
 			if (recursiveReadModel(child, currentConditions, lastObject, last_item_name, quit_tag, quit_attr))
@@ -412,6 +399,10 @@ public class StatisticManager {
 			}
 		}
 		return output;
+	}
+	
+	public List<XmlObjectModel> getEffects(String action_name) {
+		return combatActions.get(action_name).getEffects();
 	}
 	
 	public List<AttackGroup> getAttacks(String action_name) {

@@ -1,18 +1,11 @@
 package com.ninjadin.pfmobile.activities;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import org.xmlpull.v1.XmlPullParserException;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
-import android.content.res.Resources.NotFoundException;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -25,7 +18,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.ninjadin.pfmobile.R;
-import com.ninjadin.pfmobile.data.PropertyLists;
 import com.ninjadin.pfmobile.data.XmlConst;
 import com.ninjadin.pfmobile.fragments.ActionFragment;
 import com.ninjadin.pfmobile.fragments.CharacterSheetFragment;
@@ -41,24 +33,20 @@ import com.ninjadin.pfmobile.fragments.LevelsFragment.LevelsFragmentListener;
 import com.ninjadin.pfmobile.fragments.ModifierDialogFragment;
 import com.ninjadin.pfmobile.fragments.ModifierDialogFragment.ModifierDialogListener;
 import com.ninjadin.pfmobile.fragments.ShowXMLFragment;
+import com.ninjadin.pfmobile.fragments.SpellListFragment.SpellListFragmentListener;
 import com.ninjadin.pfmobile.fragments.SpellbookFragment;
-import com.ninjadin.pfmobile.fragments.TemplateSelectFragment;
-import com.ninjadin.pfmobile.non_android.AttackGroup;
 import com.ninjadin.pfmobile.non_android.CharacterXmlObject;
-import com.ninjadin.pfmobile.non_android.EffectEditor;
+import com.ninjadin.pfmobile.non_android.EffectXmlObject;
 import com.ninjadin.pfmobile.non_android.InventoryEditor;
-import com.ninjadin.pfmobile.non_android.OnHitCondition;
-import com.ninjadin.pfmobile.non_android.SpellbookEditor;
+import com.ninjadin.pfmobile.non_android.SpellbookXmlObject;
 import com.ninjadin.pfmobile.non_android.StatisticManager;
-import com.ninjadin.pfmobile.non_android.XmlEditor;
 import com.ninjadin.pfmobile.non_android.XmlObjectModel;
 
 public class GeneratorActivity extends FragmentActivity implements 
 	ItemEditDialogListener, ModifierDialogListener, LevelsFragmentListener, 
-	CharacterSheetFragmentListener, ChoiceSelectFragmentListener {
+	CharacterSheetFragmentListener, ChoiceSelectFragmentListener, SpellListFragmentListener {
 	public StatisticManager dependencyManager;
 	public InventoryEditor inventoryEditor;
-	public EffectEditor effectEditor;
 	public String masterCharFilename;
 	public String inventoryFilename;
 	public String effectFilename;
@@ -70,7 +58,9 @@ public class GeneratorActivity extends FragmentActivity implements
 	public File spellsFile;
 	public File tempFile;
 	CharacterXmlObject character;
-	XmlObjectModel dependencies, inventory, effects, spells;
+	SpellbookXmlObject spells;
+	EffectXmlObject effects;
+	XmlObjectModel dependencies, inventory;
 	final static public int CHARACTER_MODEL = 0;
 	final static public int DEPENDENCIES_MODEL = 1;
 	
@@ -149,16 +139,15 @@ public class GeneratorActivity extends FragmentActivity implements
 		tempFile = new File(context.getFilesDir(), tempFilename);
 		character = new CharacterXmlObject(charFile, tempFile, this.getResources().openRawResource(R.raw.base_levels));
 		effectFile = new File(context.getFilesDir(), effectFilename);
-		effects = new XmlObjectModel(effectFile, tempFile);
+		effects = new EffectXmlObject(effectFile, tempFile);
 		inventoryFile = new File(context.getFilesDir(), inventoryFilename);
 		inventory = new XmlObjectModel(inventoryFile, tempFile);
 		spellsFile = new File(context.getFilesDir(), spellsFilename);
-		spells = new XmlObjectModel(spellsFile, tempFile);
+		spells = new SpellbookXmlObject(spellsFile, tempFile, getResources().openRawResource(R.raw.spells));
 		dependencies = new XmlObjectModel(getResources().openRawResource(R.raw.dependencies));;
 		refreshManager();
 		
 		inventoryEditor = new InventoryEditor(inventoryFile);
-		effectEditor = new EffectEditor(effectFile);
 	}
 	
 	private void refreshManager() {
@@ -179,10 +168,8 @@ public class GeneratorActivity extends FragmentActivity implements
 	public void saveCharacterState() {
 		try {
 			character.saveChanges();
-			//File newTemp = new File(this.getCacheDir(), "temp");
-			//characterEditor.writeCharacterData(newTemp);
-			//newTemp.delete();
-			effectEditor.saveEffects(effectFile);
+			spells.saveChanges();
+			effects.saveChanges();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -318,55 +305,7 @@ public class GeneratorActivity extends FragmentActivity implements
 		transaction.commit();
 	}
 	
-	public void addFromTemplate(View view) {
-		Bundle passedData = new Bundle();
-		passedData.putString("selection type", XmlConst.ITEM_TAG);
-		TemplateSelectFragment newFragment = new TemplateSelectFragment();
-		newFragment.setArguments(passedData);
-		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-		transaction.replace(R.id.fragment_container, newFragment);
-		transaction.addToBackStack(null);
-		transaction.commit();
-	}
-	
-	public void enchantFromTemplate(String itemName) {
-		Bundle passedData = new Bundle();
-		passedData.putString("selection type", XmlConst.ENHANCE_TAG);
-		passedData.putString(XmlConst.NAME_ATTR, itemName);
-		TemplateSelectFragment newFragment = new TemplateSelectFragment();
-		newFragment.setArguments(passedData);
-		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-		transaction.replace(R.id.fragment_container, newFragment);
-		transaction.addToBackStack(null);
-		transaction.commit();
-	}
-	
-	public void addTemplate(String templateName, String templateType, String itemName) {
-		File tempFile = new File(this.getFilesDir(), "temp_file.xml");
-		InputStream templateFileStream;
-		try {
-			if (templateType.equals(XmlConst.ENHANCE_TAG)) {
-				templateFileStream = this.getResources().openRawResource(R.raw.enchantments);
-				inventoryEditor.enchantFromTemplate(templateFileStream, templateName, itemName, tempFile);
-			} else {
-				templateFileStream = this.getResources().openRawResource(R.raw.equipment);
-				inventoryEditor.addFromTemplate(templateFileStream, templateName, tempFile);
-			}
-			templateFileStream.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (XmlPullParserException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		dirtyFiles = true;
-		startMenu(templateName + " added.");
-	}
-	
+/*	
 	public void equipItem(String slotName, String itemName) {
 		if (!(slotName.equals(PropertyLists.inventory))) {
 			effectEditor.deactivateEffect(slotName, PropertyLists.equipment);
@@ -391,76 +330,23 @@ public class GeneratorActivity extends FragmentActivity implements
 		dirtyFiles = true;
 		startMenu(itemName + " equipped to " + slotName + ".");
 	}
-	
+*/
 	public void performAction(String action_name) {
-		List<AttackGroup> attacks = dependencyManager.getAttacks(action_name);
-		for (AttackGroup attack: attacks) {
-			if (attack.getTarget().equals("Self")) {
-				List<OnHitCondition> conds = attack.getOnHitConditions();
-				for (OnHitCondition cond: conds) {
-					for (Map<String,String> add: cond.getAddedConditions())
-						effectEditor.activateEffect(add);
-					for (Map<String,String> remove: cond.getRemovedConditions())
-						effectEditor.deactivateEffect(remove);
-				}
-			}
+		List<XmlObjectModel> effect_list = dependencyManager.getEffects(action_name);
+		for (XmlObjectModel effect: effect_list) {
+			effects.addEffect(effect);
 		}
-		try {
-			effectEditor.saveEffects(effectFile);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		dirtyFiles = true;
 		startMenu(action_name + " action taken.");
 	}
 	
-	public void activateEffect(String key, String name) {
-		Map<String,String> map = new HashMap<String,String>();
-		map.put(XmlConst.KEY_ATTR, key);
-		map.put(XmlConst.NAME_ATTR, name);
-		effectEditor.activateEffect(map);
+	public void activateCondition(String key, String name) {
+		effects.addCondition(key, name);
 		dependencyManager.activateCondition(key, name);
-		try {
-			effectEditor.saveEffects(effectFile);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		dirtyFiles = true;
 	}
 	
-	public void deactivateEffect(String key, String name) {
-		Map<String,String> map = new HashMap<String,String>();
-		map.put(XmlConst.KEY_ATTR, key);
-		map.put(XmlConst.NAME_ATTR, name);
-		effectEditor.deactivateEffect(map);
+	public void deactivateCondition(String key, String name) {
+		effects.removeCondition(key, name);
 		dependencyManager.deactivateCondition(key, name);
-		try {
-			effectEditor.saveEffects(effectFile);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		dirtyFiles = true;
-	}
-	
-	public void addSpell(String class_name, String spell_name, String spell_level) {
-		try {
-			String entry = SpellbookEditor.createEntry(class_name, spell_name, spell_level, getResources().openRawResource(R.raw.spells));
-			XmlEditor.addToParent(spellsFile, tempFile, XmlConst.CONTENT_TAG, null, entry);
-			refreshCharData();
-		} catch (NotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (XmlPullParserException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		dirtyFiles = true;
 	}
 	
 	public void showItemEditDialog(int groupPosition, int childPosition) {
@@ -546,5 +432,11 @@ public class GeneratorActivity extends FragmentActivity implements
 		character.addChoice(selection, choice_number);
 		refreshManager();
 		startMenu(selection.getAttribute(XmlConst.NAME_ATTR) + " selected.");
+	}
+	
+	@Override
+	public void spellbookAddSpell(String class_name, String spell_name, String spell_level) {
+		spells.createEntry(class_name, spell_name, spell_level);
+		refreshManager();
 	}
 }

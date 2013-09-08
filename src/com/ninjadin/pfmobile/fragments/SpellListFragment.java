@@ -1,11 +1,11 @@
 package com.ninjadin.pfmobile.fragments;
 
-import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.xmlpull.v1.XmlPullParserException;
-
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -22,9 +22,9 @@ import android.widget.TextView;
 
 import com.ninjadin.pfmobile.R;
 import com.ninjadin.pfmobile.activities.GeneratorActivity;
+import com.ninjadin.pfmobile.data.ExpListData;
 import com.ninjadin.pfmobile.data.XmlConst;
-import com.ninjadin.pfmobile.non_android.SpellbookEditor;
-import com.ninjadin.pfmobile.non_android.XmlExtractor;
+import com.ninjadin.pfmobile.non_android.XmlObjectModel;
 
 public class SpellListFragment extends Fragment {
 	private final static String ERROR_MSG = "No Caster Levels found!";
@@ -32,6 +32,12 @@ public class SpellListFragment extends Fragment {
 	String selected_class;
 	Spinner spelllist_spinner;
 	ExpandableListView expListView;
+
+	public interface SpellListFragmentListener {
+		public void spellbookAddSpell(String class_name, String spell_name, String spell_level);
+	}
+	
+	SpellListFragmentListener mListener;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_spelllist, container, false);
@@ -42,6 +48,16 @@ public class SpellListFragment extends Fragment {
 		spelllist_spinner = (Spinner) view.findViewById(R.id.spelllist_spinner);
 		expListView = (ExpandableListView) view.findViewById(R.id.spelllist_expListView);
 		return view;
+	}
+	
+	public void onAttach(Activity activity) {
+		super .onAttach(activity);
+		try {
+			mListener = (SpellListFragmentListener) activity;
+		} catch (ClassCastException e) {
+			throw new ClassCastException(activity.toString() 
+					+ " must implement SpellListFragmentListener");
+		}
 	}
 
 	public void onResume() {
@@ -55,7 +71,7 @@ public class SpellListFragment extends Fragment {
 				String spell_name = name_textview.getText().toString();
 				String class_name = spelllist_spinner.getSelectedItem().toString();
 				String spell_level = Integer.toString(arg2);
-				activity.addSpell(class_name, spell_name, spell_level);
+				mListener.spellbookAddSpell(class_name, spell_name, spell_level);
 				activity.startMenu(spell_name + " added to spells known.");
 				return false;
 			}
@@ -88,31 +104,31 @@ public class SpellListFragment extends Fragment {
 			
 		});
 	}
-	
+
+	private ExpListData getSpellList(String class_name) {
+		InputStream listStream = getResources().openRawResource(R.raw.spell_lists);
+		XmlObjectModel model = new XmlObjectModel(listStream);
+		Map<String,String> attr = new HashMap<String,String>();
+		attr.put(XmlConst.SOURCE_ATTR, class_name);
+		XmlObjectModel spelllist = model.findObject(XmlConst.SPELLLIST_TAG, attr);
+		return new ExpListData(spelllist.getChildren());
+	}
+
 	private void changeExpContent(String class_name) {
-		InputStream list_file = activity.getResources().openRawResource(R.raw.spell_lists);
-		XmlExtractor spellbook;
-		try {
-			spellbook = SpellbookEditor.getSpellList(class_name, list_file);
-			SimpleExpandableListAdapter adapter = new SimpleExpandableListAdapter(
-					activity,
-					spellbook.groupData,
-					android.R.layout.simple_expandable_list_item_1,
-					new String[] { XmlConst.VALUE_ATTR },
-					new int[] { android.R.id.text1 },
-					spellbook.itemData,
-					R.layout.subrow_filterselect,
-					new String[] { XmlConst.NAME_ATTR },
-					new int[] { R.id.filterselect_text }
-					);
-			expListView.setAdapter(adapter);
-		} catch (XmlPullParserException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		ExpListData spellbook;
+		spellbook = getSpellList(class_name);
+		SimpleExpandableListAdapter adapter = new SimpleExpandableListAdapter(
+				activity,
+				spellbook.groupData,
+				android.R.layout.simple_expandable_list_item_1,
+				new String[] { XmlConst.VALUE_ATTR },
+				new int[] { android.R.id.text1 },
+				spellbook.itemData,
+				R.layout.subrow_filterselect,
+				new String[] { XmlConst.NAME_ATTR },
+				new int[] { R.id.filterselect_text }
+				);
+		expListView.setAdapter(adapter);
 	}
 	
 }

@@ -236,9 +236,10 @@
 	                <conditional key="Equipment" name="Main Hand" comparator="Not">
 	                    <conditional key="Equipment" name="Off Hand" comparator="Not">
 				            <action name="Equip Two Hand [Item Name]" parent="Equip Main Hand Weapon" >
-				                <attack target="Self">
-				                    <onHitCondition key="Equipment" add="Two Hand" remove="Two Hand [Item Name]" />
-				                </attack>
+				                <effect name="[Item Name] Equipped">
+				                    <condition key="Equipment" name="Two Hand" />
+				                    <condition key="Equipment" name="Two Hand [Item Name]" />
+				                </effect>
 				            </action>
 			            </conditional>
 	                </conditional>
@@ -246,16 +247,16 @@
 		                <conditional key="Equipment" name="Off Hand [Item Name]" comparator="Not">
 		                    <conditional key="Equipment" name="Off Hand" comparator="Not">
 					            <action name="Equip Off Hand [Item Name]" parent="Equip Off Hand Weapon" >
-					                <attack target="Self">
+					                <effect name="[Item Name] Equipped">
 					                    <onHitCondition key="Equipment" add="Off Hand" remove="Off Hand [Item Name]" />
-					                </attack>
+					                </effect>
 					            </action>
 			                </conditional>
 			                <conditional key="Equipment" name="Main Hand" comparator="Not">
 					            <action name="Equip Main Hand [Item Name]" parent="Equip Main Hand Weapon" >
-					                <attack target="Self">
+					                <effect name="[Item Name] Equipped">
 					                    <onHitCondition key="Equipment" add="Main Hand" remove="Main Hand [Item Name]" />
-					                </attack>
+					                </effect>
 					            </action>
 			                </conditional>
 			            </conditional>

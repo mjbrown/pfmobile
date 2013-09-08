@@ -9,6 +9,7 @@ public class ActionGroup extends StatisticGroup {
 	protected List<AttackGroup> attacks = new ArrayList<AttackGroup>();
 	protected List<OnHitDamage> damages = new ArrayList<OnHitDamage>();
 	protected List<OnHitCondition> conditions = new ArrayList<OnHitCondition>();
+	protected List<XmlObjectModel> effects = new ArrayList<XmlObjectModel>();
 	protected ActionGroup inherited = null;
 
 	private String cost;
@@ -50,6 +51,14 @@ public class ActionGroup extends StatisticGroup {
 			return inherited.getUses();
 		else
 			return uses;
+	}
+	
+	public void addEffect(XmlObjectModel model) {
+		effects.add(model);
+	}
+	
+	public List<XmlObjectModel> getEffects() {
+		return effects;
 	}
 	
 	public void addAttack(AttackGroup atk) {

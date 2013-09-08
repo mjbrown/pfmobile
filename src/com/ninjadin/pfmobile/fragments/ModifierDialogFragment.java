@@ -95,9 +95,9 @@ public class ModifierDialogFragment extends DialogFragment {
 				String name = expListData.itemData.get(groupPosition).get(childPosition).get(XmlConst.NAME_ATTR);
 				CheckBox box = (CheckBox) view.findViewById(R.id.modifier_checkBox);
 				if (box.isChecked())
-					activity.deactivateEffect(key, name);
+					activity.deactivateCondition(key, name);
 				else
-					activity.activateEffect(key, name);
+					activity.activateCondition(key, name);
 				box.setChecked(!box.isChecked()); // Toggle
 				return false;
 			} });

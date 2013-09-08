@@ -30,6 +30,7 @@ public class XmlConst {
 	final public static String ONHIT_TAG = "onHitEffect";
 	final public static String APPLYCOND_TAG = "onHitCondition";
 	final public static String SPELL_TAG = "spell";
+	final public static String EFFECT_TAG = "effect";
 
 	// TAGs from spell book and spell lists
 	final public static String SPELLLIST_TAG = "spellList";
