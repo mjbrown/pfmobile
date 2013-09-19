@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<content>
+    <property name="Basic Item">
+        <option type="Number" name="Cost" value="1000" />
+        <option type="Number" name="Weight" value="10" />
+        <option type="Given" name="Default" value="Default" >
+            <entry value="Default">
+		        <bonus type="Equipment Cost" value="[Cost]" />
+		        <bonus type="Encumbrance" value="[Weight]" />
+	        </entry>
+        </option>
+    </property>
+    <property name="Statistic Bonus">
+        <option type="Bullet" name="Statistic" value="Strength">
+            <entry value="Strength" />
+            <entry value="Dexterity" />
+            <entry value="Constitution" />
+            <entry value="Intelligence" />
+            <entry value="Wisdom" />
+            <entry value="Charisma" />
+        </option>
+        <option type="Bullet" name="Bonus" value="2">
+            <entry value="2" />
+            <entry value="4" />
+            <entry value="6" />
+        </option>
+        <option type="Given" name="Default" value="Default" >
+            <entry value="Default">
+	            <bonus type="[Statistic]" stackType="Enhancement" value="[Bonus]" />
+	        </entry>
+        </option>
+    </property>
+    <property name="Armor">
+        <option type="Bullet" name="Armor Type" value="Light Armor" >
+            <entry value="Light Armor" />
+            <entry value="Medium Armor" />
+            <entry value="Heavy Armor" />
+        </option>
+        <option type="Bullet" name="Proficiency" value="Light Armor" >
+            <entry value="Light Armor" />
+            <entry value="Medium Armor" />
+            <entry value="Heavy Armor" />
+        </option>
+    </property>
+    <property name="Weapon">
+        <option type="String" name="Weapon Name" value="+1 Shortsword" />
+        <option name="Proficiency" value="Shortsword" >
+            <check value="Shortsword" />
+            <check value="Longsword" />
+            <check value="Greatsword" />
+        </option>
+        <option type="Bullet" name="Proficiency Group" value="Martial Weapon" >
+            <entry value="Simple Weapon" />
+            <entry value="Martial Weapon" />
+            <entry value="Exotic Weapon" />
+        </option>
+        <option name="Damage Type" value="Slashing" >
+            <check value="Slashing" />
+            <check value="Bludgeoning" />
+            <check value="Piercing" />
+            <check value="Magic" />
+            <check value="Silver" />
+            <check value="Cold Iron" />
+            <check value="Adamantine" />
+        </option>
+        <option type="Bullet" name="Damage Dice" value="Damage d6" >
+            <entry value="Damage d2" />
+            <entry value="Damage d3" />
+            <entry value="Damage d4" />
+            <entry value="Damage d6" />
+        </option>
+        <option type="Bullet" name="Damage Die" value="1" >
+            <entry value="1" />
+            <entry value="2" />
+            <entry value="3" />
+            <entry value="4" />
+            <entry value="5" />
+        </option>
+        <option type="Bullet" name="Critical Range" value="2" >
+            <entry value="1" />
+            <entry value="2" />
+            <entry value="3" />
+        </option>
+        <option type="Bullet" name="Critical Multiplier" value="2" >
+            <entry value="2" />
+            <entry value="3" />
+            <entry value="4" />
+        </option>
+        <option type="Bullet" name="Enhancement" value="0" >
+            <entry value="0" />
+            <entry value="1" />
+            <entry value="2" />
+            <entry value="3" />
+            <entry value="4" />
+            <entry value="5" />
+        </option>
+        <option name="Special" value="Finesse" >
+            <check value="Finesse">
+                <conditional key="Equipment" name="Off Hand [Weapon Name]">
+                    <condition key="Equipment" name="Off Hand Finesse" />
+                </conditional>
+                <conditional key="Equipment" name="Main Hand [Weapon Name]">
+                    <condition key="Equipment" name="Main Hand Finesse" />
+                </conditional>
+            </check>
+            <check value="Light">
+                <conditional key="Equipment" name="Off Hand [Weapon Name]">
+                    <condition key="Equipment" name="Off Hand Light" />
+                </conditional>
+                <conditional key="Equipment" name="Main Hand [Weapon Name]">
+                    <condition key="Equipment" name="Main Hand Light" />
+                </conditional>
+            </check>
+        </option>
+        <option name="Wield" value="Off Hand,Main Hand,Two Hand">
+            <check value="Off Hand" >
+                <conditional key="Equipment" name="[Weapon Name],Off Hand" comparator="Not" >
+                    <action name="Equip Off Hand [Weapon Name]" parent="Equip Off Hand Weapon" cost="Move" >
+                        <effectGroup name="Off Hand [Weapon Name]" action="Add" >
+                            <condition key="Equipment" name="Off Hand,[Weapon Name],Off Hand [Weapon Name]" />
+                            <action name="Drop Off Hand [Weapon Name]" cost="Free">
+                                <effectGroup name="Off Hand [Weapon Name]" action="Remove" />
+                            </action>
+                        </effectGroup>
+                    </action>
+                </conditional>
+            </check>
+            <check value="Main Hand" >
+                <conditional key="Equipment" name="[Weapon Name],Main Hand" comparator="Not" >
+                    <action name="Equip Main Hand [Weapon Name]" parent="Equip Main Hand Weapon" cost="Move" >
+                        <effectGroup name="Main Hand [Weapon Name]" action="Add" >
+                            <condition key="Equipment" name="Main Hand,[Weapon Name],Main Hand [Weapon Name]" />
+                            <action name="Drop Main Hand [Weapon Name]" cost="Free">
+                                <effectGroup name="Main Hand [Weapon Name]" action="Remove" />
+                            </action>
+                        </effectGroup>
+                    </action>
+                </conditional>
+            </check>
+            <check value="Two Hand" >
+                <conditional key="Equipment" name="[Weapon Name],Two Hand,Main Hand,Off Hand" comparator="Not">
+		            <action name="Equip Two Hand [Weapon Name]" parent="Equip Main Hand Weapon" cost="Move" >
+		                <effectGroup name="Two Hand [Weapon Name]" action="Add" >
+		                    <condition key="Equipment" name="Two Hand,[Weapon Name],Main Hand [Weapon Name]" />
+		                    <action name="Drop Two Hand [Weapon Name]" cost="Free">
+		                        <effectGroup name="Two Hand [Weapon Name]" action="Remove" />
+		                    </action>
+		                </effectGroup>
+		            </action>
+	            </conditional>
+            </check>
+        </option>
+        <build>
+            <bonus type="Equipment Cost" value="( [Enhancement] * [Enhancement] * 2000 )" />
+            <bonus type="Encumbrance" value="[Weight]" />
+            <conditional key="Equipment" name="Main Hand [Weapon Name]">
+                <attack name="Main Hand Melee Attack">
+        			<conditional key="Proficiency" name="[Proficiency],[Proficiency Group]" comparator="Not">
+                    	<bonus type="To Hit" stackType="Nonproficient" value="-4" />
+                    </conditional>
+                    <bonus type="To Hit" value="[Enhancement]" />
+                </attack>
+                <onHitEffect name="Main Hand Melee Attack">
+                    <bonus type="[Damage Dice]" value="[Damage Die]" />
+                    <bonus type="Damage" value="[Enhancement]" />
+                </onHitEffect>
+            </conditional>
+            <conditional key="Equipment" name="Off Hand [Weapon Name]">
+                <attack name="Off Hand Melee Attack">
+        			<conditional key="Proficiency" name="[Proficiency],[Proficiency Group]" comparator="Not">
+                    	<bonus type="To Hit" stackType="Nonproficient" value="-4" />
+                    </conditional>
+                    <bonus type="To Hit" value="[Enhancement]" />
+        		</attack>
+                <onHitEffect name="Off Hand Melee Attack">
+                    <bonus type="[Damage Dice]" value="[Damage Die]" />
+                    <bonus type="Damage" value="[Enhancement]" />
+                </onHitEffect>
+            </conditional>
+        </build>
+    </property>
+</content>

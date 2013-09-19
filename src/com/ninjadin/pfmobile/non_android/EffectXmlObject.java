@@ -1,6 +1,7 @@
 package com.ninjadin.pfmobile.non_android;
 
 import java.io.File;
+import java.util.List;
 
 import com.ninjadin.pfmobile.data.XmlConst;
 
@@ -23,15 +24,16 @@ public class EffectXmlObject extends XmlObjectModel {
 	}
 	
 	public void removeCondition(String key, String name) {
-		int i = 0;
-		for (XmlObjectModel effect: this.getChildren()) {
+		List<XmlObjectModel> children = this.getChildren();
+		int size = children.size();
+		for (int i = size-1; i >= 0; i--) {
+			XmlObjectModel effect = children.get(i);
 			if (effect.getTag().equals(XmlConst.CONDITION_TAG)) {
 				if (effect.getAttribute(XmlConst.KEY_ATTR).equals(key) &&
 						effect.getAttribute(XmlConst.NAME_ATTR).equals(name)) {
 					this.removeChild(i);
 				}
 			}
-			i += 1;
 		}
 	}
 }

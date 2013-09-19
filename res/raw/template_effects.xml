@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <content>
-    <effectGroup name="[Item Name] Equipped">
-        
-    </effectGroup>
+	<condition key="Equipment" name="+1 Shortsword" />
 </content>

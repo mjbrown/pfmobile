@@ -3,8 +3,6 @@ package com.ninjadin.pfmobile.non_android;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.util.Log;
-
 public class ActionGroup extends StatisticGroup {
 	protected List<AttackGroup> attacks = new ArrayList<AttackGroup>();
 	protected List<OnHitDamage> damages = new ArrayList<OnHitDamage>();

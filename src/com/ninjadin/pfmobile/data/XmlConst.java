@@ -1,36 +1,28 @@
 package com.ninjadin.pfmobile.data;
 
 public class XmlConst {
-	final public static String TAG = "tag";
-	
 	// Used as both TAG and ATTR
 	final public static String BONUSGRP = "bonusGroup";
 	final public static String SUBGRP = "subGroup";
 	
 	// Used as TAG in character file
 	final public static String CONTENT_TAG = "content";
-	final public static String TEMPLATE_TAG = "template";
 	final public static String LEVEL_TAG = "characterLevel";
 	final public static String SELECTION_TAG = "selection";
 	final public static String CHOICE_TAG = "choice";
-	final public static String CHOSEN_TAG = "chosen";
-	final public static String POINTBUY_TAG = "pointBuy";
 	final public static String ATTRIBUTES_TAG = "attributes";
 	final public static String LEVELS_TAG = "levels";
-	final public static String SKILLS_TAG = "skills";
-	final public static String EQUIP_TAG = "equipment";
-	final public static String ENHANCE_TAG = "enhancement";
 	final public static String BONUS_TAG = "bonus";
-	final public static String PROFICIENCY_TAG = "proficiency";
-	final public static String WEAPON_TAG = "weapon";
 	final public static String CONDITIONAL_TAG = "conditional";
 	final public static String CONDITION_TAG = "condition";
 	final public static String ACTION_TAG = "action";
 	final public static String ATTACK_TAG = "attack";
 	final public static String ONHIT_TAG = "onHitEffect";
-	final public static String APPLYCOND_TAG = "onHitCondition";
 	final public static String SPELL_TAG = "spell";
 	final public static String EFFECT_TAG = "effect";
+	final public static String OPTION_LIST_TAG = "optionList";
+	final public static String OPTION_TAG = "option";
+	final public static String GENERATED_TAG = "generated";
 
 	// TAGs from spell book and spell lists
 	final public static String SPELLLIST_TAG = "spellList";
@@ -40,7 +32,6 @@ public class XmlConst {
 	// Used as TAG in inventory files
 	final public static String ITEM_TAG = "item";
 	final public static String PROPERTY_TAG = "property";
-	final public static String DAMAGE_TAG = "damage";
 
 	// Used as TAG in data files
 	final public static String PREREQ_TAG = "prerequisite";
@@ -65,6 +56,7 @@ public class XmlConst {
 	final public static String REMOVE_ATTR = "remove";
 	final public static String ACTIVATE_ATTR = "activate";
 	final public static String SCHOOL_ATTR = "school";
+	final public static String ID_ATTR = "id";
 	
 	// Used as ATTRIBUTE in data files
 	final public static String COMPARE_ATTR = "comparator";
@@ -72,6 +64,4 @@ public class XmlConst {
 	final public static String SLOT_ATTR = "slot";
 	final public static String STATISTIC_ATTR = "statistic";
 	
-	//final public static String 
-
 }

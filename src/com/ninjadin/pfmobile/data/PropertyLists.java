@@ -34,7 +34,7 @@ public class PropertyLists {
 	final public static String class_skill = "Class Skill";
 	final public static String notStackableTypes[] = new String[] { "Max HP First Level", "Unnamed", "Aid Another", 
 	"Flank", "Circumstance", "Divine", "Profane", "Alchemical", "Enhancement", class_skill,
-	"Competence", "Ability", "Morale", "Armor", "Deflection", "Luck", "Armor Enhancement",
+	"Competence", "Ability", "Morale", "Armor", "Deflection", "Luck", "Armor Enhancement", "Nonproficient",
 	"Morale", "Natural Armor", "Size", "Range", "High Ground", "Shield", "Shield Enhancement", };
 
 	final public static String[] skillNames = new String[] { "Acrobatics", "Appraise", "Bluff",

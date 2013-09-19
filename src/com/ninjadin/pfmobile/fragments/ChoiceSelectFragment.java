@@ -208,10 +208,7 @@ public class ChoiceSelectFragment extends Fragment {
 			TextView text2 = (TextView) convertView.findViewById(R.id.filterselect_text2);
 			String tag = itmData.get(groupPosition).get(childPosition).get("tag");
 			String left_text = null, right_text = null;
-			if (tag.equals(XmlConst.PROFICIENCY_TAG)) {
-				left_text = "Proficiency";
-				right_text = itmData.get(groupPosition).get(childPosition).get(XmlConst.TYPE_ATTR);
-			} else if (tag.equals(XmlConst.CHOICE_TAG) || tag.equals(XmlConst.CHOSEN_TAG)) {
+			if (tag.equals(XmlConst.CHOICE_TAG)) {
 				left_text = itmData.get(groupPosition).get(childPosition).get(XmlConst.GRPNAME_ATTR);
 				String subgroup = itmData.get(groupPosition).get(childPosition).get(XmlConst.SUBGRP);
 				if (subgroup != null)

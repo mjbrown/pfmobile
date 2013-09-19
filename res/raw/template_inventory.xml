@@ -1,3 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <content>
+    <item name="+1 Shortsword" slot="Held" id="Id#0" >
+
+    </item>
+    <item name="+1 Chainmail" slot="Armor" id="Id#1" >
+        
+    </item>
+    <item name="Headband of Intellect" slot="Headband" id="Id#2">
+        
+    </item>
 </content>

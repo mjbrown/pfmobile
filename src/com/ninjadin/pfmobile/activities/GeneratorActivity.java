@@ -26,27 +26,29 @@ import com.ninjadin.pfmobile.fragments.ChoiceSelectFragment;
 import com.ninjadin.pfmobile.fragments.ChoiceSelectFragment.ChoiceSelectFragmentListener;
 import com.ninjadin.pfmobile.fragments.GeneratorMenuFragment;
 import com.ninjadin.pfmobile.fragments.InventoryFragment;
+import com.ninjadin.pfmobile.fragments.InventoryFragment.InventoryFragmentListener;
 import com.ninjadin.pfmobile.fragments.ItemEditDialogFragment;
 import com.ninjadin.pfmobile.fragments.ItemEditDialogFragment.ItemEditDialogListener;
 import com.ninjadin.pfmobile.fragments.LevelsFragment;
 import com.ninjadin.pfmobile.fragments.LevelsFragment.LevelsFragmentListener;
 import com.ninjadin.pfmobile.fragments.ModifierDialogFragment;
 import com.ninjadin.pfmobile.fragments.ModifierDialogFragment.ModifierDialogListener;
+import com.ninjadin.pfmobile.fragments.PropertyAddDialogFragment.PropertyAddDialogListener;
 import com.ninjadin.pfmobile.fragments.ShowXMLFragment;
 import com.ninjadin.pfmobile.fragments.SpellListFragment.SpellListFragmentListener;
 import com.ninjadin.pfmobile.fragments.SpellbookFragment;
 import com.ninjadin.pfmobile.non_android.CharacterXmlObject;
 import com.ninjadin.pfmobile.non_android.EffectXmlObject;
-import com.ninjadin.pfmobile.non_android.InventoryEditor;
+import com.ninjadin.pfmobile.non_android.InventoryXmlObject;
 import com.ninjadin.pfmobile.non_android.SpellbookXmlObject;
 import com.ninjadin.pfmobile.non_android.StatisticManager;
 import com.ninjadin.pfmobile.non_android.XmlObjectModel;
 
 public class GeneratorActivity extends FragmentActivity implements 
 	ItemEditDialogListener, ModifierDialogListener, LevelsFragmentListener, 
-	CharacterSheetFragmentListener, ChoiceSelectFragmentListener, SpellListFragmentListener {
+	CharacterSheetFragmentListener, ChoiceSelectFragmentListener, SpellListFragmentListener,
+	InventoryFragmentListener, PropertyAddDialogListener {
 	public StatisticManager dependencyManager;
-	public InventoryEditor inventoryEditor;
 	public String masterCharFilename;
 	public String inventoryFilename;
 	public String effectFilename;
@@ -60,9 +62,11 @@ public class GeneratorActivity extends FragmentActivity implements
 	CharacterXmlObject character;
 	SpellbookXmlObject spells;
 	EffectXmlObject effects;
-	XmlObjectModel dependencies, inventory;
+	InventoryXmlObject inventory;
+	XmlObjectModel dependencies;
 	final static public int CHARACTER_MODEL = 0;
 	final static public int DEPENDENCIES_MODEL = 1;
+	final static public int INVENTORY_MODEL = 2;
 	
 	public Boolean dirtyFiles = true;
 	
@@ -137,17 +141,18 @@ public class GeneratorActivity extends FragmentActivity implements
 		tempFilename = masterCharFilename.concat(".temp");
 		charFile = new File(context.getFilesDir(), masterCharFilename);
 		tempFile = new File(context.getFilesDir(), tempFilename);
-		character = new CharacterXmlObject(charFile, tempFile, this.getResources().openRawResource(R.raw.base_levels));
+		character = new CharacterXmlObject(charFile, tempFile, 
+				this.getResources().openRawResource(R.raw.base_levels));
 		effectFile = new File(context.getFilesDir(), effectFilename);
 		effects = new EffectXmlObject(effectFile, tempFile);
 		inventoryFile = new File(context.getFilesDir(), inventoryFilename);
-		inventory = new XmlObjectModel(inventoryFile, tempFile);
+		inventory = new InventoryXmlObject(inventoryFile, tempFile, 
+				this.getResources().openRawResource(R.raw.item_data));
 		spellsFile = new File(context.getFilesDir(), spellsFilename);
 		spells = new SpellbookXmlObject(spellsFile, tempFile, getResources().openRawResource(R.raw.spells));
 		dependencies = new XmlObjectModel(getResources().openRawResource(R.raw.dependencies));;
 		refreshManager();
 		
-		inventoryEditor = new InventoryEditor(inventoryFile);
 	}
 	
 	private void refreshManager() {
@@ -170,6 +175,7 @@ public class GeneratorActivity extends FragmentActivity implements
 			character.saveChanges();
 			spells.saveChanges();
 			effects.saveChanges();
+			inventory.saveChanges();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -349,6 +355,10 @@ public class GeneratorActivity extends FragmentActivity implements
 		dependencyManager.deactivateCondition(key, name);
 	}
 	
+	public Boolean isConditionActive(String key, String name) {
+		return dependencyManager.hasProperty(key, name);
+	}
+	
 	public void showItemEditDialog(int groupPosition, int childPosition) {
 		DialogFragment dialog = new ItemEditDialogFragment();
 		dialog.show(getSupportFragmentManager(), "ItemEditDialogFragment");
@@ -420,10 +430,14 @@ public class GeneratorActivity extends FragmentActivity implements
 	
 	@Override
 	public XmlObjectModel getXmlModel(int enum_model) {
+		if (character == null)
+			refreshCharData();
 		if (enum_model == CHARACTER_MODEL)
 			return character;
 		if (enum_model == DEPENDENCIES_MODEL)
 			return dependencies;
+		if (enum_model == INVENTORY_MODEL)
+			return inventory;
 		return null;
 	}
 	
@@ -438,5 +452,20 @@ public class GeneratorActivity extends FragmentActivity implements
 	public void spellbookAddSpell(String class_name, String spell_name, String spell_level) {
 		spells.createEntry(class_name, spell_name, spell_level);
 		refreshManager();
+	}
+	
+	@Override
+	public void inventoryCreateItem(String slot) {
+		inventory.createItem(slot);
+	}
+	
+	@Override
+	public void inventoryDeleteItem(String id) {
+		inventory.deleteItem(id);
+	}
+
+	@Override
+	public void itemAddProperty(XmlObjectModel property, String item_id) {
+		inventory.addProperty(property, item_id);
 	}
 }

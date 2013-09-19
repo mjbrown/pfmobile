@@ -69,20 +69,18 @@ public class StatisticManager {
 		ConditionList currentConditions = new ConditionList();
 		Stack<StatisticGroup> lastObject = new Stack<StatisticGroup>();
 		lastObject.push(master_stats);
-		String last_item_name = null;
-		recursiveReadModel(model, currentConditions, lastObject, last_item_name, null, null);
+		recursiveReadModel(model, currentConditions, lastObject, null, null);
 	}
 	
 	public void readPartialModel(XmlObjectModel model, String quit_tag, Map<String,String> quit_attr) {
 		ConditionList currentConditions = new ConditionList();
 		Stack<StatisticGroup> lastObject = new Stack<StatisticGroup>();
 		lastObject.push(master_stats);
-		String last_item_name = null;
-		recursiveReadModel(model, currentConditions, lastObject, last_item_name, quit_tag, quit_attr);
+		recursiveReadModel(model, currentConditions, lastObject, quit_tag, quit_attr);
 	}
 	
 	public Boolean recursiveReadModel(XmlObjectModel model, ConditionList currentConditions, 
-			Stack<StatisticGroup> lastObject, String last_item_name, String quit_tag, Map<String,String> quit_attr) {
+			Stack<StatisticGroup> lastObject, String quit_tag, Map<String,String> quit_attr) {
 		String tag = model.getTag();
 		if (tag.equals(quit_tag)) {
 			Boolean quit = true;
@@ -99,9 +97,6 @@ public class StatisticManager {
 		}
 		if (tag.equals(XmlConst.CONDITIONAL_TAG)) {
 			String name = model.getAttribute(XmlConst.NAME_ATTR);
-			if ((last_item_name != null) && (name != null)) {
-				name = name.replace("[Item Name]", last_item_name);
-			}
 			String key = model.getAttribute(XmlConst.KEY_ATTR);
 			if (model.getAttribute(XmlConst.ACTIVATE_ATTR) != null) {
 				ActivatedCondition newBonus = new ActivatedCondition(key, name);
@@ -125,13 +120,13 @@ public class StatisticManager {
 			for (String typ: type.split(",")) {
 				Bonus conditionalBonus = stat_group.addBonus(typ, stack, source, value);
 				if (currentConditions.hasConditions()) {
-					//Log.d("COND_BNS", "Adding conditional bonus: " + type + " " + values);
+					//Log.d("COND_BNS", "Adding conditional bonus: " + typ + " " + value);
 					conditionalBonus.setConditions(currentConditions);
 					conditional_bonuses.add(conditionalBonus);
 					updateConditionalBonus(conditionalBonus);
 				}
 			}
-		} else if (tag.equals(XmlConst.CHOSEN_TAG)) {
+		} else if (tag.equals(XmlConst.CHOICE_TAG)) {
 			String name = model.getAttribute(XmlConst.NAME_ATTR);
 			if (name != null)
 				activateCondition(PropertyLists.prerequisite, name);
@@ -223,7 +218,6 @@ public class StatisticManager {
 		} else if (tag.equals(XmlConst.ITEM_TAG)) {
 			String name = model.getAttribute(XmlConst.NAME_ATTR);
 			currentConditions.startConditional(PropertyLists.equipment, name, null, null, null);
-			last_item_name = name;
 		} else if (tag.equals(XmlConst.SPELL_TAG)) {
 			String name = model.getAttribute(XmlConst.NAME_ATTR);
 			String source = model.getAttribute(XmlConst.SOURCE_ATTR);
@@ -241,20 +235,45 @@ public class StatisticManager {
 				((ActionGroup) lastObject.peek()).addEffect(model);
 				return false;
 			}
+		} else if (tag.equals(XmlConst.CONDITION_TAG)) {
+			String key = model.getAttribute(XmlConst.KEY_ATTR);
+			String names = model.getAttribute(XmlConst.NAME_ATTR);
+			Map<String,Conditional> condition_map = conditions.get(key);
+			if (condition_map == null) {
+				condition_map = new HashMap<String,Conditional>();
+				conditions.put(key, condition_map);
+			}
+			for (String name: names.split(",")) {
+				Conditional cond = new Conditional();
+				condition_map.put(name, cond);
+				//Log.d("ADD_COND", "Adding condition: " + key + " " + name);
+				if (currentConditions.hasConditions()) {
+					cond.setConditions(currentConditions);
+					conditional_bonuses.add(cond);
+				}
+			}
 		}
 		for (XmlObjectModel child: model.getChildren()) {
-			if (recursiveReadModel(child, currentConditions, lastObject, last_item_name, quit_tag, quit_attr))
+			if (recursiveReadModel(child, currentConditions, lastObject, quit_tag, quit_attr))
 				return true;
 		}
-		if (tag.equals(XmlConst.CONDITIONAL_TAG)) {
+		if (tag.equals(XmlConst.CONDITIONAL_TAG) || tag.equals(XmlConst.ITEM_TAG)) {
 			currentConditions.endConditional();
-		} else if (tag.equals(XmlConst.ITEM_TAG)) {
-			currentConditions.endConditional();
-			last_item_name = null;
 		} else if (tag.equals(XmlConst.ACTION_TAG) || tag.equals(XmlConst.ATTACK_TAG) || tag.equals(XmlConst.ONHIT_TAG) || tag.equals(XmlConst.SPELL_TAG)) {
 			lastObject.pop();
 		}
 		return false;
+	}
+	// name = name.replace("[Item Name]", last_item_name);
+	private String itemOptionReplace(Map<String,String> itemMap, String attribute) {
+		if (itemMap.isEmpty() || (attribute == null))
+			return attribute;
+		for (Map.Entry<String, String> entry: itemMap.entrySet()) {
+			String format_string = "[" + entry.getKey() + "]";
+			String value = entry.getValue();
+			attribute = attribute.replace(format_string, value);
+		}
+		return attribute;
 	}
 	
 	public void updateConditionalBonuses(int retries) {
