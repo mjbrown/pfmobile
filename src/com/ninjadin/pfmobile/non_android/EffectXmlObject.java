@@ -12,14 +12,14 @@ public class EffectXmlObject extends XmlObjectModel {
 	}
 	
 	public void addEffect(XmlObjectModel effect) {
-		effect.addAttribute(XmlConst.ACTIVATE_ATTR, "Yes");
+		effect.setAttribute(XmlConst.ACTIVATE_ATTR, "Yes");
 		this.addChild(effect);
 	}
 	
 	public void addCondition(String key, String name) {
 		XmlObjectModel condition = new XmlObjectModel(XmlConst.CONDITION_TAG);
-		condition.addAttribute(XmlConst.KEY_ATTR, key);
-		condition.addAttribute(XmlConst.NAME_ATTR, name);
+		condition.setAttribute(XmlConst.KEY_ATTR, key);
+		condition.setAttribute(XmlConst.NAME_ATTR, name);
 		this.addChild(condition);
 	}
 	

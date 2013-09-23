@@ -3,6 +3,7 @@ package com.ninjadin.pfmobile.activities;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
@@ -19,6 +20,8 @@ import android.widget.Toast;
 
 import com.ninjadin.pfmobile.R;
 import com.ninjadin.pfmobile.data.XmlConst;
+import com.ninjadin.pfmobile.dialogfragments.ModifierDialogFragment;
+import com.ninjadin.pfmobile.dialogfragments.ModifierDialogFragment.ModifierDialogListener;
 import com.ninjadin.pfmobile.fragments.ActionFragment;
 import com.ninjadin.pfmobile.fragments.CharacterSheetFragment;
 import com.ninjadin.pfmobile.fragments.CharacterSheetFragment.CharacterSheetFragmentListener;
@@ -27,27 +30,25 @@ import com.ninjadin.pfmobile.fragments.ChoiceSelectFragment.ChoiceSelectFragment
 import com.ninjadin.pfmobile.fragments.GeneratorMenuFragment;
 import com.ninjadin.pfmobile.fragments.InventoryFragment;
 import com.ninjadin.pfmobile.fragments.InventoryFragment.InventoryFragmentListener;
-import com.ninjadin.pfmobile.fragments.ItemEditDialogFragment;
-import com.ninjadin.pfmobile.fragments.ItemEditDialogFragment.ItemEditDialogListener;
+import com.ninjadin.pfmobile.fragments.ItemEditFragment.ItemEditListener;
 import com.ninjadin.pfmobile.fragments.LevelsFragment;
 import com.ninjadin.pfmobile.fragments.LevelsFragment.LevelsFragmentListener;
-import com.ninjadin.pfmobile.fragments.ModifierDialogFragment;
-import com.ninjadin.pfmobile.fragments.ModifierDialogFragment.ModifierDialogListener;
-import com.ninjadin.pfmobile.fragments.PropertyAddDialogFragment.PropertyAddDialogListener;
 import com.ninjadin.pfmobile.fragments.ShowXMLFragment;
 import com.ninjadin.pfmobile.fragments.SpellListFragment.SpellListFragmentListener;
 import com.ninjadin.pfmobile.fragments.SpellbookFragment;
+import com.ninjadin.pfmobile.fragments.SpellbookFragment.SpellbookFragmentListener;
 import com.ninjadin.pfmobile.non_android.CharacterXmlObject;
 import com.ninjadin.pfmobile.non_android.EffectXmlObject;
 import com.ninjadin.pfmobile.non_android.InventoryXmlObject;
+import com.ninjadin.pfmobile.non_android.SpellGroup;
 import com.ninjadin.pfmobile.non_android.SpellbookXmlObject;
 import com.ninjadin.pfmobile.non_android.StatisticManager;
 import com.ninjadin.pfmobile.non_android.XmlObjectModel;
 
 public class GeneratorActivity extends FragmentActivity implements 
-	ItemEditDialogListener, ModifierDialogListener, LevelsFragmentListener, 
+	ModifierDialogListener, LevelsFragmentListener, 
 	CharacterSheetFragmentListener, ChoiceSelectFragmentListener, SpellListFragmentListener,
-	InventoryFragmentListener, PropertyAddDialogListener {
+	InventoryFragmentListener, SpellbookFragmentListener, ItemEditListener {
 	public StatisticManager dependencyManager;
 	public String masterCharFilename;
 	public String inventoryFilename;
@@ -73,6 +74,7 @@ public class GeneratorActivity extends FragmentActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		refreshCharData();
 		setContentView(R.layout.activity_fragment_container);
 		if (findViewById(R.id.fragment_container) != null) {
 			if (savedInstanceState != null) {
@@ -85,7 +87,6 @@ public class GeneratorActivity extends FragmentActivity implements
 		}
 		// Show the Up button in the action bar.
 		setupActionBar();
-		refreshCharData();
 	}
 
 	/**
@@ -359,24 +360,9 @@ public class GeneratorActivity extends FragmentActivity implements
 		return dependencyManager.hasProperty(key, name);
 	}
 	
-	public void showItemEditDialog(int groupPosition, int childPosition) {
-		DialogFragment dialog = new ItemEditDialogFragment();
-		dialog.show(getSupportFragmentManager(), "ItemEditDialogFragment");
-	}
-	
 	public void showModifierDialog() {
 		DialogFragment dialog = new ModifierDialogFragment();
 		dialog.show(getSupportFragmentManager(), "ModifierDialogFragment");
-	}
-	
-	@Override
-	public void onItemEditPositiveClick(ItemEditDialogFragment dialog) {
-
-	}
-	
-	@Override
-	public void onItemEditNegativeClick(ItemEditDialogFragment dialog) {
-		
 	}
 	
 	@Override
@@ -465,7 +451,30 @@ public class GeneratorActivity extends FragmentActivity implements
 	}
 
 	@Override
-	public void itemAddProperty(XmlObjectModel property, String item_id) {
-		inventory.addProperty(property, item_id);
+	public void itemAddProperty(XmlObjectModel property, String item_id, String property_id) {
+		inventory.addProperty(property, item_id, property_id);
+	}
+	
+	@Override
+	public void itemDeleteProperty(String item_id, String property_id) {
+		inventory.deleteProperty(item_id, property_id);
+	}
+	
+	@Override
+	public Map<String,String> getItemPropertyOptionMap(String item_id, String property_id) {
+		if (inventory == null)
+			refreshCharData();
+		return inventory.getItemPropertyOptionMap(item_id, property_id);
+	}
+	
+	@Override
+	public List<String> getSpellcastingClassList() {
+		return dependencyManager.castingClasses();
+	}
+	
+	@Override
+	public List<SpellGroup> getSpellsAvailable() {
+		refreshManager();
+		return dependencyManager.getSpells();
 	}
 }

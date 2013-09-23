@@ -47,7 +47,7 @@ public class CharacterXmlObject extends XmlObjectModel {
 		XmlObjectModel choice = choice_list.get(position);
 		choice.clearChildren();
 		String name = selection.getAttribute(XmlConst.NAME_ATTR);
-		choice.addAttribute(XmlConst.NAME_ATTR, name);
+		choice.setAttribute(XmlConst.NAME_ATTR, name);
 		for (XmlObjectModel child: selection.getChildren())
 			choice.addChild(child);
 	}
@@ -60,8 +60,8 @@ public class CharacterXmlObject extends XmlObjectModel {
 	
 	private void recursiveChoiceFind(XmlObjectModel model, String parent_name) {
 		if (model.getTag().equals(XmlConst.CHOICE_TAG)) {
-			model.addAttribute(XmlConst.SOURCE_ATTR, parent_name);
-			model.addAttribute(XmlConst.NUM_ATTR, Integer.toString(choice_list.size()));
+			model.setAttribute(XmlConst.SOURCE_ATTR, parent_name);
+			model.setAttribute(XmlConst.NUM_ATTR, Integer.toString(choice_list.size()));
 			choice_list.add(model);
 			parent_name = model.getAttribute(XmlConst.NAME_ATTR);
 		} else if (model.getTag().equals(XmlConst.LEVEL_TAG)) {
@@ -95,9 +95,9 @@ public class CharacterXmlObject extends XmlObjectModel {
 		XmlObjectModel attr = attributes.get(attribute_name);
 		if (attr == null) {
 			attr = new XmlObjectModel(XmlConst.BONUS_TAG);
-			attr.addAttribute(XmlConst.TYPE_ATTR, attribute_name);
-			attr.addAttribute(XmlConst.STACKTYPE_ATTR, PropertyLists.ranks);
-			attr.addAttribute(XmlConst.VALUE_ATTR, "0");
+			attr.setAttribute(XmlConst.TYPE_ATTR, attribute_name);
+			attr.setAttribute(XmlConst.STACKTYPE_ATTR, PropertyLists.ranks);
+			attr.setAttribute(XmlConst.VALUE_ATTR, "0");
 			attribute_ranks.addChild(attr);
 			attributes.put(attribute_name, attr);
 		}
@@ -107,7 +107,7 @@ public class CharacterXmlObject extends XmlObjectModel {
 	public void incrementRanksAttribute(String attribute_name) {
 		XmlObjectModel attr = getRanksAttribute(attribute_name);
 		int old_value = Integer.parseInt(attr.getAttribute(XmlConst.VALUE_ATTR));
-		attr.addAttribute(XmlConst.VALUE_ATTR, Integer.toString(old_value + 1));
+		attr.setAttribute(XmlConst.VALUE_ATTR, Integer.toString(old_value + 1));
 		updateAttributes();
 	}
 	
@@ -115,7 +115,7 @@ public class CharacterXmlObject extends XmlObjectModel {
 		XmlObjectModel attribute = getRanksAttribute(attribute_name);
 		if (attribute != null) {
 			int old_value = Integer.parseInt(attribute.getAttribute(XmlConst.VALUE_ATTR));
-			attribute.addAttribute(XmlConst.VALUE_ATTR, Integer.toString(old_value - 1));
+			attribute.setAttribute(XmlConst.VALUE_ATTR, Integer.toString(old_value - 1));
 		}
 		updateAttributes();
 	}
@@ -134,20 +134,20 @@ public class CharacterXmlObject extends XmlObjectModel {
 			point_buy += pointBuyCost(Integer.parseInt(attributes.get(ability_score).getAttribute(XmlConst.VALUE_ATTR)));
 		}
 		XmlObjectModel point_buy_attr = getRanksAttribute(PropertyLists.point_buy_cost);
-		point_buy_attr.addAttribute(XmlConst.VALUE_ATTR, Integer.toString(point_buy));
+		point_buy_attr.setAttribute(XmlConst.VALUE_ATTR, Integer.toString(point_buy));
 		
 		int skills_used = 0;
 		for (String skill_name: PropertyLists.skillNames) {
 			skills_used += Integer.parseInt(getRanksAttribute(skill_name).getAttribute(XmlConst.VALUE_ATTR));
 		}
 		XmlObjectModel skill_points_used = getRanksAttribute(PropertyLists.skill_ranks_used);
-		skill_points_used.addAttribute(XmlConst.VALUE_ATTR, Integer.toString(skills_used));
+		skill_points_used.setAttribute(XmlConst.VALUE_ATTR, Integer.toString(skills_used));
 		int favored_points_used = 0;
 		for (String point_name: PropertyLists.pointsNames) {
 			favored_points_used += Integer.parseInt(getRanksAttribute(point_name).getAttribute(XmlConst.VALUE_ATTR));
 		}
 		XmlObjectModel favored_used = getRanksAttribute(PropertyLists.favored_points_used);
-		favored_used.addAttribute(XmlConst.VALUE_ATTR, Integer.toString(favored_points_used));
+		favored_used.setAttribute(XmlConst.VALUE_ATTR, Integer.toString(favored_points_used));
 	}
 	
 	private int pointBuyCost(int value) {

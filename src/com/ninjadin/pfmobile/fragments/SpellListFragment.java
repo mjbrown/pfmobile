@@ -35,6 +35,7 @@ public class SpellListFragment extends Fragment {
 
 	public interface SpellListFragmentListener {
 		public void spellbookAddSpell(String class_name, String spell_name, String spell_level);
+		public List<String> getSpellcastingClassList();
 	}
 	
 	SpellListFragmentListener mListener;
@@ -78,7 +79,7 @@ public class SpellListFragment extends Fragment {
 			
 		});
 		ArrayAdapter<String> spin_adapter = new ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item);
-		List<String> casting_classes = activity.dependencyManager.castingClasses();
+		List<String> casting_classes = mListener.getSpellcastingClassList();
 		if (casting_classes.size() == 0)
 			spin_adapter.add(ERROR_MSG);
 		for (String class_name: casting_classes) {

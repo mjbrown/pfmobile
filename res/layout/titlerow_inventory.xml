@@ -29,16 +29,6 @@
         android:includeFontPadding="false" />
 
     <Button 
-		android:text="Edit"
-        android:id="@+id/inventory_edititem"
-        android:layout_width="0dip"
-        android:layout_height="35sp"
-        android:layout_weight="0.8"
-        android:textSize="12sp"
-        android:focusable="false"
-        android:includeFontPadding="false" />
-    
-    <Button 
 		android:text="Add Property"
         android:id="@+id/inventory_enhance"
         android:layout_width="0dip"

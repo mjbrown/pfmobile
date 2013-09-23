@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -38,6 +39,21 @@ public class SpellbookFragment extends Fragment {
 	List<SpellGroup> master_list;
 	Map<String, String> spell_sources = new HashMap<String,String>();
 	
+	public interface SpellbookFragmentListener {
+		public List<SpellGroup> getSpellsAvailable();
+	}
+	
+	SpellbookFragmentListener sbListener;
+	
+	public void onAttach(Activity activity) {
+		super .onAttach(activity);
+		try {
+			sbListener = (SpellbookFragmentListener) activity;
+		} catch (ClassCastException e) {
+			throw new ClassCastException(activity.toString() + "must implement SpellbookFragmentListener");
+		}
+	}
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_spellbook, container, false);
@@ -67,7 +83,7 @@ public class SpellbookFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super .onResume();
-		master_list = activity.dependencyManager.getSpells();
+		master_list = sbListener.getSpellsAvailable();
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item);
 		int i = 0, position = 0;
 		for (String src: sourceList()) {

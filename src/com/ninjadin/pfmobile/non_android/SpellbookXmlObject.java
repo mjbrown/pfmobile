@@ -50,11 +50,11 @@ public class SpellbookXmlObject extends XmlObjectModel {
 		XmlObjectModel spell_definition = spell_definitions.findObject(XmlConst.SPELL_TAG, attributes);
 		if (spell_definition != null) {
 			String school_name = spell_definition.getAttribute(XmlConst.SCHOOL_ATTR);
-			entry.addAttribute(XmlConst.SCHOOL_ATTR, school_name);
+			entry.setAttribute(XmlConst.SCHOOL_ATTR, school_name);
 		}
 		
-		entry.addAttribute(XmlConst.SOURCE_ATTR, class_name);
-		entry.addAttribute(XmlConst.NAME_ATTR, spell_name);
+		entry.setAttribute(XmlConst.SOURCE_ATTR, class_name);
+		entry.setAttribute(XmlConst.NAME_ATTR, spell_name);
 		
 		entry.addChild(bonusObject(PropertyLists.spell_level, spell_level));
 		entry.addChild(bonusObject(PropertyLists.caster_level, "[" + class_name + " Caster Level]"));
@@ -67,8 +67,8 @@ public class SpellbookXmlObject extends XmlObjectModel {
 	
 	private XmlObjectModel bonusObject(String type, String value) {
 		XmlObjectModel bonus = new XmlObjectModel(XmlConst.BONUS_TAG);
-		bonus.addAttribute(XmlConst.TYPE_ATTR, type);
-		bonus.addAttribute(XmlConst.VALUE_ATTR, value);
+		bonus.setAttribute(XmlConst.TYPE_ATTR, type);
+		bonus.setAttribute(XmlConst.VALUE_ATTR, value);
 		return bonus;
 	}
 

@@ -6,6 +6,13 @@ import java.util.List;
 import java.util.Map;
 
 public class PropertyLists {
+	
+	final public static String checkbox = "Check";
+	final public static String spinner = "Spinner";
+	final public static String number = "Number";
+	final public static String text = "Text";
+	final public static String spell = "Spell";
+	
 	final public static String intelligenceCasters[] = { "Alchemist", "Wizard", "Magus", "Witch",	};
 	final public static String wisdomCasters[] = { "Cleric", "Druid", "Inquisitor", "Paladin", "Ranger", };
 	final public static String charismaCasters[] = { "Bard", "Oracle", "Summoner", "Sorcerer" };

@@ -13,11 +13,12 @@
         android:layout_gravity="center_vertical"
 	    android:gravity="left" 
 	    />
+
     <Button 
 		android:text="Edit"
         android:id="@+id/inv_sub_edit"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="35sp"
         android:textSize="16sp"
         android:gravity="right"
         android:focusable="false"
@@ -27,7 +28,7 @@
 		android:text="Delete"
         android:id="@+id/inv_sub_delete"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="35sp"
         android:textSize="16sp"
         android:gravity="right"
         android:focusable="false"

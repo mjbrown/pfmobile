@@ -1,4 +1,4 @@
-package com.ninjadin.pfmobile.fragments;
+package com.ninjadin.pfmobile.dialogfragments;
 
 import java.util.List;
 import java.util.Map;

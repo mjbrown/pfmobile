@@ -119,7 +119,7 @@ public class XmlObjectModel {
 		return attributes;
 	}
 	
-	public void addAttribute(String attr, String value) {
+	public void setAttribute(String attr, String value) {
 		attributes.put(attr, value);
 	}
 	
@@ -127,15 +127,15 @@ public class XmlObjectModel {
 		return children;
 	}
 	
-	public void addChild(XmlObjectModel model) {
+	protected void addChild(XmlObjectModel model) {
 		children.add(model);
 	}
 	
-	public void removeChild(int position) {
+	protected void removeChild(int position) {
 		children.remove(position);
 	}
 	
-	public void clearChildren() {
+	protected void clearChildren() {
 		int size = children.size();
 		for (int i = size - 1; i >= 0; i--)
 			children.remove(i);
@@ -145,7 +145,7 @@ public class XmlObjectModel {
 		return tag;
 	}
 	
-	public String getXml() {
+	private String getXml() {
 		String xml = "";
 		xml += "<" + tag + " ";
 		for (Map.Entry<String, String> entry: attributes.entrySet()) {

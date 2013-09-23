@@ -20,7 +20,7 @@ import com.ninjadin.pfmobile.R;
 public abstract class ExpListFragment extends Fragment {
 	Activity activity;
 	
-	Button add_button;
+	Button button;
 
 	Spinner filter_spinner;
 	ArrayAdapter<String> spinner_adapter;
@@ -46,36 +46,37 @@ public abstract class ExpListFragment extends Fragment {
 		activity = getActivity();
 		
 		//Initialise button
-		add_button = (Button) view.findViewById(R.id.button_add);
-		if (add_button != null)
-			add_button.setOnClickListener(buildButtonClickListener());
+		button = (Button) view.findViewById(R.id.button_add);
+		if (button != null)
+			button.setOnClickListener(buildButtonClickListener());
 		
 		//Initialise spinner
 		filter_spinner = (Spinner) view.findViewById(R.id.spinner_filter);
 		spinner_adapter = buildSpinnerAdapter();
-		filter_spinner.setAdapter(spinner_adapter);
-		if (savedInstanceState != null) {
-			Integer position = savedInstanceState.getInt("Spinner Position");
-			if (position != null)
-				filter_spinner.setSelection(position);
-		}
-		filter_spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-
-			@Override
-			public void onItemSelected(AdapterView<?> arg0, View arg1,
-					int arg2, long arg3) {
-				// TODO Auto-generated method stub
-				dataSetUpdate();
+		if (spinner_adapter != null) {
+			filter_spinner.setAdapter(spinner_adapter);
+			if (savedInstanceState != null) {
+				Integer position = savedInstanceState.getInt("Spinner Position");
+				if (position != null)
+					filter_spinner.setSelection(position);
 			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-				// TODO Auto-generated method stub
+			filter_spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+	
+				@Override
+				public void onItemSelected(AdapterView<?> arg0, View arg1,
+						int arg2, long arg3) {
+					// TODO Auto-generated method stub
+					dataSetUpdate();
+				}
+	
+				@Override
+				public void onNothingSelected(AdapterView<?> arg0) {
+					// TODO Auto-generated method stub
+					
+				}
 				
-			}
-			
-		});
-		
+			});
+		}
 		exp_list = (ExpandableListView) view.findViewById(R.id.expList);
 		dataSetUpdate();
 		//Initialise Expandable list view
@@ -84,13 +85,19 @@ public abstract class ExpListFragment extends Fragment {
 	
 	public void onSaveInstanceState(Bundle outState) {
 		super .onSaveInstanceState(outState);
-		int position = filter_spinner.getSelectedItemPosition();
-		outState.putInt("Spinner Position", position);
+		if (spinner_adapter != null) {
+			int position = filter_spinner.getSelectedItemPosition();
+			outState.putInt("Spinner Position", position);
+		}
 	}
 	
 	public void dataSetUpdate() {
-		String filter = filter_spinner.getSelectedItem().toString();
-		exp_list_adapter = buildExpListAdapter(filter);
+		if (spinner_adapter != null) {
+			String filter = filter_spinner.getSelectedItem().toString();
+			exp_list_adapter = buildExpListAdapter(filter);
+		} else {
+			exp_list_adapter = buildExpListAdapter(null);
+		}
 		exp_list.setAdapter(exp_list_adapter);
 		exp_list.invalidateViews();
 	}
