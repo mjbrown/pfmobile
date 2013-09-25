@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <bonusGroup groupName="Race">
 	<selection name="Human">
-	    <property name="Humanoid,Human,Medium Size" />
+	    <condition key="Attack Source" name="Humanoid,Human,Medium Size" />
 	    <bonus type="Speed" stackType="Base" value="30" />
 	    <conditional key="Equipment" name="Medium Armor,Medium Load,Heavy Armor,Heavy Load">
 	        <bonus type="Speed" value="-10" />
@@ -9,9 +9,12 @@
 	    <choice groupName="Racial Ability Score" />
 	    <choice groupName="Feat" />
 	    <bonus type="Skill Points" value="[Character Level]" />
+	    <onHitEffect name="Unarmed Damage">
+	        <bonus type="Damage d3" value="1" />
+	    </onHitEffect>
 	</selection>
 	<selection name="Half-Orc">
-	    <property name="Humanoid,Human,Orc,Medium Size" />
+	    <condition key="Attack Source" name="Humanoid,Human,Orc,Medium Size" />
 	    <choice groupName="Racial Ability Score" />
 	    <bonus type="Speed" stackType="Base" value="30" />
 	    <conditional key="Equipment" name="Medium Armor,Medium Load,Heavy Armor,Heavy Load">
@@ -19,18 +22,23 @@
 	    </conditional>
 	    <bonus type="Darkvision" value="60" />
 	    <bonus type="Intimidate" stackType="Racial" value="2" />
-		<conditional key="Proficiency" name="Martial Weapon">
+	    <onHitEffect name="Unarmed Damage">
+	        <bonus type="Damage d3" value="1" />
+	    </onHitEffect>
+	    <conditional key="Proficiency" name="Martial Weapon">
 	    	<condition key="Proficiency" name="Orc Double Axe" />
 		</conditional>
 	</selection>
 	<selection name="Elf">
-	    <property type="Humanoid,Elf,Medium Size" />
-		<bonus type="Low Light" value="60" />
+	    <condition key="Attack Source" name="Humanoid,Elf,Medium Size" />
+		<bonus type="Low Light Vision" value="60" />
 	    <bonus type="Dexterity" stackType="Racial" value="2" />
 	    <bonus type="Intelligence" stackType="Racial" value="2" />
 	    <bonus  type="Constitution" stackType="Racial" value="-2" />
 	    <bonus type="Perception" stackType="Racial" value="2" />
-	    <!-- TODO +2 vs. Enchantment -->
+	    <condition key="Attack Target" name="Enchantment">
+	        <bonus type="Will" stackType="Racial" value="2" />
+	    </condition>
 	    <!-- TODO Immune to Sleep -->
 	    <conditional key="Proficiency" name="Martial Weapon" >
 	        <condition key="Proficiency" name="Elven Curve Blade" />
@@ -38,11 +46,15 @@
 	    <condition key="Proficiency" name="Longsword" />
 	    <condition key="Proficiency" name="Longbow" />
 	    <bonus type="Speed" value="30" />
+	    <onHitEffect name="Unarmed Damage">
+	        <bonus type="Damage d3" value="1" />
+	    </onHitEffect>
 	    <conditional key="Equipment" name="Medium Armor,Medium Load,Heavy Armor,Heavy Load">
 	        <bonus type="Speed" value="-10" />
 	    </conditional>
 	</selection>
 	<selection name="Suli">
+	    <condition key="Attack Source" name="Outsider,Medium Size" />
 	    <bonus type="Strength" value="2" />
 	    <bonus type="Charisma" value="2" />
 	    <bonus type="Intelligence" value="-2" />

@@ -148,7 +148,7 @@ public class GeneratorActivity extends FragmentActivity implements
 		effects = new EffectXmlObject(effectFile, tempFile);
 		inventoryFile = new File(context.getFilesDir(), inventoryFilename);
 		inventory = new InventoryXmlObject(inventoryFile, tempFile, 
-				this.getResources().openRawResource(R.raw.item_data));
+				this.getResources().openRawResource(R.raw.properties));
 		spellsFile = new File(context.getFilesDir(), spellsFilename);
 		spells = new SpellbookXmlObject(spellsFile, tempFile, getResources().openRawResource(R.raw.spells));
 		dependencies = new XmlObjectModel(getResources().openRawResource(R.raw.dependencies));;
@@ -238,8 +238,6 @@ public class GeneratorActivity extends FragmentActivity implements
 			passedData.putInt("rawDataInt", R.raw.classes);
 		} else if (groupName.equals("Feat")) {
 			passedData.putInt("rawDataInt", R.raw.feats);
-		} else if (groupName.equals("Equipment")) {
-			passedData.putInt("rawDataInt", R.raw.equipment);
 		} else {
 			passedData.putInt("rawDataInt", R.raw.other);
 		}
@@ -312,37 +310,12 @@ public class GeneratorActivity extends FragmentActivity implements
 		transaction.commit();
 	}
 	
-/*	
-	public void equipItem(String slotName, String itemName) {
-		if (!(slotName.equals(PropertyLists.inventory))) {
-			effectEditor.deactivateEffect(slotName, PropertyLists.equipment);
-			Map<String,String> slot_activate = new HashMap<String,String>();
-			slot_activate.put(XmlConst.NAME_ATTR, slotName);
-			slot_activate.put(XmlConst.REMOVE_ATTR, itemName);
-			slot_activate.put(XmlConst.KEY_ATTR, PropertyLists.equipment);
-			effectEditor.activateEffect(slot_activate);
-		}
-
-		Map<String,String> item_activate = new HashMap<String,String>();
-		item_activate.put(XmlConst.NAME_ATTR, itemName);
-		item_activate.put(XmlConst.KEY_ATTR, PropertyLists.equipment);
-		effectEditor.activateEffect(item_activate);
-
-		try {
-			effectEditor.saveEffects(effectFile);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		dirtyFiles = true;
-		startMenu(itemName + " equipped to " + slotName + ".");
-	}
-*/
 	public void performAction(String action_name) {
 		List<XmlObjectModel> effect_list = dependencyManager.getEffects(action_name);
 		for (XmlObjectModel effect: effect_list) {
 			effects.addEffect(effect);
 		}
+		refreshManager();
 		startMenu(action_name + " action taken.");
 	}
 	
@@ -441,23 +414,38 @@ public class GeneratorActivity extends FragmentActivity implements
 	}
 	
 	@Override
-	public void inventoryCreateItem(String slot) {
-		inventory.createItem(slot);
+	public Boolean itemIsEquipped(String item_id) {
+		return inventory.isEquipped(item_id);
+	}
+	
+	@Override
+	public void equipItem(String item_id, Boolean is_equipped) {
+		inventory.equipItem(item_id, is_equipped);
+		refreshManager();
+	}
+	
+	@Override
+	public void inventoryCreateItem(String name, String slot) {
+		inventory.createItem(name, slot);
+		refreshManager();
 	}
 	
 	@Override
 	public void inventoryDeleteItem(String id) {
 		inventory.deleteItem(id);
+		refreshManager();
 	}
 
 	@Override
 	public void itemAddProperty(XmlObjectModel property, String item_id, String property_id) {
 		inventory.addProperty(property, item_id, property_id);
+		refreshManager();
 	}
 	
 	@Override
 	public void itemDeleteProperty(String item_id, String property_id) {
 		inventory.deleteProperty(item_id, property_id);
+		refreshManager();
 	}
 	
 	@Override

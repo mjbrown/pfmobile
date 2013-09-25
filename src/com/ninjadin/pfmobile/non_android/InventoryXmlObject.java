@@ -12,6 +12,8 @@ import android.util.Log;
 import com.ninjadin.pfmobile.data.XmlConst;
 
 public class InventoryXmlObject extends XmlObjectModel {
+	public static String EQUIPPED_ATTR = "equipped";
+	
 	int highest_id = 0;
 	Map<String, XmlObjectModel> item_id_map = new HashMap<String,XmlObjectModel>();
 	XmlObjectModel properties;
@@ -44,12 +46,13 @@ public class InventoryXmlObject extends XmlObjectModel {
 		}
 	}
 	
-	public void createItem(String slot) {
+	public void createItem(String name, String slot) {
 		XmlObjectModel item = new XmlObjectModel(XmlConst.ITEM_TAG);
 		String id = "Id#" + Integer.toString(highest_id + 1);
 		item.setAttribute(XmlConst.ID_ATTR, id);
-		item.setAttribute(XmlConst.NAME_ATTR, "Unnamed");
+		item.setAttribute(XmlConst.NAME_ATTR, name);
 		item.setAttribute(XmlConst.SLOT_ATTR, slot);
+		item.setAttribute(EQUIPPED_ATTR, "False");
 		addChild(item);
 		item_id_map.put(id, item);
 		highest_id += 1;
@@ -65,6 +68,23 @@ public class InventoryXmlObject extends XmlObjectModel {
 			}
 			i += 1;
 		}
+	}
+	
+	public void equipItem(String item_id, Boolean is_equipped) {
+		XmlObjectModel item = item_id_map.get(item_id);
+		if (is_equipped)
+			item.setAttribute(EQUIPPED_ATTR, "True");
+		else
+			item.setAttribute(EQUIPPED_ATTR, "False");
+	}
+	
+	public Boolean isEquipped(String item_id) {
+		XmlObjectModel item = item_id_map.get(item_id);
+		String equip = item.getAttribute(EQUIPPED_ATTR);
+		if (equip.equals("True"))
+			return true;
+		else
+			return false;
 	}
 	
 	public void addProperty(XmlObjectModel property, String item_id, String property_id) {
@@ -119,10 +139,11 @@ public class InventoryXmlObject extends XmlObjectModel {
 		
 	}
 
-	private Boolean hasOption(String values, String value) {
+	public static Boolean hasOption(String values, String value) {
 		if (values == null)
 			return false;
 		for (String val: values.split(",")) {
+			Log.d("hasOption", value + ":" + val);
 			if (val.equals(value))
 				return true;
 		}

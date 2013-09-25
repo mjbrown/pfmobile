@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +24,10 @@ import com.ninjadin.pfmobile.R;
 import com.ninjadin.pfmobile.data.ExpListData;
 import com.ninjadin.pfmobile.data.PropertyLists;
 import com.ninjadin.pfmobile.data.XmlConst;
+import com.ninjadin.pfmobile.dialogfragments.CheckEditDialogFragment;
+import com.ninjadin.pfmobile.dialogfragments.EditDialogFragment;
 import com.ninjadin.pfmobile.dialogfragments.SpinnerEditDialogFragment;
+import com.ninjadin.pfmobile.dialogfragments.TextEditDialogFragment;
 import com.ninjadin.pfmobile.non_android.XmlObjectModel;
 
 public class ItemEditFragment extends Fragment {
@@ -75,7 +77,7 @@ public class ItemEditFragment extends Fragment {
 		property_id = args.getString(PROPERTY_ID);
 		property_name = args.getString(PROPERTY_NAME);
 		activity = getActivity();
-		InputStream item_data = getResources().openRawResource(R.raw.item_data);
+		InputStream item_data = getResources().openRawResource(R.raw.properties);
 		XmlObjectModel model = new XmlObjectModel(item_data);
 		for (XmlObjectModel child: model.getChildren()) {
 			String type = child.getAttribute(XmlConst.NAME_ATTR); 
@@ -116,31 +118,57 @@ public class ItemEditFragment extends Fragment {
 				XmlObjectModel option = property.getChildren().get(position);
 				String type = option.getAttribute(XmlConst.TYPE_ATTR);
 				if (type.equals(PropertyLists.spinner))
-					radioEdit(option);
-				
+					spinnerEdit(option);
+				else if (type.equals(PropertyLists.text))
+					textEdit(option);
+				else if (type.equals(PropertyLists.number))
+					textEdit(option);
+				else if (type.equals(PropertyLists.checkbox))
+					checkedEdit(option);
 			}
 			
 		});
 	}
 	
-	public void radioEdit(XmlObjectModel option) {
+	private void checkedEdit(XmlObjectModel option) {
 		String name = option.getAttribute(XmlConst.NAME_ATTR);
+		String current = option.getAttribute(XmlConst.VALUE_ATTR);
 		ArrayList<String> entries = new ArrayList<String>();
 		for (XmlObjectModel entry: option.getChildren()) {
 			String entry_value = entry.getAttribute(XmlConst.VALUE_ATTR);
 			entries.add(entry_value);
-			Log.d("ItemClick", entry_value);
 		}
-		DialogFragment dialog = SpinnerEditDialogFragment.newDialog(name, entries);
+		DialogFragment dialog = CheckEditDialogFragment.newDialog(name, current, entries);
+		dialog.setTargetFragment(this, OPTION_EDIT_CODE);
+		dialog.show(getChildFragmentManager(), "CheckEditDialogFragment");
+	}
+	
+	private void spinnerEdit(XmlObjectModel option) {
+		String name = option.getAttribute(XmlConst.NAME_ATTR);
+		String current = option.getAttribute(XmlConst.VALUE_ATTR);
+		ArrayList<String> entries = new ArrayList<String>();
+		for (XmlObjectModel entry: option.getChildren()) {
+			String entry_value = entry.getAttribute(XmlConst.VALUE_ATTR);
+			entries.add(entry_value);
+		}
+		DialogFragment dialog = SpinnerEditDialogFragment.newDialog(name, current, entries);
 		dialog.setTargetFragment(this, OPTION_EDIT_CODE);
 		dialog.show(getChildFragmentManager(), "SpinnerEditDialogFragment");
+	}
+	
+	private void textEdit(XmlObjectModel option) {
+		String name = option.getAttribute(XmlConst.NAME_ATTR);
+		String current = option.getAttribute(XmlConst.VALUE_ATTR);
+		DialogFragment dialog = TextEditDialogFragment.newDialog(name, current);
+		dialog.setTargetFragment(this, OPTION_EDIT_CODE);
+		dialog.show(getChildFragmentManager(), "TextEditDialogFragment");
 	}
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == OPTION_EDIT_CODE) {
-			String option_name = data.getStringExtra(SpinnerEditDialogFragment.ID);
-			String option_value = data.getStringExtra(SpinnerEditDialogFragment.SELECTED);
+			String option_name = data.getStringExtra(EditDialogFragment.ID);
+			String option_value = data.getStringExtra(EditDialogFragment.RETURN_VALUE);
 			XmlObjectModel option = property_options.get(option_name);
 			option.setAttribute(XmlConst.VALUE_ATTR, option_value);
 			ieListener.itemAddProperty(property, item_id, property_id);

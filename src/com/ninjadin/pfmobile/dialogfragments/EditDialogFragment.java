@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 
 public abstract class EditDialogFragment extends DialogFragment {
 	final public static String ID = "Id";
+	final public static String DEFAULT = "Default";
+	final public static String RETURN_VALUE = "Return Value";
 	
 	protected abstract int getFragmentLayout();
 	
@@ -18,6 +20,8 @@ public abstract class EditDialogFragment extends DialogFragment {
 	protected abstract String getOkText();
 	
 	protected abstract Intent returnData();
+	
+	protected abstract String getTitle();
 	
 	Dialog dialog;
 	
@@ -44,6 +48,7 @@ public abstract class EditDialogFragment extends DialogFragment {
 					}
 				});
 		dialog = builder.create();
+		dialog.setTitle(getTitle());
 		return dialog;
 	}
 	

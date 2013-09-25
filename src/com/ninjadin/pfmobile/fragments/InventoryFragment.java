@@ -25,25 +25,29 @@ import com.ninjadin.pfmobile.activities.GeneratorActivity;
 import com.ninjadin.pfmobile.data.ExpListData;
 import com.ninjadin.pfmobile.data.PropertyLists;
 import com.ninjadin.pfmobile.data.XmlConst;
+import com.ninjadin.pfmobile.dialogfragments.EditDialogFragment;
 import com.ninjadin.pfmobile.dialogfragments.SpinnerEditDialogFragment;
+import com.ninjadin.pfmobile.dialogfragments.TextEditDialogFragment;
+import com.ninjadin.pfmobile.non_android.InventoryXmlObject;
 import com.ninjadin.pfmobile.non_android.XmlObjectModel;
 
 
 public class InventoryFragment extends ExpListFragment {
 	public final static int PROPERTY_ADD_CODE = 0;
+	public final static int SLOT_SELECT_CODE = 1;
+	public final static int ITEM_ADD_CODE = 2;
 	
 	public final static String ITEM_ID = "Item Id";
 	public final static String PROPERTY_ID = "Property Id";
 	
 	public interface InventoryFragmentListener {
-		public void inventoryCreateItem(String slot);
+		public void inventoryCreateItem(String name, String slot);
 		public void inventoryDeleteItem(String item_id);
 		public void itemDeleteProperty(String item_id, String property_id);
-		public XmlObjectModel getXmlModel(int id);
-		public void activateCondition(String key, String name);
-		public void deactivateCondition(String key, String name);
-		public Boolean isConditionActive(String key, String name);
+		public void equipItem(String item_id, Boolean is_equipped);
+		public Boolean itemIsEquipped(String item_id);
 		public void itemAddProperty(XmlObjectModel property, String item_id, String property_id);
+		public XmlObjectModel getXmlModel(int id);
 	}
 	
 	InventoryFragmentListener invListener;
@@ -56,9 +60,12 @@ public class InventoryFragment extends ExpListFragment {
 		OnClickListener listener = new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				// Launch ItemEdit Fragment Here
-				invListener.inventoryCreateItem(filter_spinner.getSelectedItem().toString());
-				dataSetUpdate();
+				ArrayList<String> slot_names = new ArrayList<String>();
+				for (String slot: PropertyLists.slotNames)
+					slot_names.add(slot);
+				DialogFragment dialog = SpinnerEditDialogFragment.newDialog("No Id", "Held", slot_names);
+				dialog.setTargetFragment(this_fragment, SLOT_SELECT_CODE);
+				dialog.show(getChildFragmentManager(), "SpinnerEditDialogFragment");
 			}
 		};
 		return listener;
@@ -76,6 +83,7 @@ public class InventoryFragment extends ExpListFragment {
 	@Override
 	ArrayAdapter<String> buildSpinnerAdapter() {
 		ArrayAdapter<String> slot_names = new ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item);
+		slot_names.add("All");
 		for (String slot: PropertyLists.slotNames)
 			slot_names.add(slot);
 		return slot_names;
@@ -86,7 +94,8 @@ public class InventoryFragment extends ExpListFragment {
 		// TODO Auto-generated method stub
 		ExpListData inventoryExpData = new ExpListData(invListener.getXmlModel(GeneratorActivity.INVENTORY_MODEL));
 		if (filter != null)
-			inventoryExpData.filterByAttribute(XmlConst.SLOT_ATTR, filter);
+			if (!filter.equals("All"))
+				inventoryExpData.filterByAttribute(XmlConst.SLOT_ATTR, filter);
 		SimpleExpandableListAdapter adapter = new InventoryExpListAdapter(activity,
 				inventoryExpData.groupData,
 				R.layout.titlerow_inventory,
@@ -106,7 +115,7 @@ public class InventoryFragment extends ExpListFragment {
 	
 	public void onResume() {
 		super .onResume();
-		InputStream item_data = getResources().openRawResource(R.raw.item_data);
+		InputStream item_data = getResources().openRawResource(R.raw.properties);
 		XmlObjectModel model = new XmlObjectModel(item_data);
 		for (XmlObjectModel child: model.getChildren()) {
 			String type = child.getAttribute(XmlConst.NAME_ATTR); 
@@ -119,9 +128,19 @@ public class InventoryFragment extends ExpListFragment {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == PROPERTY_ADD_CODE) {
 			String item_id = data.getStringExtra(SpinnerEditDialogFragment.ID);
-			String property_name = data.getStringExtra(SpinnerEditDialogFragment.SELECTED);
+			String property_name = data.getStringExtra(SpinnerEditDialogFragment.RETURN_VALUE);
 			XmlObjectModel property = properties_models.get(property_name);
 			invListener.itemAddProperty(property, item_id, null);
+			dataSetUpdate();
+		} else if (requestCode == SLOT_SELECT_CODE) {
+			String slot_name = data.getStringExtra(EditDialogFragment.RETURN_VALUE);
+			DialogFragment dialog = TextEditDialogFragment.newDialog(slot_name, "Unnamed");
+			dialog.setTargetFragment(this_fragment, ITEM_ADD_CODE);
+			dialog.show(getChildFragmentManager(), "TextEditDialogFragment");
+		} else if (requestCode == ITEM_ADD_CODE) {
+			String slot_name = data.getStringExtra(EditDialogFragment.ID);
+			String item_name = data.getStringExtra(EditDialogFragment.RETURN_VALUE);
+			invListener.inventoryCreateItem(item_name, slot_name);
 			dataSetUpdate();
 		}
 	}
@@ -145,7 +164,7 @@ public class InventoryFragment extends ExpListFragment {
 		
 		public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 			convertView = super.getGroupView(groupPosition, isExpanded, convertView, parent);
-			String item_name = groupData.get(groupPosition).get(XmlConst.NAME_ATTR);
+			String item_id = groupData.get(groupPosition).get(XmlConst.ID_ATTR);
 			Button delete = (Button) convertView.findViewById(R.id.inventory_delete);
 			if (delete != null)
 				delete.setOnClickListener(new ExpListClickListener(groupPosition) {
@@ -162,19 +181,20 @@ public class InventoryFragment extends ExpListFragment {
 					@Override
 					public void onClick(View arg0) {
 						String id = groupData.get(groupPosition).get(XmlConst.ID_ATTR);
-						DialogFragment dialog = SpinnerEditDialogFragment.newDialog(id, properties);
+						String current = groupData.get(groupPosition).get(XmlConst.VALUE_ATTR);
+						DialogFragment dialog = SpinnerEditDialogFragment.newDialog(id, current, properties);
 						dialog.setTargetFragment(fragment, PROPERTY_ADD_CODE);
 						dialog.show(getChildFragmentManager(), "PropertyAddDialogFragment");
 					}
 				});
 			Button equip_item = (Button) convertView.findViewById(R.id.inventory_equipitem);
-			if (invListener.isConditionActive(PropertyLists.equipment, item_name)) {
+			if (invListener.itemIsEquipped(item_id)) {
 				equip_item.setText("Unequip");
 				equip_item.setOnClickListener(new ExpListClickListener(groupPosition) {
 					@Override
 					public void onClick(View arg0) {
-						String name = groupData.get(groupPosition).get(XmlConst.NAME_ATTR);
-						invListener.deactivateCondition(PropertyLists.equipment, name);
+						String id = groupData.get(groupPosition).get(XmlConst.ID_ATTR);
+						invListener.equipItem(id, false);
 						dataSetUpdate();
 					}
 				});
@@ -183,9 +203,8 @@ public class InventoryFragment extends ExpListFragment {
 				equip_item.setOnClickListener(new ExpListClickListener(groupPosition) {
 					@Override
 					public void onClick(View arg0) {
-						int group_pos = exp_list.getPositionForView((View)arg0.getParent());
-						String name = groupData.get(group_pos).get(XmlConst.NAME_ATTR);
-						invListener.activateCondition(PropertyLists.equipment, name);
+						String id = groupData.get(groupPosition).get(XmlConst.ID_ATTR);
+						invListener.equipItem(id, true);
 						dataSetUpdate();
 					}
 				});

@@ -12,8 +12,31 @@ public class EffectXmlObject extends XmlObjectModel {
 	}
 	
 	public void addEffect(XmlObjectModel effect) {
-		effect.setAttribute(XmlConst.ACTIVATE_ATTR, "Yes");
-		this.addChild(effect);
+		String action = effect.getAttribute(XmlConst.ACTION_TAG);
+		String name = effect.getAttribute(XmlConst.NAME_ATTR);
+		if (action != null) {
+			if (action.equals("Add")) {
+				XmlObjectModel new_effect = new XmlObjectModel(XmlConst.EFFECT_TAG);
+				new_effect.setAttribute(XmlConst.ACTIVATE_ATTR, "Yes");
+				new_effect.setAttribute(XmlConst.NAME_ATTR, name);
+				for (XmlObjectModel child: effect.getChildren())
+					new_effect.addChild(child);
+				this.addChild(new_effect);
+			} else if (action.equals("Remove")) {
+				List<XmlObjectModel> child_list = getChildren();
+				int size = child_list.size();
+				for (int i = 0; i < size; i++) {
+					XmlObjectModel child = child_list.get(i);
+					if (child.getTag().equals(XmlConst.EFFECT_TAG)) {
+						String effect_name = child.getAttribute(XmlConst.NAME_ATTR);
+						if (effect_name.equals(name)) {
+							removeChild(i--);
+							size--;
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	public void addCondition(String key, String name) {

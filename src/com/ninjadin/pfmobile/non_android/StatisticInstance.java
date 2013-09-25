@@ -54,6 +54,8 @@ public class StatisticInstance {
 		}
 		if (stackTypeValues.get(PropertyLists.ranks) == null) {
 			stackTypeValues.put(PropertyLists.class_skill, "0");
+		} else if (stackTypeValues.get(PropertyLists.ranks).equals("0")) {
+			stackTypeValues.put(PropertyLists.class_skill, "0");
 		}
 		finalStringValue = "";
 		for (Map.Entry<String, String> entry: stackTypeValues.entrySet()) {

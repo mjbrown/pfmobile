@@ -216,8 +216,9 @@ public class StatisticManager {
 			}
 			lastObject.push(newOnHit);
 		} else if (tag.equals(XmlConst.ITEM_TAG)) {
-			String name = model.getAttribute(XmlConst.NAME_ATTR);
-			currentConditions.startConditional(PropertyLists.equipment, name, null, null, null);
+			String active = model.getAttribute(InventoryXmlObject.EQUIPPED_ATTR);
+			if (active.equals("False"))
+				return false;
 		} else if (tag.equals(XmlConst.SPELL_TAG)) {
 			String name = model.getAttribute(XmlConst.NAME_ATTR);
 			String source = model.getAttribute(XmlConst.SOURCE_ATTR);
@@ -257,38 +258,28 @@ public class StatisticManager {
 			if (recursiveReadModel(child, currentConditions, lastObject, quit_tag, quit_attr))
 				return true;
 		}
-		if (tag.equals(XmlConst.CONDITIONAL_TAG) || tag.equals(XmlConst.ITEM_TAG)) {
+		if (tag.equals(XmlConst.CONDITIONAL_TAG)) {
 			currentConditions.endConditional();
 		} else if (tag.equals(XmlConst.ACTION_TAG) || tag.equals(XmlConst.ATTACK_TAG) || tag.equals(XmlConst.ONHIT_TAG) || tag.equals(XmlConst.SPELL_TAG)) {
 			lastObject.pop();
 		}
 		return false;
 	}
-	// name = name.replace("[Item Name]", last_item_name);
-	private String itemOptionReplace(Map<String,String> itemMap, String attribute) {
-		if (itemMap.isEmpty() || (attribute == null))
-			return attribute;
-		for (Map.Entry<String, String> entry: itemMap.entrySet()) {
-			String format_string = "[" + entry.getKey() + "]";
-			String value = entry.getValue();
-			attribute = attribute.replace(format_string, value);
-		}
-		return attribute;
-	}
 	
 	public void updateConditionalBonuses(int retries) {
 		if (retries == 0)
 			return;
+		Log.d("RECUR_UPDATE", Integer.toString(retries));
 		Boolean run_again = false;
 		for (Conditional bonus: conditional_bonuses) {
 			Boolean already_active = bonus.isActive();
 			updateConditionalBonus(bonus);
-			if (already_active != bonus.isActive())
+			if (already_active ^ bonus.isActive()) {
 				run_again = true;
+			}
 		}
 		if (run_again)
 			updateConditionalBonuses(retries - 1);
-		Log.d("RECUR_UPDATE", Integer.toString(retries));
 	}
 	
 	private void updateConditionalBonus(Conditional bonus) {
@@ -314,19 +305,37 @@ public class StatisticManager {
 	}
 	
 	private boolean hasCondition(String key, KeyValuePair kv) {
-		if (kv.value == null)
-			for (String property: kv.key.split(",")) {
-				if (hasProperty(key, property)) {
-					if (kv.comparator != null)
-						if (kv.comparator.equals("Not"))
-							continue;
-					return true;
-				} else if (kv.comparator != null) {
-					if (kv.comparator.equals("Not"))
+		if (kv.value == null) {
+			if (kv.comparator == null) { // OR assumed
+				for (String property: kv.key.split(",")) {
+					if (hasProperty(key, property)) {
 						return true;
+					}
 				}
+				return false;
+			} else if (kv.comparator.equals("NAND")) {
+				for (String property: kv.key.split(",")) {
+					if (!hasProperty(key, property)) {
+						return true;
+					}
+				}
+				return false;
+			} else if (kv.comparator.equals("NOR")) {
+				for (String property: kv.key.split(",")) {
+					if (hasProperty(key, property)) {
+						return false;
+					}
+				}
+				return true;
+			} else if (kv.comparator.equals("AND")) {
+				for (String property: kv.key.split(",")) {
+					if (!hasProperty(key, property)) {
+						return false;
+					}
+				}
+				return true;
 			}
-		else {
+		} else {
 			String[] keys = kv.key.split(",");
 			String[] values = kv.value.split(",");
 			if (keys.length != values.length) {

@@ -8,12 +8,17 @@
         android:id="@+id/option_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:hint="Name"
         />
     
     <TextView 
         android:id="@+id/option_value"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="26sp"
+        android:gravity="right"
+        android:hint="Value"
         />
         
 </LinearLayout>
