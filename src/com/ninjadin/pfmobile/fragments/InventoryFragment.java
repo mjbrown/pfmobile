@@ -63,7 +63,7 @@ public class InventoryFragment extends ExpListFragment {
 				ArrayList<String> slot_names = new ArrayList<String>();
 				for (String slot: PropertyLists.slotNames)
 					slot_names.add(slot);
-				DialogFragment dialog = SpinnerEditDialogFragment.newDialog("No Id", "Held", slot_names);
+				DialogFragment dialog = SpinnerEditDialogFragment.newDialog("No Id", "Held", null, slot_names);
 				dialog.setTargetFragment(this_fragment, SLOT_SELECT_CODE);
 				dialog.show(getChildFragmentManager(), "SpinnerEditDialogFragment");
 			}
@@ -182,7 +182,7 @@ public class InventoryFragment extends ExpListFragment {
 					public void onClick(View arg0) {
 						String id = groupData.get(groupPosition).get(XmlConst.ID_ATTR);
 						String current = groupData.get(groupPosition).get(XmlConst.VALUE_ATTR);
-						DialogFragment dialog = SpinnerEditDialogFragment.newDialog(id, current, properties);
+						DialogFragment dialog = SpinnerEditDialogFragment.newDialog(id, current, null, properties);
 						dialog.setTargetFragment(fragment, PROPERTY_ADD_CODE);
 						dialog.show(getChildFragmentManager(), "PropertyAddDialogFragment");
 					}

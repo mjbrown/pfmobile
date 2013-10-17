@@ -28,13 +28,17 @@ public class StatisticManager {
 	Map<String, AttackGroup> attacks = new HashMap<String, AttackGroup>();
 	
 	// A map of NAMED OnHitEffects
-	Map<String, OnHitDamage> effects = new HashMap<String, OnHitDamage>();
+	Map<String, OnHitDamage> onhit_effects = new HashMap<String, OnHitDamage>();
 	
 	// A list of modifiers which can be turned on or off on a whim
 	List<ActivatedCondition> modifiers = new ArrayList<ActivatedCondition>();
 	
 	// A list of spells available for memorization/casting
 	List<SpellGroup> spells = new ArrayList<SpellGroup>();
+	
+	// A list of effects
+	List<XmlObjectModel> effects = new ArrayList<XmlObjectModel>();
+	Map<String, List<XmlObjectModel>> effect_select_map = new HashMap<String, List<XmlObjectModel>>();
 	
 	public StatisticManager() {
 		for (String key: PropertyLists.keyNames) {
@@ -120,7 +124,6 @@ public class StatisticManager {
 			for (String typ: type.split(",")) {
 				Bonus conditionalBonus = stat_group.addBonus(typ, stack, source, value);
 				if (currentConditions.hasConditions()) {
-					//Log.d("COND_BNS", "Adding conditional bonus: " + typ + " " + value);
 					conditionalBonus.setConditions(currentConditions);
 					conditional_bonuses.add(conditionalBonus);
 					updateConditionalBonus(conditionalBonus);
@@ -132,16 +135,14 @@ public class StatisticManager {
 				activateCondition(PropertyLists.prerequisite, name);
 		} else if (tag.equals(XmlConst.ACTION_TAG)) {
 			String name = model.getAttribute(XmlConst.NAME_ATTR);
-			String cost = model.getAttribute(XmlConst.COST_ATTR);
 			String parent = model.getAttribute(XmlConst.PARENT_ATTR);
 			String visible = model.getAttribute(XmlConst.VISIBLE_ATTR);
-			String uses = model.getAttribute(XmlConst.USES_ATTR);
 			ActionGroup action = null;
 			if (name != null)
 				action = combatActions.get(name);
 			if (action == null) {
 				ActionGroup parent_action = combatActions.get(parent);
-				action = new ActionGroup(cost, uses, parent_action, master_stats);
+				action = new ActionGroup(model.getAttributes(), parent_action, master_stats);
 				if (visible != null) {
 					if (visible.equals("No"))
 						action.setVisibility(false);
@@ -156,10 +157,7 @@ public class StatisticManager {
 			lastObject.push(action);
 		} else if (tag.equals(XmlConst.ATTACK_TAG)) {
 			String name = model.getAttribute(XmlConst.NAME_ATTR);
-			String versus = model.getAttribute(XmlConst.VERSUS_ATTR);
 			String parent = model.getAttribute(XmlConst.PARENT_ATTR);
-			String target = model.getAttribute(XmlConst.TARGET_ATTR);
-			String uses = model.getAttribute(XmlConst.USES_ATTR);
 			AttackGroup inheritedAttack = null;
 			StatisticGroup parentGroup = null;
 			if (parent != null) 
@@ -172,7 +170,7 @@ public class StatisticManager {
 			if (name != null)
 				newAttack = attacks.get(name);
 			if (newAttack == null) {
-				newAttack = new AttackGroup(versus, target, uses, inheritedAttack, parentGroup);
+				newAttack = new AttackGroup(model.getAttributes(), inheritedAttack, parentGroup);
 				if (currentConditions.hasConditions()) {
 					newAttack.setConditions(currentConditions);
 					conditional_bonuses.add(newAttack);
@@ -189,26 +187,24 @@ public class StatisticManager {
 			lastObject.push(newAttack);
 		} else if (tag.equals(XmlConst.ONHIT_TAG)) {
 			String name = model.getAttribute(XmlConst.NAME_ATTR);
-			String type = model.getAttribute(XmlConst.TYPE_ATTR);
-			String uses = model.getAttribute(XmlConst.USES_ATTR);
 			String parent = model.getAttribute(XmlConst.PARENT_ATTR);
 			OnHitDamage inheritedOnHit = null;
 			StatisticGroup parentGroup = null;
 			if (parent != null)
-				inheritedOnHit = effects.get(parent);
+				inheritedOnHit = onhit_effects.get(parent);
 			if (!(lastObject.peek() == master_stats))
 				parentGroup = lastObject.peek();
 			OnHitDamage newOnHit = null;
 			if (name != null)
-				newOnHit = effects.get(name);
+				newOnHit = onhit_effects.get(name);
 			if (newOnHit == null) {
-				newOnHit = new OnHitDamage(type, uses, inheritedOnHit, parentGroup);
+				newOnHit = new OnHitDamage(model.getAttributes(), inheritedOnHit, parentGroup);
 				if (currentConditions.hasConditions()) {
 					newOnHit.setConditions(currentConditions);
 					conditional_bonuses.add(newOnHit);
 				}
 				if (name != null)
-					effects.put(name, newOnHit);
+					onhit_effects.put(name, newOnHit);
 			}
 			if (lastObject.peek() instanceof AttackGroup) {
 				AttackGroup parentAttack = (AttackGroup) lastObject.peek();
@@ -220,10 +216,7 @@ public class StatisticManager {
 			if (active.equals("False"))
 				return false;
 		} else if (tag.equals(XmlConst.SPELL_TAG)) {
-			String name = model.getAttribute(XmlConst.NAME_ATTR);
-			String source = model.getAttribute(XmlConst.SOURCE_ATTR);
-			String school = model.getAttribute(XmlConst.SCHOOL_ATTR);
-			SpellGroup spell = new SpellGroup(name, source, school, master_stats);
+			SpellGroup spell = new SpellGroup(model.getAttributes(), master_stats);
 			spells.add(spell);
 			if (currentConditions.hasConditions()) {
 				spell.setConditions(currentConditions);
@@ -232,8 +225,27 @@ public class StatisticManager {
 			lastObject.push(spell);
 		} else if (tag.equals(XmlConst.EFFECT_TAG)) {
 			String activate = model.getAttribute(XmlConst.ACTIVATE_ATTR);
+			String type = model.getAttribute(XmlConst.TYPE_ATTR);
+			String select = model.getAttribute(XmlConst.SELECT_ATTR);
+			if (type != null) {
+				if (type.equals("Select")) {
+					List<XmlObjectModel> select_list = effect_select_map.get(select);
+					if (select_list == null) {
+						select_list = new ArrayList<XmlObjectModel>();
+						effect_select_map.put(select, select_list);
+					}
+					select_list.add(model);
+				}
+			}
 			if (activate == null) {
-				((ActionGroup) lastObject.peek()).addEffect(model);
+				try {
+					ActionGroup last = ((ActionGroup) lastObject.peek()); 
+					last.addEffect(model);
+				} catch (ClassCastException e) {
+					
+				}
+				return false;
+			} else if (activate.equals("False")) {
 				return false;
 			}
 		} else if (tag.equals(XmlConst.CONDITION_TAG)) {
@@ -306,28 +318,28 @@ public class StatisticManager {
 	
 	private boolean hasCondition(String key, KeyValuePair kv) {
 		if (kv.value == null) {
-			if (kv.comparator == null) { // OR assumed
+			if (kv.logic == null) { // OR assumed
 				for (String property: kv.key.split(",")) {
 					if (hasProperty(key, property)) {
 						return true;
 					}
 				}
 				return false;
-			} else if (kv.comparator.equals("NAND")) {
+			} else if (kv.logic.equals("NAND")) {
 				for (String property: kv.key.split(",")) {
 					if (!hasProperty(key, property)) {
 						return true;
 					}
 				}
 				return false;
-			} else if (kv.comparator.equals("NOR")) {
+			} else if (kv.logic.equals("NOR")) {
 				for (String property: kv.key.split(",")) {
 					if (hasProperty(key, property)) {
 						return false;
 					}
 				}
 				return true;
-			} else if (kv.comparator.equals("AND")) {
+			} else if (kv.logic.equals("AND")) {
 				for (String property: kv.key.split(",")) {
 					if (!hasProperty(key, property)) {
 						return false;
@@ -342,9 +354,17 @@ public class StatisticManager {
 				Log.d("hasCondition", "Key Value size mismatch " + kv.key + " " + kv.value);
 				return false;
 			}
-			for (int i = 0; i < keys.length; i++) {
-				if (getValue(keys[i]) >= evaluateValue(values[i]))
-					return true;
+			if (kv.logic == null) { // OR greater than or equal to assumed
+				for (int i = 0; i < keys.length; i++) {
+					if (getValue(keys[i]) >= evaluateValue(values[i]))
+						return true;
+				}
+			} else if (kv.logic.equals("OR_EQ")) {
+				for (int i = 0; i < keys.length; i++) {
+					if (getValue(keys[i]) != evaluateValue(values[i]))
+						return false;
+				}
+				return true;
 			}
 		}
 		return false;
@@ -358,10 +378,8 @@ public class StatisticManager {
 			ActionGroup action = entry.getValue();
 			if ((action.isVisible() == false) || (action.isActive() == false))
 				continue;
-			Map<String,String> visible_action = new HashMap<String,String>();
+			Map<String,String> visible_action = action.getAttributes();
 			visible_action.put(XmlConst.NAME_ATTR, entry.getKey());
-			visible_action.put(XmlConst.COST_ATTR, action.getCost());
-			visible_action.put(XmlConst.USES_ATTR, action.getUses());
 			atk_list.add(visible_action);
 			List<Map<String,String>> visible_attack = new ArrayList<Map<String,String>>();
 			atk_data.add(visible_attack);
@@ -405,6 +423,7 @@ public class StatisticManager {
 		for (int i = 0; i < length; i++)
 			damage.add(0);
 
+		Integer weapon_damage = null;
 		List<OnHitDamage> damages = attack.getOnHitDamages();
 		for (OnHitDamage dmg: damages) {
 			for (int i = 0; i < length; i++) {
@@ -412,15 +431,29 @@ public class StatisticManager {
 				int previous = damage.get(i);
 				damage.add(i, master_stats.evaluate(value) + previous);
 			}
+			String medium_size_weapon_damage = dmg.getStringValue(PropertyLists.medium_size_weapon_damage);
+			if (medium_size_weapon_damage != null) {
+				weapon_damage = master_stats.evaluate(medium_size_weapon_damage);
+			}
 		}
 		int has_dice = 0;
-		String output = "";
+		String output = null;
+		if (weapon_damage != null) {
+			int size = master_stats.getValue(PropertyLists.character_size);
+			if (size == 5)
+				output = PropertyLists.medium_damage[weapon_damage];
+			else if (size == 4)
+				output = PropertyLists.small_damage[weapon_damage];
+			else if (size == 6)
+				output = PropertyLists.large_damage[weapon_damage];
+			else
+				output = PropertyLists.medium_damage[weapon_damage];
+		} else
+			output = "";
 		for (int i = 0; i < length; i++) {
 			int value = damage.get(i);
 			if (value > 0) {
-				if (has_dice > 0)
-					output += "+";
-				output += Integer.toString(value);
+				output += "+" + Integer.toString(value);
 				if (i < length - 1)
 					output += PropertyLists.die[i];
 				has_dice += value;
@@ -509,4 +542,18 @@ public class StatisticManager {
 		return names;
 	}
 	
+	public ExpListData getSelectEffects() {
+		return new ExpListData(effect_select_map);
+	}
+	
+	public void selectEffect(String map, String name) {
+		for (XmlObjectModel effect: effect_select_map.get(map)){
+			String effect_name = effect.getAttribute(XmlConst.NAME_ATTR);
+			if (effect_name.equals(name)) {
+				effect.setAttribute(XmlConst.ACTIVATE_ATTR, "True");
+			} else {
+				effect.setAttribute(XmlConst.ACTIVATE_ATTR, "False");
+			}
+		}
+	}
 }

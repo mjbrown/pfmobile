@@ -55,13 +55,15 @@ public class SpellbookXmlObject extends XmlObjectModel {
 		
 		entry.setAttribute(XmlConst.SOURCE_ATTR, class_name);
 		entry.setAttribute(XmlConst.NAME_ATTR, spell_name);
+		if (isSpontaneous.get(class_name)) {
+			entry.setAttribute(XmlConst.USES_ATTR, class_name + " Level " + spell_level + " Spells Per Day");
+			entry.setAttribute(XmlConst.USED_ATTR, class_name + " Level " + spell_level + " Spells Per Day Used");
+		}
 		
 		entry.addChild(bonusObject(PropertyLists.spell_level, spell_level));
 		entry.addChild(bonusObject(PropertyLists.caster_level, "[" + class_name + " Caster Level]"));
 		entry.addChild(bonusObject(PropertyLists.spell_failure, "[" + class_name + " Spell Failure]"));
 		entry.addChild(bonusObject(PropertyLists.save_dc, "10 + [" + castingStat.get(class_name) + " Modifier] + " + spell_level));
-		if (isSpontaneous.get(class_name))
-			entry.addChild(bonusObject(PropertyLists.uses, "[" + class_name + " Level " + spell_level + " Spells Per Day]"));
 		addChild(entry);
 	}
 	

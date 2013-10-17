@@ -23,7 +23,7 @@ public class PropertyLists {
 	final public static String actionCosts[] = { "Full Round", "Standard",
 		"Move", "Swift", "Immediate", "Free" };
 
-	final public static String equals = "Equals";
+	final public static String equals = "EQ";
 
 	final public static String statisticPrereq = "Statistic";
 	final public static String prerequisite = "Prerequisite";
@@ -40,7 +40,7 @@ public class PropertyLists {
 
 	final public static String class_skill = "Class Skill";
 	final public static String notStackableTypes[] = new String[] { "Max HP First Level", "Unnamed", "Aid Another", 
-	"Flank", "Circumstance", "Divine", "Profane", "Alchemical", "Enhancement", class_skill,
+	"Flank", "Circumstance", "Divine", "Profane", "Alchemical", "Enhancement", class_skill, "Favored Class",
 	"Competence", "Ability", "Morale", "Armor", "Deflection", "Luck", "Armor Enhancement", "Nonproficient",
 	"Morale", "Natural Armor", "Size", "Range", "High Ground", "Shield", "Shield Enhancement", };
 
@@ -117,6 +117,12 @@ public class PropertyLists {
 	
 	final static public String[] die = {"d2", "d3", "d4", "d6", "d8", "d10", "d12", "d20" };
 	final static public String damage = "Damage";
+
+	final static public String character_size = "Character Size";
+	final static public String small_damage[] =  {"0", "1",   "1d2", "1d3", "1d4", "1d6", "1d8",  "1d10", "2d6", "2d8","1d10", "1d6" };
+	final static public String medium_size_weapon_damage = "Medium Size Weapon Damage";
+	final static public String medium_damage[] = {"0", "1d2", "1d3", "1d4", "1d6", "1d8", "1d10", "2d6", "2d8", "2d10", "1d12", "2d4",  };
+	final static public String large_damage[] =  {"0", "1d3", "1d4", "1d6", "1d8", "2d6", "2d8",  "3d6", "3d8", "4d8", "3d6",  "2d6",  };
 
 	final static public String crit_multiplier = "Critical Multiplier";
 	final static public String[] damageProperties = new String[] { 

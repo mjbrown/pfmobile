@@ -52,14 +52,16 @@ public class XmlConst {
 	final public static String TARGET_ATTR = "target";
 	final public static String VISIBLE_ATTR = "visible";
 	final public static String USES_ATTR = "uses";
+	final public static String USED_ATTR = "used";
 	final public static String ADD_ATTR = "add";
 	final public static String REMOVE_ATTR = "remove";
 	final public static String ACTIVATE_ATTR = "activate";
 	final public static String SCHOOL_ATTR = "school";
 	final public static String ID_ATTR = "id";
+	final public static String SELECT_ATTR = "select";
 	
 	// Used as ATTRIBUTE in data files
-	final public static String COMPARE_ATTR = "comparator";
+	final public static String LOGIC_ATTR = "logic";
 	// Used as ATTRIBUTE 
 	final public static String SLOT_ATTR = "slot";
 	final public static String STATISTIC_ATTR = "statistic";

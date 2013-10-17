@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+	<LinearLayout 
+	    android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:orientation="horizontal">
+    	
+    	<TextView 
+	    	android:id="@+id/effect_name"
+	    	android:layout_width="0dp"
+	    	android:layout_height="wrap_content"
+	    	android:layout_weight="3"
+    	    android:textSize="21sp"
+		    />
+    	
+    	<Button
+    	    android:id="@+id/effect_remove" 
+    	    android:layout_width="0dp"
+    	    android:layout_height="wrap_content"
+    	    android:layout_weight="1"
+    	    android:focusable="False"
+    	    android:text="Remove"
+    	    />
+    	</LinearLayout>
+
+	<LinearLayout 
+	    android:id="@+id/effect_duration_block"
+	    android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:orientation="horizontal">
+    	
+	    <LinearLayout 
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content" 
+	        android:layout_weight="2"
+	        android:orientation="vertical" >
+
+	    	<TextView
+	    	    android:layout_width="wrap_content"
+	    	    android:layout_height="wrap_content"
+	    	    android:text="Source:"
+	    	    android:textSize="12sp" 
+	        	/>
+	    	
+	        <TextView
+		        android:id="@+id/effect_source"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+	    	    android:textSize="21sp"
+		        />
+	    </LinearLayout>
+
+	    <LinearLayout 
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content" 
+	        android:layout_weight="2"
+	        android:orientation="vertical" >
+
+	        <TextView
+	    	    android:layout_width="wrap_content"
+	    	    android:layout_height="wrap_content"
+	    	    android:text="Duration:"
+	    	    android:textSize="12sp" 
+	        	/>
+	        
+	        <TextView
+	    	    android:id="@+id/effect_duration"
+	    	    android:layout_width="wrap_content"
+	    	    android:layout_height="wrap_content"
+	    	    android:textSize="21sp"
+	    	    />
+	        </LinearLayout>
+    	
+	    <LinearLayout 
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content" 
+	        android:layout_weight="2"
+	        android:orientation="vertical" >
+	    	<TextView
+	    	    android:layout_width="wrap_content"
+	    	    android:layout_height="wrap_content"
+	    	    android:text="Elapsed:"
+	    	    android:textSize="12sp" 
+	        	/>
+	    	
+	        <TextView 
+	    	    android:id="@+id/effect_elapsed"
+	    	    android:layout_width="wrap_content"
+	    	    android:layout_height="wrap_content"
+	    	    android:textSize="21sp"
+	    	    />
+	    	</LinearLayout>
+	</LinearLayout>
+	    
+</LinearLayout>

@@ -1,26 +1,25 @@
 package com.ninjadin.pfmobile.non_android;
 
+import java.util.Map;
+
 public class SpellGroup extends StatisticGroup{
-	String name;
-	String source;
-	String school;
+	Map<String,String> attributes;
 	
-	public SpellGroup(String nm, String src, String schl, StatisticGroup parent) {
+	public SpellGroup(Map<String,String> attr, StatisticGroup parent) {
 		super (parent);
-		name = nm;
-		source = src;
-		school = schl;
+		attributes = attr;
 	}
 	
-	public String getName() {
-		return name;
+	public String getAttribute(String key) {
+		return attributes.get(key);
 	}
 	
-	public String getSource() {
-		return source;
+	public int getAttributeValue(String key) {
+		String name = attributes.get(key);
+		if (name != null)
+			return parent.getValue(name);
+		else
+			return 0;
 	}
 	
-	public String getSchool() {
-		return school;
-	}
 }

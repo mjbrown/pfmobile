@@ -2,23 +2,23 @@ package com.ninjadin.pfmobile.non_android;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ActionGroup extends StatisticGroup {
+	
+	protected Map<String,String> attributes;
 	protected List<AttackGroup> attacks = new ArrayList<AttackGroup>();
 	protected List<OnHitDamage> damages = new ArrayList<OnHitDamage>();
 	protected List<OnHitCondition> conditions = new ArrayList<OnHitCondition>();
 	protected List<XmlObjectModel> effects = new ArrayList<XmlObjectModel>();
 	protected ActionGroup inherited = null;
 
-	private String cost;
-	private String uses;
 	private Boolean visible;
 	
-	public ActionGroup(String cost, String uses, ActionGroup inherit, StatisticGroup group_parent) {
+	public ActionGroup(Map<String,String> attributes, ActionGroup inherit, StatisticGroup group_parent) {
 		super (group_parent);
 		inherited = inherit;
-		this.cost = cost;
-		this.uses = uses;
+		this.attributes = attributes;
 		visible = true;
 	}
 	
@@ -37,18 +37,18 @@ public class ActionGroup extends StatisticGroup {
 		return visible;
 	}
 	
-	public String getCost() {
-		if ((inherited != null) && (cost == null))
-			return inherited.getCost();
+	public Integer getAttribute(String key) {
+		Integer value = null;
+		String attr = attributes.get(key);
+		if (attr == null)
+			value = inherited.getAttribute(key);
 		else
-			return cost;
+			value = parent.evaluate(attr);
+		return value;
 	}
 	
-	public String getUses() {
-		if ((inherited != null) && (uses == null))
-			return inherited.getUses();
-		else
-			return uses;
+	public Map<String,String> getAttributes() {
+		return attributes;
 	}
 	
 	public void addEffect(XmlObjectModel model) {

@@ -1,3 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <content>
+    <group name="Expended">
+        
+    </group>
+    <group name="Given">
+	    <effect name="Unarmed Strike" type="Select" select="Main Hand Weapon" activate="True" >
+	        <condition key="Equipment" name="Main Hand Finesse" />
+	        <onHitEffect name="Main Hand Melee Weapon Damage">
+	            <bonus type="Medium Size Weapon Damage" value="2" />
+	            <bonus type="Medium Size Weapon Damage" value="( [Monk Unarmed Damage Level] + 1 ) / 4" />
+	        </onHitEffect>
+	    </effect>
+	    <effect name="Unarmed Strike" type="Select" select="Off Hand Weapon" activate="True" >
+	        <condition key="Equipment" name="Off Hand Finesse" />
+	        <onHitEffect name="Off Hand Melee Weapon Damage">
+	            <bonus type="Medium Size Weapon Damage" value="2" />
+	            <bonus type="Medium Size Weapon Damage" value="( [Monk Unarmed Damage Level] + 1 ) / 4" />
+	        </onHitEffect>
+	    </effect>
+    </group>
 </content>

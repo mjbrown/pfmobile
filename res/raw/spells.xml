@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <spells>
-    <spell name="Chill Touch" cost="Standard" components="Verbal,Somatic" school="Necromancy" >
-        <selfEffect>
-	        <bonus type="Chill Touch Effect Uses" value="[Caster Level]" />
-	        <onHitEffect name="Chill Touch" uses="[Chill Touch Effect Uses]" source="Necromancy" >
+    <spell name="Chill Touch" cost="Standard" components="Verbal,Somatic" school="Necromancy" target="Self" >
+        <effect name="Chill Touch" spellLevel="[Spell Level]" casterLevel="[Caster Level]">
+	        <bonus type="Chill Touch Uses" value="[Caster Level]" />
+	        <onHitEffect name="Chill Touch" uses="Chill Touch Uses" used="Chill Touch Used">
+	            <expend type="Chill Touch Uses" value="1" />
 	            <attack parent="Spell Resistance">
-	                <conditional key="Attack Target" name="Undead" comparator="Not">
+	                <conditional key="Attack Target" name="Undead" logic="Not">
 		                <onHitEffect>
 		                    <bonus type="Damage d6" value="1" source="Negative Energy" />
 		                    <attack versus="Fortitude">
@@ -26,42 +27,78 @@
 	            </attack>
 	        </onHitEffect>
 	        <attack name="Melee Touch Attack">
-	            <onHitEffect parent="Chill Touch" />
+	            <onHitEffect name="Chill Touch" />
 	        </attack>
 	        <attack name="Unarmed Attack">
-	            <onHitEffect parent="Chill Touch" />
+	            <onHitEffect name="Chill Touch" />
 	        </attack>
-        </selfEffect>
+        </effect>
     </spell>
-    <spell name="Produce Flame" cost="Standard" components="Verbal,Somatic" range="Self" school="Evocation" >
-        <selfEffect>
-            <condition key="Duration" type="Produce Flame" value="[Caster Level] * 10" />
-	        <bonus type="Produce Flame Effect Uses" value="[Caster Level]" />
+    <spell name="Produce Flame" cost="Standard" components="Verbal,Somatic" range="Self" school="Evocation" target="Self" >
+        <effect name="Produce Flame">
+            <bonus type="Duration" value="[Caster Level] * 10" />
 	        <onHitEffect name="Produce Flame" source="Evocation,Fire" >
+	            <expend type="Duration" name="Produce Flame" value="10" />
 	            <attack parent="Spell Resistance">
 	                <onHitEffect>
 	                    <bonus type="Damage d6" value="1" source="Fire" />
-	                    <bonus type="Damage" value="[Caster Level]" source="Fire" />
+	                    <bonus type="Damage" value="min( [Caster Level] , 5 )" source="Fire" />
 	                </onHitEffect>
 	            </attack>
 	        </onHitEffect>
-	        <attack name="Throw Produce Flame" source="Evocation,Fire" uses="[Produce Flame Effect Uses]">
-	            <onHitEffect parent="Produce Flame" />
+	        <attack name="Throw Produce Flame" parent="Ranged Touch Attack" >
+	            <expend type="Duration" name="Produce Flame" value="10" />
+	            <onHitEffect name="Produce Flame" />
 	        </attack>
 	        <attack name="Melee Touch Attack">
-	            <onHitEffect parent="Produce Flame" uses="[Produce Flame Effect Uses]" />
+	            <bonus type="Range" value="1" />
+	            <onHitEffect parent="Produce Flame">
+	                <expend type="Duration" name="Produce Flame" value="10" />
+	            </onHitEffect>
 	        </attack>
 	        <attack name="Unarmed Attack">
-	            <onHitEffect parent="Produce Flame" uses="[Produce Flame Effect Uses]" />
+	            <onHitEffect parent="Produce Flame">
+	                <expend type="Duration" name="Produce Flame" value="10" />
+	            </onHitEffect>
 	        </attack>
-        </selfEffect>
+        </effect>
     </spell>
-    <spell name="True Strike" school="Divination" cost="Standard" components="Verbal" duration="1" range="Self">
-        <selfEffect>
-	        <bonus type="True Strike Effect Uses" value="1" />
-	        <attack name="Basic Attack" uses="[True Strike Effect Uses]" >
+    <spell name="True Strike" school="Divination" cost="Standard" components="Verbal" target="Self" >
+        <effect name="True Strike">
+            <bonus type="Duration" value="1" />
+            <bonus type="Uses" value="1" />
+	        <attack name="Basic Attack" >
 	            <bonus type="To Hit" value="20" />
+	            <expend type="Uses" name="True Strike" value="1" />
 	        </attack>
-        </selfEffect>
+        </effect>
+    </spell>
+    <spell name="Acid Arrow" school="Conjuration" cost="Standard" components="Verbal,Somatic">
+        <attack parent="Ranged Touch Attack" target="Single Ranged">
+            <bonus type="Range" value="[Caster Level] * 40 + 400" />
+            <onHitEffect name="Acid Arrow Damage" type="Ongoing">
+                <bonus type="Duration" value="min( ( [Caster Level] / 2 ) , 7 )" />
+                <bonus type="Damage d4" source="Acid" value="2" /> 
+            </onHitEffect>
+        </attack>"
+    </spell>
+    <spell name="Shield Of Faith" school="Abjuration" cost="Standard" components="Verbal,Somatic" target="Self" >
+        <effect name="Shield of Faith">
+            <bonus type="Duration" value="10 * [Caster Level]" />
+            <bonus type="Armor Class,Touch Armor Class,Flat Footed Armor Class,Combat Maneuver Defense" stackType="Deflection" value="2 + ( [Caster Level] / 6 )" />
+        </effect>
+    </spell>
+    <spell name="Greater Magic Weapon" school="Transmutation" cost="Standard" components="Verbal,Somatic" target="Weapon" range="Touch" >
+        <effect name="Greater Magic Weapon">
+            <bonus type="Duration" value="10 * 60 * [Caster Level]" />
+            <conditional key="Equipment" name="Off Hand [Weapon Name]">
+                <onHitEffect name="Off Hand Melee Weapon Damage">
+                    <bonus type="Damage" value="[Caster Level] / 4" />
+                </onHitEffect>
+                <attack name="Off Hand Melee Attack">
+                	<bonus type="To Hit" value="[Caster Level] / 4" />
+                </attack>
+            </conditional>
+        </effect>
     </spell>
 </spells>

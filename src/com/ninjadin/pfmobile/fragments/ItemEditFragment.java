@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,7 +88,7 @@ public class ItemEditFragment extends Fragment {
 			}
 		}
 		
-		View view = inflater.inflate(R.layout.fragment_itemedit, container, false);
+		View view = inflater.inflate(R.layout.fragment_listview, container, false);
 		list_view = (ListView) view.findViewById(R.id.listView1);
 		return view;
 	}
@@ -147,11 +148,17 @@ public class ItemEditFragment extends Fragment {
 		String name = option.getAttribute(XmlConst.NAME_ATTR);
 		String current = option.getAttribute(XmlConst.VALUE_ATTR);
 		ArrayList<String> entries = new ArrayList<String>();
+		ArrayList<String> names = new ArrayList<String>();
 		for (XmlObjectModel entry: option.getChildren()) {
 			String entry_value = entry.getAttribute(XmlConst.VALUE_ATTR);
 			entries.add(entry_value);
+			String entry_name = entry.getAttribute(XmlConst.NAME_ATTR);
+			if (entry_name != null)
+				names.add(entry_name);
 		}
-		DialogFragment dialog = SpinnerEditDialogFragment.newDialog(name, current, entries);
+		if (names.size() < entries.size())
+			names = null;
+		DialogFragment dialog = SpinnerEditDialogFragment.newDialog(name, current, names, entries);
 		dialog.setTargetFragment(this, OPTION_EDIT_CODE);
 		dialog.show(getChildFragmentManager(), "SpinnerEditDialogFragment");
 	}

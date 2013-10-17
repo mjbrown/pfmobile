@@ -1,6 +1,7 @@
 package com.ninjadin.pfmobile.non_android;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
@@ -123,6 +124,12 @@ public class InventoryXmlObject extends XmlObjectModel {
 		Map<String,String> option_map = parseOptionList(property);
 		insertOptionStrings(option_map, new_property);
 		item.addChild(new_property);
+		try {
+			this.saveChanges();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void deleteProperty(String item_id, String property_id) {
@@ -143,7 +150,6 @@ public class InventoryXmlObject extends XmlObjectModel {
 		if (values == null)
 			return false;
 		for (String val: values.split(",")) {
-			Log.d("hasOption", value + ":" + val);
 			if (val.equals(value))
 				return true;
 		}

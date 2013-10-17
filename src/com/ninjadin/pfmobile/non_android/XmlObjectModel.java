@@ -28,6 +28,14 @@ public class XmlObjectModel {
 		this.tag = tag;
 	}
 	
+	public XmlObjectModel(XmlObjectModel model) {
+		tag = model.getTag();
+		for (Map.Entry<String, String> attr: model.getAttributes().entrySet())
+			setAttribute(attr.getKey(), attr.getValue());
+		for (XmlObjectModel child: model.getChildren())
+			addChild(child);
+	}
+	
 	public XmlObjectModel(File xml_doc, File temp) {
 		try {
 			InputStream inStream = new FileInputStream(xml_doc);
@@ -143,6 +151,10 @@ public class XmlObjectModel {
 	
 	public String getTag() {
 		return tag;
+	}
+	
+	public void changeTag(String value) {
+		tag = value;
 	}
 	
 	private String getXml() {

@@ -1,4 +1,4 @@
-package com.ninjadin.pfmobile.fragments;
+package com.ninjadin.pfmobile.dialogfragments;
 
 import java.io.InputStream;
 import java.util.HashMap;
@@ -26,7 +26,7 @@ import com.ninjadin.pfmobile.data.ExpListData;
 import com.ninjadin.pfmobile.data.XmlConst;
 import com.ninjadin.pfmobile.non_android.XmlObjectModel;
 
-public class SpellListFragment extends Fragment {
+public class SpellListEditDialogFragment extends Fragment {
 	private final static String ERROR_MSG = "No Caster Levels found!";
 	GeneratorActivity activity;
 	String selected_class;

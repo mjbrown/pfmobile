@@ -7,6 +7,7 @@ import java.util.Map;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -127,8 +128,8 @@ public class ActionFragment extends Fragment {
 				new int[] {R.id.action_title_text },
 				filtered_action_data,
 				R.layout.subrow_action,
-				new String[] { XmlConst.TARGET_ATTR },
-				new int[] {R.id.action_effect }
+				new String[] { PropertyLists.to_hit, PropertyLists.damage, PropertyLists.crit_range },
+				new int[] {R.id.to_hit_value, R.id.damage_value, R.id.critical_value }
 				);
 		expListView.setAdapter(baseAdapt);
 		expListView.invalidateViews();
@@ -149,15 +150,22 @@ public class ActionFragment extends Fragment {
 		}
 		
 		public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-			if (convertView == null) {
-				LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				convertView = inflater.inflate(R.layout.titlerow_action, null);
+			convertView = super.getGroupView(groupPosition, isExpanded, convertView, parent);
+			TextView usage = (TextView) convertView.findViewById(R.id.action_uses_remaining);
+			String str_uses = groupData.get(groupPosition).get(XmlConst.USES_ATTR);
+			String str_used = groupData.get(groupPosition).get(XmlConst.USED_ATTR);
+			String remaining = null;
+			View uses_viewgroup = convertView.findViewById(R.id.action_uses_group);
+			if ((str_uses != null) && (str_used != null)) {
+				//Log.d("UsesUsed", str_uses + " " + str_used);
+				Integer uses = activity.dependencyManager.getValue(str_uses);
+				Integer used = activity.dependencyManager.getValue(str_used);
+				remaining = Integer.toString(uses - used) + " of " + Integer.toString(uses);
+				uses_viewgroup.setVisibility(View.VISIBLE);
+			} else {
+				uses_viewgroup.setVisibility(View.GONE);
 			}
-			TextView title_text = (TextView) convertView.findViewById(R.id.action_title_text);
-			if (title_text != null) {
-				String text = groupData.get(groupPosition).get(XmlConst.NAME_ATTR);
-				title_text.setText(text);
-			}
+			usage.setText(remaining);
 			Button perform_button = (Button) convertView.findViewById(R.id.action_perform_button);
 			if (perform_button != null)
 				perform_button.setOnClickListener(new OnClickListener() {
@@ -172,25 +180,7 @@ public class ActionFragment extends Fragment {
 		}
 		
 		public View getChildView(int groupPosition, int childPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-			if (convertView == null) {
-				LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				convertView = inflater.inflate(R.layout.subrow_action, null);
-			}
-			TextView to_hit_value = (TextView) convertView.findViewById(R.id.to_hit_value);
-			if (to_hit_value != null) {
-				String text = itemData.get(groupPosition).get(childPosition).get(PropertyLists.to_hit);
-				to_hit_value.setText(text);
-			}
-			TextView damage_value = (TextView) convertView.findViewById(R.id.damage_value);
-			if (damage_value != null) {
-				String text = itemData.get(groupPosition).get(childPosition).get(PropertyLists.damage);
-				damage_value.setText(text);
-			}
-			TextView crit_range = (TextView) convertView.findViewById(R.id.critical_value);
-			if (crit_range != null) {
-				String text = itemData.get(groupPosition).get(childPosition).get(PropertyLists.crit_range);
-				crit_range.setText(text);
-			}
+			convertView = super.getChildView(groupPosition, childPosition, isExpanded, convertView, parent);
 			return convertView;
 		}
 	}

@@ -58,7 +58,8 @@
 	</characterLevel>
 	<characterLevel number="12">
 	    <choice groupName="Class Level" />
-		<bonus type="Character Level" value="1" />
+		<choice groupName="Ability Score Point" />
+	    <bonus type="Character Level" value="1" />
 	</characterLevel>
 	<characterLevel number="13">
 		<choice groupName="Class Level" />
@@ -67,7 +68,6 @@
 	</characterLevel>
 	<characterLevel number="14">
 		<choice groupName="Class Level" />
-		<choice groupName="Ability Score Point" />
 		<bonus type="Character Level" value="1" />
 	</characterLevel>
 	<characterLevel number="15">
@@ -77,6 +77,7 @@
 	</characterLevel>
 	<characterLevel number="16">
 		<choice groupName="Class Level" />
+		<choice groupName="Ability Score Point" />
 		<bonus type="Character Level" value="1" />
 	</characterLevel>
 	<characterLevel number="17">
@@ -86,7 +87,6 @@
 	</characterLevel>
 	<characterLevel number="18">
 		<choice groupName="Class Level" />
-		<choice groupName="Ability Score Point" />
 		<bonus type="Character Level" value="1" />
 	</characterLevel>
 	<characterLevel number="19">

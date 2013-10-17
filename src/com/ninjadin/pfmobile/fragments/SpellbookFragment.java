@@ -28,6 +28,7 @@ import com.ninjadin.pfmobile.activities.GeneratorActivity;
 import com.ninjadin.pfmobile.data.ExpListData;
 import com.ninjadin.pfmobile.data.PropertyLists;
 import com.ninjadin.pfmobile.data.XmlConst;
+import com.ninjadin.pfmobile.dialogfragments.SpellListEditDialogFragment;
 import com.ninjadin.pfmobile.non_android.SpellGroup;
 
 public class SpellbookFragment extends Fragment {
@@ -69,7 +70,7 @@ public class SpellbookFragment extends Fragment {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				SpellListFragment newFragment = new SpellListFragment();
+				SpellListEditDialogFragment newFragment = new SpellListEditDialogFragment();
 				FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
 				transaction.replace(R.id.fragment_container, newFragment);
 				transaction.addToBackStack(null);
@@ -117,7 +118,7 @@ public class SpellbookFragment extends Fragment {
 		List<String> sourceList = new ArrayList<String>();
 		Map<String,Boolean> sourceMap = new HashMap<String, Boolean>();
 		for (SpellGroup spell: master_list) {
-			sourceMap.put(spell.getSource(), true);
+			sourceMap.put(spell.getAttribute(XmlConst.SOURCE_ATTR), true);
 		}
 		for (Map.Entry<String, Boolean> entry: sourceMap.entrySet()) {
 			sourceList.add(entry.getKey());
@@ -135,8 +136,8 @@ public class SpellbookFragment extends Fragment {
 				new int[] { android.R.id.text1 },
 				expData.itemData,
 				R.layout.subrow_spell,
-				new String[] { XmlConst.NAME_ATTR },
-				new int[] { R.id.name_text });
+				new String[] { XmlConst.NAME_ATTR, PropertyLists.save_dc, PropertyLists.spell_failure, XmlConst.USES_ATTR, PropertyLists.caster_level, XmlConst.SCHOOL_ATTR },
+				new int[] { R.id.name_text, R.id.savedc_text, R.id.spell_fail_text, R.id.uses_text, R.id.caster_text, R.id.school_text });
 		expListView.setAdapter(expAdapter);
 	}
 	
@@ -144,7 +145,7 @@ public class SpellbookFragment extends Fragment {
 		ExpListData levelList = new ExpListData();
 		int max_level = -1;
 		for (SpellGroup spell: master_list) {
-			if (src.equals(spell.getSource())) {
+			if (src.equals(spell.getAttribute(XmlConst.SOURCE_ATTR))) {
 				int level = spell.getValue(PropertyLists.spell_level);
 				while (max_level < level) {
 					max_level += 1;
@@ -156,8 +157,12 @@ public class SpellbookFragment extends Fragment {
 				}
 				Map<String,String> spell_details = new HashMap<String,String>();
 				levelList.itemData.get(level).add(spell_details);
-				spell_details.put(XmlConst.NAME_ATTR, spell.getName());
-				spell_details.put(XmlConst.SCHOOL_ATTR, spell.getSchool());
+				spell_details.put(XmlConst.NAME_ATTR, spell.getAttribute(XmlConst.NAME_ATTR));
+				spell_details.put(XmlConst.SCHOOL_ATTR, spell.getAttribute(XmlConst.SCHOOL_ATTR));
+				Integer uses = spell.getAttributeValue(XmlConst.USES_ATTR);
+				Integer used = spell.getAttributeValue(XmlConst.USED_ATTR);
+				String useable = Integer.toString(uses - used) + " of " + Integer.toString(uses);
+				spell_details.put(XmlConst.USES_ATTR, useable);
 				spell_details.put(PropertyLists.save_dc, Integer.toString(spell.getValue(PropertyLists.save_dc)));
 				spell_details.put(PropertyLists.spell_failure, Integer.toString(spell.getValue(PropertyLists.spell_failure)));
 				spell_details.put(PropertyLists.uses, Integer.toString(spell.getValue(PropertyLists.uses)));
@@ -190,26 +195,9 @@ public class SpellbookFragment extends Fragment {
 			this.itemData = childData;
 		}
 		
-		public View getChildView(int groupPosition, int childPosition, boolean isExpanded,
+		public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
 				View convertView, ViewGroup parent) {
-			if (convertView == null) {
-				LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				convertView = inflater.inflate(R.layout.subrow_spell, null);
-			}
-			Map<String,String> child_map = itemData.get(groupPosition).get(childPosition);
-			String name = child_map.get(XmlConst.NAME_ATTR);
-			((TextView) convertView.findViewById(R.id.name_text)).setText(name);
-			String save_dc = child_map.get(PropertyLists.save_dc);
-			((TextView) convertView.findViewById(R.id.savedc_text)).setText(save_dc);
-			String spell_failure = child_map.get(PropertyLists.spell_failure);
-			((TextView) convertView.findViewById(R.id.spell_fail_text)).setText(spell_failure);
-			String uses = child_map.get(PropertyLists.uses);
-			((TextView) convertView.findViewById(R.id.uses_text)).setText(uses);
-			String caster_level = child_map.get(PropertyLists.caster_level);
-			((TextView) convertView.findViewById(R.id.caster_text)).setText(caster_level);
-			String school = child_map.get(XmlConst.SCHOOL_ATTR);
-			if (school != null)
-				((TextView) convertView.findViewById(R.id.school_text)).setText(school);
+			convertView = super.getChildView(groupPosition, childPosition, isLastChild, convertView, parent);
 			return convertView;
 		}
 	}

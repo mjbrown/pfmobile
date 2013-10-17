@@ -42,7 +42,7 @@ public class CheckEditDialogFragment extends EditDialogFragment {
 	}
 	@Override
 	protected int getFragmentLayout() {
-		return R.layout.fragment_itemedit;
+		return R.layout.fragment_listview;
 	}
 
 	@Override
@@ -53,7 +53,6 @@ public class CheckEditDialogFragment extends EditDialogFragment {
 		list = args.getStringArrayList(LIST);
 		for (int i = 0; i < list.size(); i++) {
 			String value = list.get(i);
-			Log.d("CheckInit", def + ":" + value);
 			checked.add(i, InventoryXmlObject.hasOption(def, value));
 		}
 		list_view = (ListView) dialog.findViewById(R.id.listView1);

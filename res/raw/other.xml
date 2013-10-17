@@ -92,40 +92,43 @@
 </bonusGroup>
 <bonusGroup groupName="Favored Class">
     <selection name="Favored Class Barbarian">
-        <bonus type="Favored Class Points" value="[Barbarian Level]" />
+        <bonus type="Favored Class Points" stackType="Favored Class" value="[Barbarian Level]" />
     </selection>
     <selection name="Favored Class Bard">
-        <bonus type="Favored Class Points" value="[Bard Level]" />
+        <bonus type="Favored Class Points" stackType="Favored Class" value="[Bard Level]" />
     </selection>
     <selection name="Favored Class Cleric">
-        <bonus type="Favored Class Points" value="[Cleric Level]" />
+        <bonus type="Favored Class Points" stackType="Favored Class" value="[Cleric Level]" />
     </selection>
     <selection name="Favored Class Druid">
-        <bonus type="Favored Class Points" value="[Druid Level]" />
+        <bonus type="Favored Class Points" stackType="Favored Class" value="[Druid Level]" />
     </selection>
     <selection name="Favored Class Fighter">
-        <bonus type="Favored Class Points" value="[Fighter Level]" />
+        <bonus type="Favored Class Points" stackType="Favored Class" value="[Fighter Level]" />
     </selection>
     <selection name="Favored Class Monk">
-        <bonus type="Favored Class Points" value="[Monk Level]" />
+        <bonus type="Favored Class Points" stackType="Favored Class" value="[Monk Level]" />
     </selection>
     <selection name="Favored Class Paladin">
-        <bonus type="Favored Class Points" value="[Paladin Level]" />
+        <bonus type="Favored Class Points" stackType="Favored Class" value="[Paladin Level]" />
     </selection>
     <selection name="Favored Class Ranger">
-        <bonus type="Favored Class Points" value="[Ranger Level]" />
+        <bonus type="Favored Class Points" stackType="Favored Class" value="[Ranger Level]" />
     </selection>
     <selection name="Favored Class Rogue">
-        <bonus type="Favored Class Points" value="[Rogue Level]" />
+        <bonus type="Favored Class Points" stackType="Favored Class" value="[Rogue Level]" />
     </selection>
     <selection name="Favored Class Sorcerer">
-        <bonus type="Favored Class Points" value="[Sorcerer Level]" />
+        <bonus type="Favored Class Points" stackType="Favored Class" value="[Sorcerer Level]" />
     </selection>
     <selection name="Favored Class Wizard">
-        <bonus type="Favored Class Points" value="[Wizard Level]" />
+        <bonus type="Favored Class Points" stackType="Favored Class" value="[Wizard Level]" />
     </selection>
     <selection name="Favored Class Oracle">
-        <bonus type="Favored Class Points" value="[Oracle Level]" />
+        <bonus type="Favored Class Points" stackType="Favored Class" value="[Oracle Level]" />
+    </selection>
+    <selection name="Favored Class Inquisitor">
+        <bonus type="Favored Class Points" stackType="Favored Class" value="[Inquisitor Level]" />
     </selection>
 </bonusGroup>
 <bonusGroup groupName="Oracle Curse">

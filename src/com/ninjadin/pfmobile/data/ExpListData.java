@@ -1,8 +1,11 @@
 package com.ninjadin.pfmobile.data;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import android.util.Log;
 
 import com.ninjadin.pfmobile.non_android.XmlObjectModel;
 
@@ -12,6 +15,20 @@ public class ExpListData {
 	
 	public ExpListData() {
 		
+	}
+	
+	public ExpListData(Map<String,List<XmlObjectModel>> map_models) {
+		for (Map.Entry<String, List<XmlObjectModel>> entry: map_models.entrySet()) {
+			Map<String,String> group = new HashMap<String,String>();
+			group.put(XmlConst.NAME_ATTR, entry.getKey());
+			groupData.add(group);
+//			Log.d("Constructor", entry.getKey());
+			List<Map<String,String>> child_list = new ArrayList<Map<String,String>>();
+			itemData.add(child_list);
+			for (XmlObjectModel child: entry.getValue()) {
+				child_list.add(child.getAttributes());
+			}
+		}
 	}
 	
 	public ExpListData(List<XmlObjectModel> models) {

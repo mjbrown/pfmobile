@@ -49,19 +49,19 @@ public class ConditionList {
 		String name = condition.getAttribute(XmlConst.NAME_ATTR);
 		String type = condition.getAttribute(XmlConst.TYPE_ATTR);
 		String value = condition.getAttribute(XmlConst.VALUE_ATTR);
-		String comp = condition.getAttribute(XmlConst.COMPARE_ATTR);
+		String comp = condition.getAttribute(XmlConst.LOGIC_ATTR);
 		startConditional(key, name, type, value, comp);
 	}
 	
-	public void startConditional(String key, String name, String type, String value, String comparator) {
+	public void startConditional(String key, String name, String type, String value, String logic) {
 		if (key != null) {
 			last_conditional.push(key);
 			List<KeyValuePair> condition_list = bonus_conditions.get(key); 
 			if (condition_list != null) {
 				if (name != null) {
-					condition_list.add(new KeyValuePair(name, null, comparator));
+					condition_list.add(new KeyValuePair(name, null, logic));
 				} else if ((type != null) && (value != null)) {
-					condition_list.add(new KeyValuePair(type, value, comparator));
+					condition_list.add(new KeyValuePair(type, value, logic));
 				} else {
 					Log.d("ReadXML", "Conditional with key, without name or type/value:" + key);
 				}

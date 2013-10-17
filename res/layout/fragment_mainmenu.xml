@@ -5,21 +5,16 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-<RelativeLayout 
+<LinearLayout 
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     tools:context=".GeneratorActivity" >
 
     <Button
         android:id="@+id/char_statistics_button"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
         android:text="Character Sheet" 
         android:onClick="launchStatistics" />
 
@@ -27,8 +22,6 @@
         android:id="@+id/char_levels_button"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/char_statistics_button"
         android:text="Class Levels and Feats" 
         android:onClick="launchLevels" />
 
@@ -36,17 +29,20 @@
         android:id="@+id/char_inventory_button"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/char_levels_button"
         android:text="Forge and Enchant Items" 
         android:onClick="launchInventory" />
+    
+    <Button
+        android:id="@+id/char_choices_button"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Choices" 
+        android:onClick="launchEffectSelect" />
     
     <Button
         android:id="@+id/char_attacks_button"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/char_inventory_button"
         android:text="Attacks and Actions" 
         android:onClick="launchAttacks"/>
 
@@ -54,32 +50,20 @@
         android:id="@+id/char_spells_button"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/char_attacks_button"
-        android:text="Spellbook" 
+        android:text="Spells Available" 
         android:onClick="launchSpellbook"/>
 
-    <Button
-        android:id="@+id/char_prepared_button"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/char_spells_button"
-        android:text="Spells Known/Prepared" />
-    
     <Button 
         android:id="@+id/char_active_effects"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/char_prepared_button"
-        android:text="Active Effects" />
+        android:text="Active Effects" 
+        android:onClick="launchEffects" />
         
     <Button 
         android:id="@+id/char_show_xml" 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/char_active_effects"
         android:text="Show XML"
         android:onClick="launchCharXML" />
     
@@ -87,8 +71,6 @@
         android:id="@+id/inv_show_xml" 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/char_show_xml"
         android:text="Show Inventory XML"
         android:onClick="launchInventoryXML" />
     
@@ -96,8 +78,6 @@
         android:id="@+id/eff_show_xml" 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/inv_show_xml"
         android:text="Show Effect XML"
         android:onClick="launchEffectXML" />
 
@@ -105,10 +85,8 @@
         android:id="@+id/spells_show_xml" 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/eff_show_xml"
         android:text="Show Spells XML"
         android:onClick="launchSpellbookXML" />
     
-</RelativeLayout>
+</LinearLayout>
 </ScrollView>

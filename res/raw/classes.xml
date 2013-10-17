@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <bonusGroup groupName="Class Level">
-    <prerequisite type="Barbarian Level" comparator="Equals" value="0">
+    <prerequisite type="Barbarian Level" logic="EQ" value="0">
     <selection name="Barbarian Level 1">
 	    <bonus type="Barbarian Level" value="1" />
         <bonus type="Skill Points" value="( max( 1 , ( 4 + [Intelligence Modifier] ) ) * [Barbarian Level] )" />
@@ -14,59 +14,89 @@
         <condition key="Proficiency" name="Light Shield,Heavy Shield" />
         <bonus type="Acrobatics,Climb,Craft,Handle Animal,Intimidate,Nature" stackType="Class Skill" value="3" />
         <bonus type="Perception,Ride,Survival,Swim" stackType="Class Skill" value="3" />
+        <conditional key="Equipment" name="Heavy Load,Heavy Armor" logic="NOR" >
+	        <bonus type="Speed" value="10" />
+        </conditional>
+        <bonus type="Barbarian Rage Rounds Per Day" value="2 + [Constitution Modifier] + ( 2 * [Barbarian Level] )" />
+        <conditional key="Status" name="Fatigued" logic="NOR">
+	        <action name="Barbarian Rage" cost="Free" uses="Barbarian Rage Rounds Per Day" used="Barbarian Rage Rounds Used">
+	            <effect name="Barbarian Rage" type="Duration" source="Supernatural" >
+	                <expend type="Barbarian Rage Rounds Used" value="1" />
+	                <tempExpend type="Rage Duration" value="1" />
+	                <bonus type="Duration" value="[Barbarian Rage Rounds Per Day] - [Barbarian Rage Rounds Used]" />
+	                <bonus type="Strength,Constitution" stackType="Morale" value="4" />
+	                <bonus type="Will" stackType="Morale" value="2" />
+	                <bonus type="Armor Class,Touch Armor Class,Flat Footed Armor Class" value="-2" />
+	                <condition key="Status" name="Barbarian Rage" />
+	                <action name="End Rage" cost="Free">
+	                    <effect name="Barbarian Rage" type="Remove" />
+	                </action>
+	                <finally>
+	                    <effect name="Rage Fatigue" type="Duration">
+	                        <bonus type="Duration" value="[Rage Duration] * 2" /> 
+	                        <condition key="Status" name="Fatigued" />
+	                    </effect>
+	                </finally>
+	            </effect>
+   	        </action>
+        </conditional>
     </selection>
 	</prerequisite>
-    <prerequisite type="Barbarian Level" comparator="Equals" value="1">
+    <prerequisite type="Barbarian Level" logic="EQ" value="1">
     <selection name="Barbarian Level 2">
 	    <bonus type="Barbarian Level" value="1" />
     </selection>
 	</prerequisite>
-    <prerequisite type="Barbarian Level" comparator="Equals" value="2">
+    <prerequisite type="Barbarian Level" logic="EQ" value="2">
     <selection name="Barbarian Level 3">
 	    <bonus type="Barbarian Level" value="1" />
     </selection>
 	</prerequisite>
-    <prerequisite type="Barbarian Level" comparator="Equals" value="3">
+    <prerequisite type="Barbarian Level" logic="EQ" value="3">
     <selection name="Barbarian Level 4">
 	    <bonus type="Barbarian Level" value="1" />
     </selection>
 	</prerequisite>
-    <prerequisite type="Barbarian Level" comparator="Equals" value="4">
+    <prerequisite type="Barbarian Level" logic="EQ" value="4">
     <selection name="Barbarian Level 5">
 	    <bonus type="Barbarian Level" value="1" />
     </selection>
 	</prerequisite>
-    <prerequisite type="Barbarian Level" comparator="Equals" value="5">
+    <prerequisite type="Barbarian Level" logic="EQ" value="5">
     <selection name="Barbarian Level 6">
 	    <bonus type="Barbarian Level" value="1" />
     </selection>
 	</prerequisite>
-    <prerequisite type="Barbarian Level" comparator="Equals" value="6">
+    <prerequisite type="Barbarian Level" logic="EQ" value="6">
     <selection name="Barbarian Level 7">
 	    <bonus type="Barbarian Level" value="1" />
     </selection>
 	</prerequisite>
-    <prerequisite type="Barbarian Level" comparator="Equals" value="7">
+    <prerequisite type="Barbarian Level" logic="EQ" value="7">
     <selection name="Barbarian Level 8">
 	    <bonus type="Barbarian Level" value="1" />
     </selection>
 	</prerequisite>
-    <prerequisite type="Barbarian Level" comparator="Equals" value="8">
+    <prerequisite type="Barbarian Level" logic="EQ" value="8">
     <selection name="Barbarian Level 9">
 	    <bonus type="Barbarian Level" value="1" />
     </selection>
 	</prerequisite>
-    <prerequisite type="Barbarian Level" comparator="Equals" value="9">
+    <prerequisite type="Barbarian Level" logic="EQ" value="9">
     <selection name="Barbarian Level 10">
 	    <bonus type="Barbarian Level" value="1" />
     </selection>
 	</prerequisite>
-    <prerequisite type="Bard Level" comparator="Equals" value="0">
+    <prerequisite type="Bard Level" logic="EQ" value="0">
     <selection name="Bard Level 1">
 	    <bonus type="Bard Level" value="1" />
 	    <bonus type="Base Attack" value="( [Bard Level] * 3 / 4 )" />
         <bonus type="Skill Points" value="( max( 1 , ( 6 + [Intelligence Modifier] ) ) * [Bard Level] )" />
         <bonus type="Bard Spell Levels" value="[Bard Level]" />
+        <bonus type="Bard Level 1 Spells Per Day" value="min( [Bard Spell Levels] , 3 )" />
+        <bonus type="Bard Level 1 Spells Per Day" value="min( 2 , ( ( [Bard Spell Levels] - 1 ) / 4 ) )" />
+        <bonus type="Bard Level 2 Spells Per Day" value="max( min( ( [Bard Spell Levels] - 4 ) , 3 ) , 0 )" />
+        <bonus type="Bard Level 2 Spells Per Day" value="max( min( 2 , ( ( [Bard Spell Levels] - 5 ) / 4 ) ) , 0 )" />
         <bonus type="Bard Caster Level" value="[Bard Level]" />
         <bonus type="Hit Points" value="( [Bard Level] * 8 * [HP Numerator] / [HP Denominator] )" />
         <bonus type="Hit Points" value="( 8 - ( 8 * [HP Numerator] / [HP Denominator] ) )" stackType="Max HP First Level" />
@@ -81,52 +111,52 @@
         <bonus type="Linguistics,Perception,Perform,Profession,Sense Motive,Sleight Of Hand,Spellcraft,Stealth,Use Magic Device" stackType="Class Skill" value="3" />
     </selection>
 	</prerequisite>    
-    <prerequisite type="Bard Level" comparator="Equals" value="1">
+    <prerequisite type="Bard Level" logic="EQ" value="1">
     <selection name="Bard Level 2">
 	    <bonus type="Bard Level" value="1" />
     </selection>
 	</prerequisite>    
-    <prerequisite type="Bard Level" comparator="Equals" value="2">
+    <prerequisite type="Bard Level" logic="EQ" value="2">
     <selection name="Bard Level 3">
 	    <bonus type="Bard Level" value="1" />
     </selection>
 	</prerequisite>    
-    <prerequisite type="Bard Level" comparator="Equals" value="3">
+    <prerequisite type="Bard Level" logic="EQ" value="3">
     <selection name="Bard Level 4">
 	    <bonus type="Bard Level" value="1" />
     </selection>
 	</prerequisite>    
-    <prerequisite type="Bard Level" comparator="Equals" value="4">
+    <prerequisite type="Bard Level" logic="EQ" value="4">
     <selection name="Bard Level 5">
 	    <bonus type="Bard Level" value="1" />
     </selection>
 	</prerequisite>    
-    <prerequisite type="Bard Level" comparator="Equals" value="5">
+    <prerequisite type="Bard Level" logic="EQ" value="5">
     <selection name="Bard Level 6">
 	    <bonus type="Bard Level" value="1" />
     </selection>
 	</prerequisite>    
-    <prerequisite type="Bard Level" comparator="Equals" value="6">
+    <prerequisite type="Bard Level" logic="EQ" value="6">
     <selection name="Bard Level 7">
 	    <bonus type="Bard Level" value="1" />
     </selection>
 	</prerequisite>    
-    <prerequisite type="Bard Level" comparator="Equals" value="7">
+    <prerequisite type="Bard Level" logic="EQ" value="7">
     <selection name="Bard Level 8">
 	    <bonus type="Bard Level" value="1" />
     </selection>
 	</prerequisite>    
-    <prerequisite type="Bard Level" comparator="Equals" value="8">
+    <prerequisite type="Bard Level" logic="EQ" value="8">
     <selection name="Bard Level 9">
 	    <bonus type="Bard Level" value="1" />
     </selection>
 	</prerequisite>
-    <prerequisite type="Bard Level" comparator="Equals" value="9">
+    <prerequisite type="Bard Level" logic="EQ" value="9">
     <selection name="Bard Level 10">
 	    <bonus type="Bard Level" value="1" />
     </selection>
 	</prerequisite>    
-	<prerequisite type="Cleric Level" comparator="Equals" value="0">
+	<prerequisite type="Cleric Level" logic="EQ" value="0">
     <selection name="Cleric Level 1">
 	    <bonus type="Cleric Level" value="1" />
 	    <bonus type="Cleric Caster Level" value="[Cleric Level]" />
@@ -145,52 +175,52 @@
         <bonus type="Linguistics,Profession,Sense Motive,Spellcraft" stackType="Class Skill" value="3" />
     </selection>
 	</prerequisite>    
-    <prerequisite type="Cleric Level" comparator="Equals" value="1">
+    <prerequisite type="Cleric Level" logic="EQ" value="1">
     <selection name="Cleric Level 2">
 	    <bonus type="Cleric Level" value="1" />
     </selection>
 	</prerequisite>    
-    <prerequisite type="Cleric Level" comparator="Equals" value="2">
+    <prerequisite type="Cleric Level" logic="EQ" value="2">
     <selection name="Cleric Level 3">
 	    <bonus type="Cleric Level" value="1" />
     </selection>
 	</prerequisite>    
-    <prerequisite type="Cleric Level" comparator="Equals" value="3">
+    <prerequisite type="Cleric Level" logic="EQ" value="3">
     <selection name="Cleric Level 4">
 	    <bonus type="Cleric Level" value="1" />
     </selection>
 	</prerequisite>
-    <prerequisite type="Cleric Level" comparator="Equals" value="4">
+    <prerequisite type="Cleric Level" logic="EQ" value="4">
     <selection name="Cleric Level 5">
 	    <bonus type="Cleric Level" value="1" />
     </selection>
 	</prerequisite>    
-    <prerequisite type="Cleric Level" comparator="Equals" value="5">
+    <prerequisite type="Cleric Level" logic="EQ" value="5">
     <selection name="Cleric Level 6">
 	    <bonus type="Cleric Level" value="1" />
     </selection>
 	</prerequisite>    
-    <prerequisite type="Cleric Level" comparator="Equals" value="6">
+    <prerequisite type="Cleric Level" logic="EQ" value="6">
     <selection name="Cleric Level 7">
 	    <bonus type="Cleric Level" value="1" />
     </selection>
 	</prerequisite>    
-    <prerequisite type="Cleric Level" comparator="Equals" value="7">
+    <prerequisite type="Cleric Level" logic="EQ" value="7">
     <selection name="Cleric Level 8">
 	    <bonus type="Cleric Level" value="1" />
     </selection>
 	</prerequisite>    
-    <prerequisite type="Cleric Level" comparator="Equals" value="8">
+    <prerequisite type="Cleric Level" logic="EQ" value="8">
     <selection name="Cleric Level 9">
 	    <bonus type="Cleric Level" value="1" />
     </selection>
 	</prerequisite>    
-    <prerequisite type="Cleric Level" comparator="Equals" value="9">
+    <prerequisite type="Cleric Level" logic="EQ" value="9">
     <selection name="Cleric Level 10">
 	    <bonus type="Cleric Level" value="1" />
     </selection>
 	</prerequisite>    
-    <prerequisite type="Druid Level" comparator="Equals" value="0">
+    <prerequisite type="Druid Level" logic="EQ" value="0">
     <selection name="Druid Level 1">
 	    <bonus type="Druid Level" value="1" />
 	    <bonus type="Druid Caster Level" value="[Druid Level]" />
@@ -209,52 +239,52 @@
         <bonus type="Linguistics,Profession,Sense Motive,Spellcraft" stackType="Class Skill" value="3" />
     </selection>
 	</prerequisite>    
-    <prerequisite type="Druid Level" comparator="Equals" value="1">
+    <prerequisite type="Druid Level" logic="EQ" value="1">
     <selection name="Druid Level 2">
 	    <bonus type="Druid Level" value="1" />
     </selection>
 	</prerequisite>    
-    <prerequisite type="Druid Level" comparator="Equals" value="2">
+    <prerequisite type="Druid Level" logic="EQ" value="2">
     <selection name="Druid Level 3">
 	    <bonus type="Druid Level" value="1" />
     </selection>
 	</prerequisite>    
-    <prerequisite type="Druid Level" comparator="Equals" value="3">
+    <prerequisite type="Druid Level" logic="EQ" value="3">
     <selection name="Druid Level 4">
 	    <bonus type="Druid Level" value="1" />
     </selection>
 	</prerequisite>
-    <prerequisite type="Druid Level" comparator="Equals" value="4">
+    <prerequisite type="Druid Level" logic="EQ" value="4">
     <selection name="Druid Level 5">
 	    <bonus type="Druid Level" value="1" />
     </selection>
 	</prerequisite>    
-    <prerequisite type="Druid Level" comparator="Equals" value="5">
+    <prerequisite type="Druid Level" logic="EQ" value="5">
     <selection name="Druid Level 6">
 	    <bonus type="Druid Level" value="1" />
     </selection>
 	</prerequisite>    
-    <prerequisite type="Druid Level" comparator="Equals" value="6">
+    <prerequisite type="Druid Level" logic="EQ" value="6">
     <selection name="Druid Level 7">
 	    <bonus type="Druid Level" value="1" />
     </selection>
 	</prerequisite>    
-    <prerequisite type="Druid Level" comparator="Equals" value="7">
+    <prerequisite type="Druid Level" logic="EQ" value="7">
     <selection name="Druid Level 8">
 	    <bonus type="Druid Level" value="1" />
     </selection>
 	</prerequisite>    
-    <prerequisite type="Druid Level" comparator="Equals" value="8">
+    <prerequisite type="Druid Level" logic="EQ" value="8">
     <selection name="Druid Level 9">
 	    <bonus type="Druid Level" value="1" />
     </selection>
 	</prerequisite>    
-    <prerequisite type="Druid Level" comparator="Equals" value="9">
+    <prerequisite type="Druid Level" logic="EQ" value="9">
     <selection name="Druid Level 10">
 	    <bonus type="Druid Level" value="1" />
     </selection>
 	</prerequisite>        
-    <prerequisite type="Fighter Level" comparator="Equals" value="0">
+    <prerequisite type="Fighter Level" logic="EQ" value="0">
     <selection name="Fighter Level 1">
 	    <bonus type="Fighter Level" value="1" />
 	    <bonus type="Base Attack" value="[Fighter Level]" />
@@ -271,117 +301,175 @@
         <bonus type="Engineering,Profession,Ride,Survival,Swim" stackType="Class Skill" value="3" />
     </selection>
 	</prerequisite>
-    <prerequisite type="Fighter Level" comparator="Equals" value="1">
+    <prerequisite type="Fighter Level" logic="EQ" value="1">
 	<selection name="Fighter Level 2">
 	    <bonus type="Fighter Level" value="1" />
         <choice groupName="Feat" subGroup="Combat" />
 		<!-- TODO: Bravery -->
         </selection>
     </prerequisite>
-    <prerequisite type="Fighter Level" comparator="Equals" value="2">
+    <prerequisite type="Fighter Level" logic="EQ" value="2">
 		<selection name="Fighter Level 3">
 		    <bonus type="Fighter Level" value="1" />
 			<!-- TODO: Armor Training -->
 	    </selection>
     </prerequisite>
-    <prerequisite type="Fighter Level" comparator="Equals" value="3">
+    <prerequisite type="Fighter Level" logic="EQ" value="3">
 		<selection name="Fighter Level 4">
 		    <bonus type="Fighter Level" value="1" />
 	    </selection>
     </prerequisite>
-    <prerequisite type="Fighter Level" comparator="Equals" value="4">
+    <prerequisite type="Fighter Level" logic="EQ" value="4">
 		<selection name="Fighter Level 5">
 		    <bonus type="Fighter Level" value="1" />
 	    </selection>
     </prerequisite>
-    <prerequisite type="Fighter Level" comparator="Equals" value="5">
+    <prerequisite type="Fighter Level" logic="EQ" value="5">
 		<selection name="Fighter Level 6">
 		    <bonus type="Fighter Level" value="1" />
 	    </selection>
     </prerequisite>
-    <prerequisite type="Fighter Level" comparator="Equals" value="6">
+    <prerequisite type="Fighter Level" logic="EQ" value="6">
 		<selection name="Fighter Level 7">
 		    <bonus type="Fighter Level" value="1" />
 	    </selection>
     </prerequisite>
-    <prerequisite type="Fighter Level" comparator="Equals" value="7">
+    <prerequisite type="Fighter Level" logic="EQ" value="7">
 		<selection name="Fighter Level 8">
 		    <bonus type="Fighter Level" value="1" />
 	    </selection>
     </prerequisite>
-    <prerequisite type="Fighter Level" comparator="Equals" value="8">
+    <prerequisite type="Fighter Level" logic="EQ" value="8">
 		<selection name="Fighter Level 9">
 		    <bonus type="Fighter Level" value="1" />
 	    </selection>
     </prerequisite>
-    <prerequisite type="Fighter Level" comparator="Equals" value="9">
+    <prerequisite type="Fighter Level" logic="EQ" value="9">
 		<selection name="Fighter Level 10">
 		    <bonus type="Fighter Level" value="1" />
 	    </selection>
     </prerequisite>
-    <prerequisite type="Magus Level" comparator="Equals" value="0">
+    <prerequisite type="Inquisitor Level" logic="EQ" value="0">
+        <selection name="Inquisitor Level 1">
+            <bonus type="Inquisitor Level" value="1" />
+            <bonus type="Inquisitor Spell Levels" value="[Inquisitor Level]" />
+	        <bonus type="Hit Points" value="( [Inquisitor Level] * 8 * [HP Numerator] / [HP Denominator] )" />
+	        <bonus type="Hit Points" value="( 8 - ( 8 * [HP Numerator] / [HP Denominator] ) )" stackType="Max HP First Level" />
+	        <bonus type="Skill Points" value="max( 1 , ( 6 + [Intelligence Modifier] ) * [Inquisitor Level] )" />
+            <bonus type="Fortitude,Will" value="2 + ( [Inquisitor Level] / 2 )" />
+            <bonus type="Reflex" value="( [Inquisitor Level] / 3 )" />
+            <bonus type="Base Attack" value="( [Inquisitor Level] * 3 / 4 )" />
+	        <bonus type="Bluff,Climb,Craft,Diplomacy,Disguise,Diplomacy,Intimidate,Arcana,Dungeoneering,Nature,Planes,Religion,Perception,Profession,Ride,Sense Motive,Spellcraft,Stealth,Swim,Survival" stackType="Class Skill" value="3" />
+        </selection>
+    </prerequisite>
+    <prerequisite type="Inquisitor Level" logic="EQ" value="1">
+        <selection name="Inquisitor Level 2">
+            <bonus type="Inquisitor Level" value="1" />
+        </selection>
+    </prerequisite>
+    <prerequisite type="Inquisitor Level" logic="EQ" value="2">
+        <selection name="Inquisitor Level 3">
+            <bonus type="Inquisitor Level" value="1" />
+        </selection>
+    </prerequisite>
+    <prerequisite type="Inquisitor Level" logic="EQ" value="3">
+        <selection name="Inquisitor Level 4">
+            <bonus type="Inquisitor Level" value="1" />
+        </selection>
+    </prerequisite>
+    <prerequisite type="Inquisitor Level" logic="EQ" value="4">
+        <selection name="Inquisitor Level 5">
+            <bonus type="Inquisitor Level" value="1" />
+        </selection>
+    </prerequisite>
+    <prerequisite type="Inquisitor Level" logic="EQ" value="5">
+        <selection name="Inquisitor Level 6">
+            <bonus type="Inquisitor Level" value="1" />
+        </selection>
+    </prerequisite>
+    <prerequisite type="Inquisitor Level" logic="EQ" value="6">
+        <selection name="Inquisitor Level 7">
+            <bonus type="Inquisitor Level" value="1" />
+        </selection>
+    </prerequisite>
+    <prerequisite type="Inquisitor Level" logic="EQ" value="7">
+        <selection name="Inquisitor Level 8">
+            <bonus type="Inquisitor Level" value="1" />
+        </selection>
+    </prerequisite>
+    <prerequisite type="Inquisitor Level" logic="EQ" value="8">
+        <selection name="Inquisitor Level 9">
+            <bonus type="Inquisitor Level" value="1" />
+        </selection>
+    </prerequisite>
+    <prerequisite type="Inquisitor Level" logic="EQ" value="9">
+        <selection name="Inquisitor Level 10">
+            <bonus type="Inquisitor Level" value="1" />
+        </selection>
+    </prerequisite>
+    <prerequisite type="Magus Level" logic="EQ" value="0">
         <selection name="Magus Level 1">
             <bonus type="Magus Level" value="1" />
 	        <bonus type="Hit Points" value="( [Magus Level] * 8 * [HP Numerator] / [HP Denominator] )" />
 	        <bonus type="Hit Points" value="( 8 - ( 8 * [HP Numerator] / [HP Denominator] ) )" stackType="Max HP First Level" />
-	        <bonus type="Skill Points" value="min( 1 , ( 2 + [Intelligence Modifier] ) * [Magus Level] )" />
+	        <bonus type="Skill Points" value="max( 1 , ( 2 + [Intelligence Modifier] ) * [Magus Level] )" />
             <bonus type="Fortitude,Will" value="2 + ( [Magus Level] / 2 )" />
             <bonus type="Reflex" value="( [Magus Level] / 3 )" />
             <bonus type="Base Attack" value="( [Magus Level] * 3 / 4 )" />
 	        <bonus type="Climb,Craft,Fly,Intimidate,Arcana,Dungeoneering,Planes,Profession,Ride,Spellcraft,Swim,Use Magic Device" stackType="Class Skill" value="3" />
         </selection>
     </prerequisite>
-    <prerequisite type="Magus Level" comparator="Equals" value="1">
+    <prerequisite type="Magus Level" logic="EQ" value="1">
 		<selection name="Magus Level 2">
 		    <bonus type="Magus Level" value="1" />
 	    </selection>
     </prerequisite>
-    <prerequisite type="Magus Level" comparator="Equals" value="2">
+    <prerequisite type="Magus Level" logic="EQ" value="2">
 		<selection name="Magus Level 3">
 		    <bonus type="Magus Level" value="1" />
 	    </selection>
     </prerequisite>
-    <prerequisite type="Magus Level" comparator="Equals" value="3">
+    <prerequisite type="Magus Level" logic="EQ" value="3">
 		<selection name="Magus Level 4">
 		    <bonus type="Magus Level" value="1" />
 	    </selection>
     </prerequisite>
-    <prerequisite type="Magus Level" comparator="Equals" value="4">
+    <prerequisite type="Magus Level" logic="EQ" value="4">
 		<selection name="Magus Level 5">
 		    <bonus type="Magus Level" value="1" />
 	    </selection>
     </prerequisite>
-    <prerequisite type="Magus Level" comparator="Equals" value="5">
+    <prerequisite type="Magus Level" logic="EQ" value="5">
 		<selection name="Magus Level 6">
 		    <bonus type="Magus Level" value="1" />
 	    </selection>
     </prerequisite>
-    <prerequisite type="Magus Level" comparator="Equals" value="6">
+    <prerequisite type="Magus Level" logic="EQ" value="6">
 		<selection name="Magus Level 7">
 		    <bonus type="Magus Level" value="1" />
 	    </selection>
     </prerequisite>
-    <prerequisite type="Magus Level" comparator="Equals" value="7">
+    <prerequisite type="Magus Level" logic="EQ" value="7">
 		<selection name="Magus Level 8">
 		    <bonus type="Magus Level" value="1" />
 	    </selection>
     </prerequisite>
-    <prerequisite type="Magus Level" comparator="Equals" value="8">
+    <prerequisite type="Magus Level" logic="EQ" value="8">
 		<selection name="Magus Level 9">
 		    <bonus type="Magus Level" value="1" />
 	    </selection>
     </prerequisite>
-    <prerequisite type="Magus Level" comparator="Equals" value="9">
+    <prerequisite type="Magus Level" logic="EQ" value="9">
 		<selection name="Magus Level 10">
 		    <bonus type="Magus Level" value="1" />
 	    </selection>
     </prerequisite>
-    <prerequisite type="Magus Level" comparator="Equals" value="10">
+    <prerequisite type="Magus Level" logic="EQ" value="10">
 		<selection name="Magus Level 2">
 		    <bonus type="Magus Level" value="1" />
 	    </selection>
     </prerequisite>
-    <prerequisite type="Monk Level" comparator="Equals" value="0">
+    <prerequisite type="Monk Level" logic="EQ" value="0">
         <selection name="Monk Level 1">
             <bonus type="Monk Level" value="1" />
             <bonus type="Base Attack" value="( [Monk Level] * 3 / 4 )" />
@@ -392,54 +480,111 @@
             <choice groupName="Feat" specific="Catch Off-Guard,Combat Reflexes,Deflect Arrows,Dodge,Improved Grapple,Scorpion Style,Throw Anything" />
 	        <condition key="Proficiency" name="Club,Light Crossbow,Heavy Crossbow,Dagger,Handaxe,Javelin,Kama,Nunchaku,Quarterstaff,Sai,Shortspear,Short Sword,Shuriken,Siangham,Sling,Spear" />
 	        <bonus type="Acrobatics,Climb,Craft,Escape Artist,Intimidate,History,Religion,Perception,Perform,Profession,Ride,Sense Motive,Stealth,Swim" stackType="Class Skill" value="3" />
+	        <bonus type="Monk AC Bonus Level" value="[Monk Level]" />
+	        <bonus type="Monk Unarmed Damage Level" value="8 + [Monk Level]" />
+	        <attack name="Flurry Of Blows Attack" parent="Basic Attack">
+	            <onHitEffect name="Flurry Of Blows Damage">
+	                <bonus type="Damage" value="[Strength Modifier]" />
+	            </onHitEffect>
+	        </attack>
+	        <conditional key="Equipment" name="Light Armor,Medium Armor,Heavy Armor" logic="NOR">
+	            <bonus type="Armor Class,Touch Armor Class,Flat Footed Armor Class" value="[Wisdom Modifier]" />
+	            <bonus type="Armor Class,Touch Armor Class,Flat Footed Armor Class" value="[Monk AC Bonus Level] / 4" />
+                <bonus type="Speed" value="10 * ( [Monk Level] / 3 )" />
+	            <action name="Flurry Of Blows" cost="Full Round">
+	                <attack name="First Flurry Of Blows Attack" parent="Flurry Of Blows Attack">
+	                    <bonus type="To Hit" value="( [Monk Level] / 4 ) - 1" />
+	                </attack>
+	                <attack parent="Flurry Of Blows Attack">
+	                    <bonus type="To Hit" value="( [Monk Level] / 4 ) - 1" />
+	                </attack>
+	                <conditional key="Statistic" type="Monk Level" value="8">
+	                    <attack parent="Flurry Of Blows Attack">
+	                        <bonus type="To Hit" value="( [Monk Level] / 4 ) - 6" />
+	                    </attack>
+	                </conditional>
+	                <conditional key="Statistic" type="Monk Level" value="15">
+	                    <attack parent="Flurry Of Blows Attack">
+	                        <bonus type="To Hit" value="( [Monk Level] / 4 ) - 11" />
+	                    </attack>
+	                </conditional>
+	                <conditional key="Statistic" type="Base Attack" value="6">
+			            <attack parent="Flurry Of Blows Attack">
+	                    	<bonus type="To Hit" value="( [Monk Level] / 4 ) - 6" />
+			            </attack>
+			        </conditional>
+			        <conditional key="Statistic" type="Base Attack" value="11">
+			            <attack parent="Flurry Of Blows Attack">
+	                    	<bonus type="To Hit" value="( [Monk Level] / 4 ) - 11" />
+			            </attack>
+			        </conditional>
+			        <conditional key="Statistic" type="Base Attack" value="16">
+			            <attack parent="Flurry Of Blows Attack">
+		                    <bonus type="To Hit" value="( [Monk Level] / 4 ) - 16" />
+			            </attack>
+			        </conditional>
+   	            </action>
+				<effect name="Unarmed Strike" select="Flurry Of Blows Weapon" type="Select" activate="True" >
+       			    <condition key="Equipment" name="Flurry Finesse" />
+       			    <attack name="Flurry Of Blows Attack">
+       			        <bonus type="To Hit" value="[Strength Modifier]" />
+       			    </attack>
+				    <onHitEffect name="Flurry Of Blows Damage">
+		                <bonus type="Medium Size Weapon Damage" value="2" />
+		                <bonus type="Medium Size Weapon Damage" value="( [Monk Unarmed Damage Level] + 1 ) / 4" />
+				    </onHitEffect>
+				</effect>
+	        </conditional>
         </selection>
     </prerequisite>
-    <prerequisite type="Monk Level" comparator="Equals" value="1">
+    <prerequisite type="Monk Level" logic="EQ" value="1">
         <selection name="Monk Level 2">
             <bonus type="Monk Level" value="1" />
+            <choice groupName="Feat" specific="Catch Off-Guard,Combat Reflexes,Deflect Arrows,Dodge,Improved Grapple,Scorpion Style,Throw Anything" />
+            <condition key="Status" name="Evasion" />
         </selection>
     </prerequisite>
-    <prerequisite type="Monk Level" comparator="Equals" value="2">
+    <prerequisite type="Monk Level" logic="EQ" value="2">
         <selection name="Monk Level 3">
             <bonus type="Monk Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Monk Level" comparator="Equals" value="3">
+    <prerequisite type="Monk Level" logic="EQ" value="3">
         <selection name="Monk Level 4">
             <bonus type="Monk Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Monk Level" comparator="Equals" value="4">
+    <prerequisite type="Monk Level" logic="EQ" value="4">
         <selection name="Monk Level 5">
             <bonus type="Monk Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Monk Level" comparator="Equals" value="5">
+    <prerequisite type="Monk Level" logic="EQ" value="5">
         <selection name="Monk Level 6">
             <bonus type="Monk Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Monk Level" comparator="Equals" value="6">
+    <prerequisite type="Monk Level" logic="EQ" value="6">
         <selection name="Monk Level 7">
             <bonus type="Monk Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Monk Level" comparator="Equals" value="7">
+    <prerequisite type="Monk Level" logic="EQ" value="7">
         <selection name="Monk Level 8">
             <bonus type="Monk Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Monk Level" comparator="Equals" value="8">
+    <prerequisite type="Monk Level" logic="EQ" value="8">
         <selection name="Monk Level 9">
             <bonus type="Monk Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Monk Level" comparator="Equals" value="9">
+    <prerequisite type="Monk Level" logic="EQ" value="9">
         <selection name="Monk Level 10">
             <bonus type="Monk Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Oracle Level" comparator="Equals" value="0">
+    <prerequisite type="Oracle Level" logic="EQ" value="0">
         <selection name="Oracle Level 1">
             <bonus type="Oracle Level" value="1" />
             <bonus type="Oracle Caster Level" value="[Oracle Level]" />
@@ -458,54 +603,54 @@
         	<bonus type="History,Planes,Religion" stackType="Class Skill" value="3" />
 	    </selection>
     </prerequisite>
-    <prerequisite type="Oracle Level" comparator="Equals" value="1">
+    <prerequisite type="Oracle Level" logic="EQ" value="1">
         <selection name="Oracle Level 2">
             <bonus type="Oracle Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Oracle Level" comparator="Equals" value="2">
+    <prerequisite type="Oracle Level" logic="EQ" value="2">
         <selection name="Oracle Level 3">
             <bonus type="Oracle Level" value="1" />
             <choice groupName="Oracle Revelation" />
         </selection>
     </prerequisite>
-    <prerequisite type="Oracle Level" comparator="Equals" value="3">
+    <prerequisite type="Oracle Level" logic="EQ" value="3">
         <selection name="Oracle Level 4">
             <bonus type="Oracle Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Oracle Level" comparator="Equals" value="4">
+    <prerequisite type="Oracle Level" logic="EQ" value="4">
         <selection name="Oracle Level 5">
             <bonus type="Oracle Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Oracle Level" comparator="Equals" value="5">
+    <prerequisite type="Oracle Level" logic="EQ" value="5">
         <selection name="Oracle Level 6">
             <bonus type="Oracle Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Oracle Level" comparator="Equals" value="6">
+    <prerequisite type="Oracle Level" logic="EQ" value="6">
         <selection name="Oracle Level 7">
             <bonus type="Oracle Level" value="1" />
             <choice groupName="Oracle Revelation" />
         </selection>
     </prerequisite>
-    <prerequisite type="Oracle Level" comparator="Equals" value="7">
+    <prerequisite type="Oracle Level" logic="EQ" value="7">
         <selection name="Oracle Level 8">
             <bonus type="Oracle Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Oracle Level" comparator="Equals" value="8">
+    <prerequisite type="Oracle Level" logic="EQ" value="8">
         <selection name="Oracle Level 9">
             <bonus type="Oracle Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Oracle Level" comparator="Equals" value="9">
+    <prerequisite type="Oracle Level" logic="EQ" value="9">
         <selection name="Oracle Level 10">
             <bonus type="Wizard Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Paladin Level" comparator="Equals" value="0">
+    <prerequisite type="Paladin Level" logic="EQ" value="0">
         <selection name="Paladin Level 1">
             <bonus type="Paladin Level" value="1" />
             <bonus type="Base Attack" value="[Paladin Level]" />
@@ -520,7 +665,7 @@
 	        <bonus type="Craft,Diplomacy,Handle Animal,Heal,Nobility,Religion,Profession,Ride,Sense Motive,Spellcraft" stackType="Class Skill" value="3" />
             <!-- TODO Aura of Good -->
             <bonus type="Smite Evil Uses" value="1" />
-            <action name="Smite Evil" cost="Swift" uses="Smite Evil Uses" >
+            <action name="Smite Evil" cost="Swift" >
                 
             </action>
             <action name="Detect Evil" cost="Move" >
@@ -528,29 +673,29 @@
             </action>
         </selection>
     </prerequisite>
-    <prerequisite type="Paladin Level" comparator="Equals" value="1">
+    <prerequisite type="Paladin Level" logic="EQ" value="1">
         <selection name="Paladin Level 2">
             <bonus type="Paladin Level" value="1" />
             <bonus type="Fortitude,Reflex,Will" value="[Charisma Modifier]" />
             <!-- TODO Lay on Hands -->
-            <condition key="Uses" type="Lay On Hands Uses" value="[Charisma Modifier] + ( [Paladin Level] / 2 )" />
-            <action name="Lay On Hands, Self" cost="Swift" uses="Lay On Hands Uses">
-                <attack target="Self">
-                    <onHitEffect>
-                        <bonus type="Damage d6" value="( [Paladin Level] / 2 )" />
-                    </onHitEffect>
-                </attack>
+            <bonus type="Lay On Hands Uses" value="[Charisma Modifier] + ( [Paladin Level] / 2 )" />
+            <action name="Lay On Hands, Self" cost="Swift" uses="Lay On Hands Uses" used="Lay On Hands Used" >
+                <expend type="Lay On Hands Used" value="1" />
+                <effect>
+                    <bonus type="Healing d6" value="( [Paladin Level] / 2 )" />
+                </effect>
             </action>
-            <action name="Lay On Hands, Other" cost="Standard" uses="Lay On Hands Uses">
+            <action name="Lay On Hands, Other" cost="Standard" uses="Lay On Hands Uses" used="Lay On Hands Used" >
                 <attack>
                     <onHitEffect>
-                        <bonus type="Damage d6" value="( [Paladin Level] / 2 )" />
+		                <expend type="Lay On Hands Uses" value="1" />
+                        <bonus type="Healing d6" value="( [Paladin Level] / 2 )" />
                     </onHitEffect>
                 </attack>
             </action>
         </selection>
     </prerequisite>
-    <prerequisite type="Paladin Level" comparator="Equals" value="2">
+    <prerequisite type="Paladin Level" logic="EQ" value="2">
         <selection name="Paladin Level 3">
             <bonus type="Paladin Level" value="1" />
             <!-- TODO Aura of Courage -->
@@ -558,44 +703,44 @@
             <!-- TODO Mercy -->
             </selection>
     </prerequisite>
-    <prerequisite type="Paladin Level" comparator="Equals" value="3">
+    <prerequisite type="Paladin Level" logic="EQ" value="3">
         <selection name="Paladin Level 4">
             <bonus type="Paladin Level" value="1" />
             <bonus type="Paladin Caster Level" value="[Paladin Level]" />
             <bonus type="Paladin Spell Levels" value="[Paladin Level]" />
         </selection>
     </prerequisite>
-    <prerequisite type="Paladin Level" comparator="Equals" value="4">
+    <prerequisite type="Paladin Level" logic="EQ" value="4">
         <selection name="Paladin Level 5">
             <bonus type="Paladin Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Paladin Level" comparator="Equals" value="5">
+    <prerequisite type="Paladin Level" logic="EQ" value="5">
         <selection name="Paladin Level 6">
             <bonus type="Paladin Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Paladin Level" comparator="Equals" value="6">
+    <prerequisite type="Paladin Level" logic="EQ" value="6">
         <selection name="Paladin Level 7">
             <bonus type="Paladin Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Paladin Level" comparator="Equals" value="7">
+    <prerequisite type="Paladin Level" logic="EQ" value="7">
         <selection name="Paladin Level 8">
             <bonus type="Paladin Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Paladin Level" comparator="Equals" value="8">
+    <prerequisite type="Paladin Level" logic="EQ" value="8">
         <selection name="Paladin Level 9">
             <bonus type="Paladin Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Paladin Level" comparator="Equals" value="9">
+    <prerequisite type="Paladin Level" logic="EQ" value="9">
         <selection name="Paladin Level 10">
             <bonus type="Paladin Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Ranger Level" comparator="Equals" value="0">
+    <prerequisite type="Ranger Level" logic="EQ" value="0">
      	<selection name="Ranger Lvl 1">
      	    <bonus type="Ranger Level" value="1" />
             <bonus type="Base Attack" value="[Ranger Level]" />
@@ -614,55 +759,55 @@
 	        <!-- TODO Wild Empathy= 1d20 plus ranger level and charisma modifier -->
 	    </selection>
     </prerequisite>
-    <prerequisite type="Ranger Level" comparator="Equals" value="1">
+    <prerequisite type="Ranger Level" logic="EQ" value="1">
         <selection name="Ranger Lvl 2">
             <bonus type="Ranger Level" value="1" />
             <!-- TODO combat style feats --> />
     	</selection>
     </prerequisite>
-    <prerequisite type="Ranger Level" comparator="Equals" value="2">
+    <prerequisite type="Ranger Level" logic="EQ" value="2">
         <selection name="Ranger Lvl 3">
             <bonus type="Ranger Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Ranger Level" comparator="Equals" value="3">
+    <prerequisite type="Ranger Level" logic="EQ" value="3">
         <selection name="Ranger Lvl 4">
             <bonus type="Ranger Level" value="1" />
             <bonus type="Ranger Caster Level" value="[Ranger Level]" />
             <bonus type="Ranger Spell Levels" value="[Ranger Level]" />
         </selection>
     </prerequisite>
-    <prerequisite type="Ranger Level" comparator="Equals" value="4">
+    <prerequisite type="Ranger Level" logic="EQ" value="4">
         <selection name="Ranger Lvl 5">
             <bonus type="Ranger Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Ranger Level" comparator="Equals" value="5">
+    <prerequisite type="Ranger Level" logic="EQ" value="5">
         <selection name="Ranger Lvl 6">
             <bonus type="Ranger Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Ranger Level" comparator="Equals" value="6">
+    <prerequisite type="Ranger Level" logic="EQ" value="6">
         <selection name="Ranger Lvl 7">
             <bonus type="Ranger Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Ranger Level" comparator="Equals" value="7">
+    <prerequisite type="Ranger Level" logic="EQ" value="7">
         <selection name="Ranger Lvl 8">
             <bonus type="Ranger Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Ranger Level" comparator="Equals" value="8">
+    <prerequisite type="Ranger Level" logic="EQ" value="8">
         <selection name="Ranger Lvl 9">
             <bonus type="Ranger Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Ranger Level" comparator="Equals" value="9">
+    <prerequisite type="Ranger Level" logic="EQ" value="9">
         <selection name="Ranger Lvl 10">
             <bonus type="Ranger Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Rogue Level" comparator="Equals" value="0">
+    <prerequisite type="Rogue Level" logic="EQ" value="0">
     <selection name="Rogue Level 1">
         <bonus type="Rogue Level" value="1" />
         <bonus type="Base Attack" value="( [Rogue Level] * 3 / 4 )" />
@@ -682,7 +827,7 @@
         <!-- TODO: Trapfinding <bonus type="" value="" /> -->
         </selection>
     </prerequisite>
-    <prerequisite type="Rogue Level" comparator="Equals" value="1">
+    <prerequisite type="Rogue Level" logic="EQ" value="1">
     <selection name="Rogue Level 2">
         <bonus type="Rogue Level" value="1" />        
         <!-- TODO: Evasion -->
@@ -690,51 +835,51 @@
         <!-- TODO: Talent Descriptions -->
     </selection>
     </prerequisite>
-    <prerequisite type="Rogue Level" comparator="Equals" value="2">
+    <prerequisite type="Rogue Level" logic="EQ" value="2">
     <selection name="Rogue Level 3">
         <bonus type="Rogue Level" value="1" />        
     </selection>
     </prerequisite>
-    <prerequisite type="Rogue Level" comparator="Equals" value="3">
+    <prerequisite type="Rogue Level" logic="EQ" value="3">
     <selection name="Rogue Level 4">
         <bonus type="Rogue Level" value="1" />        
         <choice groupName="Rogue Talent" />
     </selection>
     </prerequisite>
-    <prerequisite type="Rogue Level" comparator="Equals" value="4">
+    <prerequisite type="Rogue Level" logic="EQ" value="4">
     <selection name="Rogue Level 5">
         <bonus type="Rogue Level" value="1" />        
     </selection>
     </prerequisite>
-    <prerequisite type="Rogue Level" comparator="Equals" value="5">
+    <prerequisite type="Rogue Level" logic="EQ" value="5">
     <selection name="Rogue Level 6">
         <bonus type="Rogue Level" value="1" />        
         <choice groupName="Rogue Talent" />
     </selection>
     </prerequisite>
-    <prerequisite type="Rogue Level" comparator="Equals" value="6">
+    <prerequisite type="Rogue Level" logic="EQ" value="6">
     <selection name="Rogue Level 7">
         <bonus type="Rogue Level" value="1" />        
     </selection>
     </prerequisite>
-    <prerequisite type="Rogue Level" comparator="Equals" value="7">
+    <prerequisite type="Rogue Level" logic="EQ" value="7">
     <selection name="Rogue Level 8">
         <bonus type="Rogue Level" value="1" />        
         <choice groupName="Rogue Talent" />
     </selection>
     </prerequisite>
-    <prerequisite type="Rogue Level" comparator="Equals" value="8">
+    <prerequisite type="Rogue Level" logic="EQ" value="8">
     <selection name="Rogue Level 9">
         <bonus type="Rogue Level" value="1" />        
     </selection>
     </prerequisite>
-    <prerequisite type="Rogue Level" comparator="Equals" value="9">
+    <prerequisite type="Rogue Level" logic="EQ" value="9">
     <selection name="Rogue Level 10">
         <bonus type="Rogue Level" value="1" />        
         <choice groupName="Rogue Talent" />
     </selection>
     </prerequisite>
-    <prerequisite type="Sorcerer Level" comparator="Equals" value="0">
+    <prerequisite type="Sorcerer Level" logic="EQ" value="0">
         <selection name="Sorcerer Level 1">
             <bonus type="Sorcerer Level" value="1" />
             <bonus type="Base Attack" value="( [Sorcerer Level] / 2 )" />
@@ -749,52 +894,52 @@
 	        <bonus type="Appraise,Bluff,Craft,Fly,Intimidate,Arcana,Profession,Spellcraft,Use Magic Device" stackType="Class Skill" value="3" />
         </selection>
     </prerequisite>
-    <prerequisite type="Sorcerer Level" comparator="Equals" value="1">
+    <prerequisite type="Sorcerer Level" logic="EQ" value="1">
         <selection name="Sorcerer Level 2">
             <bonus type="Sorcerer Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Sorcerer Level" comparator="Equals" value="2">
+    <prerequisite type="Sorcerer Level" logic="EQ" value="2">
         <selection name="Sorcerer Level 3">
             <bonus type="Sorcerer Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Sorcerer Level" comparator="Equals" value="3">
+    <prerequisite type="Sorcerer Level" logic="EQ" value="3">
         <selection name="Sorcerer Level 4">
             <bonus type="Sorcerer Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Sorcerer Level" comparator="Equals" value="4">
+    <prerequisite type="Sorcerer Level" logic="EQ" value="4">
         <selection name="Sorcerer Level 5">
             <bonus type="Sorcerer Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Sorcerer Level" comparator="Equals" value="5">
+    <prerequisite type="Sorcerer Level" logic="EQ" value="5">
         <selection name="Sorcerer Level 6">
             <bonus type="Sorcerer Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Sorcerer Level" comparator="Equals" value="6">
+    <prerequisite type="Sorcerer Level" logic="EQ" value="6">
         <selection name="Sorcerer Level 7">
             <bonus type="Sorcerer Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Sorcerer Level" comparator="Equals" value="7">
+    <prerequisite type="Sorcerer Level" logic="EQ" value="7">
         <selection name="Sorcerer Level 8">
             <bonus type="Sorcerer Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Sorcerer Level" comparator="Equals" value="8">
+    <prerequisite type="Sorcerer Level" logic="EQ" value="8">
         <selection name="Sorcerer Level 9">
             <bonus type="Sorcerer Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Sorcerer Level" comparator="Equals" value="9">
+    <prerequisite type="Sorcerer Level" logic="EQ" value="9">
         <selection name="Sorcerer Level 10">
             <bonus type="Sorcerer Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Wizard Level" comparator="Equals" value="0">
+    <prerequisite type="Wizard Level" logic="EQ" value="0">
         <selection name="Wizard Level 1">
             <bonus type="Wizard Level" value="1" />
             <bonus type="Wizard Caster Level" value="[Wizard Level]" />
@@ -810,47 +955,47 @@
         	<bonus type="Arcana,Dungeoneering,Engineering,Geography,History,Local,Nature,Nobility,Planes,Religion" stackType="Class Skill" value="3" />
         </selection>
     </prerequisite>
-    <prerequisite type="Wizard Level" comparator="Equals" value="1">
+    <prerequisite type="Wizard Level" logic="EQ" value="1">
         <selection name="Wizard Level 2">
             <bonus type="Wizard Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Wizard Level" comparator="Equals" value="2">
+    <prerequisite type="Wizard Level" logic="EQ" value="2">
         <selection name="Wizard Level 3">
             <bonus type="Wizard Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Wizard Level" comparator="Equals" value="3">
+    <prerequisite type="Wizard Level" logic="EQ" value="3">
         <selection name="Wizard Level 4">
             <bonus type="Wizard Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Wizard Level" comparator="Equals" value="4">
+    <prerequisite type="Wizard Level" logic="EQ" value="4">
         <selection name="Wizard Level 5">
             <bonus type="Wizard Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Wizard Level" comparator="Equals" value="5">
+    <prerequisite type="Wizard Level" logic="EQ" value="5">
         <selection name="Wizard Level 6">
             <bonus type="Wizard Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Wizard Level" comparator="Equals" value="6">
+    <prerequisite type="Wizard Level" logic="EQ" value="6">
         <selection name="Wizard Level 7">
             <bonus type="Wizard Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Wizard Level" comparator="Equals" value="7">
+    <prerequisite type="Wizard Level" logic="EQ" value="7">
         <selection name="Wizard Level 8">
             <bonus type="Wizard Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Wizard Level" comparator="Equals" value="8">
+    <prerequisite type="Wizard Level" logic="EQ" value="8">
         <selection name="Wizard Level 9">
             <bonus type="Wizard Level" value="1" />
         </selection>
     </prerequisite>
-    <prerequisite type="Wizard Level" comparator="Equals" value="9">
+    <prerequisite type="Wizard Level" logic="EQ" value="9">
         <selection name="Wizard Level 10">
             <bonus type="Wizard Level" value="1" />
         </selection>

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <bonusGroup groupName="Race">
 	<selection name="Human">
-	    <condition key="Attack Source" name="Humanoid,Human,Medium Size" />
+	    <condition key="Status" name="Humanoid,Human,Medium Size" />
+	    <bonus type="Character Size" value="5" />
 	    <bonus type="Speed" stackType="Base" value="30" />
 	    <conditional key="Equipment" name="Medium Armor,Medium Load,Heavy Armor,Heavy Load">
 	        <bonus type="Speed" value="-10" />
@@ -9,12 +10,10 @@
 	    <choice groupName="Racial Ability Score" />
 	    <choice groupName="Feat" />
 	    <bonus type="Skill Points" value="[Character Level]" />
-	    <onHitEffect name="Unarmed Damage">
-	        <bonus type="Damage d3" value="1" />
-	    </onHitEffect>
 	</selection>
 	<selection name="Half-Orc">
-	    <condition key="Attack Source" name="Humanoid,Human,Orc,Medium Size" />
+	    <condition key="Status" name="Humanoid,Human,Orc,Medium Size" />
+	    <bonus type="Character Size" value="5" />
 	    <choice groupName="Racial Ability Score" />
 	    <bonus type="Speed" stackType="Base" value="30" />
 	    <conditional key="Equipment" name="Medium Armor,Medium Load,Heavy Armor,Heavy Load">
@@ -22,21 +21,19 @@
 	    </conditional>
 	    <bonus type="Darkvision" value="60" />
 	    <bonus type="Intimidate" stackType="Racial" value="2" />
-	    <onHitEffect name="Unarmed Damage">
-	        <bonus type="Damage d3" value="1" />
-	    </onHitEffect>
 	    <conditional key="Proficiency" name="Martial Weapon">
 	    	<condition key="Proficiency" name="Orc Double Axe" />
 		</conditional>
 	</selection>
 	<selection name="Elf">
-	    <condition key="Attack Source" name="Humanoid,Elf,Medium Size" />
-		<bonus type="Low Light Vision" value="60" />
+	    <condition key="Status" name="Humanoid,Elf,Medium Size" />
+	    <bonus type="Character Size" value="5" />
+	    <bonus type="Low Light Vision" value="60" />
 	    <bonus type="Dexterity" stackType="Racial" value="2" />
 	    <bonus type="Intelligence" stackType="Racial" value="2" />
 	    <bonus  type="Constitution" stackType="Racial" value="-2" />
 	    <bonus type="Perception" stackType="Racial" value="2" />
-	    <condition key="Attack Target" name="Enchantment">
+	    <condition key="Attack Source" name="Enchantment">
 	        <bonus type="Will" stackType="Racial" value="2" />
 	    </condition>
 	    <!-- TODO Immune to Sleep -->
@@ -46,24 +43,144 @@
 	    <condition key="Proficiency" name="Longsword" />
 	    <condition key="Proficiency" name="Longbow" />
 	    <bonus type="Speed" value="30" />
+	    <conditional key="Equipment" name="Medium Armor,Medium Load,Heavy Armor,Heavy Load">
+	        <bonus type="Speed" value="-10" />
+	    </conditional>
+	</selection>
+	<selection name="Halfling">
+	    <condition key="Status" name="Humanoid,Halfling,Small Size" />
+	    <bonus type="Character Size" value="4" />
+	    <bonus type="Dexterity" value="2" />
+	    <bonus type="Charisma" value="2" />
+	    <bonus type="Strength" value="-2" />
+        <bonus type="Armor Class,Touch Armor Class,Flat Footed Armor Class" stackType="Size" value="1" />
+	    <bonus type="To Hit" stackType="Size" value="1" />
+	    <bonus type="Combat Maneuver Bonus" stackType="Size" value="-1" />
+	    <bonus type="Combat Maneuver Defense" stackType="Size" value="-1" />
+	    <bonus type="Stealth" stackType="Size" value="4" />
+	    <bonus type="Speed" value="20" />
+	    <conditional key="Equipment" name="Medium Armor,Medium Load,Heavy Armor,Heavy Load">
+	        <bonus type="Speed" value="-5" />
+	    </conditional>
+	    <conditional key="Attack Source" name="Fear">
+	        <bonus type="Fortitude,Reflex,Will" value="2" />
+	    </conditional>
+	    <bonus type="Fortitude,Reflex,Will" stackType="Luck" value="1" />
+	    <bonus type="Acrobatics,Climb" stackType="Racial" value="2" />
+	    <condition key="Proficiency" name="Sling" />
+	    <conditional key="Proficiency" name="Martial Weapon">
+	        <condition key="Proficiency" name="Halfling Sling Staff" />
+	    </conditional>
+	</selection>
+	<selection name="Gnome">
+	    <condition key="Status" name="Humanoid,Gnome,Small Size" />
+	    <bonus type="Character Size" value="4" />
+	    <bonus type="Constitution,Charisma,Perception" stackType="Racial" value="2" />
+	    <bonus type="Strength" stackType="Racial" value="-2" />
+        <bonus type="Armor Class,Touch Armor Class,Flat Footed Armor Class" stackType="Size" value="1" />
+	    <bonus type="To Hit" stackType="Size" value="1" />
+	    <bonus type="Combat Maneuver Bonus" stackType="Size" value="-1" />
+	    <bonus type="Combat Maneuver Defense" stackType="Size" value="-1" />
+	    <bonus type="Stealth" stackType="Size" value="4" />
+	    <bonus type="Speed" value="20" />
+	    <conditional key="Equipment" name="Medium Armor,Medium Load,Heavy Armor,Heavy Load">
+	        <bonus type="Speed" value="-5" />
+	    </conditional>
+	    <conditional key="Attack Source" name="Giant">
+	        <bonus type="Armor Class,Touch Armor Class,Flat Footed Armor Class" stackType="Dodge" value="4" />
+	    </conditional>
+	    <conditional key="Attack Source" name="Illusion">
+	        <bonus type="Fortitude,Reflex,Will" value="2" />
+	    </conditional>
+	    <conditional key="Statistic" type="Charisma" value="11" >
+	        <bonus type="Gnome Dancing Lights Uses" value="1" />
+	        <spell source="Gnome" name="Dancing Lights" uses="Gnome Dancing Lights Uses" expend="Gnome Dancing Lights Used" >
+	            <bonus type="Spell Level" value="0" />
+	            <bonus type="Caster Level" value="[Character Level]" />
+	            <bonus type="Save DC" value="10 + [Charisma Modifier]" />
+	        </spell>
+	        <bonus type="Gnome Ghost Sound Uses" value="1" />
+	        <spell source="Gnome" name="Ghost Sound" uses="Gnome Ghost Sound Uses" expend="Gnome Ghost Sound Used" >
+	            <bonus type="Spell Level" value="0" />
+	            <bonus type="Caster Level" value="[Character Level]" />
+	            <bonus type="Save DC" value="10 + [Charisma Modifier]" />
+	        </spell>
+	        <bonus type="Gnome Prestidigitation Uses" value="1" />
+	        <spell source="Gnome" name="Prestidigitation" uses="Gnome Prestidigitation Uses" expend="Gnome Prestidigitation Used">
+	            <bonus type="Spell Level" value="0" />
+	            <bonus type="Caster Level" value="[Character Level]" />
+	            <bonus type="Save DC" value="10 + [Charisma Modifier]" />
+	        </spell>
+	        <bonus type="Gnome Speak With Animals Uses" value="1" />
+	        <spell source="Gnome" name="Speak With Animals" uses="Gnome Speak With Animals Uses" used="Gnome Speak With Animals Used">
+	            <bonus type="Spell Level" value="0" />
+	            <bonus type="Caster Level" value="[Character Level]" />
+	            <bonus type="Save DC" value="10 + [Charisma Modifier]" />
+	        </spell>
+	    </conditional>
+	</selection>
+	<selection name="Half Elf">
+	    <condition key="Status" name="Humanoid,Human,Elf,Medium Size" />
+	    <bonus type="Character Size" value="5" />
+	    <choice groupName="Racial Ability Score" />
+	    <bonus type="Speed" value="30" />
+	    <bonus type="Low Light" value="60" />
 	    <onHitEffect name="Unarmed Damage">
 	        <bonus type="Damage d3" value="1" />
 	    </onHitEffect>
 	    <conditional key="Equipment" name="Medium Armor,Medium Load,Heavy Armor,Heavy Load">
 	        <bonus type="Speed" value="-10" />
 	    </conditional>
+	    <conditional key="Attack Source" name="Enchantment">
+	        <bonus type="Fortitude,Reflex,Will" value="2" />
+	    </conditional>
+	    <choice groupName="Feat" specific="Skill Focus" />
+	    <bonus type="Perception" stackType="Racial" value="2" />
+		<choice groupName="Favored Class" />
+	</selection>
+	<selection name="Dwarf">
+	    <bonus type="Character Size" value="5" />
+	    <bonus type="Constitution,Wisdom" value="2" />
+	    <bonus type="Charisma" value="-2" />
+	    <bonus type="Speed" value="20" />
+	    <bonus type="Darkvision" value="60" />
+	    <conditional key="Attack Source" name="Giant" >
+	        <bonus type="Armor Class,Touch Armor Class,Flat Footed Armor Class" stackType="Dodge" value="4" />
+	    </conditional>
+	    <conditional key="Attack Source" name="Poison,Spell,Spell-like">
+	        <bonus type="Fortitude,Reflex,Will" stackType="Racial" value="2" />
+	    </conditional>
+	    <conditional key="Attack Source" name="Bull Rush,Trip" >
+	        <bonus type="Combat Maneuver Defense" stackType="Racial" value="4" />
+	    </conditional>
+	    <bonus type="Appraise" stackType="Racial" value="2" />
+	    <conditional key="Attack Target" name="Orc,Goblinoid" >
+	        <bonus type="To Hit" stackType="Racial" value="1" />
+	    </conditional>
+	    <condition key="Proficiency" name="Battleaxe,Heavy Pick,Warhammer" />
+	    <conditional key="Proficiency" name="Martial Weapon" >
+	        <condition key="Proficiency" name="Dwarven Battleaxe" />
+	    </conditional>
 	</selection>
 	<selection name="Suli">
-	    <condition key="Attack Source" name="Outsider,Medium Size" />
+	    <condition key="Status" name="Outsider,Medium Size" />
+	    <bonus type="Character Size" value="5" />
 	    <bonus type="Strength" value="2" />
 	    <bonus type="Charisma" value="2" />
 	    <bonus type="Intelligence" value="-2" />
 	    <bonus type="Diplomacy" value="2" />
 	    <bonus type="Sense Motive" value="2" />
 	    <bonus type="Acid Resistance,Fire Resistance,Cold Resistance,Electricity Resistance" value="5" />
-	    <onHitEffect name="Unarmed Damage">
-	        <bonus type="Damage d3" value="1" />
-	    </onHitEffect>
 	    <!-- TODO Elemental Assault -->
+	</selection>
+	<selection name="Tengu">
+	    <condition key="Status" name="Humanoid,Tengu" />
+	    <bonus type="Character Size" value="5" />
+	    <bonus type="Dexterity" value="2" />
+	    <bonus type="Wisdom" value="2" />
+	    <bonus type="Constitution" value="-2" />
+	    <bonus type="Perception,Stealth" value="2" />
+	    <bonus type="Speed" value="30" />
+	    <condition key="Proficiency" name="Elven Curve Blade,Shortsword,Longsword,Kukri,Bastard Sword,Dagger,Falchion,Greatsword,Rapier,Scimitar,Two-bladed Sword,Punching Dagger" />
 	</selection>
 </bonusGroup>

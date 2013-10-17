@@ -76,7 +76,6 @@ public class ChoiceSelectFragment extends Fragment {
 			subGroupName = args.getString(XmlConst.SUBGRP);
 			specificNames = args.getString(XmlConst.SPECIFIC_ATTR);
 			choiceId = Integer.parseInt(args.getString("choiceId"));
-			Log.d("ChoiceSelect", Integer.toString(choiceId));
 
 			InputStream dataFile = activity.getResources().openRawResource(args.getInt("rawDataInt"));
 			XmlObjectModel model = new XmlObjectModel(dataFile);
@@ -131,23 +130,34 @@ public class ChoiceSelectFragment extends Fragment {
 			if (tag.equals(XmlConst.SELECTION_TAG)) {
 				selection_list.add(child);
 			} else if (tag.equals(XmlConst.PREREQ_TAG)) {
-				Boolean meets_prereq = false;
 				String key = child.getAttribute(XmlConst.KEY_ATTR);
 				String type = child.getAttribute(XmlConst.TYPE_ATTR);
+				String value = child.getAttribute(XmlConst.VALUE_ATTR);
+				
 				if (key != null)
-					meets_prereq =  manager.hasProperty(key, child.getAttribute(XmlConst.NAME_ATTR));
+					if (manager.hasProperty(key, child.getAttribute(XmlConst.NAME_ATTR))) {
+						filterPrerequisites(manager, child);
+						continue;
+					}
 				if (type != null) {
-					int req_value = Integer.parseInt(child.getAttribute(XmlConst.VALUE_ATTR));
-					int value = manager.getValue(type);
-					String compare = child.getAttribute(XmlConst.COMPARE_ATTR);
-					if (compare != null)
-						if (child.getAttribute(XmlConst.COMPARE_ATTR).equals(PropertyLists.equals))
-							meets_prereq = (req_value == value);
-					else
-						meets_prereq = (value >= req_value);
+					int req_value = Integer.parseInt(value);
+					int val = manager.getValue(type);
+					//Log.d("PrereqTypeValue", Integer.toString(val) + " >= " + Integer.toString(req_value));
+					String logic = child.getAttribute(XmlConst.LOGIC_ATTR);
+					if (logic != null) {
+						if (logic.equals(PropertyLists.equals)) {
+							if (val == req_value) {
+								filterPrerequisites(manager,child);
+								continue;
+							}
+						}
+					} else {
+						if (val >= req_value) {
+							filterPrerequisites(manager, child);
+							continue;
+						}
+					}
 				}
-				if (meets_prereq)
-					filterPrerequisites(manager, child);
 			} else {
 				filterPrerequisites(manager, child);
 			}

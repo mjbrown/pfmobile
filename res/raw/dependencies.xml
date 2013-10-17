@@ -21,7 +21,7 @@
     <bonus type="Armor Class" value="min( [Dexterity Modifier] , [Maximum Dexterity Bonus] )" />
     <bonus type="Touch Armor Class" value="min( [Dexterity Modifier] , [Maximum Dexterity Bonus] )" />
     
-    <conditional key="Equipment" name="Unarmored">
+    <conditional key="Equipment" name="Light Armor,Medium Armor,Heavy Armor" logic="NOR" >
         <bonus type="Maximum Dexterity Bonus" value="1000" />
     </conditional>
     
@@ -75,9 +75,6 @@
     <onHitEffect type="Hit Points" name="Melee Damage" source="Natural">
 	    <bonus type="Critical Multiplier" value="2" />
     </onHitEffect>
-	<onHitEffect name="Unarmed Damage" parent="Melee Damage" >
-	    <bonus type="Damage" value="[Strength Modifier]" />
-	</onHitEffect>
     <onHitEffect name="Main Hand Melee Weapon Damage" parent="Melee Damage" >
         <bonus type="Damage" value="[Strength Modifier]"/>
         <conditional key="Equipment" name="Two Hand">
@@ -102,9 +99,6 @@
 	</attack>
 	<attack name="Off Hand Melee Attack" parent="Melee Attack">
 	    <onHitEffect parent="Off Hand Melee Weapon Damage" />
-	</attack>
-	<attack name="Unarmed Attack" parent="Melee Attack">
-	    <onHitEffect parent="Unarmed Damage" />
 	</attack>
     <action name="Melee Full Attack" cost="Full Round" >
         <attack name="First Main Hand Attack" parent="Main Hand Melee Attack" />
@@ -131,7 +125,7 @@
         <attack name="Off Hand Melee Attack">
             <bonus type="To Hit" value="-10" />
         </attack>
-        <conditional key="Equipment" name="Light Off Hand">
+        <conditional key="Equipment" name="Off Hand Light">
 	        <attack name="Main Hand Melee Attack">
 	            <bonus type="To Hit" value="2" />
 	        </attack>
@@ -155,24 +149,6 @@
             </conditional>
         </action>
     </conditional>
-    <action name="Unarmed Full Attack" cost="Full Round" >
-        <attack parent="Unarmed Attack" />
-        <conditional key="Statistic" type="Base Attack" value="6">
-            <attack parent="Unarmed Attack" >
-                <bonus type="To Hit" value="-5"/>
-            </attack>
-        </conditional>
-        <conditional key="Statistic" type="Base Attack" value="11">
-            <attack parent="Unarmed Attack" >
-                <bonus type="To Hit" value="-10"/>
-            </attack>
-        </conditional>
-        <conditional key="Statistic" type="Base Attack" value="16">
-            <attack parent="Unarmed Attack" >
-                <bonus type="To Hit" value="-15"/>
-            </attack>
-        </conditional>
-    </action>
     <action name="Equip Main Hand Weapon" cost="Move" visible="No" >
         
     </action>
@@ -184,5 +160,8 @@
         <attack name="Melee Attack">
             <bonus type="To Hit" value="-2" />
         </attack>
+    </conditional>
+    <conditional key="Status" activate="Manual" name="Fatigued">
+        <bonus type="Strength,Dexterity" value="-2" /> 
     </conditional>
 </basicDependencies>

@@ -95,10 +95,12 @@
 			        <bonus type="To Hit" value="max( [Strength Modifier] , [Dexterity Modifier] )" />
 			    </attack>
 			</conditional>
-			<attack name="Unarmed Attack">
-			    <bonus type="To Hit" value="- [Strength Modifier]" />
-			    <bonus type="To Hit" value="max( [Strength Modifier] , [Dexterity Modifier] )" />
-			</attack>
+			<conditional key="Equipment" name="Flurry Finesse">
+			    <attack name="Flurry Of Blows Attack">
+			        <bonus type="To Hit" value="- [Strength Modifier]" />
+			        <bonus type="To Hit" value="max( [Strength Modifier] , [Dexterity Modifier] )" />
+			    </attack>
+			</conditional>
 			<attack name="Melee Touch Attack">
 			    <bonus type="To Hit" value="- [Strength Modifier]" />
 			    <bonus type="To Hit" value="max( [Strength Modifier] , [Dexterity Modifier] )" />

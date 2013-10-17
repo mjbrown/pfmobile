@@ -148,4 +148,100 @@
         </spellLevel>
     </spellList>
     </spellList>
+    <spellList source="Inquisitor">
+        <spellLevel value="0">
+            <entry name="Acid Splash" />
+            <entry name="Bleed" />
+            <entry name="Brand" />
+            <entry name="Create Water" />
+            <entry name="Daze" />
+            <entry name="Detect Magic" />
+            <entry name="Detect Poison" />
+            <entry name="Disrupt Undead" />
+            <entry name="Guidance" />
+            <entry name="Light" />
+            <entry name="Read Magic" />
+            <entry name="Resistance" />
+            <entry name="Sift" />
+            <entry name="Stabilize" />
+            <entry name="Virtui" />
+        </spellLevel>
+        <spellLevel value="1">
+            <entry name="Alarm" />
+            <entry name="Bane" />
+            <entry name="Bless" />
+            <entry name="Bluss Water" />
+            <entry name="Bowstaff" />
+            <entry name="Burst Bonds" />
+            <entry name="Cause Fear" />
+            <entry name="Command" />
+            <entry name="Compel Hostility" />
+            <entry name="Comprehend Languages" />
+            <entry name="Cure Light Wounds" />
+            <entry name="Curse Water" />
+            <entry name="Detect Chaos/Evil/Good/Law" />
+            <entry name="Detect Undead" />
+            <entry name="Disguise Self" />
+            <entry name="Divine Favor" />
+            
+            <entry name="Inflict Light Wounds" />
+            <entry name="Lend Judgement" />
+            <entry name="Longshot" />
+            <entry name="Magic Weapon" />
+            <entry name="Protection from Chaos/Evil/Good/Law" />
+            <entry name="Remove Fear" />
+            <entry name="Returning Weapon" />
+            <entry name="Shield Of Faith" />
+            <entry name="True Strike" />
+            
+        </spellLevel>
+        <spellLevel value="2">
+            <entry name="Aid" />
+            <entry name="Align Weapon" />
+            <entry name="Blistering Invective" />
+            <entry name="Cure Moderate Wounds" />
+            <entry name="Darkness" />
+            <entry name="Flames of the Faithful" />
+            <entry name="Hold Person" />
+            <entry name="Inflict Moderate Wounds" />
+            <entry name="Instrument of Agony" />
+            <entry name="Invisibility" />
+            <entry name="Resist Energy" />
+            <entry name="Lesser Restoration" />
+            <entry name="See Invisibility" />
+            <entry name="Weapon of Awe" />
+        </spellLevel>
+        <spellLevel value="3">
+            <entry name="Arcane Sight" />
+            <entry name="Cure Serious Wounds" />
+            <entry name="Daylight" />
+            <entry name="Deeper Darkness" />
+            <entry name="Dimensional Anchor" />
+            <entry name="Dispel Magic" />
+            <entry name="Heroism" />
+            <entry name="Inflict Serious Wounds" />
+            <entry name="Invisibility Purge" />
+            <entry name="Keen Edge" />
+            <entry name="Magic Vestment" />
+            <entry name="Greater Magic Weapon" />
+            <entry name="Prayer" />
+            <entry name="Protection from Energy" />
+            <entry name="Searing Light" />
+        </spellLevel>
+        <spellLevel value="4">
+            <entry name="Cure Critical Wounds" />
+            <entry name="Death Ward" />
+            <entry name="Divine Power" />
+            <entry name="Fear" />
+            <entry name="Freedom Of Movement" />
+            <entry name="Hold Monster" />
+            <entry name="Inflict Critical Wounds" />
+            <entry name="Greater Invisibility" />
+            <entry name="Judgement Light" />
+            <entry name="Restoration" />
+            <entry name="Spell Immunity" />
+            <entry name="Stoneskin" />
+            
+        </spellLevel>
+    </spellList>
 </content>

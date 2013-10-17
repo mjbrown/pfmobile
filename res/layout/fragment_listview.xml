@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        
+        <Button 
+            android:id="@+id/button_end_round"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="End Round"
+            android:layout_weight="1.2" />
+        
+        <Button 
+            android:id="@+id/button_rest"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Rest"
+            android:layout_weight="1" />
+        
+        <Button 
+            android:id="@+id/button_conditions"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Conditions"
+            android:layout_weight="1.5" />
+        
+        </LinearLayout>
+    <ListView
+        android:id="@+id/listView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+	    android:divider="#000000"
+	    android:dividerHeight="2dp" />
+
+</LinearLayout>

@@ -19,14 +19,20 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.ninjadin.pfmobile.R;
+import com.ninjadin.pfmobile.data.ExpListData;
 import com.ninjadin.pfmobile.data.XmlConst;
 import com.ninjadin.pfmobile.dialogfragments.ModifierDialogFragment;
 import com.ninjadin.pfmobile.dialogfragments.ModifierDialogFragment.ModifierDialogListener;
+import com.ninjadin.pfmobile.dialogfragments.SpellListEditDialogFragment.SpellListFragmentListener;
 import com.ninjadin.pfmobile.fragments.ActionFragment;
 import com.ninjadin.pfmobile.fragments.CharacterSheetFragment;
 import com.ninjadin.pfmobile.fragments.CharacterSheetFragment.CharacterSheetFragmentListener;
 import com.ninjadin.pfmobile.fragments.ChoiceSelectFragment;
 import com.ninjadin.pfmobile.fragments.ChoiceSelectFragment.ChoiceSelectFragmentListener;
+import com.ninjadin.pfmobile.fragments.EffectSelectFragment;
+import com.ninjadin.pfmobile.fragments.EffectSelectFragment.EffectSelectFragmentListener;
+import com.ninjadin.pfmobile.fragments.EffectsFragment;
+import com.ninjadin.pfmobile.fragments.EffectsFragment.EffectsFragmentListener;
 import com.ninjadin.pfmobile.fragments.GeneratorMenuFragment;
 import com.ninjadin.pfmobile.fragments.InventoryFragment;
 import com.ninjadin.pfmobile.fragments.InventoryFragment.InventoryFragmentListener;
@@ -34,7 +40,6 @@ import com.ninjadin.pfmobile.fragments.ItemEditFragment.ItemEditListener;
 import com.ninjadin.pfmobile.fragments.LevelsFragment;
 import com.ninjadin.pfmobile.fragments.LevelsFragment.LevelsFragmentListener;
 import com.ninjadin.pfmobile.fragments.ShowXMLFragment;
-import com.ninjadin.pfmobile.fragments.SpellListFragment.SpellListFragmentListener;
 import com.ninjadin.pfmobile.fragments.SpellbookFragment;
 import com.ninjadin.pfmobile.fragments.SpellbookFragment.SpellbookFragmentListener;
 import com.ninjadin.pfmobile.non_android.CharacterXmlObject;
@@ -48,7 +53,8 @@ import com.ninjadin.pfmobile.non_android.XmlObjectModel;
 public class GeneratorActivity extends FragmentActivity implements 
 	ModifierDialogListener, LevelsFragmentListener, 
 	CharacterSheetFragmentListener, ChoiceSelectFragmentListener, SpellListFragmentListener,
-	InventoryFragmentListener, SpellbookFragmentListener, ItemEditListener {
+	InventoryFragmentListener, SpellbookFragmentListener, ItemEditListener, EffectsFragmentListener, 
+	EffectSelectFragmentListener {
 	public StatisticManager dependencyManager;
 	public String masterCharFilename;
 	public String inventoryFilename;
@@ -68,6 +74,7 @@ public class GeneratorActivity extends FragmentActivity implements
 	final static public int CHARACTER_MODEL = 0;
 	final static public int DEPENDENCIES_MODEL = 1;
 	final static public int INVENTORY_MODEL = 2;
+	final static public int EFFECTS_MODEL = 3;
 	
 	public Boolean dirtyFiles = true;
 	
@@ -102,7 +109,7 @@ public class GeneratorActivity extends FragmentActivity implements
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.char_fragments_list, menu);
+		getMenuInflater().inflate(R.menu.options_menu, menu);
 		return true;
 	}
 
@@ -119,7 +126,17 @@ public class GeneratorActivity extends FragmentActivity implements
 			//
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
+		case R.id.main_menu:
+			startMenu("Main Menu");
+			return true;
+		case R.id.character_menu:
+			startMenu("Character Menu");
+			return true;
+		case R.id.modifiers:
+			showModifierDialog();
+			return true;
 		}
+			
 		return super.onOptionsItemSelected(item);
 	}
 
@@ -188,8 +205,7 @@ public class GeneratorActivity extends FragmentActivity implements
 	}
 	
 	public void launchStatistics(View view) {
-		saveCharacterState();
-		refreshCharData();
+		refreshManager();
 		CharacterSheetFragment newFragment = new CharacterSheetFragment();
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.fragment_container, newFragment);
@@ -198,7 +214,7 @@ public class GeneratorActivity extends FragmentActivity implements
 	}
 	
 	public void launchLevels(View view) {
-		refreshCharData();
+		refreshManager();
 		LevelsFragment newFragment = new LevelsFragment();
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.fragment_container, newFragment);
@@ -207,7 +223,7 @@ public class GeneratorActivity extends FragmentActivity implements
 	}
 	
 	public void launchAttacks(View view) {
-		refreshCharData();
+		refreshManager();
 		ActionFragment newFragment = new ActionFragment();
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.fragment_container, newFragment);
@@ -216,7 +232,17 @@ public class GeneratorActivity extends FragmentActivity implements
 	}
 	
 	public void launchInventory(View view) {
+		refreshManager();
 		InventoryFragment newFragment = new InventoryFragment();
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+		transaction.replace(R.id.fragment_container, newFragment);
+		transaction.addToBackStack(null);
+		transaction.commit();
+	}
+	
+	public void launchEffectSelect(View view) {
+		refreshManager();
+		EffectSelectFragment newFragment = new EffectSelectFragment();
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.fragment_container, newFragment);
 		transaction.addToBackStack(null);
@@ -224,7 +250,7 @@ public class GeneratorActivity extends FragmentActivity implements
 	}
 
 	public void launchFilterSelect(View view, String groupName, String subGroup, String specificNames, String choiceId) {
-		refreshCharData();
+		refreshManager();
 		ChoiceSelectFragment newFragment = new ChoiceSelectFragment();
 		Bundle passedData = new Bundle();
 		passedData.putString(XmlConst.GRPNAME_ATTR, groupName);
@@ -249,6 +275,7 @@ public class GeneratorActivity extends FragmentActivity implements
 	}
 	
 	public void startMenu(String message) {
+		refreshManager();
 		GeneratorMenuFragment firstFragment = new GeneratorMenuFragment();
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.fragment_container, firstFragment);
@@ -258,15 +285,25 @@ public class GeneratorActivity extends FragmentActivity implements
 	}
 	
 	public void launchSpellbook(View view) {
-		refreshCharData();
+		refreshManager();
 		SpellbookFragment firstFragment = new SpellbookFragment();
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.fragment_container, firstFragment);
 		transaction.addToBackStack(null);
 		transaction.commit();
 	}
+	
+	public void launchEffects(View view) {
+		refreshManager();
+		EffectsFragment fragment = new EffectsFragment();
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+		transaction.replace(R.id.fragment_container, fragment);
+		transaction.addToBackStack(null);
+		transaction.commit();
+	}
 
 	public void launchCharXML(View view) {
+		saveCharacterState();
 		Bundle passedData = new Bundle();
 		passedData.putString("filename", masterCharFilename);
 		ShowXMLFragment newFragment = new ShowXMLFragment();
@@ -278,6 +315,7 @@ public class GeneratorActivity extends FragmentActivity implements
 	}
 
 	public void launchInventoryXML(View view) {
+		saveCharacterState();
 		Bundle passedData = new Bundle();
 		passedData.putString("filename", inventoryFilename);
 		ShowXMLFragment newFragment = new ShowXMLFragment();
@@ -289,6 +327,7 @@ public class GeneratorActivity extends FragmentActivity implements
 	}
 
 	public void launchEffectXML(View view) {
+		saveCharacterState();
 		Bundle passedData = new Bundle();
 		passedData.putString("filename", effectFilename);
 		ShowXMLFragment newFragment = new ShowXMLFragment();
@@ -300,6 +339,7 @@ public class GeneratorActivity extends FragmentActivity implements
 	}
 	
 	public void launchSpellbookXML(View view) {
+		saveCharacterState();
 		Bundle passedData = new Bundle();
 		passedData.putString("filename", spellsFilename);
 		ShowXMLFragment newFragment = new ShowXMLFragment();
@@ -313,7 +353,7 @@ public class GeneratorActivity extends FragmentActivity implements
 	public void performAction(String action_name) {
 		List<XmlObjectModel> effect_list = dependencyManager.getEffects(action_name);
 		for (XmlObjectModel effect: effect_list) {
-			effects.addEffect(effect);
+			effects.addEffect(effect, dependencyManager);
 		}
 		refreshManager();
 		startMenu(action_name + " action taken.");
@@ -340,9 +380,7 @@ public class GeneratorActivity extends FragmentActivity implements
 	
 	@Override
 	public void onModifierPosClick(ModifierDialogFragment dialog) {
-		ActionFragment fragment = (ActionFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-		refreshCharData();
-		fragment.reloadActionData();
+		refreshManager();
 	}
 	
 	@Override
@@ -397,6 +435,8 @@ public class GeneratorActivity extends FragmentActivity implements
 			return dependencies;
 		if (enum_model == INVENTORY_MODEL)
 			return inventory;
+		if (enum_model == EFFECTS_MODEL)
+			return effects;
 		return null;
 	}
 	
@@ -464,5 +504,20 @@ public class GeneratorActivity extends FragmentActivity implements
 	public List<SpellGroup> getSpellsAvailable() {
 		refreshManager();
 		return dependencyManager.getSpells();
+	}
+	
+	@Override
+	public void removeEffect(String effect_name) {
+		effects.removeEffect(effect_name, dependencyManager);
+	}
+
+	@Override
+	public ExpListData getSelectEffects() {
+		return dependencyManager.getSelectEffects();
+	}
+
+	@Override
+	public void selectEffect(String select, String name) {
+		dependencyManager.selectEffect(select, name);
 	}
 }
