@@ -90,11 +90,11 @@
             <entry name="1d6" value="4" />
             <entry name="1d8" value="5" />
             <entry name="1d10" value="6" />
-            <entry name="1d12" value="7" />
-            <entry name="2d4" value="8" />
-            <entry name="2d6" value="9" />
-            <entry name="2d8" value="10" />
-            <entry name="2d10" value="11" />
+            <entry name="2d6" value="7" />
+            <entry name="2d8" value="8" />
+            <entry name="2d10" value="9" />
+            <entry name="1d12" value="10" />
+            <entry name="2d4" value="11" />
         </option>
         <option type="Spinner" name="Extra Damage Dice" value="Damage d6" >
             <entry value="Damage d2" />
@@ -216,7 +216,7 @@
 		                    <action name="Sheathe Two Hand [Weapon Name]" cost="Free">
 		                        <effect name="Two Hand [Weapon Name]" type="Remove" />
 		                    </action>
-				            <effect name="[Weapon Name]" type="Select" select="Two Hand Weapon">
+				            <effect name="Two Hand [Weapon Name]" type="Select" select="Main Hand Weapon">
 				                <attack name="Main Hand Melee Attack">
 				        			<conditional key="Proficiency" name="[Proficiency],[Proficiency Group]" logic="NOR">
 				                    	<bonus type="To Hit" value="-4" />

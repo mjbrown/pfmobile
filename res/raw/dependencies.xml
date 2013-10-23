@@ -72,34 +72,48 @@
     <bonus type="Survival" value="[Wisdom Modifier]" />
     <bonus type="Swim" value="[Strength Modifier]" />
     <bonus type="Use Magic Device" value="[Charisma Modifier]" />
-    <onHitEffect type="Hit Points" name="Melee Damage" source="Natural">
+    
+    <!-- Basics, parents of all attacks/damage -->
+    <onHitEffect name="Basic Damage">
+        
+    </onHitEffect>
+    <attack name="Basic Attack">
+	    <bonus type="To Hit" value="[Base Attack]" />
+    </attack>
+    
+    <!-- Melee, parents of all Melee actions -->
+    <onHitEffect name="Melee Damage" parent="Basic Damage">
 	    <bonus type="Critical Multiplier" value="2" />
     </onHitEffect>
+	<attack name="Melee Attack" parent="Basic Attack">
+	    <bonus type="To Hit" value="[Strength Modifier]" />
+	</attack>
+    
+    <!-- Melee Main Hand -->
     <onHitEffect name="Main Hand Melee Weapon Damage" parent="Melee Damage" >
         <bonus type="Damage" value="[Strength Modifier]"/>
         <conditional key="Equipment" name="Two Hand">
             <bonus type="Damage" value="( [Strength Modifier] / 2 )" />
         </conditional>
     </onHitEffect>
+	<attack name="Main Hand Melee Attack" parent="Melee Attack">
+	    <onHitEffect parent="Main Hand Melee Weapon Damage" />
+	</attack>
+    
+	<!--  Melee Off Hand -->
     <onHitEffect name="Off Hand Melee Weapon Damage" parent="Melee Damage" >
         <bonus type="Damage" value="( [Strength Modifier] / 2 )" />
         <bonus type="Critical Multiplier" value="2" />
     </onHitEffect>
-    <attack name="Basic Attack">
-	    <bonus type="To Hit" value="[Base Attack]" />
-    </attack>
-	<attack name="Melee Attack" parent="Basic Attack" versus="Armor Class">
-	    <bonus type="To Hit" value="[Strength Modifier]" />
-	</attack>
-	<attack name="Melee Touch Attack" parent="Basic Attack" versus="Touch Armor Class">
-	    <bonus type="To Hit" value="[Strength Modifier]" />
-	</attack>
-	<attack name="Main Hand Melee Attack" parent="Melee Attack">
-	    <onHitEffect parent="Main Hand Melee Weapon Damage" />
-	</attack>
 	<attack name="Off Hand Melee Attack" parent="Melee Attack">
 	    <onHitEffect parent="Off Hand Melee Weapon Damage" />
 	</attack>
+	
+	<!-- Melee Touch -->
+    <attack name="Melee Touch Attack" parent="Basic Attack" versus="Touch Armor Class">
+	    <bonus type="To Hit" value="[Strength Modifier]" />
+	</attack>
+	
     <action name="Melee Full Attack" cost="Full Round" >
         <attack name="First Main Hand Attack" parent="Main Hand Melee Attack" />
         <conditional key="Statistic" type="Base Attack" value="6">
@@ -118,7 +132,7 @@
             </attack>
         </conditional>
     </action>
-    <conditional key="Activated" activate="Manual" name="Two Weapon Fighting">
+    <conditional key="Activated" name="Two Weapon Fighting">
         <attack name="Main Hand Melee Attack">
             <bonus type="To Hit" value="-6" />
         </attack>
@@ -149,19 +163,25 @@
             </conditional>
         </action>
     </conditional>
+    
+    <!-- Ranged Attack -->
+    <attack name="Ranged Attack" parent="Basic Attack" >
+        <bonus type="To Hit" value="[Dexterity Modifier]" />
+    </attack>
+    
     <action name="Equip Main Hand Weapon" cost="Move" visible="No" >
         
     </action>
     <action name="Equip Off Hand Weapon" cost="Move" visible="No" >
         
     </action>
-    <conditional key="Status" activate="Manual" name="Shaken">
+    <conditional key="Status" name="Shaken">
         <bonus type="Fortitude,Reflex,Will" value="-2" />
-        <attack name="Melee Attack">
+        <attack name="Basic Attack">
             <bonus type="To Hit" value="-2" />
         </attack>
     </conditional>
-    <conditional key="Status" activate="Manual" name="Fatigued">
+    <conditional key="Status" name="Fatigued">
         <bonus type="Strength,Dexterity" value="-2" /> 
     </conditional>
 </basicDependencies>

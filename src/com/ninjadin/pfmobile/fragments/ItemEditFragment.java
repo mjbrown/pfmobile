@@ -121,9 +121,9 @@ public class ItemEditFragment extends Fragment {
 				if (type.equals(PropertyLists.spinner))
 					spinnerEdit(option);
 				else if (type.equals(PropertyLists.text))
-					textEdit(option);
+					textEdit(option, false);
 				else if (type.equals(PropertyLists.number))
-					textEdit(option);
+					textEdit(option, true);
 				else if (type.equals(PropertyLists.checkbox))
 					checkedEdit(option);
 			}
@@ -163,14 +163,14 @@ public class ItemEditFragment extends Fragment {
 		dialog.show(getChildFragmentManager(), "SpinnerEditDialogFragment");
 	}
 	
-	private void textEdit(XmlObjectModel option) {
+	private void textEdit(XmlObjectModel option, Boolean is_number) {
 		String name = option.getAttribute(XmlConst.NAME_ATTR);
 		String current = option.getAttribute(XmlConst.VALUE_ATTR);
-		DialogFragment dialog = TextEditDialogFragment.newDialog(name, current);
+		DialogFragment dialog = TextEditDialogFragment.newDialog(name, current, is_number);
 		dialog.setTargetFragment(this, OPTION_EDIT_CODE);
 		dialog.show(getChildFragmentManager(), "TextEditDialogFragment");
 	}
-
+	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == OPTION_EDIT_CODE) {

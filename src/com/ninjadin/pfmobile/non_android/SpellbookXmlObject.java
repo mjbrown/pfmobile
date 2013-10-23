@@ -10,12 +10,17 @@ import com.ninjadin.pfmobile.data.PropertyLists;
 import com.ninjadin.pfmobile.data.XmlConst;
 
 public class SpellbookXmlObject extends XmlObjectModel {
-
-	XmlObjectModel spell_definitions = null;
+	final private String GROUP_TAG = "group";
+	final private String MEMORIZED = "Memorized";
+	final private String EXPENDED = "Expended";
 	
-	public SpellbookXmlObject(File spell_file, File temp_file, InputStream spell_streams) {
+	XmlObjectModel memorized = null, expended = null;
+	
+	public SpellbookXmlObject(File spell_file, File temp_file) {
 		super (spell_file, temp_file);
-		spell_definitions = new XmlObjectModel(spell_streams);
+		memorized = findObject(GROUP_TAG, XmlConst.NAME_ATTR, MEMORIZED);
+		expended = findObject(GROUP_TAG, XmlConst.NAME_ATTR, EXPENDED);
+		initializeIdMap(XmlConst.SPELL_TAG);
 	}
 	
 	private final static Map<String, Boolean> isSpontaneous;
@@ -47,24 +52,31 @@ public class SpellbookXmlObject extends XmlObjectModel {
 
 		Map<String,String> attributes = new HashMap<String,String>();
 		attributes.put(XmlConst.NAME_ATTR, spell_name);
-		XmlObjectModel spell_definition = spell_definitions.findObject(XmlConst.SPELL_TAG, attributes);
-		if (spell_definition != null) {
-			String school_name = spell_definition.getAttribute(XmlConst.SCHOOL_ATTR);
-			entry.setAttribute(XmlConst.SCHOOL_ATTR, school_name);
-		}
-		
+		String id = getUniqueId();
+		entry.setAttribute(XmlConst.ID_ATTR, id);
 		entry.setAttribute(XmlConst.SOURCE_ATTR, class_name);
 		entry.setAttribute(XmlConst.NAME_ATTR, spell_name);
 		if (isSpontaneous.get(class_name)) {
-			entry.setAttribute(XmlConst.USES_ATTR, class_name + " Level " + spell_level + " Spells Per Day");
-			entry.setAttribute(XmlConst.USED_ATTR, class_name + " Level " + spell_level + " Spells Per Day Used");
+			entry.setAttribute(XmlConst.USES_ATTR, spontaneousUses(class_name, spell_level));
+			entry.setAttribute(XmlConst.USED_ATTR, spontaneousUsed(class_name, spell_level));
+		} else {
+			entry.setAttribute(XmlConst.USES_ATTR, "Spell " + id + " Uses");
+			entry.setAttribute(XmlConst.USED_ATTR, "Spell " + id + " Used");
+			setMemorized(id, 0);
 		}
-		
 		entry.addChild(bonusObject(PropertyLists.spell_level, spell_level));
 		entry.addChild(bonusObject(PropertyLists.caster_level, "[" + class_name + " Caster Level]"));
 		entry.addChild(bonusObject(PropertyLists.spell_failure, "[" + class_name + " Spell Failure]"));
 		entry.addChild(bonusObject(PropertyLists.save_dc, "10 + [" + castingStat.get(class_name) + " Modifier] + " + spell_level));
 		addChild(entry);
+	}
+	
+	private String spontaneousUses(String class_name, String spell_level) {
+		return class_name + " Level " + spell_level + " Spells Per Day";
+	}
+	
+	private String spontaneousUsed(String class_name, String spell_level) {
+		return class_name + " Level " + spell_level + " Spells Per Day Used";
 	}
 	
 	private XmlObjectModel bonusObject(String type, String value) {
@@ -74,5 +86,16 @@ public class SpellbookXmlObject extends XmlObjectModel {
 		return bonus;
 	}
 
-
+	public void setMemorized(String id, Integer value) {
+		memorized.deleteById(id);
+		XmlObjectModel bonus = bonusObject("Spell " + id + " Uses", Integer.toString(value));
+		bonus.setAttribute(XmlConst.ID_ATTR, id);
+		memorized.addChild(bonus);
+	}
+	
+	@Override
+	public void deleteById(String id) {
+		super .deleteById(id);
+		memorized.deleteById(id);
+	}
 }

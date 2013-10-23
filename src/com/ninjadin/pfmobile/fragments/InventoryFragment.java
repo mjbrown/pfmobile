@@ -134,7 +134,7 @@ public class InventoryFragment extends ExpListFragment {
 			dataSetUpdate();
 		} else if (requestCode == SLOT_SELECT_CODE) {
 			String slot_name = data.getStringExtra(EditDialogFragment.RETURN_VALUE);
-			DialogFragment dialog = TextEditDialogFragment.newDialog(slot_name, "Unnamed");
+			DialogFragment dialog = TextEditDialogFragment.newDialog(slot_name, "Unnamed", false);
 			dialog.setTargetFragment(this_fragment, ITEM_ADD_CODE);
 			dialog.show(getChildFragmentManager(), "TextEditDialogFragment");
 		} else if (requestCode == ITEM_ADD_CODE) {

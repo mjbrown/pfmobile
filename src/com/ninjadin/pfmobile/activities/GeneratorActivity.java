@@ -164,10 +164,9 @@ public class GeneratorActivity extends FragmentActivity implements
 		effectFile = new File(context.getFilesDir(), effectFilename);
 		effects = new EffectXmlObject(effectFile, tempFile);
 		inventoryFile = new File(context.getFilesDir(), inventoryFilename);
-		inventory = new InventoryXmlObject(inventoryFile, tempFile, 
-				this.getResources().openRawResource(R.raw.properties));
+		inventory = new InventoryXmlObject(inventoryFile, tempFile );
 		spellsFile = new File(context.getFilesDir(), spellsFilename);
-		spells = new SpellbookXmlObject(spellsFile, tempFile, getResources().openRawResource(R.raw.spells));
+		spells = new SpellbookXmlObject(spellsFile, tempFile);
 		dependencies = new XmlObjectModel(getResources().openRawResource(R.raw.dependencies));;
 		refreshManager();
 		
@@ -361,16 +360,16 @@ public class GeneratorActivity extends FragmentActivity implements
 	
 	public void activateCondition(String key, String name) {
 		effects.addCondition(key, name);
-		dependencyManager.activateCondition(key, name);
+		//dependencyManager.activateCondition(key, name);
 	}
 	
 	public void deactivateCondition(String key, String name) {
 		effects.removeCondition(key, name);
-		dependencyManager.deactivateCondition(key, name);
+		//dependencyManager.deactivateCondition(key, name);
 	}
 	
 	public Boolean isConditionActive(String key, String name) {
-		return dependencyManager.hasProperty(key, name);
+		return dependencyManager.masterHasProperty(key, name);
 	}
 	
 	public void showModifierDialog() {
@@ -472,13 +471,13 @@ public class GeneratorActivity extends FragmentActivity implements
 	
 	@Override
 	public void inventoryDeleteItem(String id) {
-		inventory.deleteItem(id);
+		inventory.deleteById(id);
 		refreshManager();
 	}
 
 	@Override
 	public void itemAddProperty(XmlObjectModel property, String item_id, String property_id) {
-		inventory.addProperty(property, item_id, property_id);
+		inventory.setProperty(property, item_id, property_id);
 		refreshManager();
 	}
 	
@@ -519,5 +518,26 @@ public class GeneratorActivity extends FragmentActivity implements
 	@Override
 	public void selectEffect(String select, String name) {
 		dependencyManager.selectEffect(select, name);
+	}
+	
+	@Override
+	public void castSpell(SpellGroup spell) {
+		effects.expendSpell(spell.getAttribute(XmlConst.USED_ATTR));
+		refreshManager();
+		startMenu(spell.getAttribute(XmlConst.NAME_ATTR) + " used.");
+	}
+	
+	@Override
+	public void memorizeSpell(String id, Integer number) {
+		spells.setMemorized(id, number);
+		refreshManager();
+		startMenu("Spells memorized.");
+	}
+	
+	@Override
+	public void deleteSpell(String id) {
+		spells.deleteById(id);
+		refreshManager();
+		startMenu("Spell Deleted.");
 	}
 }

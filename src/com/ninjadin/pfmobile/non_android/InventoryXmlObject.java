@@ -2,77 +2,33 @@ package com.ninjadin.pfmobile.non_android;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import android.util.Log;
 
 import com.ninjadin.pfmobile.data.XmlConst;
 
 public class InventoryXmlObject extends XmlObjectModel {
 	public static String EQUIPPED_ATTR = "equipped";
 	
-	int highest_id = 0;
-	Map<String, XmlObjectModel> item_id_map = new HashMap<String,XmlObjectModel>();
-	XmlObjectModel properties;
-	Map<String, XmlObjectModel> properties_map = new HashMap<String,XmlObjectModel>();
-	
-	public InventoryXmlObject(File inventory_file, File temp_file, InputStream properties_stream) {
+	public InventoryXmlObject(File inventory_file, File temp_file) {
 		super (inventory_file, temp_file);
-		properties = new XmlObjectModel(properties_stream);
-		initialize();
-	}
-	
-	private void initialize() {
-		for (XmlObjectModel model: getChildren()) {
-			String tag = model.getTag();
-			String id = model.getAttribute(XmlConst.ID_ATTR);
-			if (tag.equals(XmlConst.ITEM_TAG)) {
-				item_id_map.put(id, model);
-				String id_split[] = id.split("#");
-				int id_number = Integer.parseInt(id_split[1]);
-				if (id_number > highest_id)
-					highest_id = id_number;
-			}
-		}
-		for (XmlObjectModel model: getChildren()) {
-			String tag = model.getTag();
-			String type = model.getAttribute(XmlConst.TYPE_ATTR);
-			if (tag.equals(XmlConst.PROPERTY_TAG)) {
-				properties_map.put(type, model);
-			}
-		}
+		initializeIdMap(XmlConst.ITEM_TAG);
 	}
 	
 	public void createItem(String name, String slot) {
 		XmlObjectModel item = new XmlObjectModel(XmlConst.ITEM_TAG);
-		String id = "Id#" + Integer.toString(highest_id + 1);
+		String id = getUniqueId();
 		item.setAttribute(XmlConst.ID_ATTR, id);
 		item.setAttribute(XmlConst.NAME_ATTR, name);
 		item.setAttribute(XmlConst.SLOT_ATTR, slot);
 		item.setAttribute(EQUIPPED_ATTR, "False");
 		addChild(item);
-		item_id_map.put(id, item);
-		highest_id += 1;
-	}
-	
-	public void deleteItem(String id) {
-		int i = 0;
-		for (XmlObjectModel child: getChildren()) {
-			String child_id = child.getAttribute(XmlConst.ID_ATTR); 
-			if (child_id.equals(id)) {
-				removeChild(i);
-				return;
-			}
-			i += 1;
-		}
 	}
 	
 	public void equipItem(String item_id, Boolean is_equipped) {
-		XmlObjectModel item = item_id_map.get(item_id);
+		XmlObjectModel item = id_map.get(item_id);
 		if (is_equipped)
 			item.setAttribute(EQUIPPED_ATTR, "True");
 		else
@@ -80,7 +36,7 @@ public class InventoryXmlObject extends XmlObjectModel {
 	}
 	
 	public Boolean isEquipped(String item_id) {
-		XmlObjectModel item = item_id_map.get(item_id);
+		XmlObjectModel item = id_map.get(item_id);
 		String equip = item.getAttribute(EQUIPPED_ATTR);
 		if (equip.equals("True"))
 			return true;
@@ -88,18 +44,11 @@ public class InventoryXmlObject extends XmlObjectModel {
 			return false;
 	}
 	
-	public void addProperty(XmlObjectModel property, String item_id, String property_id) {
+	public void setProperty(XmlObjectModel property, String item_id, String property_id) {
 		XmlObjectModel item = getItem(item_id);
 		if (property_id == null) {
-			int high_id = 0;
-			for (XmlObjectModel child: item.getChildren()) {
-				String p_id = child.getAttribute(XmlConst.ID_ATTR);
-				String id_split[] = p_id.split("#");
-				int id_number = Integer.parseInt(id_split[1]);
-				if (id_number > high_id)
-					high_id = id_number;
-			}
-			property_id = "Id#" + Integer.toString(high_id + 1);
+			item.initializeIdMap(XmlConst.PROPERTY_TAG);
+			property_id = item.getUniqueId();
 		} else {
 			deleteProperty(item_id, property_id);
 		}
@@ -157,28 +106,7 @@ public class InventoryXmlObject extends XmlObjectModel {
 	}
 	
 	private XmlObjectModel getItem(String id) {
-		return item_id_map.get(id);
-	}
-	
-	private XmlObjectModel insertOptionStrings(Map<String,String> option_map, XmlObjectModel property) {
-		XmlObjectModel new_model = new XmlObjectModel(XmlConst.GENERATED_TAG);
-		Set<Map.Entry<String,String>> entry_set = property.getAttributes().entrySet();
-		for (Map.Entry<String, String> attribute: entry_set) {
-			String attr = attribute.getKey();
-			String value = attribute.getValue();
-			for (Map.Entry<String, String> entry: option_map.entrySet()) {
-				String dict_attr = entry.getKey();
-				if (value.contains("[" + dict_attr + "]")) {
-					String dict_value = entry.getValue();
-					value = value.replace("[" + dict_attr + "]", dict_value);
-				}
-			}
-			property.setAttribute(attr, value);
-		}
-		for (XmlObjectModel child: property.getChildren()) {
-			insertOptionStrings(option_map, child);
-		}
-		return new_model;
+		return id_map.get(id);
 	}
 	
 	public Map<String,String> getItemPropertyOptionMap(String item_id, String property_id) {

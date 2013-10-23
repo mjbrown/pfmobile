@@ -11,9 +11,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
+
+import com.ninjadin.pfmobile.data.XmlConst;
 
 import android.util.Xml;
 
@@ -23,6 +26,9 @@ public class XmlObjectModel {
 	private String tag;
 	private List<XmlObjectModel> children = new ArrayList<XmlObjectModel>();
 	private Map<String,String> attributes = new HashMap<String,String>();
+	
+	private int highest_id = 0;
+	protected Map<String, XmlObjectModel> id_map = new HashMap<String,XmlObjectModel>();
 	
 	public XmlObjectModel(String tag) {
 		this.tag = tag;
@@ -59,6 +65,38 @@ public class XmlObjectModel {
 		}
 	}
 	
+	protected String getUniqueId() {
+		highest_id += 1;
+		return "Id#" + Integer.toString(highest_id);
+	}
+	
+	protected void initializeIdMap(String tag_name) {
+		for (XmlObjectModel model: getChildren()) {
+			String tag = model.getTag();
+			String id = model.getAttribute(XmlConst.ID_ATTR);
+			if (tag.equals(tag_name)) {
+				id_map.put(id, model);
+				String id_split[] = id.split("#");
+				int id_number = Integer.parseInt(id_split[1]);
+				if (id_number > highest_id)
+					highest_id = id_number;
+			}
+		}
+	}
+	
+	public void deleteById(String id) {
+		int i = 0;
+		for (XmlObjectModel child: getChildren()) {
+			String child_id = child.getAttribute(XmlConst.ID_ATTR);
+			if (child_id != null)
+				if (child_id.equals(id)) {
+					removeChild(i);
+					return;
+				}
+			i += 1;
+		}
+	}
+	
 	private void readModel(InputStream inStream) {
 		XmlPullParser parser = Xml.newPullParser();
 		try {
@@ -74,6 +112,40 @@ public class XmlObjectModel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	protected void insertOptionStrings(Map<String,String> option_map, XmlObjectModel property) {
+		Set<Map.Entry<String,String>> entry_set = property.getAttributes().entrySet();
+		for (Map.Entry<String, String> attribute: entry_set) {
+			String attr = attribute.getKey();
+			String value = attribute.getValue();
+			for (Map.Entry<String, String> entry: option_map.entrySet()) {
+				String dict_attr = entry.getKey();
+				if (value.contains("[" + dict_attr + "]")) {
+					String dict_value = entry.getValue();
+					value = value.replace("[" + dict_attr + "]", dict_value);
+				}
+			}
+			property.setAttribute(attr, value);
+		}
+		for (XmlObjectModel child: property.getChildren()) {
+			insertOptionStrings(option_map, child);
+		}
+	}
+	
+	public XmlObjectModel findObject(String tag, String attr, String value) {
+		if (tag.equals(getTag())) {
+			if (value.equals(attributes.get(attr))) {
+				return this;
+			}
+		} else {
+			for (XmlObjectModel child: getChildren()) {
+				XmlObjectModel result = child.findObject(tag, attr, value);
+				if (result != null)
+					return result;
+			}
+		}
+		return null;
 	}
 	
 	public XmlObjectModel findObject(String tag, Map<String,String> attributes) {
@@ -137,6 +209,9 @@ public class XmlObjectModel {
 	
 	protected void addChild(XmlObjectModel model) {
 		children.add(model);
+		String id = model.getAttribute(XmlConst.ID_ATTR);
+		if (id != null)
+			id_map.put(id, model);
 	}
 	
 	protected void removeChild(int position) {

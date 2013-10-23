@@ -10,12 +10,14 @@ import com.ninjadin.pfmobile.R;
 public class TextEditDialogFragment extends EditDialogFragment {
 	EditText edit_text;
 	String id;
+	final private static String IS_NUMBER = "Number Only";
 
-	public static TextEditDialogFragment newDialog(String id, String def) {
+	public static TextEditDialogFragment newDialog(String id, String def, Boolean is_number) {
 		TextEditDialogFragment frag = new TextEditDialogFragment();
 		Bundle args = new Bundle();
 		args.putString(ID, id);
 		args.putString(DEFAULT, def);
+		args.putBoolean(IS_NUMBER, is_number);
 		frag.setArguments(args);
 		return frag;
 	}
@@ -37,11 +39,8 @@ public class TextEditDialogFragment extends EditDialogFragment {
 		edit_text = (EditText) dialog.findViewById(R.id.editText1);
 		edit_text.setText(def);
 		edit_text.setSelection(edit_text.getText().length());
-		try { // FIXME: This is dumb.
-			Integer.parseInt(def);
+		if (args.getBoolean(IS_NUMBER)) {
 			edit_text.setInputType(InputType.TYPE_CLASS_NUMBER);
-		} catch (NumberFormatException e) {
-			
 		}
 	}
 	

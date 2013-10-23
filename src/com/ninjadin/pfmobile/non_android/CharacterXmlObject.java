@@ -80,6 +80,7 @@ public class CharacterXmlObject extends XmlObjectModel {
 		}
 	}
 	
+	// TODO : this is broken, since XML isn't supposed to depend upon order
 	public void removeLevel() {
 		int level_number = levels.getChildren().size();
 		if (level_number > 1) {

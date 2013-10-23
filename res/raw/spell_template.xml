@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<spell name="Produce Flame" range="Self" school="Evocation" target="Self">
+    <bonus type="Spell Level" value="1" />
+    <bonus type="Caster Level" value="[Druid Caster Level]" />
+    <bonus type="Spell Failure" value="[Druid Spell Failure]" />
+    <bonus type="Save DC" value="[Wisdom Modifier] + [Spell Level] + 10" />
+</spell>

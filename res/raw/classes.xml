@@ -93,6 +93,9 @@
 	    <bonus type="Base Attack" value="( [Bard Level] * 3 / 4 )" />
         <bonus type="Skill Points" value="( max( 1 , ( 6 + [Intelligence Modifier] ) ) * [Bard Level] )" />
         <bonus type="Bard Spell Levels" value="[Bard Level]" />
+        <bonus type="Bard Level 0 Spells Known" value="min( ( 3 + [Bard Spell Levels] ) , 6 )" />
+        <bonus type="Bard Level 1 Spells Known" value="min( ( 1 + [Bard Spell Levels] ) , 4 )" />
+        <bonus type="Bard Level 1 Spells Known" value="min( ( ( [Bard Spell Levels] - 3 ) / 4 ) , 2 )" />
         <bonus type="Bard Level 1 Spells Per Day" value="min( [Bard Spell Levels] , 3 )" />
         <bonus type="Bard Level 1 Spells Per Day" value="min( 2 , ( ( [Bard Spell Levels] - 1 ) / 4 ) )" />
         <bonus type="Bard Level 2 Spells Per Day" value="max( min( ( [Bard Spell Levels] - 4 ) , 3 ) , 0 )" />
@@ -483,7 +486,7 @@
 	        <bonus type="Monk AC Bonus Level" value="[Monk Level]" />
 	        <bonus type="Monk Unarmed Damage Level" value="8 + [Monk Level]" />
 	        <attack name="Flurry Of Blows Attack" parent="Basic Attack">
-	            <onHitEffect name="Flurry Of Blows Damage">
+	            <onHitEffect name="Flurry Of Blows Damage" parent="Basic Damage">
 	                <bonus type="Damage" value="[Strength Modifier]" />
 	            </onHitEffect>
 	        </attack>

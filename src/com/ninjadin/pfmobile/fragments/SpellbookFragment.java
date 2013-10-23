@@ -7,7 +7,9 @@ import java.util.Map;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -21,27 +23,35 @@ import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.ninjadin.pfmobile.R;
 import com.ninjadin.pfmobile.activities.GeneratorActivity;
 import com.ninjadin.pfmobile.data.ExpListData;
 import com.ninjadin.pfmobile.data.PropertyLists;
 import com.ninjadin.pfmobile.data.XmlConst;
+import com.ninjadin.pfmobile.dialogfragments.EditDialogFragment;
 import com.ninjadin.pfmobile.dialogfragments.SpellListEditDialogFragment;
+import com.ninjadin.pfmobile.dialogfragments.TextEditDialogFragment;
 import com.ninjadin.pfmobile.non_android.SpellGroup;
 
 public class SpellbookFragment extends Fragment {
+	final private static int MEMORIZE_EDIT_CODE = 0;
+	
 	Button add_spell;
 	Spinner class_spinner;
 	GeneratorActivity activity;
 	ExpandableListView expListView;
 	String selected_class;
 	List<SpellGroup> master_list;
+	List<List<SpellGroup>> exp_list_spells; // Visible spells in the expandable list view
 	Map<String, String> spell_sources = new HashMap<String,String>();
+	Fragment fragment = this;
 	
 	public interface SpellbookFragmentListener {
 		public List<SpellGroup> getSpellsAvailable();
+		public void castSpell(SpellGroup spell);
+		public void memorizeSpell(String id, Integer number);
+		public void deleteSpell(String id);
 	}
 	
 	SpellbookFragmentListener sbListener;
@@ -113,7 +123,16 @@ public class SpellbookFragment extends Fragment {
 		class_spinner.setSelection(position);
 		refreshExpListAdapter();
 	}
-
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == MEMORIZE_EDIT_CODE) {
+			String spell_id = data.getStringExtra(EditDialogFragment.ID);
+			String value = data.getStringExtra(EditDialogFragment.RETURN_VALUE);
+			sbListener.memorizeSpell(spell_id, Integer.parseInt(value));
+		}
+	}
+	
 	private List<String> sourceList() {
 		List<String> sourceList = new ArrayList<String>();
 		Map<String,Boolean> sourceMap = new HashMap<String, Boolean>();
@@ -143,6 +162,7 @@ public class SpellbookFragment extends Fragment {
 	
 	private ExpListData getLevelList(String src) {
 		ExpListData levelList = new ExpListData();
+		exp_list_spells = new ArrayList<List<SpellGroup>>();
 		int max_level = -1;
 		for (SpellGroup spell: master_list) {
 			if (src.equals(spell.getAttribute(XmlConst.SOURCE_ATTR))) {
@@ -154,7 +174,10 @@ public class SpellbookFragment extends Fragment {
 					levelList.groupData.add(levelString);
 					List<Map<String,String>> levelSpells = new ArrayList<Map<String,String>>();
 					levelList.itemData.add(levelSpells);
+					List<SpellGroup> level_spellgroups = new ArrayList<SpellGroup>();
+					exp_list_spells.add(level_spellgroups);
 				}
+				exp_list_spells.get(level).add(spell);
 				Map<String,String> spell_details = new HashMap<String,String>();
 				levelList.itemData.get(level).add(spell_details);
 				spell_details.put(XmlConst.NAME_ATTR, spell.getAttribute(XmlConst.NAME_ATTR));
@@ -165,7 +188,6 @@ public class SpellbookFragment extends Fragment {
 				spell_details.put(XmlConst.USES_ATTR, useable);
 				spell_details.put(PropertyLists.save_dc, Integer.toString(spell.getValue(PropertyLists.save_dc)));
 				spell_details.put(PropertyLists.spell_failure, Integer.toString(spell.getValue(PropertyLists.spell_failure)));
-				spell_details.put(PropertyLists.uses, Integer.toString(spell.getValue(PropertyLists.uses)));
 				spell_details.put(PropertyLists.caster_level, Integer.toString(spell.getValue(PropertyLists.caster_level)));
 			}
 		}
@@ -198,7 +220,43 @@ public class SpellbookFragment extends Fragment {
 		public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
 				View convertView, ViewGroup parent) {
 			convertView = super.getChildView(groupPosition, childPosition, isLastChild, convertView, parent);
+			Button cast = (Button) convertView.findViewById(R.id.spell_cast);
+			cast.setOnClickListener(new SpellClickListener(exp_list_spells.get(groupPosition).get(childPosition)) {
+				@Override
+				public void onClick(View arg0) {
+					sbListener.castSpell(spell);
+				}
+			});
+			Button memorize = (Button) convertView.findViewById(R.id.spell_add);
+			memorize.setOnClickListener(new SpellClickListener(exp_list_spells.get(groupPosition).get(childPosition)) {
+				@Override
+				public void onClick(View v) {
+					String id = spell.getAttribute(XmlConst.ID_ATTR);
+					DialogFragment dialog = TextEditDialogFragment.newDialog(id, "", true);
+					dialog.setTargetFragment(fragment, MEMORIZE_EDIT_CODE);
+					dialog.show(getChildFragmentManager(), "TextEditDialogFragment");
+				}
+			});
+			Button delete = (Button) convertView.findViewById(R.id.spell_delete);
+			delete.setOnClickListener(new SpellClickListener(exp_list_spells.get(groupPosition).get(childPosition)) {
+
+				@Override
+				public void onClick(View v) {
+					sbListener.deleteSpell(spell.getAttribute(XmlConst.ID_ATTR));
+				}
+				
+			});
 			return convertView;
 		}
+		
+	}
+	
+	private abstract class SpellClickListener implements OnClickListener {
+		SpellGroup spell;
+		
+		public SpellClickListener(SpellGroup spell) {
+			this.spell = spell;
+		}
+		
 	}
 }

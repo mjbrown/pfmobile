@@ -15,12 +15,6 @@ import com.ninjadin.pfmobile.data.XmlConst;
 public class StatisticManager {
 	// A map of all CharacterStatistics
 	private StatisticGroup master_stats = new StatisticGroup(null);
-	// A list of all Conditionals (no unconditional bonuses)
-	private List<Conditional> conditional_bonuses;
-	
-	// A map of equipment / environment conditions
-	Map<String,Map<String,Conditional>> conditions = new HashMap<String,Map<String,Conditional>>();;
-	
 	// A map of NAMED actions available to the character
 	Map<String, ActionGroup> combatActions = new HashMap<String, ActionGroup>();
 	
@@ -41,15 +35,7 @@ public class StatisticManager {
 	Map<String, List<XmlObjectModel>> effect_select_map = new HashMap<String, List<XmlObjectModel>>();
 	
 	public StatisticManager() {
-		for (String key: PropertyLists.keyNames) {
-			Map<String,Conditional> condition_map = new HashMap<String,Conditional>();
-			conditions.put(key, condition_map);
-		}
-		conditional_bonuses = new ArrayList<Conditional>();
-	}
-	
-	public void newBonus(String statisticType, String stackType, String source, String value) {
-		master_stats.addBonus(statisticType, stackType, source, value);
+
 	}
 	
 	public int getValue(String statisticName) {
@@ -60,31 +46,20 @@ public class StatisticManager {
 		return master_stats.evaluate(value);
 	}
 	
-	public boolean hasProperty(String key, String name) {
-		Conditional property = conditions.get(key).get(name);
-		if (property != null) {
-			return property.isActive();
-		} else {
-			return false;
-		}
-	}
-	
 	public void readModel(XmlObjectModel model) {
 		ConditionList currentConditions = new ConditionList();
-		Stack<StatisticGroup> lastObject = new Stack<StatisticGroup>();
-		lastObject.push(master_stats);
+		StatisticGroup lastObject = master_stats;
 		recursiveReadModel(model, currentConditions, lastObject, null, null);
 	}
 	
 	public void readPartialModel(XmlObjectModel model, String quit_tag, Map<String,String> quit_attr) {
 		ConditionList currentConditions = new ConditionList();
-		Stack<StatisticGroup> lastObject = new Stack<StatisticGroup>();
-		lastObject.push(master_stats);
+		StatisticGroup lastObject = master_stats;
 		recursiveReadModel(model, currentConditions, lastObject, quit_tag, quit_attr);
 	}
 	
 	public Boolean recursiveReadModel(XmlObjectModel model, ConditionList currentConditions, 
-			Stack<StatisticGroup> lastObject, String quit_tag, Map<String,String> quit_attr) {
+			StatisticGroup lastObject, String quit_tag, Map<String,String> quit_attr) {
 		String tag = model.getTag();
 		if (tag.equals(quit_tag)) {
 			Boolean quit = true;
@@ -100,16 +75,6 @@ public class StatisticManager {
 				return true;
 		}
 		if (tag.equals(XmlConst.CONDITIONAL_TAG)) {
-			String name = model.getAttribute(XmlConst.NAME_ATTR);
-			String key = model.getAttribute(XmlConst.KEY_ATTR);
-			if (model.getAttribute(XmlConst.ACTIVATE_ATTR) != null) {
-				ActivatedCondition newBonus = new ActivatedCondition(key, name);
-				modifiers.add(newBonus);
-				if (currentConditions.hasConditions()) {
-					newBonus.setConditions(currentConditions);
-					conditional_bonuses.add(newBonus);
-				}
-			}
 			currentConditions.startConditional(model);
 		} else if (tag.equals(XmlConst.BONUS_TAG)) {
 			String type = model.getAttribute(XmlConst.TYPE_ATTR);
@@ -120,19 +85,13 @@ public class StatisticManager {
 				stack = "Base";
 			if (source == null)
 				source = "Natural";
-			StatisticGroup stat_group = lastObject.peek();
 			for (String typ: type.split(",")) {
-				Bonus conditionalBonus = stat_group.addBonus(typ, stack, source, value);
-				if (currentConditions.hasConditions()) {
-					conditionalBonus.setConditions(currentConditions);
-					conditional_bonuses.add(conditionalBonus);
-					updateConditionalBonus(conditionalBonus);
-				}
+				lastObject.addBonus(typ, stack, source, value, currentConditions);
 			}
 		} else if (tag.equals(XmlConst.CHOICE_TAG)) {
 			String name = model.getAttribute(XmlConst.NAME_ATTR);
 			if (name != null)
-				activateCondition(PropertyLists.prerequisite, name);
+				lastObject.activateCondition(PropertyLists.prerequisite, name, currentConditions);
 		} else if (tag.equals(XmlConst.ACTION_TAG)) {
 			String name = model.getAttribute(XmlConst.NAME_ATTR);
 			String parent = model.getAttribute(XmlConst.PARENT_ATTR);
@@ -149,68 +108,62 @@ public class StatisticManager {
 				}
 				if (currentConditions.hasConditions()) {
 					action.setConditions(currentConditions);
-					conditional_bonuses.add(action);
+					lastObject.addConditionalBonus(action);
 				}
 				if (name != null)		// Named action means it is referenced elsewhere
 					combatActions.put(name, action);
 			}
-			lastObject.push(action);
+			//currentConditions = new ConditionList();
+			lastObject = action;
 		} else if (tag.equals(XmlConst.ATTACK_TAG)) {
 			String name = model.getAttribute(XmlConst.NAME_ATTR);
 			String parent = model.getAttribute(XmlConst.PARENT_ATTR);
 			AttackGroup inheritedAttack = null;
-			StatisticGroup parentGroup = null;
 			if (parent != null) 
 				inheritedAttack = attacks.get(parent);
-			if (!(lastObject.peek() == master_stats)) {
-				//Log.d("ATTACK", "Attack " + names + " has inherited " + parent);
-				parentGroup = lastObject.peek();
-			}
 			AttackGroup newAttack = null;
 			if (name != null)
 				newAttack = attacks.get(name);
 			if (newAttack == null) {
-				newAttack = new AttackGroup(model.getAttributes(), inheritedAttack, parentGroup);
+				newAttack = new AttackGroup(model.getAttributes(), inheritedAttack, lastObject);
 				if (currentConditions.hasConditions()) {
 					newAttack.setConditions(currentConditions);
-					conditional_bonuses.add(newAttack);
+					lastObject.addConditionalBonus(newAttack);
 				}
 				if (name != null)		// Named attack means it is referenced elsewhere
 					attacks.put(name, newAttack);
 			}
-			if (lastObject.peek() instanceof ActionGroup) {
-				ActionGroup action_group = (ActionGroup) lastObject.peek();
+			if (lastObject instanceof ActionGroup) {
+				ActionGroup action_group = (ActionGroup) lastObject;
 				action_group.addAttack(newAttack);
 			} else {
 				//Log.d("ATTACK", "Parent of attack isn't action! " + names);
 			}
-			lastObject.push(newAttack);
+			//currentConditions = new ConditionList();
+			lastObject = newAttack;
 		} else if (tag.equals(XmlConst.ONHIT_TAG)) {
 			String name = model.getAttribute(XmlConst.NAME_ATTR);
 			String parent = model.getAttribute(XmlConst.PARENT_ATTR);
 			OnHitDamage inheritedOnHit = null;
-			StatisticGroup parentGroup = null;
 			if (parent != null)
 				inheritedOnHit = onhit_effects.get(parent);
-			if (!(lastObject.peek() == master_stats))
-				parentGroup = lastObject.peek();
 			OnHitDamage newOnHit = null;
 			if (name != null)
 				newOnHit = onhit_effects.get(name);
 			if (newOnHit == null) {
-				newOnHit = new OnHitDamage(model.getAttributes(), inheritedOnHit, parentGroup);
+				newOnHit = new OnHitDamage(model.getAttributes(), inheritedOnHit, lastObject);
 				if (currentConditions.hasConditions()) {
 					newOnHit.setConditions(currentConditions);
-					conditional_bonuses.add(newOnHit);
+					lastObject.addConditionalBonus(newOnHit);
 				}
 				if (name != null)
 					onhit_effects.put(name, newOnHit);
 			}
-			if (lastObject.peek() instanceof AttackGroup) {
-				AttackGroup parentAttack = (AttackGroup) lastObject.peek();
+			if (lastObject instanceof AttackGroup) {
+				AttackGroup parentAttack = (AttackGroup) lastObject;
 				parentAttack.addOnHitDamage(newOnHit);
 			}
-			lastObject.push(newOnHit);
+			lastObject = newOnHit;
 		} else if (tag.equals(XmlConst.ITEM_TAG)) {
 			String active = model.getAttribute(InventoryXmlObject.EQUIPPED_ATTR);
 			if (active.equals("False"))
@@ -220,9 +173,10 @@ public class StatisticManager {
 			spells.add(spell);
 			if (currentConditions.hasConditions()) {
 				spell.setConditions(currentConditions);
-				conditional_bonuses.add(spell);
+				lastObject.addConditionalBonus(spell);
 			}
-			lastObject.push(spell);
+			currentConditions = new ConditionList();
+			lastObject = spell;
 		} else if (tag.equals(XmlConst.EFFECT_TAG)) {
 			String activate = model.getAttribute(XmlConst.ACTIVATE_ATTR);
 			String type = model.getAttribute(XmlConst.TYPE_ATTR);
@@ -239,7 +193,7 @@ public class StatisticManager {
 			}
 			if (activate == null) {
 				try {
-					ActionGroup last = ((ActionGroup) lastObject.peek()); 
+					ActionGroup last = ((ActionGroup) lastObject); 
 					last.addEffect(model);
 				} catch (ClassCastException e) {
 					
@@ -251,19 +205,9 @@ public class StatisticManager {
 		} else if (tag.equals(XmlConst.CONDITION_TAG)) {
 			String key = model.getAttribute(XmlConst.KEY_ATTR);
 			String names = model.getAttribute(XmlConst.NAME_ATTR);
-			Map<String,Conditional> condition_map = conditions.get(key);
-			if (condition_map == null) {
-				condition_map = new HashMap<String,Conditional>();
-				conditions.put(key, condition_map);
-			}
 			for (String name: names.split(",")) {
-				Conditional cond = new Conditional();
-				condition_map.put(name, cond);
+				lastObject.activateCondition(key, name, currentConditions);
 				//Log.d("ADD_COND", "Adding condition: " + key + " " + name);
-				if (currentConditions.hasConditions()) {
-					cond.setConditions(currentConditions);
-					conditional_bonuses.add(cond);
-				}
 			}
 		}
 		for (XmlObjectModel child: model.getChildren()) {
@@ -272,102 +216,16 @@ public class StatisticManager {
 		}
 		if (tag.equals(XmlConst.CONDITIONAL_TAG)) {
 			currentConditions.endConditional();
-		} else if (tag.equals(XmlConst.ACTION_TAG) || tag.equals(XmlConst.ATTACK_TAG) || tag.equals(XmlConst.ONHIT_TAG) || tag.equals(XmlConst.SPELL_TAG)) {
-			lastObject.pop();
 		}
 		return false;
+	}
+	
+	public Boolean masterHasProperty(String key, String name) {
+		return master_stats.hasProperty(key, name);
 	}
 	
 	public void updateConditionalBonuses(int retries) {
-		if (retries == 0)
-			return;
-		Log.d("RECUR_UPDATE", Integer.toString(retries));
-		Boolean run_again = false;
-		for (Conditional bonus: conditional_bonuses) {
-			Boolean already_active = bonus.isActive();
-			updateConditionalBonus(bonus);
-			if (already_active ^ bonus.isActive()) {
-				run_again = true;
-			}
-		}
-		if (run_again)
-			updateConditionalBonuses(retries - 1);
-	}
-	
-	private void updateConditionalBonus(Conditional bonus) {
-		if (checkConditions(bonus.getConditions())) {
-			bonus.meetsConditions();
-		} else {
-			bonus.failsConditions();
-			//Log.d("Condition", "Condition not met:" + bonus.getStringValue());
-		}
-	}
-	
-	private boolean checkConditions(ConditionList conditions) {
-		for (String key: PropertyLists.keyNames) {
-			if (conditions == null) // If no conditions are set, then conditions are met
-				break;
-			for (KeyValuePair kv: conditions.getConditionList(key)) {
-				if (!hasCondition(key, kv)) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-	
-	private boolean hasCondition(String key, KeyValuePair kv) {
-		if (kv.value == null) {
-			if (kv.logic == null) { // OR assumed
-				for (String property: kv.key.split(",")) {
-					if (hasProperty(key, property)) {
-						return true;
-					}
-				}
-				return false;
-			} else if (kv.logic.equals("NAND")) {
-				for (String property: kv.key.split(",")) {
-					if (!hasProperty(key, property)) {
-						return true;
-					}
-				}
-				return false;
-			} else if (kv.logic.equals("NOR")) {
-				for (String property: kv.key.split(",")) {
-					if (hasProperty(key, property)) {
-						return false;
-					}
-				}
-				return true;
-			} else if (kv.logic.equals("AND")) {
-				for (String property: kv.key.split(",")) {
-					if (!hasProperty(key, property)) {
-						return false;
-					}
-				}
-				return true;
-			}
-		} else {
-			String[] keys = kv.key.split(",");
-			String[] values = kv.value.split(",");
-			if (keys.length != values.length) {
-				Log.d("hasCondition", "Key Value size mismatch " + kv.key + " " + kv.value);
-				return false;
-			}
-			if (kv.logic == null) { // OR greater than or equal to assumed
-				for (int i = 0; i < keys.length; i++) {
-					if (getValue(keys[i]) >= evaluateValue(values[i]))
-						return true;
-				}
-			} else if (kv.logic.equals("OR_EQ")) {
-				for (int i = 0; i < keys.length; i++) {
-					if (getValue(keys[i]) != evaluateValue(values[i]))
-						return false;
-				}
-				return true;
-			}
-		}
-		return false;
+//		master_stats.updateConditionalBonuses(retries);
 	}
 	
 	public ExpListData getActionData() {
@@ -436,7 +294,6 @@ public class StatisticManager {
 				weapon_damage = master_stats.evaluate(medium_size_weapon_damage);
 			}
 		}
-		int has_dice = 0;
 		String output = null;
 		if (weapon_damage != null) {
 			int size = master_stats.getValue(PropertyLists.character_size);
@@ -456,7 +313,6 @@ public class StatisticManager {
 				output += "+" + Integer.toString(value);
 				if (i < length - 1)
 					output += PropertyLists.die[i];
-				has_dice += value;
 			}
 		}
 		return output;
@@ -506,26 +362,6 @@ public class StatisticManager {
 			expData.itemData.add(names_list);
 		}
 		return expData;
-	}
-	
-	public Conditional activateCondition(String key, String name) {
-		Map<String,Conditional> condition_map = conditions.get(key);
-		Conditional property = condition_map.get(name);
-		if (property == null) {
-			property = new Conditional();
-			condition_map.put(name, property);
-//			updateConditionalBonuses(1);
-		}
-		return property;
-	}
-	
-	public void deactivateCondition(String key, String name) {
-		Map<String,Conditional> condition_map = conditions.get(key);
-		Conditional property = condition_map.get(name);
-		if (property != null) {
-			condition_map.remove(name);
-//			updateConditionalBonuses(1);
-		}
 	}
 	
 	public List<String> castingClasses() {

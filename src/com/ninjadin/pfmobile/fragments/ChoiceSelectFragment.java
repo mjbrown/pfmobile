@@ -135,7 +135,7 @@ public class ChoiceSelectFragment extends Fragment {
 				String value = child.getAttribute(XmlConst.VALUE_ATTR);
 				
 				if (key != null)
-					if (manager.hasProperty(key, child.getAttribute(XmlConst.NAME_ATTR))) {
+					if (manager.masterHasProperty(key, child.getAttribute(XmlConst.NAME_ATTR))) {
 						filterPrerequisites(manager, child);
 						continue;
 					}

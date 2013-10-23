@@ -1,6 +1,7 @@
 package com.ninjadin.pfmobile.dialogfragments;
 
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -106,11 +107,24 @@ public class SpellListEditDialogFragment extends Fragment {
 		});
 	}
 
+	private final static Map<String, String> spell_list_map;
+	static {
+		Map<String,String> list_map = new HashMap<String,String>();
+		list_map.put("Wizard", "Wizard Spell List");
+		list_map.put("Sorcerer", "Wizard Spell List");
+		list_map.put("Cleric", "Cleric Spell List");
+		list_map.put("Oracle", "Cleric Spell List");
+		list_map.put("Inquisitor", "Inquisitor Spell List");
+		list_map.put("Bard", "Bard Spell List");
+		list_map.put("Ranger", "Ranger Spell List");
+		list_map.put("Paladin", "Paladin Spell List");
+		spell_list_map = Collections.unmodifiableMap(list_map);
+	}
 	private ExpListData getSpellList(String class_name) {
 		InputStream listStream = getResources().openRawResource(R.raw.spell_lists);
 		XmlObjectModel model = new XmlObjectModel(listStream);
 		Map<String,String> attr = new HashMap<String,String>();
-		attr.put(XmlConst.SOURCE_ATTR, class_name);
+		attr.put(XmlConst.NAME_ATTR, spell_list_map.get(class_name));
 		XmlObjectModel spelllist = model.findObject(XmlConst.SPELLLIST_TAG, attr);
 		return new ExpListData(spelllist.getChildren());
 	}

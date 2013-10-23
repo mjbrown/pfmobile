@@ -1,64 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <spells>
-    <spell name="Chill Touch" cost="Standard" components="Verbal,Somatic" school="Necromancy" target="Self" >
-        <effect name="Chill Touch" spellLevel="[Spell Level]" casterLevel="[Caster Level]">
-	        <bonus type="Chill Touch Uses" value="[Caster Level]" />
-	        <onHitEffect name="Chill Touch" uses="Chill Touch Uses" used="Chill Touch Used">
-	            <expend type="Chill Touch Uses" value="1" />
-	            <attack parent="Spell Resistance">
-	                <conditional key="Attack Target" name="Undead" logic="Not">
-		                <onHitEffect>
-		                    <bonus type="Damage d6" value="1" source="Negative Energy" />
-		                    <attack versus="Fortitude">
-		                        <onHitEffect type="Strength">
-		                            <bonus type="Damage" value="1" />
-		                        </onHitEffect>
-		                    </attack>
-		                </onHitEffect>
-	                </conditional>
-	                <conditional key="Attack Target" name="Undead">
-	                    <attack versus="Will">
-		                    <onHitCondition key="Status" add="Panicked">
-		                        <bonus type="Duration d4" value="1" />
-		                        <bonus type="Duration" value="[Caster Level]" />
-		                    </onHitCondition>
-	                    </attack>
-	                </conditional>
-	            </attack>
-	        </onHitEffect>
-	        <attack name="Melee Touch Attack">
-	            <onHitEffect name="Chill Touch" />
-	        </attack>
-	        <attack name="Unarmed Attack">
-	            <onHitEffect name="Chill Touch" />
-	        </attack>
-        </effect>
-    </spell>
-    <spell name="Produce Flame" cost="Standard" components="Verbal,Somatic" range="Self" school="Evocation" target="Self" >
-        <effect name="Produce Flame">
+    <spell name="Produce Flame" target="Self" >
+        <condition key="Spell School" name="Evocation" />
+        <condition key="Action Cost" name="Standard" />
+        <bonus type="Duration" value="[Caster Level] * 10" />
+        <conditional key="Metamagic" name="Extend">
             <bonus type="Duration" value="[Caster Level] * 10" />
-	        <onHitEffect name="Produce Flame" source="Evocation,Fire" >
-	            <expend type="Duration" name="Produce Flame" value="10" />
+        </conditional>
+        <conditional key="Metamagic" name="Silent" logic="NOR">
+            <condition key="Component" name="Verbal" />
+        </conditional>
+        <conditional key="Metamagic" name="Still" logic="NOR">
+            <condition key="Component" name="Somatic" />
+        </conditional>
+        <effect name="Produce Flame" populate="Caster Level,Duration,Damage Multiplier">
+            <expend type="Produce Flame Used" value="1" />
+            <bonus type="Produce Flame Uses" value="[Duration] * 10" />
+	        <onHitEffect name="Produce Flame" source="Evocation,Fire" uses="Produce Flame Uses" used="Produce Flame Used">
 	            <attack parent="Spell Resistance">
 	                <onHitEffect>
 	                    <bonus type="Damage d6" value="1" source="Fire" />
 	                    <bonus type="Damage" value="min( [Caster Level] , 5 )" source="Fire" />
+	                    <bonus type="Damage Multiplier" value="[Damage Multiplier]" />
 	                </onHitEffect>
 	            </attack>
 	        </onHitEffect>
 	        <attack name="Throw Produce Flame" parent="Ranged Touch Attack" >
-	            <expend type="Duration" name="Produce Flame" value="10" />
+	            <bonus type="Range" value="120" />
+	            <expend type="Produce Flame Used" value="10" />
 	            <onHitEffect name="Produce Flame" />
 	        </attack>
 	        <attack name="Melee Touch Attack">
-	            <bonus type="Range" value="1" />
 	            <onHitEffect parent="Produce Flame">
-	                <expend type="Duration" name="Produce Flame" value="10" />
+		            <expend type="Produce Flame Used" value="10" />
 	            </onHitEffect>
 	        </attack>
 	        <attack name="Unarmed Attack">
 	            <onHitEffect parent="Produce Flame">
-	                <expend type="Duration" name="Produce Flame" value="10" />
+		            <expend type="Produce Flame Used" value="10" />
 	            </onHitEffect>
 	        </attack>
         </effect>
@@ -66,10 +45,10 @@
     <spell name="True Strike" school="Divination" cost="Standard" components="Verbal" target="Self" >
         <effect name="True Strike">
             <bonus type="Duration" value="1" />
-            <bonus type="Uses" value="1" />
-	        <attack name="Basic Attack" >
+            <bonus type="True Strike Uses" value="1" />
+	        <attack name="Basic Attack" uses="True Strike Uses" used="True Strike Used" >
 	            <bonus type="To Hit" value="20" />
-	            <expend type="Uses" name="True Strike" value="1" />
+	            <expend name="True Strike Used" value="1" />
 	        </attack>
         </effect>
     </spell>
@@ -89,9 +68,9 @@
         </effect>
     </spell>
     <spell name="Greater Magic Weapon" school="Transmutation" cost="Standard" components="Verbal,Somatic" target="Weapon" range="Touch" >
-        <effect name="Greater Magic Weapon">
+        <effect name="[Target] Greater Magic Weapon">
             <bonus type="Duration" value="10 * 60 * [Caster Level]" />
-            <conditional key="Equipment" name="Off Hand [Weapon Name]">
+            <conditional key="Equipment" name="Off Hand [Target]">
                 <onHitEffect name="Off Hand Melee Weapon Damage">
                     <bonus type="Damage" value="[Caster Level] / 4" />
                 </onHitEffect>

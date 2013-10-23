@@ -136,7 +136,7 @@ public class ModifierDialogFragment extends DialogFragment {
 			}
 			GeneratorActivity activity = (GeneratorActivity) getActivity();
 			CheckBox box = (CheckBox) convertView.findViewById(R.id.modifier_checkBox);
-			box.setChecked(activity.dependencyManager.hasProperty(key, name));
+			box.setChecked(activity.dependencyManager.masterHasProperty(key, name));
 			return convertView;
 		}
 	}

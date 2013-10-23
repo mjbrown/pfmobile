@@ -124,6 +124,13 @@ public class EffectXmlObject extends XmlObjectModel {
 		expended_effects.addChild(condition);
 	}
 	
+	public void expendSpell(String used) {
+		XmlObjectModel bonus = new XmlObjectModel(XmlConst.BONUS_TAG);
+		bonus.setAttribute(XmlConst.TYPE_ATTR, used);
+		bonus.setAttribute(XmlConst.VALUE_ATTR, "1");
+		expended_effects.addChild(bonus);
+	}
+	
 	public void removeCondition(String key, String name) {
 		List<XmlObjectModel> children = expended_effects.getChildren();
 		int size = children.size();

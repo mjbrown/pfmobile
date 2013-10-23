@@ -29,17 +29,6 @@
 		        android:textStyle="bold"
 		        android:textColor="#AA0000"
 		        android:text="Chill Touch" />
-		    <TextView 
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:textSize="12sp"
-		        android:text="School:" />
-		    <TextView 
-		        android:id="@+id/school_text"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:textSize="16sp"
-		        android:text="Necromancy" />
 	    </LinearLayout>
 	
 	    <LinearLayout
@@ -61,20 +50,7 @@
 		        android:textStyle="bold"
 		        android:singleLine="true"
 		        android:text="1"/>
-		    <TextView 
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:textSize="12sp"
-		        android:text="Save DC:" />
-		    <TextView 
-		        android:id="@+id/savedc_text"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:textSize="20sp"
-		        android:textStyle="bold"
-		        android:singleLine="true"
-		        android:text="15"/>
-		    </LinearLayout>
+	    </LinearLayout>
     </LinearLayout>
     
     <LinearLayout
@@ -83,7 +59,8 @@
         android:layout_marginLeft="3sp"
         android:layout_marginRight="3sp"
         android:orientation="horizontal">
-	    <LinearLayout
+
+        <LinearLayout
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:orientation="vertical" 
@@ -131,15 +108,101 @@
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:textSize="12sp"
-		        android:text="Metamagic:" />
+		        android:text="School:" />
 		    <TextView 
-		        android:id="@+id/metamagic_text"
+		        android:id="@+id/school_text"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:textSize="18sp"
-		        android:textStyle="bold"
-		        android:text="None."/>
-		    
+		        android:textSize="16sp"
+		        android:text="Necromancy" />
 	    </LinearLayout>
 	</LinearLayout>
+	
+    <LinearLayout
+        android:id="@+id/row_attack_spell"
+        android:visibility="gone"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="3sp"
+        android:layout_marginRight="3sp"
+        android:orientation="horizontal">
+	    <LinearLayout
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical" 
+	        android:gravity="right"
+	        android:layout_weight="1">
+            <TextView 
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:textSize="12sp"
+		        android:text="Save DC:" />
+		    <TextView 
+		        android:id="@+id/savedc_text"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:textSize="20sp"
+		        android:textStyle="bold"
+		        android:singleLine="true"
+		        android:text="15"/>
+	    </LinearLayout>
+	    <LinearLayout
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical" 
+	        android:gravity="right"
+	        android:layout_weight="1">
+            <TextView 
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:textSize="12sp"
+		        android:text="Damage:" />
+		    <TextView 
+		        android:id="@+id/spell_damage_text"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:textSize="20sp"
+		        android:textStyle="bold"
+		        android:singleLine="true"
+		        android:text="15d6"/>
+	    </LinearLayout>
+	</LinearLayout>
+	
+    <LinearLayout
+        android:id="@+id/row_spell_actions"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="3sp"
+        android:layout_marginRight="3sp"
+        android:orientation="horizontal">
+	    
+        <Button 
+            android:id="@+id/spell_cast"
+            android:layout_width="0dp"
+            android:layout_height="35sp"
+            android:layout_weight="1"
+            android:textSize="15sp"
+            android:text="Cast"
+            />
+        
+        <Button 
+            android:id="@+id/spell_add"
+            android:layout_width="0dp"
+            android:layout_height="35sp"
+            android:layout_weight="1"
+            android:textSize="15sp"
+            android:text="Memorize"
+            />
+        
+        <Button 
+            android:id="@+id/spell_delete"
+            android:layout_width="0dp"
+            android:layout_height="35sp"
+            android:layout_weight="1"
+            android:textSize="15sp"
+            android:text="Delete"
+            />
+        
+	</LinearLayout>
+    
 </LinearLayout>

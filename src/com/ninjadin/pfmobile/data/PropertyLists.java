@@ -25,14 +25,9 @@ public class PropertyLists {
 
 	final public static String equals = "EQ";
 
-	final public static String statisticPrereq = "Statistic";
 	final public static String prerequisite = "Prerequisite";
-	final public static String activated = "Activated";
-	final public static String equipment = "Equipment";
 	final public static String keyNames[] = new String[] { "Statistic", "Status", prerequisite, "Equipment", 
 		"Proficiency", "Attack Source", "Attack Target", "Damage Source", "Damage Target", "Activated", };
-	
-	final public static String bonusSources[] = new String[] { "Natural", "Supernatural", "Magical", };
 	
 	final public static String ranks = "Ranks";
 	final public static String stackableTypes[] = new String[] { "Base", "Racial", "Trait", "Feat",
@@ -51,10 +46,6 @@ public class PropertyLists {
 	"Linguistics", "Perception", "Perform", "Profession", "Ride", "Sense Motive",
 	"Sleight Of Hand", "Spellcraft", "Stealth", "Survival", "Swim", "Use Magic Device" };
 
-	final public static String[] classLevelNames = new String[] { "Fighter Level", "Rogue Level",
-	"Wizard Level", "Sorcerer Level", "Paladin Level", "Ranger Level", "Monk Level", "Barbarian Level",
-	"Bard Level", "Druid Level", "Cleric Level", "Oracle Level" };
-
 	final public static String abilityScoreNames[] = new String[] { "Strength", "Dexterity", 
 	"Constitution", "Intelligence", "Wisdom", "Charisma", };
 
@@ -68,49 +59,46 @@ public class PropertyLists {
 	final public static String hit_points = "Hit Points";
 	final public static String skill_points = "Skill Points";
 	final public static String pointsNames[] = { hit_points, skill_points };
-	final public static String basicStatsNames[] = new String[] {  "Base Attack", 
-		 "Combat Maneuver Bonus", "Fortitude", "Reflex", "Will", "Armor Class", "Touch Armor Class", 
-		 "Flat Footed Armor Class", "Combat Maneuver Defense", };
 
-	final public static String reductionNames[] = new String[] { "Acid Resistance", "Electricity Resistance", 
-		"Fire Resistance", "Cold Resistance", "Sonic Resistance", "Force Resistance" };
+	final public static String offensiveStats[] = new String[] { "Base Attack",
+		"Combat Maneuver Bonus", "Spell Penetration" };
+	
+	final public static String defensiveStats[] = new String[] { "Fortitude", "Reflex", "Will",
+		"Armor Class", "Touch Armor Class", "Flat Footed Armor Class", "Combat Maneuver Defense",
+		};
 	
 	final public static String speedNames[] = new String[] { "Speed", "Fly Speed", 
 		"Climb Speed", "Swim Speed", "Burrow Speed", "Stealth Speed", "Crawl Speed"};
 	
-	// Allows the tracking of all caster level types independently
-	// Prestige classes can be implemented as a choice of caster level advancement
-	final public static String casterLevelNames[] = new String[] { "Wizard Caster Level",
-		"Sorcerer Caster Level", "Ranger Caster Level", "Paladin Caster Level", "Bard Caster Level",
-		"Druid Caster Level", "Cleric Caster Level", "Arcane Caster Level", "Divine Caster Level" };
-	
 	// Tracking Spell Failure sources allows easier implementation of armored spellcasting classes like Bard
-	final public static String equipRelatedNames[] = new String[] { "Bard Spell Failure", "Wizard Spell Failure",
-		"Sorcerer Spell Failure", "Magus Spell Failure", "Light Armor Spell Failure",
+	final public static String equipRelatedNames[] = new String[] {  "Light Armor Spell Failure",
 		"Medium Armor Spell Failure", "Heavy Armor Spell Failure", "Shield Spell Failure", "Armor Check",
 		"Maximum Dexterity Bonus", "Encumbrance", "Equipment Cost", };
 	
-	final public static String otherStatisticNames[] = new String[] { "Skill Points",	
-		"Spell Resistance", "Initiative", "Spell Penetration", "Sneak Attack Dice" };
+	final public static String otherStatisticNames[] = new String[] { 	
+		"Spell Resistance", "Initiative", "Spell Penetration" };
 
 	final static public String inventory = "Inventory";
 	final static public String[] slotNames = new String[] { "Head", "Headband", "Wrists", "Feet",
-		"Eyes", "Neck", "Shoulders", "Chest", "Body", "Armor", "Hands", "Ring 1", "Ring 2", "Belt", 
+		"Eyes", "Neck", "Shoulders", "Chest", "Body", "Armor", "Hands", "Ring", "Belt", "Held", 
 		inventory };
 
 	// Weapon specific attributes
 	final static public String to_hit = "To Hit";
 	final static public String range = "Range";
 	final static public String crit_range = "Critical Range";
-	final static public String[] attackProperties = new String[] { to_hit, "Range",
-		crit_range, "Save DC", "Number Of Uses",};
 
 	final static public String spell_level = "Spell Level";
 	final static public String spell_failure = "Spell Failure";
-	final static public String uses = "Uses";
 	final static public String save_dc = "Save DC";
 	final static public String caster_level = "Caster Level";
-	final static public String[] spellStrings = { spell_level };
+	//final static public String 
+	final static public String spell_statistics[] = { spell_level, spell_failure, save_dc,
+		caster_level, };
+	final static public String self_only = "Self Only";
+	final static public String self_weapon = "Self Weapon";
+	final static public String target_weapon = "Weapon";
+	final static public String target_single = "Single";
 	
 	final static public String[] criticalRangeStrings = new String[] { "20", "19-20", "18-20", 
 		"17-20", "16-20", "15-20", "14-20", "13-20", "12-20", "11-20", "10-20", };
@@ -124,21 +112,16 @@ public class PropertyLists {
 	final static public String medium_damage[] = {"0", "1d2", "1d3", "1d4", "1d6", "1d8", "1d10", "2d6", "2d8", "2d10", "1d12", "2d4",  };
 	final static public String large_damage[] =  {"0", "1d3", "1d4", "1d6", "1d8", "2d6", "2d8",  "3d6", "3d8", "4d8", "3d6",  "2d6",  };
 
-	final static public String crit_multiplier = "Critical Multiplier";
-	final static public String[] damageProperties = new String[] { 
-		"Condition", crit_multiplier, "Duration", "Number Of Uses", };
-	
-	final static public String[] weaponProperties = new String[] { "Finesse",
-		"Light", "Brace", "Double", "Monk", "Nonlethal", "Reach", "Trip", };
-	
 	// Weapon damage sources
 	final static public String[] damageSources = new String[] { "Piercing", "Slashing", "Bludgeoning", 
 		"Fire", "Cold", "Electricity", "Sonic", "Negative Energy", "Positive Energy", "Holy", "Magic", "Bleed",
 		"Adamantine", "Cold Iron", "Silver", "Poison" };
 
 	// If this is changed, you must change statisticData() below
-	final public static String categories[] = new String[] { "Ability Scores", "Basic Stats", "Points", "Skills", "Class Levels",
-		"Damage Reduction", "Speed", "Caster Levels", "Equipment Related", "Other"};
+	final static public String ability_scores = "Ability Scores";
+	final static public String hit_skill_points = "Hit/Skill Points";
+	final public static String categories[] = new String[] { ability_scores, "Offensive Stats", "Defensive Stats",
+		hit_skill_points, "Skills", "Speed", "Equipment Related", "Other"};
 
 	
 	final static public List<Map<String,String>> categoryData() {
@@ -148,13 +131,11 @@ public class PropertyLists {
 	final static public List<List<Map<String,String>>> statisticData() {
 		List<List<Map<String,String>>> itemData = new ArrayList<List<Map<String,String>>>();
 		itemData.add(toListMap(abilityScoreNames));
-		itemData.add(toListMap(basicStatsNames));
+		itemData.add(toListMap(offensiveStats));
+		itemData.add(toListMap(defensiveStats));
 		itemData.add(toListMap(pointsNames));
 		itemData.add(toListMap(skillNames));
-		itemData.add(toListMap(classLevelNames));
-		itemData.add(toListMap(reductionNames));
 		itemData.add(toListMap(speedNames));
-		itemData.add(toListMap(casterLevelNames));
 		itemData.add(toListMap(equipRelatedNames));
 		itemData.add(toListMap(otherStatisticNames));
 		return itemData;
@@ -168,35 +149,6 @@ public class PropertyLists {
 			listMap.add(newMap);
 		}
 		return listMap;
-	}
-	
-	final static public List<String> stat_list() {
-		List<String> stat_names = new ArrayList<String>();
-		for (String item: abilityScoreNames)
-			stat_names.add(item);
-		for (String item: abilityModifierNames)
-			stat_names.add(item);
-		for (String item: basicStatsNames)
-			stat_names.add(item);
-		for (String item: otherStatisticNames)
-			stat_names.add(item);
-		for (String item: reductionNames)
-			stat_names.add(item);
-		for (String item: speedNames)
-			stat_names.add(item);
-		for (String item: casterLevelNames)
-			stat_names.add(item);
-		for (String item: skillNames)
-			stat_names.add(item);
-		for (String item: classLevelNames)
-			stat_names.add(item);
-		for (String item: equipRelatedNames)
-			stat_names.add(item);
-		for (String item: attackProperties)
-			stat_names.add(item);
-		for (String item: damageProperties)
-			stat_names.add(item);
-		return stat_names;
 	}
 	
 	final static public List<String> damageDie() {

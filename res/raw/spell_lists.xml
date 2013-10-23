@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <content>
-    <spellList source="Sorcerer">
-    <spellList source="Wizard">
+    <spellList name="Wizard Spell List">
         <spellLevel value="0">
             <entry name="Resistance" />
             <entry name="Acid Splash" />
@@ -113,8 +112,7 @@
         </spellLevel>
         
     </spellList>
-    </spellList>
-    <spellList source="Bard">
+    <spellList name="Bard Spell List">
         <spellLevel value="0">
             <entry name="Resistance" />
             <entry name="Acid Splash" />
@@ -137,9 +135,12 @@
             <entry name="Arcane Mark" />
             <entry name="Prestidigitation" />
         </spellLevel>
+        <spellLievel value="1">
+            <entry name="Charm Person" />
+            <entry name="Cure Light Wounds" />
+        </spellLievel>
     </spellList>
-	<spellList source="Oracle">
-    <spellList source="Cleric">
+    <spellList name="Cleric Spell List">
         <spellLevel value="0">
             <entry name="Light" />
         </spellLevel>
@@ -147,8 +148,7 @@
             <entry name="Cure Light Wounds" />
         </spellLevel>
     </spellList>
-    </spellList>
-    <spellList source="Inquisitor">
+    <spellList name="Inquisitor Spell List">
         <spellLevel value="0">
             <entry name="Acid Splash" />
             <entry name="Bleed" />
